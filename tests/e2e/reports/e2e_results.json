@@ -1,0 +1,337 @@
+{
+  "system": "HotWAY E2E Test Suite",
+  "version": "1.0.0",
+  "timestamp": "2026-10-19T08:20:22.433546+00:00",
+  "summary": {
+    "total": 41,
+    "passed": 41,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pass_rate": 100.0,
+    "duration_seconds": 3.787
+  },
+  "tiers": {
+    "tier1_features": {
+      "total": 21,
+      "passed": 21,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 1.2415
+    },
+    "tier2_boundaries": {
+      "total": 13,
+      "passed": 13,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 0.0614
+    },
+    "tier3_pairwise": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 0.807
+    },
+    "tier4_workloads": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration": 1.6765
+    }
+  },
+  "results": [
+    {
+      "test_id": "tests.e2e.tier1_features.test_graph_features.TestRoadGraphAndTrafficFeatures.test_depot_node_exists_with_accurate_coordinates",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0147,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_graph_features.TestRoadGraphAndTrafficFeatures.test_dynamic_edge_traversal_duration",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0072,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_graph_features.TestRoadGraphAndTrafficFeatures.test_edge_attributes_validity",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0119,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_graph_features.TestRoadGraphAndTrafficFeatures.test_graph_has_64_nodes_and_is_strongly_connected",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0138,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_graph_features.TestRoadGraphAndTrafficFeatures.test_rush_hour_congestion_peak_on_ql56",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.007,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_policy_runner_latency.TestPolicyRunnerLatency.test_predict_next_order_latency_sub_20ms",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0348,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_agent_rules_and_workflows_exist",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0076,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_contract_game_canvas_react_props",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_contract_rl_to_backend_policy_runner_interface",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0004,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_contract_rl_to_game_ghost_trajectory_schema",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0002,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_contract_websocket_telemetry_event_names",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0003,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_project_feature_inventory_contains_all_69_features",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_root_specifications_exist_and_non_empty",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0042,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_spec_structure.TestSpecStructure.test_spec_miner_survey_artifacts_exist",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.003,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_authoritative_numerical_benchmarks_banh_canh_ga",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_cold_drink_warming_direction",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_composite_cooling_rate_matrix",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_container_insulation_ranking",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_hot_food_strict_monotonic_decay",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_stepwise_vs_analytical_path_independence",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier1_features.test_thermal_physics.TestNewtonCoolingPhysics.test_thermal_reward_function_calibration",
+      "tier": "tier1_features",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_capacity_limits.TestCapacityLimits.test_action_mask_when_all_delivered",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0188,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_capacity_limits.TestCapacityLimits.test_initial_action_mask_bounds",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0148,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_capacity_limits.TestCapacityLimits.test_max_step_truncation",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0174,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_asymptotic_infinite_time_convergence",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_extreme_cold_penalty_bounds",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_extreme_environmental_temperatures",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_micro_stepping_numerical_stability",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0024,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_negative_cooling_rate_rejection",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_negative_time_rejection",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_reward_continuity_at_60c_threshold",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_thermal_equilibrium_invariance",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_zero_cooling_rate_adiabatic_insulation",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier2_boundaries.test_thermal_limits.TestThermalLimits.test_zero_time_elapsed_identity",
+      "tier": "tier2_boundaries",
+      "status": "PASS",
+      "duration": 0.0001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier3_pairwise.test_rl_superiority.TestRLSuperiorityOverDijkstra.test_rl_beats_dijkstra_under_rush_hour_congestion",
+      "tier": "tier3_pairwise",
+      "status": "PASS",
+      "duration": 0.5752,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier3_pairwise.test_thermal_matrix.TestThermalMatrixPairwise.test_banh_canh_survival_matrix",
+      "tier": "tier3_pairwise",
+      "status": "PASS",
+      "duration": 0.0,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier3_pairwise.test_thermal_matrix.TestThermalMatrixPairwise.test_pairwise_temperature_decay_invariants",
+      "tier": "tier3_pairwise",
+      "status": "PASS",
+      "duration": 0.0007,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier4_workloads.test_ablation_verification.TestAblationThermalGain.test_ablation_temperature_gain_exceeds_15_percent",
+      "tier": "tier4_workloads",
+      "status": "PASS",
+      "duration": 1.2573,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier4_workloads.test_delivery_session.TestDeliveryWorkloadSession.test_multi_order_rush_hour_delivery_session",
+      "tier": "tier4_workloads",
+      "status": "PASS",
+      "duration": 0.0001,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier4_workloads.test_env_liveness.TestEnvLivenessAC1.test_1000_random_steps_stability_and_monotonicity",
+      "tier": "tier4_workloads",
+      "status": "PASS",
+      "duration": 0.3936,
+      "message": null
+    },
+    {
+      "test_id": "tests.e2e.tier4_workloads.test_env_liveness.TestEnvLivenessAC1.test_invalid_action_rejection_and_penalty",
+      "tier": "tier4_workloads",
+      "status": "PASS",
+      "duration": 0.0057,
+      "message": null
+    }
+  ]
+}

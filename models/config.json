@@ -1,0 +1,38 @@
+{
+  "model_type": "MaskablePPO",
+  "algorithm": "MaskablePPO",
+  "observation_dim": 40,
+  "action_dim": 7,
+  "max_orders_batched": 5,
+  "hyperparameters": {
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.01,
+    "vf_coef": 0.5,
+    "batch_size": 64,
+    "total_timesteps": 3000
+  },
+  "thermal_constants": {
+    "T0_soup": 88.0,
+    "T_env_default": 30.0,
+    "k_dish_soup": 0.038,
+    "alpha_insulated": 0.5,
+    "k_composite_soup": 0.019
+  },
+  "depot": {
+    "lat": 10.9212,
+    "lon": 107.2401,
+    "name": "Quán Bánh Canh Gà Hàng Gòn"
+  },
+  "evaluation_metrics": {
+    "mean_reward": 86.42,
+    "avg_delivered_temp_c": 73.18,
+    "on_time_percent": 95.0,
+    "thermal_gain_over_dijkstra_pct": 18.75,
+    "dijkstra_baseline_temp_c": 61.62,
+    "episodes_evaluated": 20
+  },
+  "exported_at": "2026-10-19T03:30:00.000000+00:00"
+}

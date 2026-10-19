@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.4-alpine
+    container_name: hotway_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hotway}
+      POSTGRES_USER: ${POSTGRES_USER:-hotway_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hotway_secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hotway_user} -d ${POSTGRES_DB:-hotway}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: hotway_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: hotway_backend
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - POSTGRES_SERVER=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-hotway}
+      - POSTGRES_USER=${POSTGRES_USER:-hotway_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-hotway_secret}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RL_MODEL_PATH=models/rl_best_model.zip
+      - OSM_GRAPH_PATH=data/hanggon_graph.graphml
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./experiments:/app/experiments
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hotway_frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+      - PORT=3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pgdata:

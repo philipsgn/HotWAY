@@ -1,0 +1,9 @@
+{
+  "trained_at": "2026-10-19T03:30:00.000000+00:00",
+  "model_type": "MaskablePPO",
+  "framework": "PyTorch / stable-baselines3 MaskablePPO",
+  "environment": "HangGonDeliveryEnv-v0",
+  "mean_reward": 86.42,
+  "mean_delivered_temp_c": 73.18,
+  "on_time_delivery_rate": 0.95
+}

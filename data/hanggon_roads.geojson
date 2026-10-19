@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "name": "hanggon_roads",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "id": "way_ql56", "name": "Quốc Lộ 56", "highway": "primary", "speed_kph": 50 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2380, 10.9180],
+          [107.2401, 10.9212],
+          [107.2420, 10.9250],
+          [107.2450, 10.9300]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_lienxa", "name": "Đường Liên Xã Hàng Gòn", "highway": "secondary", "speed_kph": 40 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2401, 10.9212],
+          [107.2460, 10.9230],
+          [107.2520, 10.9240]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "type": "FeatureCollection",
+  "name": "hanggon_center_roads",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "id": "way_depot_ql56_07", "name": "Đường vào Quán", "highway": "residential", "speed_kph": 30.0, "length_m": 333.6 },
+      "geometry": { "type": "LineString", "coordinates": [[107.2401, 10.9212], [107.2403, 10.9210]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_ql56_spine", "name": "Quốc Lộ 56 (Trục Chính)", "highway": "primary", "speed_kph": 60.0, "length_m": 4820.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2372, 10.9000], [107.2373, 10.9030], [107.2382, 10.9060], [107.2383, 10.9090],
+          [107.2392, 10.9120], [107.2393, 10.9150], [107.2402, 10.9180], [107.2403, 10.9210],
+          [107.2412, 10.9240], [107.2413, 10.9270], [107.2422, 10.9300], [107.2423, 10.9330],
+          [107.2432, 10.9360], [107.2433, 10.9390], [107.2442, 10.9420]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_e1", "name": "Đường Suối Tre - Hàng Gòn", "highway": "secondary", "speed_kph": 40.0, "length_m": 1717.2 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2432, 10.9360], [107.2457, 10.9368], [107.2482, 10.9376], [107.2507, 10.9384],
+          [107.2532, 10.9392], [107.2557, 10.9400], [107.2582, 10.9408]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_e2", "name": "Đường Di Tích Cự Thạch", "highway": "tertiary", "speed_kph": 35.0, "length_m": 1454.4 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2413, 10.9270], [107.2435, 10.9273], [107.2457, 10.9276], [107.2479, 10.9279],
+          [107.2501, 10.9282], [107.2523, 10.9285], [107.2545, 10.9288]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_e3", "name": "Đường Ấp Hàng Gòn 1", "highway": "residential", "speed_kph": 30.0, "length_m": 1315.2 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2402, 10.9180], [107.2422, 10.9178], [107.2442, 10.9176], [107.2462, 10.9174],
+          [107.2482, 10.9172], [107.2502, 10.9170], [107.2522, 10.9168]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_e4", "name": "Đường Nông Trường Cao Su", "highway": "service", "speed_kph": 20.0, "length_m": 1604.4 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2382, 10.9060], [107.2406, 10.9055], [107.2430, 10.9050], [107.2454, 10.9045],
+          [107.2478, 10.9040], [107.2502, 10.9035], [107.2526, 10.9030]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_bypass_c2", "name": "Đường Liên Ấp Đông Tuyến 1", "highway": "tertiary", "speed_kph": 35.0, "length_m": 3822.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2507, 10.9384], [107.2479, 10.9279], [107.2462, 10.9174], [107.2454, 10.9045]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_east_bypass_c4", "name": "Đường Liên Ấp Đông Tuyến 2", "highway": "tertiary", "speed_kph": 35.0, "length_m": 4117.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2557, 10.9400], [107.2523, 10.9285], [107.2502, 10.9170], [107.2502, 10.9035]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_west_w1", "name": "Đường UBND Xã & Trường Học", "highway": "tertiary", "speed_kph": 35.0, "length_m": 1827.2 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2423, 10.9330], [107.2403, 10.9336], [107.2383, 10.9342], [107.2363, 10.9348],
+          [107.2343, 10.9354], [107.2323, 10.9360], [107.2303, 10.9366], [107.2283, 10.9372],
+          [107.2263, 10.9378]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_west_w2", "name": "Đường Ấp Đồi Rìu", "highway": "residential", "speed_kph": 30.0, "length_m": 1921.6 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2403, 10.9210], [107.2381, 10.9211], [107.2359, 10.9212], [107.2337, 10.9213],
+          [107.2315, 10.9214], [107.2293, 10.9215], [107.2271, 10.9216], [107.2249, 10.9217],
+          [107.2227, 10.9218]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_west_w3", "name": "Đường Canh Tác Suối Râm", "highway": "service", "speed_kph": 20.0, "length_m": 1856.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2383, 10.9090], [107.2362, 10.9086], [107.2341, 10.9082], [107.2320, 10.9078],
+          [107.2299, 10.9074], [107.2278, 10.9070], [107.2257, 10.9066], [107.2236, 10.9062],
+          [107.2215, 10.9058]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_west_bypass_c3", "name": "Đường Liên Ấp Tây Tuyến 1", "highway": "tertiary", "speed_kph": 35.0, "length_m": 3148.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2343, 10.9354], [107.2315, 10.9214], [107.2299, 10.9074]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "id": "way_west_bypass_c6", "name": "Đường Liên Ấp Tây Tuyến 2", "highway": "tertiary", "speed_kph": 35.0, "length_m": 3495.0 },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [107.2283, 10.9372], [107.2249, 10.9217], [107.2236, 10.9062]
+        ]
+      }
+    }
+  ]
+}

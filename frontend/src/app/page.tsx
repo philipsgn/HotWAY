@@ -1,362 +1,423 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/navigation";
+import React, { useEffect, useState } from "react";
+import OptimoMap from "../components/OptimoMap";
+import TopFloatingBar from "../components/TopFloatingBar";
+import NavigationDrawer from "../components/NavigationDrawer";
+import FloatingTabBar from "../components/FloatingTabBar";
+import FloatingSheet from "../components/FloatingSheet";
+import ScreenOrders, { Order } from "../components/ScreenOrders";
+import ScreenPlanning from "../components/ScreenPlanning";
+import ScreenRouteDetail from "../components/ScreenRouteDetail";
+import ScreenStrategyLab from "../components/ScreenStrategyLab";
+import ScreenSearchReplay from "../components/ScreenSearchReplay";
+import ScreenLiveDispatch from "../components/ScreenLiveDispatch";
+import { OptimoTab } from "../components/OptimoSidebar";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
-interface MenuItem {
-  id: number;
-  name: string;
-  price: number;
-  initialTemp: number;
-  kRate: number;
-  category: "SOUP" | "DRY" | "DRINK";
-  desc: string;
-  icon: string;
+const DEFAULT_DEPOT = {
+  lat: 10.8012,
+  lon: 106.7145,
+  name: "Hàng Gòn Quán - Bếp Trung Tâm",
+};
+
+interface ToastNotification {
+  id: string;
+  type: "error" | "success" | "info";
+  message: string;
+  detail?: string;
 }
 
-const MENU: MenuItem[] = [
-  {
-    id: 1,
-    name: "Bánh Canh Gà Đặc Biệt",
-    price: 45000,
-    initialTemp: 88,
-    kRate: 0.038,
-    category: "SOUP",
-    desc: "Nước lèo gà ta ngọt thanh, sợi bánh dai mềm, thịt gà xé đậm vị.",
-    icon: "🍲",
-  },
-  {
-    id: 2,
-    name: "Bánh Canh Gà Đùi",
-    price: 50000,
-    initialTemp: 88,
-    kRate: 0.038,
-    category: "SOUP",
-    desc: "Đùi gà ta nguyên chiếc da vàng giòn, nước dùng nóng sốt thơm lừng.",
-    icon: "🍗",
-  },
-  {
-    id: 3,
-    name: "Gỏi Gà Xé Phay Rau Răm",
-    price: 60000,
-    initialTemp: 58,
-    kRate: 0.022,
-    category: "DRY",
-    desc: "Thịt gà xé trộn hành tây, rau răm, nước mắm chua ngọt ăn kèm bánh tráng.",
-    icon: "🥗",
-  },
-  {
-    id: 4,
-    name: "Nước Sâm Lạnh Hàng Gòn",
-    price: 15000,
-    initialTemp: 6,
-    kRate: 0.030,
-    category: "DRINK",
-    desc: "Nấu từ lá dứa và mía lau tự nhiên thanh mát, giữ lạnh khi giao.",
-    icon: "🥤",
-  },
-];
+export default function OptimoSchedulingPage() {
+  const [activeTab, setActiveTab] = useState<OptimoTab>("orders");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerPinned, setIsDrawerPinned] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(true);
 
-const DESTINATIONS = [
-  { id: "dest_1", name: "Ngã Ba Hàng Gòn (QL56)", lat: 10.9235, lon: 107.2418, distKm: 1.2 },
-  { id: "dest_2", name: "UBND Xã Hàng Gòn", lat: 10.9260, lon: 107.2435, distKm: 1.8 },
-  { id: "dest_3", name: "Di Tích Cự Thạch Hàng Gòn", lat: 10.9320, lon: 107.2480, distKm: 3.2 },
-  { id: "dest_4", name: "Trường Tiểu Học Hàng Gòn", lat: 10.9180, lon: 107.2350, distKm: 2.1 },
-  { id: "dest_5", name: "Ấp Suối Tre (Long Khánh)", lat: 10.9400, lon: 107.2550, distKm: 4.5 },
-];
+  // Core Data States
+  const [scenarioId, setScenarioId] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [snapWarnings, setSnapWarnings] = useState<{ point_id: string; snap_dist_meters: number }[]>([]);
+  const [planId, setPlanId] = useState<string | null>(null);
+  const [planMetrics, setPlanMetrics] = useState<any>(null);
+  const [routes, setRoutes] = useState<any[]>([]);
+  const [searchTrace, setSearchTrace] = useState<any[]>([]);
+  const [strategyUsed, setStrategyUsed] = useState<string>("best");
+  const [isFallback, setIsFallback] = useState(false);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [simVehicle, setSimVehicle] = useState<{ vehicle_id: number; lat: number; lon: number } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-export default function CustomerOrderPage() {
-  const [selectedItem, setSelectedItem] = useState<MenuItem>(MENU[0]);
-  const [containerType, setContainerType] = useState<"INSULATED_BAG" | "FOAM_BOX" | "STANDARD_BAG">("INSULATED_BAG");
-  const [selectedDest, setSelectedDest] = useState(DESTINATIONS[2]);
-  const [isOrdered, setIsOrdered] = useState(false);
-  const [currentTemp, setCurrentTemp] = useState<number>(MENU[0].initialTemp);
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [isTrafficRush, setIsTrafficRush] = useState(true);
+  // User Geolocation State
+  const [userLocation, setUserLocation] = useState<{ lat: number; lon: number; accuracy: number } | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
 
-  // Compute thermal decay dynamically: T(t) = T_env + (T_0 - T_env) * exp(-k * t)
+  // Toast Notification System
+  const [toasts, setToasts] = useState<ToastNotification[]>([]);
+
+  const addToast = (type: "error" | "success" | "info", message: string, detail?: string) => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, type, message, detail }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 5000);
+  };
+
+  // 1. Load Initial Sample Scenario on Mount & Restore Settings
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isOrdered) {
-      interval = setInterval(() => {
-        setElapsedSeconds((prev) => {
-          const nextSec = prev + 1;
-          const tEnv = 30.0;
-          let k = selectedItem.kRate;
-          if (containerType === "INSULATED_BAG") k *= 0.50;
-          if (containerType === "FOAM_BOX") k *= 0.70;
+    try {
+      const savedPin = localStorage.getItem("hotway_drawer_pinned");
+      if (savedPin === "true") setIsDrawerPinned(true);
+    } catch (e) {}
 
-          const tMin = (nextSec * 15) / 60.0; // 15x accelerated for demo
-          const temp = tEnv + (selectedItem.initialTemp - tEnv) * Math.exp(-k * tMin);
-          setCurrentTemp(parseFloat(temp.toFixed(1)));
-          return nextSec;
-        });
-      }, 1000);
+    handleLoadSample();
+  }, []);
+
+  const handleTogglePin = () => {
+    setIsDrawerPinned((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("hotway_drawer_pinned", String(next));
+      } catch (e) {}
+      return next;
+    });
+  };
+
+  // 2. Fetch Sample Scenario
+  const handleLoadSample = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/scenarios/sample", {
+        method: "POST",
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setScenarioId(data.scenario_id);
+        setSnapWarnings(data.snap_warnings || []);
+
+        const detailRes = await fetch(`http://localhost:8000/api/v1/scenarios/${data.scenario_id}`);
+        if (detailRes.ok) {
+          const detail = await detailRes.json();
+          setOrders(detail.orders || []);
+        }
+        addToast("success", "Đã nạp kịch bản mẫu Bình Thạnh thành công");
+      } else {
+        addToast("error", "Không thể nạp kịch bản mẫu", "Máy chủ phản hồi mã lỗi: " + res.status);
+      }
+    } catch (err: any) {
+      addToast(
+        "error",
+        "Không thể kết nối máy chủ",
+        "Backend chưa hoạt động hoặc cổng 8000 bị chặn. Vui lòng kiểm tra Docker."
+      );
+    } finally {
+      setIsLoading(false);
     }
-    return () => clearInterval(interval);
-  }, [isOrdered, selectedItem, containerType]);
-
-  const handlePlaceOrder = () => {
-    setCurrentTemp(selectedItem.initialTemp);
-    setElapsedSeconds(0);
-    setIsOrdered(true);
   };
 
-  const getThermalStatus = (temp: number) => {
-    if (temp >= 75) return { label: "NÓNG HỔI VỪA THỔI VỪA ĂN", color: "bg-red-500 text-white" };
-    if (temp >= 60) return { label: "NÓNG NGON CHUẨN VỊ (ĐẠT CHUẨN)", color: "bg-orange-500 text-white" };
-    return { label: "CẢNH BÁO: MÓN ĐANG NGUỘI", color: "bg-slate-500 text-white" };
+  // 3. Add & Clear Orders
+  const handleAddOrder = (order: Order) => {
+    setOrders((prev) => [...prev, order]);
+    addToast("info", `Đã thêm đơn ${order.id}`);
   };
 
-  const thermalStatus = getThermalStatus(currentTemp);
+  const handleClearOrders = () => {
+    setOrders([]);
+    setRoutes([]);
+    setPlanMetrics(null);
+    setPlanId(null);
+    setSelectedOrderId(null);
+    setSelectedVehicleId(null);
+  };
+
+  // 4. Run CVRP Planning
+  const handleRunPlan = async (params: {
+    strategy: string;
+    num_vehicles: number;
+    capacity: number;
+    min_temp: number;
+  }) => {
+    if (orders.length === 0) {
+      addToast("error", "Chưa có đơn hàng nào", "Vui lòng nạp kịch bản hoặc thêm đơn trước khi lập tuyến.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/plans", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scenario_id: scenarioId,
+          strategy: params.strategy,
+          thermal: {
+            t0_c: 85.0,
+            tenv_c: 30.0,
+            k_rate: 0.020,
+            min_temp: params.min_temp,
+          },
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setPlanId(data.plan_id);
+        setPlanMetrics(data.metrics);
+        setRoutes(data.routes || []);
+        setSearchTrace(data.search_trace || []);
+        setStrategyUsed(data.strategy_used);
+        setIsFallback(Boolean(data.fallback));
+        setSelectedVehicleId(null);
+
+        // Auto open planning sheet to see results
+        setActiveTab("planning");
+        setIsSheetOpen(true);
+        addToast(
+          "success",
+          `Đã lập kế hoạch hoàn tất (${data.strategy_used})`,
+          `Quãng đường: ${data.metrics?.total_distance_km} km`
+        );
+      } else {
+        addToast("error", "Lỗi thuật toán", "Máy chủ không thể tìm phương án khả thi.");
+      }
+    } catch (err) {
+      addToast("error", "Lỗi kết nối", "Không thể gửi yêu cầu giải bài toán đến backend.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 5. User Geolocation Handler
+  const handleLocateUser = () => {
+    if (!navigator.geolocation) {
+      addToast("error", "Trình duyệt không hỗ trợ định vị GPS");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation({
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+        });
+        setIsLocating(false);
+        addToast("info", "Đã xác định vị trí của bạn", `Độ chính xác ~${Math.round(pos.coords.accuracy)}m`);
+      },
+      (err) => {
+        setIsLocating(false);
+        let msg = "Không thể lấy vị trí hiện tại.";
+        if (err.code === 1) msg = "Bạn đã từ chối quyền truy cập vị trí.";
+        else if (err.code === 2) msg = "Mất tín hiệu định vị GPS.";
+        addToast("error", "Lỗi định vị", msg);
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    );
+  };
+
+  // 6. Address Suggestion Pick Handler
+  const handleSelectAddressPoint = (pt: { lat: number; lon: number; name: string }) => {
+    handleAddOrder({
+      id: `ORD-${Date.now().toString().slice(-4)}`,
+      address: pt.name,
+      lat: pt.lat,
+      lon: pt.lon,
+      demand: 2,
+    });
+    setSelectedOrderId(null);
+  };
+
+  // Tab Title Mappings
+  const getTabTitle = (tab: OptimoTab) => {
+    switch (tab) {
+      case "orders":
+        return "Quản lý đơn hàng";
+      case "planning":
+        return "Lập kế hoạch tuyến CVRP";
+      case "route":
+        return "Chi tiết chặng & nhiệt độ";
+      case "strategy_lab":
+        return "Strategy Lab: Đánh giá thuật toán";
+      case "search_replay":
+        return "Search Replay: Vết hội tụ";
+      case "live":
+        return "Theo dõi điều phối";
+    }
+  };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Top Header */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between pb-6 mb-8 border-b border-slate-200">
-        <div>
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🍲</span>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              HotWAY <span className="text-orange-600">Hàng Gòn</span>
-            </h1>
-            <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">
-              Đang mở cửa • Long Khánh, Đồng Nai
-            </span>
-          </div>
-          <p className="text-sm text-slate-500 mt-1">
-            Hệ thống giao đồ ăn tối ưu nhiệt độ bằng Học Tăng Cường (Reinforcement Learning) đầu tiên tại Hàng Gòn
-          </p>
-        </div>
+    <div className="relative w-screen h-screen overflow-hidden bg-app font-sans text-primary-text select-none">
+      {/* 1. Full-screen Real MapLibre Background Canvas */}
+      <OptimoMap
+        depot={DEFAULT_DEPOT}
+        orders={orders}
+        routes={routes}
+        selectedVehicleId={selectedVehicleId}
+        selectedOrderId={selectedOrderId}
+        onSelectOrder={(id) => {
+          setSelectedOrderId(id);
+          setIsSheetOpen(true);
+        }}
+        simVehicle={simVehicle}
+        userLocation={userLocation}
+        onLocateUser={handleLocateUser}
+        isLocating={isLocating}
+      />
 
-        {/* Quick Nav Links */}
-        <div className="flex items-center gap-3 mt-4 md:mt-0">
-          <a
-            href="/shipper"
-            className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm"
+      {/* 2. Floating Top Header Bar */}
+      <TopFloatingBar
+        onToggleDrawer={() => setIsDrawerOpen(true)}
+        onLocateUser={handleLocateUser}
+        isLocating={isLocating}
+        onQuickPlan={() =>
+          handleRunPlan({
+            strategy: "best",
+            num_vehicles: 5,
+            capacity: 40,
+            min_temp: 60.0,
+          })
+        }
+        onSelectAddressPoint={handleSelectAddressPoint}
+        isPlanning={isLoading}
+      />
+
+      {/* 3. Floating Horizontal Tab Bar (Top for Desktop, Bottom for Mobile) */}
+      <div className="hidden md:block absolute top-20 left-1/2 -translate-x-1/2 z-20">
+        <FloatingTabBar
+          activeTab={activeTab}
+          onChangeTab={(tab) => {
+            setActiveTab(tab);
+            setIsSheetOpen(true);
+          }}
+          ordersCount={orders.length}
+          routesCount={routes.length}
+        />
+      </div>
+
+      <div className="md:hidden fixed bottom-3 left-4 right-4 z-20 flex justify-center">
+        <FloatingTabBar
+          activeTab={activeTab}
+          onChangeTab={(tab) => {
+            setActiveTab(tab);
+            setIsSheetOpen(true);
+          }}
+          ordersCount={orders.length}
+          routesCount={routes.length}
+        />
+      </div>
+
+      {/* 4. Left Slide Navigation Drawer */}
+      <NavigationDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        activeTab={activeTab}
+        onChangeTab={(tab) => {
+          setActiveTab(tab);
+          setIsSheetOpen(true);
+        }}
+        ordersCount={orders.length}
+        routesCount={routes.length}
+        isPinned={isDrawerPinned}
+        onTogglePin={handleTogglePin}
+      />
+
+      {/* 5. Floating Active Screen Content Sheet */}
+      <FloatingSheet
+        title={getTabTitle(activeTab)}
+        badge={activeTab === "live" ? "MÔ PHỎNG" : undefined}
+        isOpen={isSheetOpen}
+        onClose={() => setIsSheetOpen(false)}
+        width={440}
+      >
+        {activeTab === "orders" && (
+          <ScreenOrders
+            orders={orders}
+            onLoadSample={handleLoadSample}
+            onAddOrder={handleAddOrder}
+            onClearOrders={handleClearOrders}
+            isLoading={isLoading}
+            snapWarnings={snapWarnings}
+            selectedOrderId={selectedOrderId}
+            onSelectOrder={(id) => setSelectedOrderId(id)}
+          />
+        )}
+
+        {activeTab === "planning" && (
+          <ScreenPlanning
+            onRunPlan={handleRunPlan}
+            isLoading={isLoading}
+            planMetrics={planMetrics}
+            routes={routes}
+            selectedVehicleId={selectedVehicleId}
+            onSelectVehicle={setSelectedVehicleId}
+            strategyUsed={strategyUsed}
+            isFallback={isFallback}
+          />
+        )}
+
+        {activeTab === "route" && (
+          <ScreenRouteDetail
+            routes={routes}
+            selectedVehicleId={selectedVehicleId || 1}
+            onSelectVehicle={setSelectedVehicleId}
+          />
+        )}
+
+        {activeTab === "strategy_lab" && <ScreenStrategyLab />}
+
+        {activeTab === "search_replay" && (
+          <ScreenSearchReplay
+            searchTrace={searchTrace}
+            strategyName={strategyUsed}
+          />
+        )}
+
+        {activeTab === "live" && (
+          <ScreenLiveDispatch
+            planId={planId}
+            onReplanRemaining={() =>
+              handleRunPlan({
+                strategy: "best",
+                num_vehicles: 5,
+                capacity: 40,
+                min_temp: 60.0,
+              })
+            }
+            onUpdateSimVehicle={setSimVehicle}
+          />
+        )}
+      </FloatingSheet>
+
+      {/* 6. Toast Notification Center */}
+      <div className="fixed top-20 right-6 z-50 flex flex-col space-y-2 pointer-events-none">
+        {toasts.map((t) => (
+          <div
+            key={t.id}
+            className={`pointer-events-auto p-3 rounded-warm border shadow-floating max-w-sm flex items-start space-x-2.5 transition-all duration-300 animate-in fade-in slide-in-from-top-2 ${
+              t.type === "error"
+                ? "bg-red-50 border-red-200 text-status-danger"
+                : t.type === "success"
+                ? "bg-emerald-50 border-emerald-200 text-status-success"
+                : "bg-surface border-border-warm text-primary-text"
+            }`}
           >
-            📱 Shipper PWA
-          </a>
-          <a
-            href="/admin/comparison-studio"
-            className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition shadow-sm"
-          >
-            📊 So sánh RL vs Baseline
-          </a>
-          <a
-            href="/game/rider"
-            className="px-3.5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition shadow-sm"
-          >
-            🎮 Đua 3D với AI Ghost
-          </a>
-        </div>
-      </header>
-
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Menu & Packaging */}
-        <div className="lg:col-span-7 space-y-6">
-          <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <span>📋</span> Menu Quán Bánh Canh Gà Hàng Gòn
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {MENU.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => {
-                    setSelectedItem(item);
-                    if (!isOrdered) setCurrentTemp(item.initialTemp);
-                  }}
-                  className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                    selectedItem.id === item.id
-                      ? "border-orange-500 bg-orange-50/50 shadow-sm"
-                      : "border-slate-100 bg-white hover:border-slate-200"
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <span className="text-3xl">{item.icon}</span>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-orange-100 text-orange-800">
-                      T₀: {item.initialTemp}°C
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mt-2">{item.name}</h3>
-                  <p className="text-xs text-slate-500 mt-1 line-clamp-2">{item.desc}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="font-extrabold text-orange-600">
-                      {item.price.toLocaleString("vi-VN")} đ
-                    </span>
-                    <span className="text-[11px] text-slate-400">k = {item.kRate}/phút</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Packaging Box Selection */}
-          <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <h2 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
-              <span>🎒</span> Loại Thùng / Túi Giữ Nhiệt
-            </h2>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { type: "INSULATED_BAG", label: "Túi Bạc Giữ Nhiệt", eff: "Giảm nguội 50%", icon: "🛡️" },
-                { type: "FOAM_BOX", label: "Thùng Xốp Chuẩn", eff: "Giảm nguội 30%", icon: "📦" },
-                { type: "STANDARD_BAG", label: "Túi Ni-lông Thường", eff: "Không cách nhiệt", icon: "🛍️" },
-              ].map((box) => (
-                <div
-                  key={box.type}
-                  onClick={() => setContainerType(box.type as any)}
-                  className={`p-3 rounded-xl border text-center cursor-pointer transition ${
-                    containerType === box.type
-                      ? "border-orange-500 bg-orange-50/60 font-semibold text-slate-900"
-                      : "border-slate-200 text-slate-600 hover:border-slate-300"
-                  }`}
-                >
-                  <span className="text-xl block">{box.icon}</span>
-                  <p className="text-xs mt-1">{box.label}</p>
-                  <span className="text-[10px] text-emerald-600 block font-medium mt-0.5">{box.eff}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Destination Selector */}
-          <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <span>📍</span> Địa Điểm Giao Hàng tại Hàng Gòn
-              </h2>
-              <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isTrafficRush}
-                  onChange={(e) => setIsTrafficRush(e.target.checked)}
-                  className="rounded text-orange-600"
-                />
-                Mô phỏng kẹt xe QL56 (Giờ cao điểm)
-              </label>
-            </div>
-            <div className="space-y-2">
-              {DESTINATIONS.map((dest) => (
-                <div
-                  key={dest.id}
-                  onClick={() => setSelectedDest(dest)}
-                  className={`p-3 rounded-xl border flex items-center justify-between cursor-pointer transition ${
-                    selectedDest.id === dest.id
-                      ? "border-orange-500 bg-orange-50/40 font-medium"
-                      : "border-slate-100 hover:border-slate-200"
-                  }`}
-                >
-                  <div>
-                    <p className="text-sm text-slate-900">{dest.name}</p>
-                    <p className="text-xs text-slate-400">Khoảng cách từ Quán: ~{dest.distKm} km</p>
-                  </div>
-                  <span className="text-xs font-bold text-slate-600">
-                    {Math.round((dest.distKm / 30) * 60 + (isTrafficRush ? 6 : 0))} phút
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        {/* Right Column: Thermal Meter & Live Dispatching */}
-        <div className="lg:col-span-5 space-y-6">
-          <section className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 sticky top-6">
-            <h2 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-              <span>🌡️</span> Đồng Hồ Nhiệt Độ Món Ăn Thời Gian Thực
-            </h2>
-
-            {/* Thermal Dial Display */}
-            <div className="flex flex-col items-center justify-center p-6 bg-slate-900 rounded-2xl text-white relative overflow-hidden">
-              <div className="absolute top-2 right-3 text-xs text-slate-400 font-mono">
-                T_env: 30°C • Newton Decay
-              </div>
-              <div className="text-6xl font-black tracking-tight text-orange-400 mt-3">
-                {currentTemp}°C
-              </div>
-              <p className="text-xs text-slate-400 mt-1">Nhiệt độ ước tính của {selectedItem.name}</p>
-
-              <div className="mt-4 w-full">
-                <div className="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-500 ${
-                      currentTemp >= 75 ? "bg-red-500" : currentTemp >= 60 ? "bg-orange-500" : "bg-slate-500"
-                    }`}
-                    style={{ width: `${Math.min(100, Math.max(0, (currentTemp / 90) * 100))}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                  <span>20°C (Nguội lạnh)</span>
-                  <span className="text-orange-400 font-bold">60°C (Ngưỡng ngon)</span>
-                  <span>90°C (Mới nấu)</span>
-                </div>
-              </div>
-
-              <div className={`mt-4 px-3 py-1.5 rounded-lg text-xs font-bold ${thermalStatus.color}`}>
-                {thermalStatus.label}
-              </div>
-            </div>
-
-            {/* Dispatch Route Card */}
-            <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
-              <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
-                Lộ Trình Đề Xuất Bởi RL Policy Runner
-              </h3>
-              <div className="text-xs space-y-2 text-slate-700">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Điểm xuất phát:</span>
-                  <span className="font-semibold">Quán Bánh Canh Gà Hàng Gòn (Depot)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Điểm giao:</span>
-                  <span className="font-semibold">{selectedDest.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Thuật toán định tuyến:</span>
-                  <span className="font-bold text-orange-600">
-                    HotWAY MaskablePPO (Tránh tắc QL56)
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Dự kiến nhiệt độ lúc đến:</span>
-                  <span className="font-extrabold text-emerald-600">
-                    {Math.max(62, Math.round(selectedItem.initialTemp - selectedDest.distKm * 4.2))}°C
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Action CTA */}
-            <div className="mt-6">
-              {!isOrdered ? (
-                <button
-                  onClick={handlePlaceOrder}
-                  className="w-full py-3.5 px-4 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
-                >
-                  <span>🚀</span> Đặt Món & Kích Hoạt Điều Phối RL
-                </button>
-              ) : (
-                <div className="space-y-3">
-                  <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2">
-                    <span className="text-base animate-spin">🔄</span>
-                    <div>
-                      <p className="font-bold">Đơn hàng đang được vận chuyển!</p>
-                      <p className="text-[11px] text-emerald-700">Shipper đang di chuyển về {selectedDest.name}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsOrdered(false)}
-                    className="w-full py-2.5 px-4 rounded-xl border border-slate-300 text-slate-600 text-xs font-semibold hover:bg-slate-100 transition"
-                  >
-                    Hủy / Đặt đơn khác
-                  </button>
-                </div>
+            {t.type === "error" ? (
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+            )}
+            <div className="text-xs">
+              <p className="font-bold">{t.message}</p>
+              {t.detail && (
+                <p className="text-[11px] text-secondary-text mt-0.5 leading-snug">
+                  {t.detail}
+                </p>
               )}
             </div>
-          </section>
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

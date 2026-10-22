@@ -1,0 +1,6 @@
+method,runtime_sec,decisions_mean,candidates_mean,ms_per_decision,candidates_per_decision
+Random,0.1001,961.3,114134.2,0.104,118.7
+Cyclic,0.1001,1046.1,124305.4,0.096,118.8
+Greedy,0.1001,439.7,56280.5,0.228,128.0
+DQN,0.1002,371.0,44487.4,0.27,119.9
+Double DQN,0.1002,366.1,44565.4,0.274,121.7

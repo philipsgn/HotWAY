@@ -1,0 +1,918 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d12" for="edge" attr.name="geometry" attr.type="string"/>
+<key id="d11" for="edge" attr.name="oneway" attr.type="boolean"/>
+<key id="d10" for="edge" attr.name="free_flow_time" attr.type="double"/>
+<key id="d9" for="edge" attr.name="speed_kph" attr.type="double"/>
+<key id="d8" for="edge" attr.name="length" attr.type="double"/>
+<key id="d7" for="edge" attr.name="name" attr.type="string"/>
+<key id="d6" for="node" attr.name="is_depot" attr.type="boolean"/>
+<key id="d5" for="node" attr.name="name" attr.type="string"/>
+<key id="d4" for="node" attr.name="x" attr.type="double"/>
+<key id="d3" for="node" attr.name="y" attr.type="double"/>
+<key id="d2" for="graph" attr.name="depot_id" attr.type="string"/>
+<key id="d1" for="graph" attr.name="crs" attr.type="string"/>
+<key id="d0" for="graph" attr.name="name" attr.type="string"/>
+<graph edgedefault="directed"><data key="d0">Hàng Gòn Quán</data>
+<data key="d1">EPSG:4326</data>
+<data key="d2">depot_0</data>
+<node id="depot_0">
+  <data key="d3">10.8012</data>
+  <data key="d4">106.7145</data>
+  <data key="d5">Hàng Gòn Quán - Bếp Trung Tâm</data>
+  <data key="d6">True</data>
+</node>
+<node id="dbp_00">
+  <data key="d3">10.793</data>
+  <data key="d4">106.702</data>
+  <data key="d5">Ngã tư Điện Biên Phủ - Đinh Tiên Hoàng</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_01">
+  <data key="d3">10.795</data>
+  <data key="d4">106.704</data>
+  <data key="d5">Cầu Điện Biên Phủ / Kênh Nhiêu Lộc</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_02">
+  <data key="d3">10.797</data>
+  <data key="d4">106.7065</data>
+  <data key="d5">Điện Biên Phủ - Nguyễn Cửu Vân</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_03">
+  <data key="d3">10.7985</data>
+  <data key="d4">106.7085</data>
+  <data key="d5">Cầu Văn Thánh Tây</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_04">
+  <data key="d3">10.8</data>
+  <data key="d4">106.71</data>
+  <data key="d5">Điện Biên Phủ - Phan Chu Trinh</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_05">
+  <data key="d3">10.8018</data>
+  <data key="d4">106.7118</data>
+  <data key="d5">Vòng Xoay Hàng Xanh (Nút giao trọng điểm)</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_06">
+  <data key="d3">10.8015</data>
+  <data key="d4">106.7135</data>
+  <data key="d5">Điện Biên Phủ - Cổng ĐH HUTECH</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_07">
+  <data key="d3">10.801</data>
+  <data key="d4">106.715</data>
+  <data key="d5">Mặt tiền 490 Điện Biên Phủ</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_08">
+  <data key="d3">10.8</data>
+  <data key="d4">106.7165</data>
+  <data key="d5">Giao lộ D1 (Nguyễn Văn Thương)</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_09">
+  <data key="d3">10.7995</data>
+  <data key="d4">106.718</data>
+  <data key="d5">Pearl Plaza / Giao lộ D2 (Nguyễn Gia Trí)</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_10">
+  <data key="d3">10.798</data>
+  <data key="d4">106.7205</data>
+  <data key="d5">Cầu Văn Thánh Đông</data>
+  <data key="d6">False</data>
+</node>
+<node id="dbp_11">
+  <data key="d3">10.7965</data>
+  <data key="d4">106.723</data>
+  <data key="d5">Chân Cầu Sài Gòn</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_00">
+  <data key="d3">10.79</data>
+  <data key="d4">106.704</data>
+  <data key="d5">Cầu Thị Nghè 1</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_01">
+  <data key="d3">10.794</data>
+  <data key="d4">106.7065</data>
+  <data key="d5">Chợ Thị Nghè</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_02">
+  <data key="d3">10.798</data>
+  <data key="d4">106.709</data>
+  <data key="d5">Xô Viết Nghệ Tĩnh - Huỳnh Mẫn Đạt</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_03">
+  <data key="d3">10.805</data>
+  <data key="d4">106.7125</data>
+  <data key="d5">Xô Viết Nghệ Tĩnh - Bạch Đằng</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_04">
+  <data key="d3">10.808</data>
+  <data key="d4">106.713</data>
+  <data key="d5">Ngã Ba Đài Liệt Sĩ</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_05">
+  <data key="d3">10.812</data>
+  <data key="d4">106.7135</data>
+  <data key="d5">Bến Xe Miền Đông Cũ</data>
+  <data key="d6">False</data>
+</node>
+<node id="xvnt_06">
+  <data key="d3">10.816</data>
+  <data key="d4">106.714</data>
+  <data key="d5">Chân Cầu Bình Triệu 1</data>
+  <data key="d6">False</data>
+</node>
+<node id="bd_01">
+  <data key="d3">10.8035</data>
+  <data key="d4">106.706</data>
+  <data key="d5">Bạch Đằng - Huỳnh Đình Hai</data>
+  <data key="d6">False</data>
+</node>
+<node id="bd_02">
+  <data key="d3">10.802</data>
+  <data key="d4">106.702</data>
+  <data key="d5">Bạch Đằng - Phan Chu Trinh</data>
+  <data key="d6">False</data>
+</node>
+<node id="bd_03">
+  <data key="d3">10.801</data>
+  <data key="d4">106.698</data>
+  <data key="d5">Chợ Bà Chiểu (Bạch Đằng - Lê Quang Định)</data>
+  <data key="d6">False</data>
+</node>
+<node id="pdl_01">
+  <data key="d3">10.803</data>
+  <data key="d4">106.695</data>
+  <data key="d5">Bệnh Viện Nhân Dân Gia Định</data>
+  <data key="d6">False</data>
+</node>
+<node id="pdl_02">
+  <data key="d3">10.805</data>
+  <data key="d4">106.692</data>
+  <data key="d5">Phan Đăng Lưu - Nơ Trang Long</data>
+  <data key="d6">False</data>
+</node>
+<node id="d1_01">
+  <data key="d3">10.802</data>
+  <data key="d4">106.717</data>
+  <data key="d5">Nguyễn Văn Thương (D1) - Tuyến nội bộ</data>
+  <data key="d6">False</data>
+</node>
+<node id="d2_01">
+  <data key="d3">10.803</data>
+  <data key="d4">106.7175</data>
+  <data key="d5">Nguyễn Gia Trí (D2) - ĐH Giao Thông Vận Tải</data>
+  <data key="d6">False</data>
+</node>
+<node id="d2_02">
+  <data key="d3">10.806</data>
+  <data key="d4">106.717</data>
+  <data key="d5">Nguyễn Gia Trí (D2) - Khu Ẩm Thực</data>
+  <data key="d6">False</data>
+</node>
+<node id="uvk_01">
+  <data key="d3">10.808</data>
+  <data key="d4">106.7165</data>
+  <data key="d5">Ngã Ba Nguyễn Gia Trí - Ung Văn Khiêm</data>
+  <data key="d6">False</data>
+</node>
+<node id="uvk_02">
+  <data key="d3">10.8085</data>
+  <data key="d4">106.7145</data>
+  <data key="d5">Ung Văn Khiêm - Xô Viết Nghệ Tĩnh (Đài Liệt Sĩ)</data>
+  <data key="d6">False</data>
+</node>
+<node id="uvk_03">
+  <data key="d3">10.807</data>
+  <data key="d4">106.721</data>
+  <data key="d5">Ung Văn Khiêm - Chân Cầu Sài Gòn</data>
+  <data key="d6">False</data>
+</node>
+<node id="nhc_01">
+  <data key="d3">10.793</data>
+  <data key="d4">106.716</data>
+  <data key="d5">Nguyễn Hữu Cảnh - Cầu Thủ Thiêm 1</data>
+  <data key="d6">False</data>
+</node>
+<node id="nhc_02">
+  <data key="d3">10.795</data>
+  <data key="d4">106.719</data>
+  <data key="d5">Nguyễn Hữu Cảnh - Cổng Vinhomes Tây</data>
+  <data key="d6">False</data>
+</node>
+<node id="vh_01">
+  <data key="d3">10.7955</data>
+  <data key="d4">106.7208</data>
+  <data key="d5">Đại Lộ Vinhomes Central Park</data>
+  <data key="d6">False</data>
+</node>
+<node id="vh_02">
+  <data key="d3">10.795</data>
+  <data key="d4">106.7215</data>
+  <data key="d5">Tòa Tháp Landmark 81 (Sảnh Chính)</data>
+  <data key="d6">False</data>
+</node>
+<node id="vh_03">
+  <data key="d3">10.7935</data>
+  <data key="d4">106.7225</data>
+  <data key="d5">Công Viên Vinhomes Ven Sông</data>
+  <data key="d6">False</data>
+</node>
+<node id="link_01">
+  <data key="d3">10.796</data>
+  <data key="d4">106.712</data>
+  <data key="d5">Nguyễn Cửu Vân - Nguyễn Hữu Cảnh</data>
+  <data key="d6">False</data>
+</node>
+<node id="link_02">
+  <data key="d3">10.8005</data>
+  <data key="d4">106.7195</data>
+  <data key="d5">Đường Ven Sông Sài Gòn</data>
+  <data key="d6">False</data>
+</node>
+<edge source="depot_0" target="dbp_07" id="0">
+  <data key="d7">Lối vào Hàng Gòn Quán</data>
+  <data key="d8">58.96690064694263</data>
+  <data key="d9">30.0</data>
+  <data key="d10">7.076028077633115</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8012, 106.7145], [10.801, 106.715]]</data>
+</edge>
+<edge source="dbp_00" target="dbp_01" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">311.73685845364207</data>
+  <data key="d9">60.0</data>
+  <data key="d10">18.704211507218524</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.793, 106.702], [10.795, 106.704]]</data>
+</edge>
+<edge source="dbp_01" target="dbp_00" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">311.73685845364207</data>
+  <data key="d9">60.0</data>
+  <data key="d10">18.704211507218524</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.704], [10.793, 106.702]]</data>
+</edge>
+<edge source="dbp_01" target="dbp_02" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">352.1687823565264</data>
+  <data key="d9">60.0</data>
+  <data key="d10">21.13012694139158</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.704], [10.797, 106.7065]]</data>
+</edge>
+<edge source="dbp_02" target="dbp_01" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">352.1687823565264</data>
+  <data key="d9">60.0</data>
+  <data key="d10">21.13012694139158</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.797, 106.7065], [10.795, 106.704]]</data>
+</edge>
+<edge source="dbp_02" target="dbp_03" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">274.84747088390895</data>
+  <data key="d9">60.0</data>
+  <data key="d10">16.490848253034535</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.797, 106.7065], [10.7985, 106.7085]]</data>
+</edge>
+<edge source="dbp_02" target="link_01" id="0">
+  <data key="d7">Đường Nguyễn Cửu Vân</data>
+  <data key="d8">610.9506002821074</data>
+  <data key="d9">35.0</data>
+  <data key="d10">62.84063317187391</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.797, 106.7065], [10.796, 106.712]]</data>
+</edge>
+<edge source="dbp_03" target="dbp_02" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">274.84747088390895</data>
+  <data key="d9">60.0</data>
+  <data key="d10">16.490848253034535</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7985, 106.7085], [10.797, 106.7065]]</data>
+</edge>
+<edge source="dbp_03" target="dbp_04" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">233.8006376294734</data>
+  <data key="d9">60.0</data>
+  <data key="d10">14.028038257768404</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7985, 106.7085], [10.8, 106.71]]</data>
+</edge>
+<edge source="dbp_04" target="dbp_03" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">233.8006376294734</data>
+  <data key="d9">60.0</data>
+  <data key="d10">14.028038257768404</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8, 106.71], [10.7985, 106.7085]]</data>
+</edge>
+<edge source="dbp_04" target="dbp_05" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">280.56000829067557</data>
+  <data key="d9">50.0</data>
+  <data key="d10">20.20032059692864</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8, 106.71], [10.8018, 106.7118]]</data>
+</edge>
+<edge source="dbp_05" target="dbp_04" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">280.56000829067557</data>
+  <data key="d9">50.0</data>
+  <data key="d10">20.20032059692864</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8018, 106.7118], [10.8, 106.71]]</data>
+</edge>
+<edge source="dbp_05" target="dbp_06" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">188.6547813637554</data>
+  <data key="d9">50.0</data>
+  <data key="d10">13.583144258190389</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8018, 106.7118], [10.8015, 106.7135]]</data>
+</edge>
+<edge source="dbp_05" target="xvnt_02" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.6064864776631</data>
+  <data key="d9">35.0</data>
+  <data key="d10">53.650952894845354</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8018, 106.7118], [10.798, 106.709]]</data>
+</edge>
+<edge source="dbp_05" target="xvnt_03" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">363.9453355485724</data>
+  <data key="d9">35.0</data>
+  <data key="d10">37.43437737071031</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8018, 106.7118], [10.805, 106.7125]]</data>
+</edge>
+<edge source="dbp_06" target="dbp_05" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">188.6547813637554</data>
+  <data key="d9">50.0</data>
+  <data key="d10">13.583144258190389</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8015, 106.7135], [10.8018, 106.7118]]</data>
+</edge>
+<edge source="dbp_06" target="dbp_07" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">173.01374871599515</data>
+  <data key="d9">60.0</data>
+  <data key="d10">10.380824922959707</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8015, 106.7135], [10.801, 106.715]]</data>
+</edge>
+<edge source="dbp_07" target="depot_0" id="0">
+  <data key="d7">Lối vào Hàng Gòn Quán</data>
+  <data key="d8">58.96690064694263</data>
+  <data key="d9">30.0</data>
+  <data key="d10">7.076028077633115</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.801, 106.715], [10.8012, 106.7145]]</data>
+</edge>
+<edge source="dbp_07" target="dbp_06" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">173.01374871599515</data>
+  <data key="d9">60.0</data>
+  <data key="d10">10.380824922959707</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.801, 106.715], [10.8015, 106.7135]]</data>
+</edge>
+<edge source="dbp_07" target="dbp_08" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">198.0078914930065</data>
+  <data key="d9">60.0</data>
+  <data key="d10">11.880473489580389</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.801, 106.715], [10.8, 106.7165]]</data>
+</edge>
+<edge source="dbp_08" target="dbp_07" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">198.0078914930065</data>
+  <data key="d9">60.0</data>
+  <data key="d10">11.880473489580389</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8, 106.7165], [10.801, 106.715]]</data>
+</edge>
+<edge source="dbp_08" target="dbp_09" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">173.0145235763377</data>
+  <data key="d9">60.0</data>
+  <data key="d10">10.38087141458026</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8, 106.7165], [10.7995, 106.718]]</data>
+</edge>
+<edge source="dbp_08" target="d1_01" id="0">
+  <data key="d7">Đường D1 (Nguyễn Văn Thương)</data>
+  <data key="d8">228.9973181834537</data>
+  <data key="d9">35.0</data>
+  <data key="d10">23.554009870298096</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8, 106.7165], [10.802, 106.717]]</data>
+</edge>
+<edge source="dbp_09" target="dbp_08" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">173.0145235763377</data>
+  <data key="d9">60.0</data>
+  <data key="d10">10.38087141458026</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7995, 106.718], [10.8, 106.7165]]</data>
+</edge>
+<edge source="dbp_09" target="dbp_10" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">319.9749063694966</data>
+  <data key="d9">60.0</data>
+  <data key="d10">19.198494382169795</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7995, 106.718], [10.798, 106.7205]]</data>
+</edge>
+<edge source="dbp_09" target="d2_01" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">392.99534143408886</data>
+  <data key="d9">35.0</data>
+  <data key="d10">40.42237797607771</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7995, 106.718], [10.803, 106.7175]]</data>
+</edge>
+<edge source="dbp_10" target="dbp_09" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">319.9749063694966</data>
+  <data key="d9">60.0</data>
+  <data key="d10">19.198494382169795</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.7205], [10.7995, 106.718]]</data>
+</edge>
+<edge source="dbp_10" target="dbp_11" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">319.9760699329764</data>
+  <data key="d9">60.0</data>
+  <data key="d10">19.19856419597858</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.7205], [10.7965, 106.723]]</data>
+</edge>
+<edge source="dbp_10" target="vh_01" id="0">
+  <data key="d7">Lối vào Vinhomes Central Park</data>
+  <data key="d8">279.9119281842147</data>
+  <data key="d9">30.0</data>
+  <data key="d10">33.58943138210576</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.7205], [10.7955, 106.7208]]</data>
+</edge>
+<edge source="dbp_10" target="link_02" id="0">
+  <data key="d7">Đường Ven Kênh</data>
+  <data key="d8">298.6757217714772</data>
+  <data key="d9">30.0</data>
+  <data key="d10">35.84108661257726</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.7205], [10.8005, 106.7195]]</data>
+</edge>
+<edge source="dbp_11" target="dbp_10" id="0">
+  <data key="d7">Đường Điện Biên Phủ</data>
+  <data key="d8">319.9760699329764</data>
+  <data key="d9">60.0</data>
+  <data key="d10">19.19856419597858</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7965, 106.723], [10.798, 106.7205]]</data>
+</edge>
+<edge source="dbp_11" target="uvk_03" id="0">
+  <data key="d7">Đường Nhánh Cầu Sài Gòn</data>
+  <data key="d8">1187.8070238581258</data>
+  <data key="d9">35.0</data>
+  <data key="d10">122.17443673969295</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7965, 106.723], [10.807, 106.721]]</data>
+</edge>
+<edge source="xvnt_00" target="xvnt_01" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.9162545291405</data>
+  <data key="d9">40.0</data>
+  <data key="d10">46.97246290762264</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.79, 106.704], [10.794, 106.7065]]</data>
+</edge>
+<edge source="xvnt_01" target="xvnt_00" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.9162545291405</data>
+  <data key="d9">40.0</data>
+  <data key="d10">46.97246290762264</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.794, 106.7065], [10.79, 106.704]]</data>
+</edge>
+<edge source="xvnt_01" target="xvnt_02" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.9143529145638</data>
+  <data key="d9">40.0</data>
+  <data key="d10">46.97229176231074</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.794, 106.7065], [10.798, 106.709]]</data>
+</edge>
+<edge source="xvnt_02" target="xvnt_01" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.9143529145638</data>
+  <data key="d9">40.0</data>
+  <data key="d10">46.97229176231074</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.709], [10.794, 106.7065]]</data>
+</edge>
+<edge source="xvnt_02" target="dbp_05" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">521.6064864776631</data>
+  <data key="d9">35.0</data>
+  <data key="d10">53.650952894845354</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.798, 106.709], [10.8018, 106.7118]]</data>
+</edge>
+<edge source="xvnt_03" target="dbp_05" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">363.9453355485724</data>
+  <data key="d9">35.0</data>
+  <data key="d10">37.43437737071031</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.805, 106.7125], [10.8018, 106.7118]]</data>
+</edge>
+<edge source="xvnt_03" target="xvnt_04" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">338.02547392955415</data>
+  <data key="d9">40.0</data>
+  <data key="d10">30.422292653659873</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.805, 106.7125], [10.808, 106.713]]</data>
+</edge>
+<edge source="xvnt_03" target="bd_01" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">729.284236045913</data>
+  <data key="d9">40.0</data>
+  <data key="d10">65.63558124413217</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.805, 106.7125], [10.8035, 106.706]]</data>
+</edge>
+<edge source="xvnt_04" target="xvnt_03" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">338.02547392955415</data>
+  <data key="d9">40.0</data>
+  <data key="d10">30.422292653659873</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.713], [10.805, 106.7125]]</data>
+</edge>
+<edge source="xvnt_04" target="xvnt_05" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">448.1197757790177</data>
+  <data key="d9">40.0</data>
+  <data key="d10">40.330779820111594</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.713], [10.812, 106.7135]]</data>
+</edge>
+<edge source="xvnt_04" target="uvk_02" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">173.01013130035372</data>
+  <data key="d9">40.0</data>
+  <data key="d10">15.570911817031835</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.713], [10.8085, 106.7145]]</data>
+</edge>
+<edge source="xvnt_05" target="xvnt_04" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">448.1197757790177</data>
+  <data key="d9">40.0</data>
+  <data key="d10">40.330779820111594</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.812, 106.7135], [10.808, 106.713]]</data>
+</edge>
+<edge source="xvnt_05" target="xvnt_06" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">448.11968704783635</data>
+  <data key="d9">50.0</data>
+  <data key="d10">32.26461746744422</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.812, 106.7135], [10.816, 106.714]]</data>
+</edge>
+<edge source="xvnt_06" target="xvnt_05" id="0">
+  <data key="d7">Đường Xô Viết Nghệ Tĩnh</data>
+  <data key="d8">448.11968704783635</data>
+  <data key="d9">50.0</data>
+  <data key="d10">32.26461746744422</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.816, 106.714], [10.812, 106.7135]]</data>
+</edge>
+<edge source="bd_01" target="xvnt_03" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">729.284236045913</data>
+  <data key="d9">40.0</data>
+  <data key="d10">65.63558124413217</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8035, 106.706], [10.805, 106.7125]]</data>
+</edge>
+<edge source="bd_01" target="bd_02" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">467.6527232572638</data>
+  <data key="d9">40.0</data>
+  <data key="d10">42.08874509315374</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8035, 106.706], [10.802, 106.702]]</data>
+</edge>
+<edge source="bd_02" target="bd_01" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">467.6527232572638</data>
+  <data key="d9">40.0</data>
+  <data key="d10">42.08874509315374</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.802, 106.702], [10.8035, 106.706]]</data>
+</edge>
+<edge source="bd_02" target="bd_03" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">450.8273162147604</data>
+  <data key="d9">40.0</data>
+  <data key="d10">40.57445845932844</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.802, 106.702], [10.801, 106.698]]</data>
+</edge>
+<edge source="bd_03" target="bd_02" id="0">
+  <data key="d7">Đường Bạch Đằng</data>
+  <data key="d8">450.8273162147604</data>
+  <data key="d9">40.0</data>
+  <data key="d10">40.57445845932844</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.801, 106.698], [10.802, 106.702]]</data>
+</edge>
+<edge source="bd_03" target="pdl_01" id="0">
+  <data key="d7">Đường Phan Đăng Lưu</data>
+  <data key="d8">396.0144287777392</data>
+  <data key="d9">45.0</data>
+  <data key="d10">31.681154302219138</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.801, 106.698], [10.803, 106.695]]</data>
+</edge>
+<edge source="pdl_01" target="bd_03" id="0">
+  <data key="d7">Đường Phan Đăng Lưu</data>
+  <data key="d8">396.0144287777392</data>
+  <data key="d9">45.0</data>
+  <data key="d10">31.681154302219138</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.803, 106.695], [10.801, 106.698]]</data>
+</edge>
+<edge source="pdl_01" target="pdl_02" id="0">
+  <data key="d7">Đường Phan Đăng Lưu</data>
+  <data key="d8">396.0126228953457</data>
+  <data key="d9">45.0</data>
+  <data key="d10">31.68100983162766</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.803, 106.695], [10.805, 106.692]]</data>
+</edge>
+<edge source="pdl_02" target="pdl_01" id="0">
+  <data key="d7">Đường Phan Đăng Lưu</data>
+  <data key="d8">396.0126228953457</data>
+  <data key="d9">45.0</data>
+  <data key="d10">31.68100983162766</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.805, 106.692], [10.803, 106.695]]</data>
+</edge>
+<edge source="d1_01" target="dbp_08" id="0">
+  <data key="d7">Đường D1 (Nguyễn Văn Thương)</data>
+  <data key="d8">228.9973181834537</data>
+  <data key="d9">35.0</data>
+  <data key="d10">23.554009870298096</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.802, 106.717], [10.8, 106.7165]]</data>
+</edge>
+<edge source="d1_01" target="d2_01" id="0">
+  <data key="d7">Đường Nội Khu D1-D2</data>
+  <data key="d8">123.88222958234165</data>
+  <data key="d9">30.0</data>
+  <data key="d10">14.865867549880997</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.802, 106.717], [10.803, 106.7175]]</data>
+</edge>
+<edge source="d2_01" target="d1_01" id="0">
+  <data key="d7">Đường Nội Khu D1-D2</data>
+  <data key="d8">123.88222958234165</data>
+  <data key="d9">30.0</data>
+  <data key="d10">14.865867549880997</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.803, 106.7175], [10.802, 106.717]]</data>
+</edge>
+<edge source="d2_01" target="dbp_09" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">392.99534143408886</data>
+  <data key="d9">35.0</data>
+  <data key="d10">40.42237797607771</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.803, 106.7175], [10.7995, 106.718]]</data>
+</edge>
+<edge source="d2_01" target="d2_02" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">338.025532711449</data>
+  <data key="d9">35.0</data>
+  <data key="d10">34.76834050746333</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.803, 106.7175], [10.806, 106.717]]</data>
+</edge>
+<edge source="d2_02" target="d2_01" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">338.025532711449</data>
+  <data key="d9">35.0</data>
+  <data key="d10">34.76834050746333</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.806, 106.717], [10.803, 106.7175]]</data>
+</edge>
+<edge source="d2_02" target="uvk_01" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">228.99705791231284</data>
+  <data key="d9">35.0</data>
+  <data key="d10">23.55398309955218</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.806, 106.717], [10.808, 106.7165]]</data>
+</edge>
+<edge source="uvk_01" target="d2_02" id="0">
+  <data key="d7">Đường D2 (Nguyễn Gia Trí)</data>
+  <data key="d8">228.99705791231284</data>
+  <data key="d9">35.0</data>
+  <data key="d10">23.55398309955218</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.7165], [10.806, 106.717]]</data>
+</edge>
+<edge source="uvk_01" target="uvk_02" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">225.40889833049772</data>
+  <data key="d9">40.0</data>
+  <data key="d10">20.286800849744797</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.7165], [10.8085, 106.7145]]</data>
+</edge>
+<edge source="uvk_01" target="uvk_03" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">503.92297772944283</data>
+  <data key="d9">40.0</data>
+  <data key="d10">45.35306799564986</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.808, 106.7165], [10.807, 106.721]]</data>
+</edge>
+<edge source="uvk_02" target="uvk_01" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">225.40889833049772</data>
+  <data key="d9">40.0</data>
+  <data key="d10">20.286800849744797</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8085, 106.7145], [10.808, 106.7165]]</data>
+</edge>
+<edge source="uvk_02" target="xvnt_04" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">173.01013130035372</data>
+  <data key="d9">40.0</data>
+  <data key="d10">15.570911817031835</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8085, 106.7145], [10.808, 106.713]]</data>
+</edge>
+<edge source="uvk_03" target="uvk_01" id="0">
+  <data key="d7">Đường Ung Văn Khiêm</data>
+  <data key="d8">503.92297772944283</data>
+  <data key="d9">40.0</data>
+  <data key="d10">45.35306799564986</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.807, 106.721], [10.808, 106.7165]]</data>
+</edge>
+<edge source="uvk_03" target="dbp_11" id="0">
+  <data key="d7">Đường Nhánh Cầu Sài Gòn</data>
+  <data key="d8">1187.8070238581258</data>
+  <data key="d9">35.0</data>
+  <data key="d10">122.17443673969295</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.807, 106.721], [10.7965, 106.723]]</data>
+</edge>
+<edge source="nhc_01" target="nhc_02" id="0">
+  <data key="d7">Đường Nguyễn Hữu Cảnh</data>
+  <data key="d8">396.0216490411528</data>
+  <data key="d9">50.0</data>
+  <data key="d10">28.513558730963</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.793, 106.716], [10.795, 106.719]]</data>
+</edge>
+<edge source="nhc_01" target="link_01" id="0">
+  <data key="d7">Đường Nhánh Cầu Thủ Thiêm</data>
+  <data key="d8">549.6986978906968</data>
+  <data key="d9">40.0</data>
+  <data key="d10">49.472882810162716</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.793, 106.716], [10.796, 106.712]]</data>
+</edge>
+<edge source="nhc_02" target="vh_01" id="0">
+  <data key="d7">Đường Kết Nối Nguyễn Hữu Cảnh</data>
+  <data key="d8">204.31857534109136</data>
+  <data key="d9">35.0</data>
+  <data key="d10">21.01562489222654</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.719], [10.7955, 106.7208]]</data>
+</edge>
+<edge source="nhc_02" target="nhc_01" id="0">
+  <data key="d7">Đường Nguyễn Hữu Cảnh</data>
+  <data key="d8">396.0216490411528</data>
+  <data key="d9">50.0</data>
+  <data key="d10">28.513558730963</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.719], [10.793, 106.716]]</data>
+</edge>
+<edge source="vh_01" target="dbp_10" id="0">
+  <data key="d7">Lối vào Vinhomes Central Park</data>
+  <data key="d8">279.9119281842147</data>
+  <data key="d9">30.0</data>
+  <data key="d10">33.58943138210576</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7955, 106.7208], [10.798, 106.7205]]</data>
+</edge>
+<edge source="vh_01" target="vh_02" id="0">
+  <data key="d7">Đại Lộ Vinhomes</data>
+  <data key="d8">94.53597462511073</data>
+  <data key="d9">25.0</data>
+  <data key="d10">13.613180346015945</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7955, 106.7208], [10.795, 106.7215]]</data>
+</edge>
+<edge source="vh_01" target="nhc_02" id="0">
+  <data key="d7">Đường Kết Nối Nguyễn Hữu Cảnh</data>
+  <data key="d8">204.31857534109136</data>
+  <data key="d9">35.0</data>
+  <data key="d10">21.01562489222654</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7955, 106.7208], [10.795, 106.719]]</data>
+</edge>
+<edge source="vh_01" target="link_02" id="0">
+  <data key="d7">Đường Nối Kênh Văn Thánh</data>
+  <data key="d8">573.8205850023444</data>
+  <data key="d9">30.0</data>
+  <data key="d10">68.85847020028132</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7955, 106.7208], [10.8005, 106.7195]]</data>
+</edge>
+<edge source="vh_02" target="vh_01" id="0">
+  <data key="d7">Đại Lộ Vinhomes</data>
+  <data key="d8">94.53597462511073</data>
+  <data key="d9">25.0</data>
+  <data key="d10">13.613180346015945</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.7215], [10.7955, 106.7208]]</data>
+</edge>
+<edge source="vh_02" target="vh_03" id="0">
+  <data key="d7">Đường Ven Công Viên Sông</data>
+  <data key="d8">199.37486556634423</data>
+  <data key="d9">25.0</data>
+  <data key="d10">28.709980641553567</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.795, 106.7215], [10.7935, 106.7225]]</data>
+</edge>
+<edge source="vh_03" target="vh_02" id="0">
+  <data key="d7">Đường Ven Công Viên Sông</data>
+  <data key="d8">199.37486556634423</data>
+  <data key="d9">25.0</data>
+  <data key="d10">28.709980641553567</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.7935, 106.7225], [10.795, 106.7215]]</data>
+</edge>
+<edge source="link_01" target="nhc_01" id="0">
+  <data key="d7">Đường Nhánh Cầu Thủ Thiêm</data>
+  <data key="d8">549.6986978906968</data>
+  <data key="d9">40.0</data>
+  <data key="d10">49.472882810162716</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.796, 106.712], [10.793, 106.716]]</data>
+</edge>
+<edge source="link_01" target="dbp_02" id="0">
+  <data key="d7">Đường Nguyễn Cửu Vân</data>
+  <data key="d8">610.9506002821074</data>
+  <data key="d9">35.0</data>
+  <data key="d10">62.84063317187391</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.796, 106.712], [10.797, 106.7065]]</data>
+</edge>
+<edge source="link_02" target="dbp_10" id="0">
+  <data key="d7">Đường Ven Kênh</data>
+  <data key="d8">298.6757217714772</data>
+  <data key="d9">30.0</data>
+  <data key="d10">35.84108661257726</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8005, 106.7195], [10.798, 106.7205]]</data>
+</edge>
+<edge source="link_02" target="vh_01" id="0">
+  <data key="d7">Đường Nối Kênh Văn Thánh</data>
+  <data key="d8">573.8205850023444</data>
+  <data key="d9">30.0</data>
+  <data key="d10">68.85847020028132</data>
+  <data key="d11">False</data>
+  <data key="d12">[[10.8005, 106.7195], [10.7955, 106.7208]]</data>
+</edge>
+</graph></graphml>

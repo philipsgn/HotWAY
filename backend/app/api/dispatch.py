@@ -30,11 +30,11 @@ async def plan_route(payload: Dict[str, Any], request: Request):
     t_env = float(payload.get("ambient_temp_c", 30.0))
 
     if not orders:
-        # Default sample single order in Hàng Gòn
+        # Default sample single order at Landmark 81 / Vinhomes Central Park, Bình Thạnh
         orders = [{
-            "id": "ord_sample_01",
-            "lat": 10.9320,
-            "lon": 107.2480,
+            "id": "ord_binhthanh_sample_01",
+            "lat": 10.7950,
+            "lon": 106.7215,
             "dish_name": "Bánh canh gà tô đặc biệt",
             "initial_temp_c": 85.0,
             "cooling_rate": 0.038,
@@ -43,8 +43,8 @@ async def plan_route(payload: Dict[str, Any], request: Request):
 
     # Compute street route from shipper to destination
     first_order = orders[0]
-    dest_lat = float(first_order.get("lat", 10.9320))
-    dest_lon = float(first_order.get("lon", 10.2480))
+    dest_lat = float(first_order.get("lat", 10.7950))
+    dest_lon = float(first_order.get("lon", 106.7215))
     origin = (float(shipper_loc.get("lat", DEPOT_LAT)), float(shipper_loc.get("lon", DEPOT_LON)))
     destination = (dest_lat, dest_lon)
 
@@ -76,16 +76,16 @@ async def plan_route(payload: Dict[str, Any], request: Request):
 async def compare_algorithms(payload: Dict[str, Any]):
     """Evaluates and compares RL against Dijkstra, Greedy, and OR-Tools baselines."""
     scenario = payload.get("scenario", "RUSH_HOUR")
-    distance_km = float(payload.get("distance_km", 3.2))
+    distance_km = float(payload.get("distance_km", 2.8))
     t0 = float(payload.get("initial_temp_c", 85.0))
     t_env = float(payload.get("ambient_temp_c", 30.0))
     k = 0.019  # Thermal insulated bag
 
-    # Simulated traffic delay multipliers in Hàng Gòn rush hour
+    # Simulated traffic delay multipliers in Bình Thạnh (Ngã tư Hàng Xanh bottleneck)
     if scenario == "RUSH_HOUR":
-        # RL detours around congested QL56 intersection
+        # RL detours around congested Hàng Xanh via D1/D2 and Nguyễn Hữu Cảnh
         rl_transit_sec = 380.0
-        dijkstra_transit_sec = 620.0  # Stuck in QL56 jam
+        dijkstra_transit_sec = 620.0  # Stuck in Hàng Xanh jam
         greedy_transit_sec = 690.0
         ortools_transit_sec = 480.0
     else:
@@ -103,28 +103,28 @@ async def compare_algorithms(payload: Dict[str, Any]):
                 "arrival_temp_c": compute_cooling(t0, t_env, k, rl_transit_sec),
                 "transit_seconds": rl_transit_sec,
                 "delay_seconds": 0.0,
-                "route_type": "Traffic-aware thermal optimal",
+                "route_type": "Né kẹt xe Ngã tư Hàng Xanh qua đường Nguyễn Gia Trí (D2)",
             },
             "dijkstra": {
                 "name": "Dijkstra (Shortest Distance)",
                 "arrival_temp_c": compute_cooling(t0, t_env, k, dijkstra_transit_sec),
                 "transit_seconds": dijkstra_transit_sec,
                 "delay_seconds": max(0.0, dijkstra_transit_sec - 400.0),
-                "route_type": "Direct straight-line via QL56 (congested)",
+                "route_type": "Đi thẳng qua Ngã tư Hàng Xanh (kẹt cứng giờ tan tầm)",
             },
             "greedy": {
                 "name": "Greedy Nearest-Neighbor",
                 "arrival_temp_c": compute_cooling(t0, t_env, k, greedy_transit_sec),
                 "transit_seconds": greedy_transit_sec,
                 "delay_seconds": max(0.0, greedy_transit_sec - 400.0),
-                "route_type": "Local greedy stop-and-go",
+                "route_type": "Lộ trình cục bộ dừng đỗ nhiều ngã ba",
             },
             "ortools_vrp": {
                 "name": "Google OR-Tools VRP",
                 "arrival_temp_c": compute_cooling(t0, t_env, k, ortools_transit_sec),
                 "transit_seconds": ortools_transit_sec,
                 "delay_seconds": max(0.0, ortools_transit_sec - 400.0),
-                "route_type": "Static MIP optimization",
+                "route_type": "Quy hoạch tĩnh MIP",
             },
         },
     }
@@ -141,19 +141,19 @@ async def get_ghost_trajectory():
         except Exception:
             pass
 
-    # Authoritative fallback trajectory rooted at Quán Bánh Canh Gà Hàng Gòn
+    # Authoritative fallback trajectory rooted at 490 Điện Biên Phủ, Bình Thạnh
     return {
-        "order_id": "ord_ghost_hanggon_01",
-        "depot": {"lat": DEPOT_LAT, "lon": DEPOT_LON, "name": "Quán Bánh Canh Gà Hàng Gòn"},
-        "destination": {"lat": 10.9320, "lon": 107.2480, "name": "Ấp Hàng Gòn"},
+        "order_id": "ord_binhthanh_sample_01",
+        "depot": {"lat": DEPOT_LAT, "lon": DEPOT_LON, "name": "Quán Bánh Canh Gà 490 Điện Biên Phủ"},
+        "destination": {"lat": 10.7950, "lon": 106.7215, "name": "Landmark 81 / Vinhomes Central Park"},
         "total_time_seconds": 380.0,
-        "final_temperature_c": 74.8,
+        "final_temperature_c": 77.2,
         "waypoints": [
             {"timestamp_offset": 0.0, "lat": DEPOT_LAT, "lon": DEPOT_LON, "speed_kmh": 0.0},
-            {"timestamp_offset": 60.0, "lat": 10.9235, "lon": 107.2418, "speed_kmh": 32.0},
-            {"timestamp_offset": 120.0, "lat": 10.9260, "lon": 107.2435, "speed_kmh": 35.5},
-            {"timestamp_offset": 200.0, "lat": 10.9285, "lon": 107.2452, "speed_kmh": 28.0},
-            {"timestamp_offset": 300.0, "lat": 10.9305, "lon": 107.2468, "speed_kmh": 30.0},
-            {"timestamp_offset": 380.0, "lat": 10.9320, "lon": 107.2480, "speed_kmh": 0.0},
+            {"timestamp_offset": 60.0, "lat": 10.8000, "lon": 106.7165, "speed_kmh": 38.0},
+            {"timestamp_offset": 120.0, "lat": 10.7995, "lon": 106.7180, "speed_kmh": 42.0},
+            {"timestamp_offset": 200.0, "lat": 10.7980, "lon": 106.7205, "speed_kmh": 45.0},
+            {"timestamp_offset": 300.0, "lat": 10.7960, "lon": 106.7200, "speed_kmh": 35.0},
+            {"timestamp_offset": 380.0, "lat": 10.7950, "lon": 106.7215, "speed_kmh": 0.0},
         ],
     }

@@ -1,0 +1,255 @@
+{
+  "keys": [
+    "instance_id",
+    "strategy",
+    "protocol"
+  ],
+  "cost_reproduction": {
+    "rows_compared": 750,
+    "max_abs_delta_cost_km": 0.0005,
+    "max_abs_delta_improvement_pct": 4.4e-05,
+    "within_1m": 750,
+    "test_subset": {
+      "rows": 150,
+      "max_abs_delta_cost_km": 0.0004
+    }
+  },
+  "eval_fabrication": {
+    "rows_compared": 750,
+    "shipped_evals_total": 17385600,
+    "audit_evals_actual_total": 15777549,
+    "actual_over_shipped_ratio": 0.907507,
+    "shipped_evals_mean": 23180.8,
+    "audit_evals_actual_mean": 21036.7,
+    "rows_with_exact_fabrication_formula": 750,
+    "eval_ratio_min": 0.228728,
+    "eval_ratio_median": 0.825727,
+    "eval_ratio_max": 2.985075
+  },
+  "time_budget": {
+    "rows_B_B2": 300,
+    "violations_over_limit": 300,
+    "violation_rate": 1.0,
+    "max_overrun_sec": 4.50693,
+    "max_overrun_factor": 46.0693,
+    "median_runtime_sec": 0.29288,
+    "max_runtime_sec": 4.60693,
+    "note": "Shipped runner ignores time_limit_sec; audit --enforce-time hit the deadline on every B/B2 run."
+  },
+  "protocol_A_vs_A3": {
+    "paired_rows": 150,
+    "cost_identical_rate": 1.0,
+    "evals_identical_rate": 1.0,
+    "max_abs_cost_delta_km": 0.0,
+    "note": "Protocol A and A3 are identical code paths (same max_steps/max_candidates; feature_patience unused)."
+  },
+  "thermal": {
+    "rows": 750,
+    "capacity_fleet_feasible_rate": 1.0,
+    "rows_with_thermal_violations": 750,
+    "thermal_violation_rate": 1.0,
+    "mean_thermal_violations": 11.06,
+    "min_delivery_temp_c": 37.3,
+    "note": "Shipped feasible_rate only checks capacity/fleet/coverage; validator ignores thermal constraints."
+  },
+  "strategy_identity": {
+    "groups": 150,
+    "groups_all_five_equal": 117,
+    "all_five_equal_rate": 0.78,
+    "mean_distinct_costs_among_five": 1.227
+  },
+  "applied_steps": {
+    "Cyclic": {
+      "mean_applied_steps": 2.4,
+      "max_applied_steps": 6
+    },
+    "DQN": {
+      "mean_applied_steps": 2.32,
+      "max_applied_steps": 6
+    },
+    "Double DQN": {
+      "mean_applied_steps": 2.39,
+      "max_applied_steps": 6
+    },
+    "Greedy": {
+      "mean_applied_steps": 2.39,
+      "max_applied_steps": 6
+    },
+    "Random": {
+      "mean_applied_steps": 2.39,
+      "max_applied_steps": 6
+    }
+  },
+  "action_distribution": {
+    "DQN": {
+      "A": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.8157,
+          0.015,
+          0.0993,
+          0.07
+        ]
+      },
+      "A2": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.818,
+          0.0147,
+          0.099,
+          0.0683
+        ]
+      },
+      "A3": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.8157,
+          0.015,
+          0.0993,
+          0.07
+        ]
+      },
+      "B": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.7842,
+          0.0107,
+          0.0865,
+          0.1187
+        ]
+      },
+      "B2": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.7867,
+          0.0093,
+          0.0721,
+          0.1319
+        ]
+      }
+    },
+    "Double DQN": {
+      "A": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.3987,
+          0.0727,
+          0.0383,
+          0.4903
+        ]
+      },
+      "A2": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.3987,
+          0.0727,
+          0.0383,
+          0.4903
+        ]
+      },
+      "A3": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.3987,
+          0.0727,
+          0.0383,
+          0.4903
+        ]
+      },
+      "B": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.436,
+          0.0243,
+          0.04,
+          0.4997
+        ]
+      },
+      "B2": {
+        "n_runs": 30,
+        "mean_action_share": [
+          0.4052,
+          0.0367,
+          0.0527,
+          0.5052
+        ]
+      }
+    }
+  },
+  "training_leakage": {
+    "instances_loaded_by_stock_trainer": 30,
+    "test_instances_used_in_training": 6,
+    "test_leak_rate": 0.2,
+    "train_instances_expected": 20,
+    "validation_instances_expected": 4,
+    "test_instances_expected": 6,
+    "validation_split_implemented": false,
+    "validation_checkpoint_selection_implemented": false,
+    "audit_best_val_cost_km": {
+      "dqn": 92.871,
+      "double_dqn": 92.871
+    },
+    "audit_best_episode": {
+      "dqn": 1,
+      "double_dqn": 10
+    },
+    "audit_episodes": 150,
+    "note": "Best validation checkpoint is an early/untrained policy; validation set has only 4 instances."
+  },
+  "stats": {
+    "shipped_summary": {
+      "mean_distance_km": 103.7508,
+      "mean_improvement_pct": 2.0562,
+      "rows": 750
+    },
+    "audit_summary": {
+      "mean_distance_km": 103.7508,
+      "mean_improvement_pct": 2.0562,
+      "rows": 750
+    },
+    "by_strategy_shipped": {
+      "Cyclic": {
+        "mean_distance_km": 103.7276,
+        "mean_improvement_pct": 2.0774
+      },
+      "DQN": {
+        "mean_distance_km": 103.8246,
+        "mean_improvement_pct": 1.9882
+      },
+      "Double DQN": {
+        "mean_distance_km": 103.7349,
+        "mean_improvement_pct": 2.0709
+      },
+      "Greedy": {
+        "mean_distance_km": 103.7275,
+        "mean_improvement_pct": 2.0775
+      },
+      "Random": {
+        "mean_distance_km": 103.7393,
+        "mean_improvement_pct": 2.067
+      }
+    },
+    "by_strategy_audit": {
+      "Cyclic": {
+        "mean_distance_km": 103.7276,
+        "mean_improvement_pct": 2.0774
+      },
+      "DQN": {
+        "mean_distance_km": 103.8246,
+        "mean_improvement_pct": 1.9882
+      },
+      "Double DQN": {
+        "mean_distance_km": 103.735,
+        "mean_improvement_pct": 2.0709
+      },
+      "Greedy": {
+        "mean_distance_km": 103.7275,
+        "mean_improvement_pct": 2.0774
+      },
+      "Random": {
+        "mean_distance_km": 103.7394,
+        "mean_improvement_pct": 2.067
+      }
+    }
+  }
+}

@@ -1,0 +1,3 @@
+"""
+HotWAY Benchmark Suite Package
+"""

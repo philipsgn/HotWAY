@@ -1,0 +1,80 @@
+[
+  {
+    "instance": "HCMC_VN_25",
+    "n_nodes": 16,
+    "triangle_violations": 29,
+    "triangle_checks": 3360,
+    "max_triangle_violation_m": 3201.9,
+    "pairs_over_true_shortest": 228,
+    "pairs_checked": 240,
+    "max_excess_over_shortest_m": 4089.6,
+    "median_excess_over_shortest_m": 180.25,
+    "time_triangle_violations": 0,
+    "time_max_violation_sec": 0.0
+  },
+  {
+    "instance": "HCMC_VN_26",
+    "n_nodes": 26,
+    "triangle_violations": 205,
+    "triangle_checks": 15600,
+    "max_triangle_violation_m": 4072.8,
+    "pairs_over_true_shortest": 630,
+    "pairs_checked": 650,
+    "max_excess_over_shortest_m": 5485.1,
+    "median_excess_over_shortest_m": 333.8,
+    "time_triangle_violations": 26,
+    "time_max_violation_sec": 0.1
+  },
+  {
+    "instance": "HCMC_VN_27",
+    "n_nodes": 23,
+    "triangle_violations": 72,
+    "triangle_checks": 10626,
+    "max_triangle_violation_m": 2547.4,
+    "pairs_over_true_shortest": 491,
+    "pairs_checked": 506,
+    "max_excess_over_shortest_m": 3428.3,
+    "median_excess_over_shortest_m": 231.4,
+    "time_triangle_violations": 8,
+    "time_max_violation_sec": 0.1
+  },
+  {
+    "instance": "HCMC_VN_28",
+    "n_nodes": 26,
+    "triangle_violations": 113,
+    "triangle_checks": 15600,
+    "max_triangle_violation_m": 2757.1,
+    "pairs_over_true_shortest": 616,
+    "pairs_checked": 650,
+    "max_excess_over_shortest_m": 5147.2,
+    "median_excess_over_shortest_m": 205.97,
+    "time_triangle_violations": 8,
+    "time_max_violation_sec": 0.1
+  },
+  {
+    "instance": "HCMC_VN_29",
+    "n_nodes": 21,
+    "triangle_violations": 92,
+    "triangle_checks": 7980,
+    "max_triangle_violation_m": 2472.8,
+    "pairs_over_true_shortest": 404,
+    "pairs_checked": 420,
+    "max_excess_over_shortest_m": 3278.4,
+    "median_excess_over_shortest_m": 243.45,
+    "time_triangle_violations": 0,
+    "time_max_violation_sec": 0.0
+  },
+  {
+    "instance": "HCMC_VN_30",
+    "n_nodes": 19,
+    "triangle_violations": 17,
+    "triangle_checks": 5814,
+    "max_triangle_violation_m": 1091.8,
+    "pairs_over_true_shortest": 325,
+    "pairs_checked": 342,
+    "max_excess_over_shortest_m": 2106.6,
+    "median_excess_over_shortest_m": 287.02,
+    "time_triangle_violations": 0,
+    "time_max_violation_sec": 0.0
+  }
+]

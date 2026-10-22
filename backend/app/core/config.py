@@ -124,12 +124,13 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
-    # 6. Spatial Target & Road Network Constants (Hàng Gòn, Long Khánh, Đồng Nai)
-    DEPOT_NAME: str = "Quán Bánh Canh Gà Hàng Gòn"
-    DEPOT_LATITUDE: float = 10.9212
-    DEPOT_LONGITUDE: float = 107.2401
-    MAX_DELIVERY_RADIUS_KM: float = 6.0
-    # Bounding box: [min_lat, min_lon, max_lat, max_lon]
+    # 6. Spatial Target & Road Network Constants (Bình Thạnh, TP. Hồ Chí Minh)
+    DEPOT_NAME: str = "Quán Bánh Canh Gà 490 Điện Biên Phủ"
+    DEPOT_LATITUDE: float = 10.8012
+    DEPOT_LONGITUDE: float = 106.7145
+    MAX_DELIVERY_RADIUS_KM: float = 4.0
+    # Bounding box for Bình Thạnh: [min_lat, min_lon, max_lat, max_lon]
+    BINHTHANH_BBOX: tuple[float, float, float, float] = (10.78, 106.68, 10.83, 106.73)
     HANGGON_BBOX: tuple[float, float, float, float] = (10.90, 107.21, 10.96, 107.27)
 
     # 7. Newton Cooling Law Thermal Physics Constants
@@ -148,7 +149,7 @@ class Settings(BaseSettings):
 
     # 8. Reinforcement Learning & Inference Configuration
     RL_MODEL_PATH: str = "models/rl_best_model.zip"
-    OSM_GRAPH_PATH: str = "data/hanggon_graph.graphml"
+    OSM_GRAPH_PATH: str = "data/binhthanh_graph.graphml"
     GHOST_TRAJECTORY_PATH: str = "experiments/trajectories/best_route_ghost.json"
     USE_DIJKSTRA_FALLBACK: bool = True
     MAX_BATCH_ORDERS: int = 5

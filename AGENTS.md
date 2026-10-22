@@ -1,152 +1,76 @@
-# Multi-Agent Architecture & Collaboration Protocol — HotWAY
+# Cơ Chế Đa Tác Tử (AGENTS.MD) — HotWAY
 
-**Tài liệu:** Bản thiết kế Kiến trúc Đa Tác tử (Subagents Architecture) dự án HotWAY  
-**Phiên bản:** v1.0.0  
-**Thư mục làm việc:** `c:\Users\TanPhat\Documents\AI_E\HotWAY/agents`  
-**Tài liệu liên kết:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [TECH_ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/TECH_ARCHITECTURE.md) | [PLAN.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PLAN.md)  
+> **Tài liệu:** Phân công trách nhiệm 4 vai trò chuyên biệt & hợp đồng chuyển giao  
+> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
+> **Ngày cập nhật:** 21/10/2026  
+> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E\HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/TanPhat/Documents/AI_E\HotWAY/TESTING.md)
 
 ---
 
-## 1. Cơ cấu 5 Vai trò Chuyên biệt (Specialized Subagent Roles)
+## 1. Cơ Cấu 4 Vai Trò Chuyên Biệt
 
-Để phát triển dự án HotWAY một cách chuyên nghiệp, chuẩn mực và bảo đảm tính phân quyền rõ ràng, hệ thống phân bổ thành 5 chuyên gia AI tác tử độc lập:
+Để duy trì chất lượng hệ thống và bảo đảm kỷ luật kỹ thuật, dự án phân chia thành 4 vai trò chuyên trách:
 
 ```mermaid
 flowchart TD
-    Lead["Subagent 5: evaluator_architect_lead\n(Kiến trúc sư & Đánh giá Khoa học)"]
+    Lead["Lead Engineer & Technical Writer\n(Giám sát kiến trúc, kiểm thử T1-T7, tài liệu)"]
     
-    RL["Subagent 1: rl_researcher_engineer\n(Nghiên cứu & Huấn luyện RL)"]
-    BE["Subagent 2: backend_webgis_engineer\n(Backend FastAPI & WebGIS Services)"]
-    FE["Subagent 3: frontend_webgis_engineer\n(Frontend Next.js & Shipper PWA)"]
-    Game["Subagent 4: game_simulation_engineer\n(Mini-game 3D HotWAY Rider)"]
+    Algo["1. AI Data Engineer & Algorithm Engineer\n(Đồ thị OSMnx 46k nút, CVRP Solver, RL Trainer, Benchmark 30 instances)"]
+    BE["2. Backend Engineer\n(FastAPI /api/v1, Road Matrix Service cKDTree, Cache)"]
+    FE["3. Frontend Engineer\n(Next.js 14 OptimoRoute UI, MapLibre, 6 màn hình)"]
 
-    Lead -->|Phân rã đặc tả & Yêu cầu chuẩn| RL
-    Lead -->|Phân rã đặc tả & API Schema| BE
-    Lead -->|Yêu cầu giao diện & UX| FE
-    Lead -->|Kịch bản 3D & Dữ liệu OSM| Game
+    Lead -->|Yêu cầu kỷ luật D4 & bài toán CVRP| Algo
+    Lead -->|Đặc tả API Schema & Cổng mạng| BE
+    Lead -->|Quy chuẩn UX OptimoRoute & Copywriting| FE
 
-    RL -->|Mô hình (.zip/.pt) & Replay Log (.json)| BE
-    RL -.->|Lộ trình AI Ghost| Game
-    BE -->|REST API & WebSocket Protocol| FE
-    BE -->|OSM Road Mesh & Ghost API| Game
+    Algo -->|Mô hình bài toán, Validator, Search Trace, Benchmark CSV| BE
+    BE -->|REST API /api/v1 & GeoJSON Tuyến| FE
 
-    RL -->|Chỉ số thực nghiệm & TensorBoard| Lead
-    BE -->|Báo cáo kiểm thử tích hợp| Lead
-    FE -->|UX Verification| Lead
-    Game -->|FPS & Physics Test| Lead
+    Algo -->|Kiểm thử tính khả thi T2 & T3| Lead
+    BE -->|Kiểm thử tích hợp & Fallback T5| Lead
+    FE -->|Kiểm thử giao diện & Build sạch T7| Lead
 ```
 
-### Bảng Mô tả Trách nhiệm & Phạm vi Mã nguồn
+---
 
-| Tên Subagent | Mã định danh | Trách nhiệm cốt lõi | Phạm vi thư mục độc quyền |
+## 2. Phạm Vi Thư Mục & Trách Nhiệm Từng Vai Trò
+
+| Tên vai trò | Mã định danh | Trách nhiệm cốt lõi | Thư mục sở hữu độc quyền |
 |---|---|---|---|
-| **RL Research & Model Engineer** | `rl_researcher_engineer` | Xây dựng Gymnasium Env, OSMnx graph, mô hình nhiệt Newton, huấn luyện Q-learning/DQN/PPO, xây dựng baselines và ablation study. | `src/rl/`, `src/baselines/`, `models/`, `experiments/` |
-| **Backend & WebGIS Engineer** | `backend_webgis_engineer` | Xây dựng FastAPI monolith, PostGIS models, WebSocket Manager, Redis cache, OSRM router và đóng gói Docker Compose. | `backend/`, `docker/`, `migrations/`, `docker-compose.yml` |
-| **Frontend & Shipper PWA Engineer** | `frontend_webgis_engineer` | Xây dựng giao diện Next.js, MapLibre GL JS, deck.gl, màn hình đặt món, Shipper PWA GPS và Academic Dashboard. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
-| **3D Game & Simulation Engineer** | `game_simulation_engineer` | Xây dựng mini-game HotWAY Rider (Three.js / R3F + Rapier), mesh đường 3D từ OSM, xe máy người chơi và AI Ghost. | `frontend/src/game/`, `frontend/public/models_3d/`, `src/game_assets/` |
-| **System Architect & Evaluator Lead** | `evaluator_architect_lead` | Giám sát tiến độ toàn hệ thống, đánh giá tính chuẩn xác khoa học, kiểm thử tích hợp E2E và biên soạn Báo cáo Đồ án LaTeX. | `docs/`, `tests/e2e/`, `reports/`, các file gốc (`*.md`) |
+| **AI Data & Algorithm Engineer** | `algorithm_engineer` | Xây dựng đồ thị có hướng SCC TP.HCM (46k nút), tính toán ma trận chi phí bất đối xứng cKDTree, triển khai 4 toán tử Local Search, sinh 30 benchmark instances, huấn luyện DQN/Double DQN PyTorch, và chạy 750 benchmark runs. | `src/data/`, `src/cvrp_solver/`, `src/benchmark/`, `src/rl/`, `notebooks/`, `rel_result/`, `tests/` |
+| **Backend Engineer** | `backend_engineer` | Xây dựng REST API chuẩn `/api/v1`, quản lý bộ nhớ đệm ma trận đường bộ theo hash, triển khai cơ chế tự động fallback khi DQN quá hạn, và đóng gói Docker container backend cổng 8000. | `backend/`, `src/services/`, `docker-compose.yml`, `config/site.yaml` |
+| **Frontend Engineer** | `frontend_engineer` | Xây dựng giao diện WebGIS 3 cột kiểu OptimoRoute với 6 màn hình chuyên biệt (Đơn hàng, Lập kế hoạch, Chi tiết tuyến, Strategy Lab, Search Replay, Điều phối Live); tích hợp bản đồ MapLibre và bảo đảm build TypeScript không lỗi trên cổng 3001. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
+| **Lead Engineer & QA** | `lead_engineer_writer` | Biên soạn và bảo trì 8 tài liệu kỹ thuật chuẩn mực, giám sát kiểm thử 4 tầng (T1-T7), bảo đảm tính trung thực khoa học, và bảo vệ nguyên vẹn cổng mạng 3000. | `README.md`, `PRD.md`, `ARCHITECTURE.md`, `ALGORITHM.md`, `DESIGN_SYSTEM.md`, `PLAN.md`, `AGENTS.md`, `TESTING.md`, `docs/DECISIONS.md` |
 
 ---
 
-## 2. Quy ước Giao tiếp & Hợp đồng Dữ liệu (Inter-Agent Communication Contracts)
+## 3. Hợp Đồng Chuyển Giao Giữa Các Vai Trò
 
-Để tránh xung đột mã nguồn và bảo đảm khả năng tích hợp trơn tru, các Subagents bắt buộc phải tuân thủ các bản hợp đồng dữ liệu chuẩn:
-
-### 2.1. Hợp đồng giữa `rl_researcher_engineer` và `backend_webgis_engineer`
-- **Tệp xuất xưởng mô hình:** Mô hình tốt nhất được lưu tại `models/rl_best_model.zip` (định dạng Stable-Baselines3) kèm tệp cấu hình siêu tham số `models/config.json`.
-- **Giao diện suy luận Python:**
+### 3.1. Hợp đồng giữa Algorithm Engineer và Backend Engineer
+- **Giao diện giải bài toán:**
 ```python
-class HotWAYPolicyRunner:
-    def __init__(self, model_path: str, graph_path: str): ...
-    def predict_next_order(self, observation: dict, action_mask: list[int]) -> int: ...
+def solve_cvrp_strategy(
+    strategy: str,
+    instance: CVRPInstance,
+    max_steps: int = 100,
+    max_candidates: int = 128,
+    leg_geometries: Optional[List[List[List[List[float]]]]] = None,
+    t0_c: float = 85.0,
+    tenv_c: float = 30.0,
+    k_rate: float = 0.020,
+    min_temp: float = 60.0,
+) -> CVRPSolution: ...
 ```
-- **Tệp Replay Log cho Ghost AI:** Xuất ra định dạng `experiments/trajectories/best_route_ghost.json`:
-```json
-{
-  "order_id": "ord_sample_01",
-  "total_time_seconds": 412.5,
-  "final_temperature_c": 74.8,
-  "waypoints": [
-    {"timestamp_offset": 0.0, "lat": 10.9212, "lon": 107.2401, "speed_kmh": 0.0},
-    {"timestamp_offset": 5.0, "lat": 10.9216, "lon": 107.2405, "speed_kmh": 28.5}
-  ]
-}
-```
-
-### 2.2. Hợp đồng giữa `backend_webgis_engineer` và `frontend_webgis_engineer`
-- **Tài liệu OpenAPI/Swagger:** Tự động phát sinh tại `http://localhost:8000/docs`.
-- **WebSocket Event Naming Convention:**
-  - `SHIPPER_TELEMETRY_UPDATE` (Client $\leftarrow$ Server): Cập nhật vị trí GPS và nhiệt độ món.
-  - `ORDER_STATUS_CHANGED` (Client $\leftarrow$ Server): Chuyển trạng thái đơn (PREPARING $\to$ DISPATCHED $\to$ DELIVERED).
-  - `DRIVER_GPS_EMIT` (Shipper PWA $\to$ Server): Đẩy tọa độ thiết bị về máy chủ.
-
-### 2.3. Hợp đồng giữa `game_simulation_engineer` và `frontend_webgis_engineer`
-- Mini-game được đóng gói thành một React Component độc lập: `<HotWAYRiderCanvas />`.
-- Nhận props điều khiển:
-```typescript
-interface GameProps {
-  orderId: string;
-  ghostTrajectoryUrl: string;
-  onGameComplete: (result: { playerTempC: number; timeSeconds: number; wonAI: boolean }) => void;
-}
+- **Hợp đồng kiểm tra tính khả thi:**
+```python
+def validate_cvrp_solution(
+    routes: List[List[int]],
+    instance: CVRPInstance,
+) -> Tuple[bool, float, str]: ...
 ```
 
----
-
-## 3. Cấu trúc Cây Thư mục Dự án Chuẩn
-
-```
-HotWAY/
-├── PRD.md
-├── TECH_ARCHITECTURE.md
-├── PLAN.md
-├── PHASES.md
-├── ROADMAP.md
-├── AGENTS.md
-├── docker-compose.yml
-│
-├── agents/
-│   ├── rules/
-│   │   ├── rl_engineer_rules.md
-│   │   ├── backend_engineer_rules.md
-│   │   ├── frontend_engineer_rules.md
-│   │   ├── game_engineer_rules.md
-│   │   └── evaluator_lead_rules.md
-│   └── workflows/
-│       ├── rl_experimentation_workflow.md
-│       ├── fullstack_integration_workflow.md
-│       ├── mini_game_pipeline_workflow.md
-│       └── multi_agent_collaboration_workflow.md
-│
-├── src/
-│   ├── rl/                  # Do rl_researcher_engineer quản lý
-│   │   ├── environment.py
-│   │   ├── newton_cooling.py
-│   │   ├── osm_graph_loader.py
-│   │   └── train_ppo.py
-│   └── baselines/            # Các thuật toán đối chứng
-│       ├── dijkstra_router.py
-│       ├── greedy_solver.py
-│       └── ortools_vrp.py
-│
-├── backend/                  # Do backend_webgis_engineer quản lý
-│   ├── app/
-│   │   ├── api/
-│   │   ├── core/
-│   │   ├── models/
-│   │   ├── services/
-│   │   └── main.py
-│   └── requirements.txt
-│
-├── frontend/                 # Do frontend_webgis_engineer quản lý
-│   ├── src/
-│   │   ├── app/
-│   │   ├── components/
-│   │   └── game/            # Do game_simulation_engineer quản lý
-│   ├── package.json
-│   └── tsconfig.json
-│
-├── data/                     # Dữ liệu OSMnx & GeoJSON Hàng Gòn
-├── models/                   # Trọng số mô hình RL đã huấn luyện
-└── reports/                  # Báo cáo học thuật LaTeX & Biểu đồ
-```
+### 3.2. Hợp đồng giữa Backend Engineer và Frontend Engineer
+- Tất cả API endpoint đều sử dụng tiền tố `/api/v1/`.
+- Mọi chặng đường trong response `POST /api/v1/plans` phải cung cấp mảng toạ độ `leg_geometries: [[[lat, lon], ...], ...]` để Frontend vẽ trực tiếp lên bản đồ mà không tự ý nội suy.
+- Mọi response từ `/api/v1/sim/{plan_id}` bắt buộc gắn nhãn `label: "MÔ PHỎNG"` để hiển thị rõ ràng trên giao diện.
+- Bảng nghiệm thu tại Strategy Lab đọc trực tiếp từ `rel_result/summary_by_algorithm.csv` và `rel_result/paired_comparisons.csv`.

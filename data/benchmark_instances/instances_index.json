@@ -1,0 +1,362 @@
+[
+  {
+    "instance_id": "HCMC_VN_01",
+    "num_customers": 16,
+    "total_demand": 77,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2043,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_02",
+    "num_customers": 20,
+    "total_demand": 99,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2060,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_03",
+    "num_customers": 23,
+    "total_demand": 104,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2077,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_04",
+    "num_customers": 23,
+    "total_demand": 105,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2094,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_05",
+    "num_customers": 25,
+    "total_demand": 133,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2111,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_06",
+    "num_customers": 16,
+    "total_demand": 62,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2128,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_07",
+    "num_customers": 18,
+    "total_demand": 90,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2145,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_08",
+    "num_customers": 24,
+    "total_demand": 98,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2162,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_09",
+    "num_customers": 24,
+    "total_demand": 103,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2179,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_10",
+    "num_customers": 23,
+    "total_demand": 106,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2196,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_11",
+    "num_customers": 21,
+    "total_demand": 112,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2213,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_12",
+    "num_customers": 24,
+    "total_demand": 137,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2230,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_13",
+    "num_customers": 23,
+    "total_demand": 113,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2247,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_14",
+    "num_customers": 22,
+    "total_demand": 116,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2264,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_15",
+    "num_customers": 24,
+    "total_demand": 114,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2281,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_16",
+    "num_customers": 22,
+    "total_demand": 95,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2298,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_17",
+    "num_customers": 18,
+    "total_demand": 81,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2315,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_18",
+    "num_customers": 15,
+    "total_demand": 60,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2332,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_19",
+    "num_customers": 24,
+    "total_demand": 100,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2349,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_20",
+    "num_customers": 16,
+    "total_demand": 71,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2366,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_21",
+    "num_customers": 16,
+    "total_demand": 75,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2383,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_22",
+    "num_customers": 19,
+    "total_demand": 82,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2400,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_23",
+    "num_customers": 16,
+    "total_demand": 73,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2417,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_24",
+    "num_customers": 22,
+    "total_demand": 110,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2434,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_25",
+    "num_customers": 15,
+    "total_demand": 67,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2451,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_26",
+    "num_customers": 25,
+    "total_demand": 101,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2468,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_27",
+    "num_customers": 22,
+    "total_demand": 118,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2485,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_28",
+    "num_customers": 25,
+    "total_demand": 113,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2502,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_29",
+    "num_customers": 20,
+    "total_demand": 86,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2519,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  },
+  {
+    "instance_id": "HCMC_VN_30",
+    "num_customers": 18,
+    "total_demand": 87,
+    "vehicle_capacity": 40,
+    "max_vehicles": 5,
+    "seed": 2536,
+    "depot": [
+      10.8012,
+      106.7145
+    ]
+  }
+]

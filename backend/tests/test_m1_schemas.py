@@ -306,14 +306,14 @@ class TestSeedDataIntegrity(unittest.TestCase):
     """Test suite verifying seed constants against schemas and physical bounds."""
 
     def test_depot_restaurant_seed_validity(self):
-        self.assertEqual(DEPOT_RESTAURANT["name"], "Quán Bánh Canh Gà Hàng Gòn")
-        # Ensure within Hàng Gòn coordinate bounds [10.90 - 10.96 N, 107.21 - 107.27 E]
-        self.assertTrue(10.90 <= DEPOT_RESTAURANT["lat"] <= 10.96)
-        self.assertTrue(107.21 <= DEPOT_RESTAURANT["lon"] <= 107.27)
+        self.assertEqual(DEPOT_RESTAURANT["name"], "Quán Bánh Canh Gà 490 Điện Biên Phủ")
+        # Ensure within Bình Thạnh coordinate bounds [10.78 - 10.83 N, 106.68 - 106.73 E]
+        self.assertTrue(10.78 <= DEPOT_RESTAURANT["lat"] <= 10.83)
+        self.assertTrue(106.68 <= DEPOT_RESTAURANT["lon"] <= 106.73)
 
         # WKT generator test
         wkt = make_wkt_point(DEPOT_RESTAURANT["lon"], DEPOT_RESTAURANT["lat"])
-        self.assertIn("POINT(107.2401 10.9212)", str(wkt.data))
+        self.assertIn("POINT(106.7145 10.8012)", str(wkt.data))
 
     def test_standard_menu_items_physical_properties(self):
         self.assertGreaterEqual(len(STANDARD_MENU_ITEMS), 4)
@@ -347,8 +347,8 @@ class TestSeedDataIntegrity(unittest.TestCase):
         for shipper in SAMPLE_SHIPPERS:
             self.assertTrue(shipper["phone"].startswith("09"))
             self.assertIn(shipper["container_type"], valid_containers)
-            self.assertTrue(10.90 <= shipper["lat"] <= 10.96)
-            self.assertTrue(107.21 <= shipper["lon"] <= 107.27)
+            self.assertTrue(10.78 <= shipper["lat"] <= 10.83)
+            self.assertTrue(106.68 <= shipper["lon"] <= 106.73)
             if shipper["is_simulated"]:
                 has_simulated = True
 
@@ -359,7 +359,7 @@ class TestSeedDataIntegrity(unittest.TestCase):
         test_app = create_app()
         self.assertIsNotNone(test_app)
         self.assertEqual(test_app.title, settings.PROJECT_NAME)
-        self.assertEqual(settings.DEPOT_NAME, "Quán Bánh Canh Gà Hàng Gòn")
+        self.assertEqual(settings.DEPOT_NAME, "Quán Bánh Canh Gà 490 Điện Biên Phủ")
         self.assertTrue(settings.USE_DIJKSTRA_FALLBACK)
 
 

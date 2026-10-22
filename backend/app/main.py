@@ -15,6 +15,7 @@ from fastapi.responses import JSONResponse
 
 from backend.app.core.config import settings
 from backend.app.api.router import api_router
+from backend.app.api import cvrp_routing
 
 # Configure structured logging
 logging.basicConfig(
@@ -188,6 +189,9 @@ def create_app() -> FastAPI:
     application.include_router(api_router, prefix=settings.API_V1_STR)
     if settings.API_V1_STR != "/api/v1":
         application.include_router(api_router, prefix="/api/v1")
+
+    # Include OptimoRoute-style CVRP Dispatching API (/api/v1/scenarios, /api/v1/plans, /api/v1/strategies/benchmark, /api/v1/sim)
+    application.include_router(cvrp_routing.router)
 
     return application
 

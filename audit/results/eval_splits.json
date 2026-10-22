@@ -1,0 +1,249 @@
+{
+  "protocol": {
+    "max_steps": 100,
+    "max_candidates": 128
+  },
+  "seed": 2027,
+  "summary": [
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.3407,
+      "median": 110.4122,
+      "std": 16.7765
+    },
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.4237,
+      "median": 106.2708,
+      "std": 11.5256
+    },
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.0154,
+      "median": 109.9616,
+      "std": 16.7117
+    },
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.2296,
+      "median": 105.4414,
+      "std": 11.5149
+    },
+    {
+      "tag": "fair",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.0154,
+      "median": 109.9616,
+      "std": 16.7117
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.2173,
+      "median": 105.4414,
+      "std": 11.5165
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.8858,
+      "median": 92.856,
+      "std": 12.6019
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.2104,
+      "median": 109.9616,
+      "std": 16.71
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.2582,
+      "median": 105.8566,
+      "std": 11.5185
+    },
+    {
+      "tag": "fair",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.1552,
+      "median": 109.9616,
+      "std": 16.6579
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.4645,
+      "median": 105.8566,
+      "std": 11.5056
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.1552,
+      "median": 109.9616,
+      "std": 16.6579
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.4652,
+      "median": 105.8566,
+      "std": 11.5043
+    },
+    {
+      "tag": "repro",
+      "suffix": "best",
+      "strategy": "Double DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.0154,
+      "median": 109.9616,
+      "std": 16.7117
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.2747,
+      "median": 105.4414,
+      "std": 11.4801
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "test",
+      "count": 6,
+      "mean": 106.0154,
+      "median": 109.9616,
+      "std": 16.7117
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "train",
+      "count": 20,
+      "mean": 105.2974,
+      "median": 105.4414,
+      "std": 11.5473
+    },
+    {
+      "tag": "repro",
+      "suffix": "final",
+      "strategy": "Double DQN",
+      "split": "validation",
+      "count": 4,
+      "mean": 92.871,
+      "median": 92.856,
+      "std": 12.5779
+    }
+  ]
+}

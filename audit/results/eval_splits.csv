@@ -1,0 +1,241 @@
+tag,suffix,strategy,instance_id,split,cost_km
+repro,best,DQN,HCMC_VN_01,train,86.5022
+repro,best,Double DQN,HCMC_VN_01,train,86.5163
+repro,best,DQN,HCMC_VN_02,train,107.0208
+repro,best,Double DQN,HCMC_VN_02,train,107.0208
+repro,best,DQN,HCMC_VN_03,train,111.219
+repro,best,Double DQN,HCMC_VN_03,train,111.219
+repro,best,DQN,HCMC_VN_04,train,112.2965
+repro,best,Double DQN,HCMC_VN_04,train,112.2965
+repro,best,DQN,HCMC_VN_05,train,132.2715
+repro,best,Double DQN,HCMC_VN_05,train,132.2715
+repro,best,DQN,HCMC_VN_06,train,92.9382
+repro,best,Double DQN,HCMC_VN_06,train,92.9382
+repro,best,DQN,HCMC_VN_07,train,99.0845
+repro,best,Double DQN,HCMC_VN_07,train,99.0845
+repro,best,DQN,HCMC_VN_08,train,114.7088
+repro,best,Double DQN,HCMC_VN_08,train,114.7088
+repro,best,DQN,HCMC_VN_09,train,99.405
+repro,best,Double DQN,HCMC_VN_09,train,99.405
+repro,best,DQN,HCMC_VN_10,train,117.1453
+repro,best,Double DQN,HCMC_VN_10,train,117.1453
+repro,best,DQN,HCMC_VN_11,train,103.2212
+repro,best,Double DQN,HCMC_VN_11,train,103.2212
+repro,best,DQN,HCMC_VN_12,train,117.7065
+repro,best,Double DQN,HCMC_VN_12,train,117.7065
+repro,best,DQN,HCMC_VN_13,train,104.8233
+repro,best,Double DQN,HCMC_VN_13,train,104.8233
+repro,best,DQN,HCMC_VN_14,train,102.8351
+repro,best,Double DQN,HCMC_VN_14,train,102.8351
+repro,best,DQN,HCMC_VN_15,train,114.9985
+repro,best,Double DQN,HCMC_VN_15,train,114.9985
+repro,best,DQN,HCMC_VN_16,train,106.89
+repro,best,Double DQN,HCMC_VN_16,train,106.89
+repro,best,DQN,HCMC_VN_17,train,101.0364
+repro,best,Double DQN,HCMC_VN_17,train,101.0364
+repro,best,DQN,HCMC_VN_18,train,83.3857
+repro,best,Double DQN,HCMC_VN_18,train,83.3857
+repro,best,DQN,HCMC_VN_19,train,107.7802
+repro,best,Double DQN,HCMC_VN_19,train,107.7802
+repro,best,DQN,HCMC_VN_20,train,94.0208
+repro,best,Double DQN,HCMC_VN_20,train,94.0208
+repro,best,DQN,HCMC_VN_21,validation,90.86
+repro,best,Double DQN,HCMC_VN_21,validation,90.86
+repro,best,DQN,HCMC_VN_22,validation,94.8519
+repro,best,Double DQN,HCMC_VN_22,validation,94.8519
+repro,best,DQN,HCMC_VN_23,validation,77.6112
+repro,best,Double DQN,HCMC_VN_23,validation,77.6112
+repro,best,DQN,HCMC_VN_24,validation,108.1609
+repro,best,Double DQN,HCMC_VN_24,validation,108.1609
+repro,best,DQN,HCMC_VN_25,test,76.9676
+repro,best,Double DQN,HCMC_VN_25,test,76.9676
+repro,best,DQN,HCMC_VN_26,test,119.75
+repro,best,Double DQN,HCMC_VN_26,test,119.75
+repro,best,DQN,HCMC_VN_27,test,117.9677
+repro,best,Double DQN,HCMC_VN_27,test,117.9677
+repro,best,DQN,HCMC_VN_28,test,119.1364
+repro,best,Double DQN,HCMC_VN_28,test,119.1364
+repro,best,DQN,HCMC_VN_29,test,101.154
+repro,best,Double DQN,HCMC_VN_29,test,101.154
+repro,best,DQN,HCMC_VN_30,test,101.9556
+repro,best,Double DQN,HCMC_VN_30,test,101.9556
+repro,final,DQN,HCMC_VN_01,train,86.5022
+repro,final,Double DQN,HCMC_VN_01,train,86.5022
+repro,final,DQN,HCMC_VN_02,train,107.0208
+repro,final,Double DQN,HCMC_VN_02,train,107.0208
+repro,final,DQN,HCMC_VN_03,train,109.5098
+repro,final,Double DQN,HCMC_VN_03,train,110.7606
+repro,final,DQN,HCMC_VN_04,train,112.2965
+repro,final,Double DQN,HCMC_VN_04,train,112.2965
+repro,final,DQN,HCMC_VN_05,train,132.2715
+repro,final,Double DQN,HCMC_VN_05,train,132.2715
+repro,final,DQN,HCMC_VN_06,train,92.9382
+repro,final,Double DQN,HCMC_VN_06,train,92.9382
+repro,final,DQN,HCMC_VN_07,train,99.0845
+repro,final,Double DQN,HCMC_VN_07,train,99.0845
+repro,final,DQN,HCMC_VN_08,train,114.7088
+repro,final,Double DQN,HCMC_VN_08,train,114.7088
+repro,final,DQN,HCMC_VN_09,train,97.696
+repro,final,Double DQN,HCMC_VN_09,train,97.696
+repro,final,DQN,HCMC_VN_10,train,117.1453
+repro,final,Double DQN,HCMC_VN_10,train,117.1453
+repro,final,DQN,HCMC_VN_11,train,103.2212
+repro,final,Double DQN,HCMC_VN_11,train,103.2212
+repro,final,DQN,HCMC_VN_12,train,117.7065
+repro,final,Double DQN,HCMC_VN_12,train,117.7065
+repro,final,DQN,HCMC_VN_13,train,103.9928
+repro,final,Double DQN,HCMC_VN_13,train,103.9928
+repro,final,DQN,HCMC_VN_14,train,102.8351
+repro,final,Double DQN,HCMC_VN_14,train,102.8351
+repro,final,DQN,HCMC_VN_15,train,114.9985
+repro,final,Double DQN,HCMC_VN_15,train,114.9985
+repro,final,DQN,HCMC_VN_16,train,106.89
+repro,final,Double DQN,HCMC_VN_16,train,106.89
+repro,final,DQN,HCMC_VN_17,train,101.0364
+repro,final,Double DQN,HCMC_VN_17,train,101.0364
+repro,final,DQN,HCMC_VN_18,train,83.3857
+repro,final,Double DQN,HCMC_VN_18,train,83.3857
+repro,final,DQN,HCMC_VN_19,train,107.4375
+repro,final,Double DQN,HCMC_VN_19,train,107.4375
+repro,final,DQN,HCMC_VN_20,train,94.8163
+repro,final,Double DQN,HCMC_VN_20,train,94.0208
+repro,final,DQN,HCMC_VN_21,validation,90.86
+repro,final,Double DQN,HCMC_VN_21,validation,90.86
+repro,final,DQN,HCMC_VN_22,validation,94.8519
+repro,final,Double DQN,HCMC_VN_22,validation,94.8519
+repro,final,DQN,HCMC_VN_23,validation,77.6112
+repro,final,Double DQN,HCMC_VN_23,validation,77.6112
+repro,final,DQN,HCMC_VN_24,validation,108.1609
+repro,final,Double DQN,HCMC_VN_24,validation,108.1609
+repro,final,DQN,HCMC_VN_25,test,76.9676
+repro,final,Double DQN,HCMC_VN_25,test,76.9676
+repro,final,DQN,HCMC_VN_26,test,119.75
+repro,final,Double DQN,HCMC_VN_26,test,119.75
+repro,final,DQN,HCMC_VN_27,test,117.9677
+repro,final,Double DQN,HCMC_VN_27,test,117.9677
+repro,final,DQN,HCMC_VN_28,test,119.1364
+repro,final,Double DQN,HCMC_VN_28,test,119.1364
+repro,final,DQN,HCMC_VN_29,test,100.3151
+repro,final,Double DQN,HCMC_VN_29,test,100.3151
+repro,final,DQN,HCMC_VN_30,test,101.9556
+repro,final,Double DQN,HCMC_VN_30,test,101.9556
+fair,best,DQN,HCMC_VN_01,train,86.5022
+fair,best,Double DQN,HCMC_VN_01,train,86.5022
+fair,best,DQN,HCMC_VN_02,train,107.0208
+fair,best,Double DQN,HCMC_VN_02,train,107.0208
+fair,best,DQN,HCMC_VN_03,train,109.0602
+fair,best,Double DQN,HCMC_VN_03,train,109.0602
+fair,best,DQN,HCMC_VN_04,train,112.2965
+fair,best,Double DQN,HCMC_VN_04,train,112.2965
+fair,best,DQN,HCMC_VN_05,train,131.8625
+fair,best,Double DQN,HCMC_VN_05,train,132.2715
+fair,best,DQN,HCMC_VN_06,train,92.9382
+fair,best,Double DQN,HCMC_VN_06,train,92.9382
+fair,best,DQN,HCMC_VN_07,train,99.0845
+fair,best,Double DQN,HCMC_VN_07,train,99.0845
+fair,best,DQN,HCMC_VN_08,train,114.7088
+fair,best,Double DQN,HCMC_VN_08,train,114.7088
+fair,best,DQN,HCMC_VN_09,train,97.696
+fair,best,Double DQN,HCMC_VN_09,train,97.696
+fair,best,DQN,HCMC_VN_10,train,117.1453
+fair,best,Double DQN,HCMC_VN_10,train,117.1453
+fair,best,DQN,HCMC_VN_11,train,103.2212
+fair,best,Double DQN,HCMC_VN_11,train,103.2212
+fair,best,DQN,HCMC_VN_12,train,117.7065
+fair,best,Double DQN,HCMC_VN_12,train,117.7065
+fair,best,DQN,HCMC_VN_13,train,105.5209
+fair,best,Double DQN,HCMC_VN_13,train,103.9928
+fair,best,DQN,HCMC_VN_14,train,102.8351
+fair,best,Double DQN,HCMC_VN_14,train,102.8351
+fair,best,DQN,HCMC_VN_15,train,115.8889
+fair,best,Double DQN,HCMC_VN_15,train,114.9985
+fair,best,DQN,HCMC_VN_16,train,109.1057
+fair,best,Double DQN,HCMC_VN_16,train,106.89
+fair,best,DQN,HCMC_VN_17,train,101.0364
+fair,best,Double DQN,HCMC_VN_17,train,101.0364
+fair,best,DQN,HCMC_VN_18,train,83.3857
+fair,best,Double DQN,HCMC_VN_18,train,83.3857
+fair,best,DQN,HCMC_VN_19,train,107.4375
+fair,best,Double DQN,HCMC_VN_19,train,107.7802
+fair,best,DQN,HCMC_VN_20,train,94.0208
+fair,best,Double DQN,HCMC_VN_20,train,94.0208
+fair,best,DQN,HCMC_VN_21,validation,90.86
+fair,best,Double DQN,HCMC_VN_21,validation,90.86
+fair,best,DQN,HCMC_VN_22,validation,94.8519
+fair,best,Double DQN,HCMC_VN_22,validation,94.8519
+fair,best,DQN,HCMC_VN_23,validation,77.6112
+fair,best,Double DQN,HCMC_VN_23,validation,77.6112
+fair,best,DQN,HCMC_VN_24,validation,108.1609
+fair,best,Double DQN,HCMC_VN_24,validation,108.1609
+fair,best,DQN,HCMC_VN_25,test,76.9676
+fair,best,Double DQN,HCMC_VN_25,test,76.9676
+fair,best,DQN,HCMC_VN_26,test,119.75
+fair,best,Double DQN,HCMC_VN_26,test,119.75
+fair,best,DQN,HCMC_VN_27,test,118.8687
+fair,best,Double DQN,HCMC_VN_27,test,117.9677
+fair,best,DQN,HCMC_VN_28,test,119.1364
+fair,best,Double DQN,HCMC_VN_28,test,119.1364
+fair,best,DQN,HCMC_VN_29,test,101.3657
+fair,best,Double DQN,HCMC_VN_29,test,100.3151
+fair,best,DQN,HCMC_VN_30,test,101.9556
+fair,best,Double DQN,HCMC_VN_30,test,101.9556
+fair,final,DQN,HCMC_VN_01,train,86.5022
+fair,final,Double DQN,HCMC_VN_01,train,86.5022
+fair,final,DQN,HCMC_VN_02,train,107.0208
+fair,final,Double DQN,HCMC_VN_02,train,107.0208
+fair,final,DQN,HCMC_VN_03,train,109.0602
+fair,final,Double DQN,HCMC_VN_03,train,109.0602
+fair,final,DQN,HCMC_VN_04,train,112.2965
+fair,final,Double DQN,HCMC_VN_04,train,112.2965
+fair,final,DQN,HCMC_VN_05,train,132.2715
+fair,final,Double DQN,HCMC_VN_05,train,132.3558
+fair,final,DQN,HCMC_VN_06,train,92.9382
+fair,final,Double DQN,HCMC_VN_06,train,92.9382
+fair,final,DQN,HCMC_VN_07,train,99.0845
+fair,final,Double DQN,HCMC_VN_07,train,99.0845
+fair,final,DQN,HCMC_VN_08,train,114.7088
+fair,final,Double DQN,HCMC_VN_08,train,114.7088
+fair,final,DQN,HCMC_VN_09,train,97.696
+fair,final,Double DQN,HCMC_VN_09,train,97.696
+fair,final,DQN,HCMC_VN_10,train,117.2422
+fair,final,Double DQN,HCMC_VN_10,train,117.1453
+fair,final,DQN,HCMC_VN_11,train,103.2212
+fair,final,Double DQN,HCMC_VN_11,train,103.2212
+fair,final,DQN,HCMC_VN_12,train,117.7065
+fair,final,Double DQN,HCMC_VN_12,train,117.7065
+fair,final,DQN,HCMC_VN_13,train,103.9928
+fair,final,Double DQN,HCMC_VN_13,train,104.8233
+fair,final,DQN,HCMC_VN_14,train,102.8351
+fair,final,Double DQN,HCMC_VN_14,train,102.8351
+fair,final,DQN,HCMC_VN_15,train,114.9985
+fair,final,Double DQN,HCMC_VN_15,train,114.9985
+fair,final,DQN,HCMC_VN_16,train,106.89
+fair,final,Double DQN,HCMC_VN_16,train,106.89
+fair,final,DQN,HCMC_VN_17,train,101.0364
+fair,final,Double DQN,HCMC_VN_17,train,101.0364
+fair,final,DQN,HCMC_VN_18,train,83.3857
+fair,final,Double DQN,HCMC_VN_18,train,83.3857
+fair,final,DQN,HCMC_VN_19,train,107.4375
+fair,final,Double DQN,HCMC_VN_19,train,107.4375
+fair,final,DQN,HCMC_VN_20,train,94.0208
+fair,final,Double DQN,HCMC_VN_20,train,94.0208
+fair,final,DQN,HCMC_VN_21,validation,90.86
+fair,final,Double DQN,HCMC_VN_21,validation,90.86
+fair,final,DQN,HCMC_VN_22,validation,94.8519
+fair,final,Double DQN,HCMC_VN_22,validation,94.8519
+fair,final,DQN,HCMC_VN_23,validation,77.6112
+fair,final,Double DQN,HCMC_VN_23,validation,77.6112
+fair,final,DQN,HCMC_VN_24,validation,108.2201
+fair,final,Double DQN,HCMC_VN_24,validation,108.1609
+fair,final,DQN,HCMC_VN_25,test,76.9676
+fair,final,Double DQN,HCMC_VN_25,test,76.9676
+fair,final,DQN,HCMC_VN_26,test,119.75
+fair,final,Double DQN,HCMC_VN_26,test,119.75
+fair,final,DQN,HCMC_VN_27,test,117.9677
+fair,final,Double DQN,HCMC_VN_27,test,117.9677
+fair,final,DQN,HCMC_VN_28,test,119.1364
+fair,final,Double DQN,HCMC_VN_28,test,119.4675
+fair,final,DQN,HCMC_VN_29,test,100.3151
+fair,final,Double DQN,HCMC_VN_29,test,101.154
+fair,final,DQN,HCMC_VN_30,test,101.9556
+fair,final,Double DQN,HCMC_VN_30,test,101.9556

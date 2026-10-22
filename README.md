@@ -1,98 +1,115 @@
-# HotWAY — Dynamic Thermal-Aware Food Delivery Optimization System
+# HotWAY — Nền Tảng Lập Lịch & Tối Ưu Tuyến Giao Hàng CVRP
 
-> **Hệ sinh thái Điều phối Giao hàng Thông minh Tối ưu Hóa Nhiệt độ Món ăn bằng Học Tăng Cường (Reinforcement Learning)**  
-> **Địa bàn thực nghiệm:** Quán Bánh Canh Gà Hàng Gòn — Xã Hàng Gòn, TP. Long Khánh, Tỉnh Đồng Nai  
-> **Đồ án môn học:** Học Tăng Cường (Reinforcement Learning) & WebGIS  
-
----
-
-## 🌟 Điểm Nhấn Sáng Tạo Cốt Lõi (Core Innovations)
-
-1. **Lõi Học Tăng Cường Bảo Toàn Nhiệt Độ (60% Trọng số Đề tài):**
-   - Giải quyết biến thể bài toán **Dynamic VRP with Time Windows and Temperature Decay (DVRP-TW-TD)**.
-   - Ứng dụng **Định luật làm nguội Newton** $T(t) = T_{\text{env}} + (T_0 - T_{\text{env}}) \cdot e^{-kt}$ đa tham số cho bánh canh gà nóng sốt, đồ khô và nước giải khát kèm 3 loại túi giữ nhiệt.
-   - Không gian hành động phân cấp (Hierarchical MDP): High-level RL Agent gom và sắp xếp thứ tự đơn, Low-level routing đường phố thực tế Hàng Gòn qua OSRM/A*.
-2. **Bộ Thuật toán Đối chứng Toàn diện (Baselines & Ablation Study):**
-   - So sánh trực tiếp RL (MaskablePPO, DQN) với Dijkstra, Greedy Nearest Neighbor và Google OR-Tools VRP.
-   - Thử nghiệm bóc tách (Ablation study) chứng minh tác động vượt trội của hàm thưởng nhiệt độ đối với chất lượng món ăn khi đến tay khách.
-3. **Nền tảng WebGIS & Real-time Platform:**
-   - Bản đồ MapLibre GL JS + deck.gl hiển thị chuyển động của shipper mượt 60 FPS.
-   - Đồng hồ đo nhiệt độ món ăn cập nhật thời gian thực qua WebSocket.
-   - Ứng dụng Shipper PWA thu thập GPS thực tế trên điện thoại hoặc giả lập kẹt xe giờ cao điểm.
-4. **Mini-game 3D Đua xe với AI ("HotWAY Rider"):**
-   - Dựng trực tiếp mesh 3D đường phố và khối nhà Hàng Gòn từ dữ liệu OpenStreetMap (Three.js / React Three Fiber + Rapier physics).
-   - Đua xe máy với "bóng ma" (Ghost AI) chạy theo đúng lộ trình RL tối ưu; tính điểm theo nhiệt độ món ăn khi về đích và tặng voucher giảm giá thật của quán.
+> **Tài liệu:** Tổng quan dự án và hướng dẫn vận hành  
+> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
+> **Ngày cập nhật:** 21/10/2026  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/docs/DECISIONS.md)
 
 ---
 
-## 📚 Bộ Tài liệu Đặc tả Hệ thống (Documentation Suite)
+## 1. Giới Thiệu Dự Án
 
-| Tài liệu | Mô tả chi tiết |
-|---|---|
-| [**PRD.md**](PRD.md) | Tài liệu Yêu cầu Sản phẩm: Bối cảnh, Chân dung người dùng, Mô hình toán học MDP, Định luật Newton, Ma trận tính năng MVP & Out-of-scope. |
-| [**TECH_ARCHITECTURE.md**](TECH_ARCHITECTURE.md) | Kiến trúc Kỹ thuật Toàn diện: Sơ đồ khối, Tech Stack (FastAPI, PostGIS, Redis, Next.js, MapLibre, SB3, Three.js), Database Schemas và WebSocket Protocol. |
-| [**PLAN.md**](PLAN.md) | Kế hoạch Thực hiện Dự án: Phân rã công việc WBS (60% RL - 25% Web - 15% Game), Quản trị rủi ro và Tiêu chí thành công (Definition of Done). |
-| [**PHASES.md**](PHASES.md) | Chi tiết 5 Giai đoạn Triển khai: Từ thu thập GIS, huấn luyện RL, xây dựng WebGIS, tích hợp hệ thống đến bảo vệ đồ án. |
-| [**ROADMAP.md**](ROADMAP.md) | Lộ trình 12 Tuần: Tiến độ chi tiết từng tuần, các mốc bàn giao sản phẩm và phân bổ công việc. |
-| [**AGENTS.md**](AGENTS.md) | Kiến trúc Đa tác tử (Multi-Agent System): Phân chia 5 Subagents chuyên biệt, hợp đồng dữ liệu và cấu trúc thư mục làm việc. |
+HotWAY là hệ thống điều phối và tối ưu hóa tuyến đường giao hàng chuẩn **Production** cho chuỗi quán ăn nóng (bếp trung tâm tại 490 Điện Biên Phủ, Bình Thạnh, TP.HCM) dựa trên mô hình toán **Capacitated Vehicle Routing Problem (CVRP)** kết hợp ràng buộc nhiệt động học Newton.
 
----
+Hệ thống tích hợp mạng lưới đường bộ có hướng thực tế từ **OpenStreetMap** qua OSMnx (**46,055 nút, 107,224 cạnh, 8,551 km đường đô thị**), dịch vụ ma trận bất đối xứng gia tốc bằng **cKDTree** ($< 0.1\text{ms}$) và thuật toán tìm kiếm đường đi ngắn nhất Dijkstra đơn nguồn.
 
-## 🤖 Hệ thống Subagents Chuyên biệt (`agents/`)
+Toàn bộ kết quả đối soát học thuật trong thư mục `rel_result/` được **tự tay sinh ra từ pipeline benchmark độc lập** (30 instances chuẩn, 5 giao thức đánh giá, 750 lượt chạy thực nghiệm), tự huấn luyện mô hình **DQN và Double DQN** với vector đặc trưng $F28$ trên PyTorch, và kiểm định bằng phép thử phi tham số **Wilcoxon Signed-Rank** kèm hiệu chỉnh **Holm-Bonferroni**.
 
-Hệ thống được chia nhánh thành 5 vai trò tác tử độc lập, mỗi vai trò có bộ quy tắc (Rules) và quy trình chuẩn (SOP Workflows) riêng:
-
-### 1. Bộ Quy tắc Hành vi (`agents/rules/`)
-- [**rl_engineer_rules.md**](agents/rules/rl_engineer_rules.md): Quy chuẩn cho `rl_researcher_engineer` (Gymnasium, SB3, Reproducibility seed, Baselines, Ablation study).
-- [**backend_engineer_rules.md**](agents/rules/backend_engineer_rules.md): Quy chuẩn cho `backend_webgis_engineer` (FastAPI async, PostGIS spatial queries, WebSocket Hub, Docker Compose).
-- [**frontend_engineer_rules.md**](agents/rules/frontend_engineer_rules.md): Quy chuẩn cho `frontend_webgis_engineer` (Next.js TypeScript, MapLibre, deck.gl, Shipper PWA, Split Dashboard).
-- [**game_engineer_rules.md**](agents/rules/game_engineer_rules.md): Quy chuẩn cho `game_simulation_engineer` (Three.js/R3F low-poly, Rapier physics, Ghost AI replay, Thermal HUD).
-- [**evaluator_lead_rules.md**](agents/rules/evaluator_lead_rules.md): Quy chuẩn cho `evaluator_architect_lead` (Gatekeeper, kiểm thử E2E, báo cáo học thuật LaTeX, slide thuyết trình).
-
-### 2. Quy trình Vận hành Chuẩn (`agents/workflows/`)
-- [**rl_experimentation_workflow.md**](agents/workflows/rl_experimentation_workflow.md): Quy trình 8 bước huấn luyện mô hình RL, TensorBoard logging và xuất file trọng số/trajectory.
-- [**fullstack_integration_workflow.md**](agents/workflows/fullstack_integration_workflow.md): Quy trình kết nối API, PostGIS, WebSocket Hub và WebGIS.
-- [**mini_game_pipeline_workflow.md**](agents/workflows/mini_game_pipeline_workflow.md): Quy trình sinh địa hình 3D từ OSM GeoJSON và tích hợp xe máy người chơi/AI Ghost.
-- [**multi_agent_collaboration_workflow.md**](agents/workflows/multi_agent_collaboration_workflow.md): Quy trình bàn giao sản phẩm qua 4 Cổng Kiểm định (Verification Gates) và giải quyết xung đột.
+**Câu chủ đạo:** *Tuyến giao hàng ngắn nhất để món còn nóng.*
 
 ---
 
-## 🚀 Cấu trúc Thư mục Dự án
+## 2. Giao Diện Người Dùng (OptimoRoute WebGIS Layout)
+
+1. **Bàn Điều Phối & Lập Kế Hoạch (Planning):** Người điều phối chọn số xe, sức chứa thùng hàng ($Q=40$), ngưỡng nhiệt độ tối thiểu ($60^\circ\text{C}$), chọn phương pháp giải và nhận tuyến đường bám sát hình học đường thật trên bản đồ MapLibre.
+2. **Strategy Lab (Nghiệm Thu Khoa Học):** Đối chiếu khoa học giữa tác tử DQN/Double DQN và các baseline theo các giao thức $A, A2, A3, B, B2$; giải thích 3 nguyên nhân cốt lõi vì sao DQN không vượt qua được baseline trên dữ liệu nghiệm thu thực tế.
+3. **Search Replay & Điều Phối Live:** Phát lại từng bước chọn toán tử của Local Search với thanh tua tốc độ $1\times, 4\times, 16\times$ và theo dõi xe mô phỏng di chuyển trên đồ thị có hướng thật.
+4. **Interactive Notebook (`notebooks/cvrp_benchmark.ipynb`):** Sổ tay Jupyter phân tích trực quan toàn diện từ cấu trúc đồ thị, phân bố khách hàng, đường cong học RL đến biểu đồ hộp so sánh chi phí và kiểm định thống kê.
+
+---
+
+## 3. Hướng Dẫn Khởi Chạy (3 Lệnh Duy Nhất)
+
+### Lệnh 1: Khởi động cơ sở hạ tầng Backend (Docker hoặc Local)
+```bash
+# Khởi chạy backend qua docker:
+docker compose up -d
+
+# Hoặc khởi chạy local development trực tiếp:
+uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+Backend FastAPI hoạt động tại `http://localhost:8000`, cung cấp tài liệu OpenAPI tại `http://localhost:8000/docs`.
+
+### Lệnh 2: Khởi chạy Giao diện Frontend (Cổng 3001)
+```bash
+cd frontend && npm run dev
+# Hoặc chạy bản build production: npm run start -- -p 3001
+```
+Giao diện mở tại `http://localhost:3001` (Cổng 3000 được bảo vệ nguyên vẹn).
+
+### Lệnh 3: Chạy toàn bộ kiểm thử tự động
+```bash
+pytest tests/ -v
+```
+*(Toàn bộ 15/15 tests thuộc 4 tầng Gate 1-5 đều PASS tuyệt đối: Geometry, Solver Feasibility, Data Consistency, Audit Trail)*.
+
+---
+
+## 4. Pipeline Dành Cho AI Data Engineer
+
+Dự án cung cấp bộ công cụ dòng lệnh hoàn chỉnh để tái tạo toàn bộ dữ liệu từ đầu:
+
+```bash
+# 1. Tải và xây dựng đồ thị OSMnx TP.HCM (46k nút, 107k cạnh, SCC 100%):
+python -m src.data.build_graph --region hcmc_compact
+
+# 2. Sinh bộ dữ liệu 30 instances chuẩn trên đường thật TP.HCM:
+python -m src.benchmark.instance_generator --region hcmc_compact
+
+# 3. Huấn luyện tác tử DQN & Double DQN trên F28 features:
+python -m src.rl.train_cvrp_rl --instances-dir data/benchmark_instances --episodes 25
+
+# 4. Chạy Benchmark 750 lượt trên 5 giao thức (A2, A, A3, B, B2):
+python -m src.benchmark.runner
+
+# 5. Thực hiện kiểm định thống kê Wilcoxon & Holm-Bonferroni:
+python -m src.benchmark.analysis
+
+# 6. Khởi động Jupyter Notebook tương tác:
+jupyter notebook notebooks/cvrp_benchmark.ipynb
+```
+
+---
+
+## 5. Cấu Trúc Thư Mục Dự Án
 
 ```
 HotWAY/
-├── PRD.md                         # Đặc tả bài toán & MDP
-├── TECH_ARCHITECTURE.md           # Kiến trúc kỹ thuật & Sơ đồ
-├── PLAN.md                        # Kế hoạch & Quản trị rủi ro
-├── PHASES.md                      # Chi tiết 5 giai đoạn triển khai
-├── ROADMAP.md                     # Lộ trình 12 tuần
-├── AGENTS.md                      # Kiến trúc Đa tác tử
-├── README.md                      # Tổng quan & Điều hướng
-│
-├── agents/                        # Cấu hình Subagents
-│   ├── rules/                     # 5 Bộ quy tắc kỹ thuật
-│   └── workflows/                 # 4 Quy trình chuẩn (SOP)
-│
-├── src/                           # Mã nguồn RL Core & Baselines
-│   ├── rl/
-│   └── baselines/
-│
-├── backend/                       # FastAPI Monolith, PostGIS & WebSocket
-├── frontend/                      # Next.js 14, MapLibre & Three.js Game
-├── data/                          # Bản đồ OSMnx & GeoJSON Hàng Gòn
-├── models/                        # Trọng số mô hình RL đã huấn luyện
-└── reports/                       # Báo cáo học thuật LaTeX & Biểu đồ
+├── config/
+│   └── site.yaml             # Nguồn sự thật duy nhất (depot, multi-region, fleet, thermal)
+├── data/
+│   ├── hcmc_compact_graph.pickle # Đồ thị TP.HCM OSMnx (46,055 nút, 107,224 cạnh)
+│   ├── hcmc_compact_graph.graphml# Định dạng GraphML tiêu chuẩn
+│   ├── hcmc_compact_roads.geojson# Dữ liệu hình học cạnh cho MapLibre (107k features)
+│   ├── binhthanh_graph.pickle    # Đồ thị thu nhỏ Bình Thạnh (legacy demo)
+│   └── benchmark_instances/      # 30 instances chuẩn hóa (HCMC_VN_01 -> HCMC_VN_30)
+├── notebooks/
+│   └── cvrp_benchmark.ipynb      # Jupyter Notebook phân tích học thuật trực quan
+├── rel_result/                   # Bộ kết quả thực nghiệm khoa học tự sinh 100%
+│   ├── raw_runs.csv              # 750 bản ghi chạy chi tiết từng bước
+│   ├── summary_by_algorithm.csv  # Bảng tổng hợp theo phương pháp (A, A2, A3, B, B2)
+│   ├── paired_comparisons.csv    # Kiểm định thống kê Wilcoxon & Holm-Bonferroni
+│   ├── per_decision_cost.csv     # Chi phí tính toán và số candidate đánh giá
+│   ├── training_curves.csv       # Đường cong học của DQN và Double DQN
+│   └── legacy_pdf_reference/     # Bản lưu trữ dữ liệu đối chứng lịch sử
+├── src/
+│   ├── data/                 # build_graph.py xây dựng mạng lưới đường có hướng OSMnx
+│   ├── services/             # road_matrix.py (cKDTree snap, Dijkstra on-demand)
+│   ├── cvrp_solver/          # problem, validator, constructive, operators, search, F28
+│   │   └── weights/          # Checkpoint trọng số PyTorch (dqn_model.pt, double_dqn_model.pt)
+│   ├── benchmark/            # instance_generator, runner, analysis
+│   └── rl/                   # train_cvrp_rl.py pipeline huấn luyện Q-Network F28
+├── backend/                  # FastAPI Monolith (/api/v1)
+├── frontend/                 # Next.js 14 WebGIS (OptimoRoute Layout, 6 màn hình)
+└── tests/                    # Bộ kiểm thử 4 tầng (Geometry D4, Solver T2, Data T3, Honesty T4)
 ```
-
----
-
-## 🌐 Đường Dẫn Truy Cập Cục Bộ (Local Services Port 3001 & 8000)
-
-> [!NOTE]
-> Để tránh xung đột với các dịch vụ đang chạy trên cổng 3000, giao diện Frontend HotWAY được cấu hình mặc định trên **Cổng 3001**.
-
-- 🍲 **Trang Đặt Món Khách Hàng:** `http://localhost:3001`
-- 📱 **Ứng Dụng Tài Xế Shipper PWA:** `http://localhost:3001/shipper`
-- 📊 **Studio Đối Chứng Khoa Học RL vs Baseline:** `http://localhost:3001/admin/comparison-studio`
-- 🎮 **Mini-Game 3D Đua Xe Với AI Ghost:** `http://localhost:3001/game/rider`
-- 📖 **Tài Liệu Swagger API Backend:** `http://localhost:8000/docs`

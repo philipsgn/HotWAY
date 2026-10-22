@@ -1,0 +1,266 @@
+"""
+Generates the publication-quality cvrp_benchmark.ipynb Jupyter Notebook
+"""
+
+import json
+from pathlib import Path
+
+
+def create_cvrp_notebook():
+    nb = {
+        "cells": [
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "# 🚚 HotWAY CVRP Production Benchmark & Statistical Analysis\n",
+                    "\n",
+                    "> **Dự án:** HotWAY v5.0 — Hệ thống giải bài toán CVRP giao đồ ăn nóng trên bản đồ TP.HCM thực tế\n",
+                    "> **Vai trò:** AI Data Engineer\n",
+                    "> **Dữ liệu:** Đồ thị OpenStreetMap TP.HCM (46,055 nút, 107,224 cạnh, 8,551 km đường)\n",
+                    "> **Mục tiêu:** Tự tay sinh dữ liệu, huấn luyện DQN/Double DQN, chạy benchmark 30 instances, và kiểm định thống kê\n"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 1. Thiết Lập Môi Trường & Thư Viện"
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "import os\n",
+                    "import sys\n",
+                    "import pickle\n",
+                    "import numpy as np\n",
+                    "import pandas as pd\n",
+                    "import matplotlib.pyplot as plt\n",
+                    "import networkx as nx\n",
+                    "import torch\n",
+                    "\n",
+                    "# Đổi thư mục làm việc về workspace root nếu cần\n",
+                    "if not os.path.exists('config/site.yaml'):\n",
+                    "    os.chdir('..')\n",
+                    "\n",
+                    "print(f\"PyTorch version: {torch.__version__}\")\n",
+                    "print(f\"CUDA Available: {torch.cuda.is_available()}\")\n",
+                    "plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')\n",
+                    "plt.rcParams['figure.figsize'] = (10, 6)\n",
+                    "plt.rcParams['font.size'] = 11"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 2. Phân Tích Cấu Trúc Đồ Thị Đường Bộ TP.HCM (OSMnx Directed Graph)\n",
+                    "Kiểm tra tính liên thông mạnh (SCC) và phân bố chiều dài các cạnh đường bộ."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "graph_path = 'data/hcmc_compact_graph.pickle'\n",
+                    "if os.path.exists(graph_path):\n",
+                    "    with open(graph_path, 'rb') as f:\n",
+                    "        G = pickle.load(f)\n",
+                    "    print(f\"[OK] Đồ thị TP.HCM loaded:\")\n",
+                    "    print(f\"  - Số nút: {G.number_of_nodes():,}\")\n",
+                    "    print(f\"  - Số cạnh có hướng: {G.number_of_edges():,}\")\n",
+                    "    print(f\"  - Liên thông mạnh (SCC): {nx.is_strongly_connected(G)}\")\n",
+                    "    \n",
+                    "    lengths = [d.get('length', 0) for _, _, d in G.edges(data=True)]\n",
+                    "    print(f\"  - Tổng chiều dài đường bộ: {sum(lengths)/1000:,.1f} km\")\n",
+                    "    print(f\"  - Chiều dài trung bình cạnh: {np.mean(lengths):.1f} m\")\n",
+                    "    \n",
+                    "    fig, ax = plt.subplots(1, 2, figsize=(14, 5))\n",
+                    "    ax[0].hist(lengths, bins=50, range=(0, 500), color='#1e88e5', edgecolor='white')\n",
+                    "    ax[0].set_title('Phân Bố Chiều Dài Cạnh Đường Bộ (0 - 500m)')\n",
+                    "    ax[0].set_xlabel('Chiều dài (m)')\n",
+                    "    ax[0].set_ylabel('Số lượng cạnh')\n",
+                    "    \n",
+                    "    degrees = [d for _, d in G.out_degree()]\n",
+                    "    ax[1].hist(degrees, bins=range(1, 8), color='#43a047', edgecolor='white', align='left')\n",
+                    "    ax[1].set_title('Phân Bố Bậc Ra (Out-Degree) Tại Các Giao Lộ')\n",
+                    "    ax[1].set_xlabel('Bậc ra (nhánh rẽ khả dĩ)')\n",
+                    "    ax[1].set_ylabel('Số lượng nút')\n",
+                    "    plt.tight_layout()\n",
+                    "    plt.show()\n",
+                    "else:\n",
+                    "    print(f\"Chưa tìm thấy {graph_path}. Vui lòng chạy build_graph trước.\")"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 3. Phân Bố Tập Benchmark 30 Instances\n",
+                    "Hiển thị tọa độ các điểm khách hàng của 30 instances phân tán trong bán kính 8km quanh Bếp Trung Tâm."
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "from src.benchmark.instance_generator import load_benchmark_instances\n",
+                    "\n",
+                    "instances = load_benchmark_instances('data/benchmark_instances')\n",
+                    "print(f\"Đã nạp {len(instances)} instances benchmark.\")\n",
+                    "\n",
+                    "if instances:\n",
+                    "    plt.figure(figsize=(9, 9))\n",
+                    "    depot = instances[0].stops[0]\n",
+                    "    plt.plot(depot.lon, depot.lat, 'r*', markersize=18, label='Bếp Trung Tâm (Depot)', zorder=5)\n",
+                    "    \n",
+                    "    colors = plt.cm.tab20(np.linspace(0, 1, min(len(instances), 20)))\n",
+                    "    for idx, inst in enumerate(instances[:10]):\n",
+                    "        cust_lats = [s.lat for s in inst.stops[1:]]\n",
+                    "        cust_lons = [s.lon for s in inst.stops[1:]]\n",
+                    "        plt.scatter(cust_lons, cust_lats, color=colors[idx % len(colors)], alpha=0.6, s=35, label=f'{inst.name} ({len(cust_lats)} đơn)')\n",
+                    "    \n",
+                    "    plt.title('Bản Đồ Phân Bố Khách Hàng (10 Instances Tiêu Biểu TP.HCM)')\n",
+                    "    plt.xlabel('Kinh độ (Longitude)')\n",
+                    "    plt.ylabel('Vĩ độ (Latitude)')\n",
+                    "    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=9)\n",
+                    "    plt.grid(True, linestyle='--', alpha=0.5)\n",
+                    "    plt.tight_layout()\n",
+                    "    plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 4. Quá Trình Huấn Luyện RL (DQN & Double DQN Loss & Reward Curves)"
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "curves_path = 'rel_result/training_curves.csv'\n",
+                    "if os.path.exists(curves_path):\n",
+                    "    df_curves = pd.read_csv(curves_path)\n",
+                    "    fig, ax = plt.subplots(1, 2, figsize=(14, 5))\n",
+                    "    \n",
+                    "    for algo, group in df_curves.groupby('algorithm'):\n",
+                    "        ax[0].plot(group['episode'], group['reward'], label=algo.upper(), marker='o', markersize=4)\n",
+                    "        ax[1].plot(group['episode'], group['improvement_km'], label=algo.upper(), marker='s', markersize=4)\n",
+                    "        \n",
+                    "    ax[0].set_title('Đường Cong Phần Thưởng (Episode Reward)')\n",
+                    "    ax[0].set_xlabel('Episode')\n",
+                    "    ax[0].set_ylabel('Tổng Reward')\n",
+                    "    ax[0].legend()\n",
+                    "    \n",
+                    "    ax[1].set_title('Quãng Đường Tối Ưu Được (km Saved)')\n",
+                    "    ax[1].set_xlabel('Episode')\n",
+                    "    ax[1].set_ylabel('km Tiết Kiệm Được')\n",
+                    "    ax[1].legend()\n",
+                    "    plt.tight_layout()\n",
+                    "    plt.show()\n",
+                    "else:\n",
+                    "    print(\"Chưa có training_curves.csv. Sẽ hiển thị sau khi chạy train_cvrp_rl.\")"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 5. Kết Quả Benchmark Giữa Các Chiến Lược (Summary Table & Boxplot)"
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "summary_path = 'rel_result/summary_by_algorithm.csv'\n",
+                    "raw_path = 'rel_result/raw_runs.csv'\n",
+                    "\n",
+                    "if os.path.exists(summary_path):\n",
+                    "    df_sum = pd.read_csv(summary_path)\n",
+                    "    display(df_sum[['protocol', 'strategy', 'mean_cost_km', 'std_cost_km', 'mean_runtime_ms', 'gap_to_best_pct', 'feasible_pct']])\n",
+                    "\n",
+                    "if os.path.exists(raw_path):\n",
+                    "    df_raw = pd.read_csv(raw_path)\n",
+                    "    df_pA = df_raw[df_raw['protocol'] == 'A_realtime']\n",
+                    "    \n",
+                    "    plt.figure(figsize=(10, 6))\n",
+                    "    strategies = df_pA['strategy'].unique()\n",
+                    "    data = [df_pA[df_pA['strategy'] == s]['cost_km'].values for s in strategies]\n",
+                    "    \n",
+                    "    bplot = plt.boxplot(data, tick_labels=strategies, patch_artist=True, medianprops=dict(color='black', linewidth=1.5))\n",
+                    "    colors = ['#90caf9', '#ef9a9a', '#a5d6a7', '#ffe082', '#b39ddb', '#80deea']\n",
+                    "    for patch, col in zip(bplot['boxes'], colors):\n",
+                    "        patch.set_facecolor(col)\n",
+                    "        \n",
+                    "    plt.title('So Sánh Tổng Chi Phí Tuyến (km) — Giao Thức A (Realtime 100 bước)')\n",
+                    "    plt.ylabel('Tổng chiều dài tuyến (km)')\n",
+                    "    plt.xticks(rotation=20)\n",
+                    "    plt.tight_layout()\n",
+                    "    plt.show()"
+                ]
+            },
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": [
+                    "## 6. Kiểm Định Thống Kê Wilcoxon & Hiệu Chỉnh Holm-Bonferroni"
+                ]
+            },
+            {
+                "cell_type": "code",
+                "execution_count": None,
+                "metadata": {},
+                "outputs": [],
+                "source": [
+                    "stat_path = 'rel_result/statistical_tests.csv'\n",
+                    "if os.path.exists(stat_path):\n",
+                    "    df_stat = pd.read_csv(stat_path)\n",
+                    "    display(df_stat[['protocol', 'strategy', 'baseline', 'pct_improvement', 'wilcoxon_stat', 'raw_p_value', 'adj_p_holm', 'significant_05']])\n",
+                    "else:\n",
+                    "    print(\"Chưa có statistical_tests.csv. Vui lòng chạy analysis.py sau khi hoàn tất benchmark.\")"
+                ]
+            }
+        ],
+        "metadata": {
+            "kernelspec": {
+                "display_name": "Python 3",
+                "language": "python",
+                "name": "python3"
+            },
+            "language_info": {
+                "codemirror_mode": {"name": "ipython", "version": 3},
+                "file_extension": ".py",
+                "mimetype": "text/x-python",
+                "name": "python",
+                "nbformat": 4,
+                "nbformat_minor": 2
+            }
+        },
+        "nbformat": 4,
+        "nbformat_minor": 2
+    }
+
+    out_file = Path("notebooks/cvrp_benchmark.ipynb")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_file, "w", encoding="utf-8") as f:
+        json.dump(nb, f, indent=2, ensure_ascii=False)
+    print(f"Created notebook at {out_file}")
+
+
+if __name__ == "__main__":
+    create_cvrp_notebook()

@@ -1,0 +1,198 @@
+{
+  "operators": [
+    "two_opt",
+    "intra_relocate",
+    "inter_relocate",
+    "inter_swap"
+  ],
+  "summary": {
+    "DQN": {
+      "mean_q": [
+        -0.0986,
+        -0.1308,
+        -0.116,
+        -0.0667
+      ],
+      "argmax_counts": {
+        "two_opt": 0,
+        "intra_relocate": 0,
+        "inter_relocate": 0,
+        "inter_swap": 6
+      },
+      "mean_q_spread": 0.0642
+    },
+    "Double DQN": {
+      "mean_q": [
+        9.3643,
+        9.1837,
+        8.4206,
+        5.6102
+      ],
+      "argmax_counts": {
+        "two_opt": 4,
+        "intra_relocate": 2,
+        "inter_relocate": 0,
+        "inter_swap": 0
+      },
+      "mean_q_spread": 3.7752
+    }
+  },
+  "records": [
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_25",
+      "q_values": [
+        -0.1052,
+        -0.131,
+        -0.1318,
+        -0.0894
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0424
+    },
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_26",
+      "q_values": [
+        -0.1037,
+        -0.134,
+        -0.1171,
+        -0.0805
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0535
+    },
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_27",
+      "q_values": [
+        -0.0956,
+        -0.1308,
+        -0.1166,
+        -0.0577
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0731
+    },
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_28",
+      "q_values": [
+        -0.0975,
+        -0.1361,
+        -0.1107,
+        -0.0635
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0725
+    },
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_29",
+      "q_values": [
+        -0.0966,
+        -0.1294,
+        -0.1103,
+        -0.0499
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0795
+    },
+    {
+      "algorithm": "DQN",
+      "instance_id": "HCMC_VN_30",
+      "q_values": [
+        -0.0928,
+        -0.1232,
+        -0.1095,
+        -0.0589
+      ],
+      "argmax": 3,
+      "argmax_operator": "inter_swap",
+      "q_spread": 0.0644
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_25",
+      "q_values": [
+        9.0519,
+        9.1621,
+        8.2088,
+        5.4562
+      ],
+      "argmax": 1,
+      "argmax_operator": "intra_relocate",
+      "q_spread": 3.706
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_26",
+      "q_values": [
+        8.2096,
+        8.2254,
+        7.3143,
+        4.791
+      ],
+      "argmax": 1,
+      "argmax_operator": "intra_relocate",
+      "q_spread": 3.4344
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_27",
+      "q_values": [
+        10.5717,
+        10.15,
+        9.5389,
+        6.4085
+      ],
+      "argmax": 0,
+      "argmax_operator": "two_opt",
+      "q_spread": 4.1631
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_28",
+      "q_values": [
+        9.3559,
+        9.0747,
+        8.3484,
+        5.541
+      ],
+      "argmax": 0,
+      "argmax_operator": "two_opt",
+      "q_spread": 3.8149
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_29",
+      "q_values": [
+        9.2187,
+        8.9971,
+        8.3038,
+        5.5756
+      ],
+      "argmax": 0,
+      "argmax_operator": "two_opt",
+      "q_spread": 3.6431
+    },
+    {
+      "algorithm": "Double DQN",
+      "instance_id": "HCMC_VN_30",
+      "q_values": [
+        9.7782,
+        9.4927,
+        8.8093,
+        5.8887
+      ],
+      "argmax": 0,
+      "argmax_operator": "two_opt",
+      "q_spread": 3.8895
+    }
+  ]
+}

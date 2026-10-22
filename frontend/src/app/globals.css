@@ -1,19 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "maplibre-gl/dist/maplibre-gl.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 15, 23, 42;
-  --background-start-rgb: 248, 250, 252;
-  --background-end-rgb: 255, 255, 255;
+  --bg-app: #FBF6EA;
+  --bg-surface: #FFFDF7;
+  --bg-sunken: #F3EAD6;
+  --bg-subtle: #EFE4CD;
+  --border: #E6D9BC;
+  --text-primary: #3B2A1A;
+  --text-secondary: #8A7355;
+  --brand-gold: #E0A83A;
+  --brand-gold-hover: #C98F22;
+  --brand-gold-pressed: #B07A18;
+  --brand-gold-soft: #FBE9B7;
+  --brand-brown: #8B5E34;
+  --status-success: #4E8F5A;
+  --status-warning: #D98A1F;
+  --status-danger: #C2493D;
+  --shadow-brown: rgba(59, 42, 26, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom warm scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-sunken);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* MapLibre custom popup styling in warm tone */
+.maplibregl-popup-content {
+  background: #FFFDF7 !important;
+  color: #3B2A1A !important;
+  border: 1px solid #E6D9BC !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 25px -4px rgba(59, 42, 26, 0.15) !important;
+  padding: 12px 14px !important;
+  font-family: 'Be Vietnam Pro', sans-serif !important;
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: #FFFDF7 !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: #FFFDF7 !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #FFFDF7 !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #FFFDF7 !important;
+}
+
+.maplibregl-popup-close-button {
+  font-size: 16px !important;
+  color: #8A7355 !important;
+  padding: 4px 8px !important;
+}
+.maplibregl-popup-close-button:hover {
+  color: #3B2A1A !important;
+  background: transparent !important;
+}
+
+/* Map controls */
+.maplibregl-ctrl-group {
+  background: #FFFDF7 !important;
+  border: 1px solid #E6D9BC !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(59, 42, 26, 0.08) !important;
+  overflow: hidden !important;
+}
+
+.maplibregl-ctrl-group button {
+  border-bottom: 1px solid #E6D9BC !important;
+}
+
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

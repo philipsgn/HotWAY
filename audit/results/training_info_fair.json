@@ -1,0 +1,28 @@
+[
+  {
+    "algorithm": "dqn",
+    "tag": "fair",
+    "episodes": 150,
+    "steps_per_episode": 100,
+    "max_candidates": 128,
+    "seed": 2027,
+    "best_val_cost_km": 92.871,
+    "best_episode": 1,
+    "best_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\fair_dqn_best.pt",
+    "final_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\fair_dqn_final.pt",
+    "seconds": 88.0
+  },
+  {
+    "algorithm": "double_dqn",
+    "tag": "fair",
+    "episodes": 150,
+    "steps_per_episode": 100,
+    "max_candidates": 128,
+    "seed": 2027,
+    "best_val_cost_km": 92.871,
+    "best_episode": 10,
+    "best_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\fair_double_dqn_best.pt",
+    "final_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\fair_double_dqn_final.pt",
+    "seconds": 111.9
+  }
+]

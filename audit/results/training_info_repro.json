@@ -1,0 +1,28 @@
+[
+  {
+    "algorithm": "dqn",
+    "tag": "repro",
+    "episodes": 30,
+    "steps_per_episode": 50,
+    "max_candidates": 64,
+    "seed": 2027,
+    "best_val_cost_km": 92.871,
+    "best_episode": 2,
+    "best_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\repro_dqn_best.pt",
+    "final_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\repro_dqn_final.pt",
+    "seconds": 27.1
+  },
+  {
+    "algorithm": "double_dqn",
+    "tag": "repro",
+    "episodes": 30,
+    "steps_per_episode": 50,
+    "max_candidates": 64,
+    "seed": 2027,
+    "best_val_cost_km": 92.871,
+    "best_episode": 2,
+    "best_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\repro_double_dqn_best.pt",
+    "final_weights": "C:\\Users\\TanPhat\\Documents\\AI_E\\HotWAY\\audit\\weights\\repro_double_dqn_final.pt",
+    "seconds": 25.0
+  }
+]

@@ -1,0 +1,92 @@
+# Cấu hình địa điểm và thông số vận hành duy nhất (Single Source of Truth)
+# v5.0 — Multi-Region Production Edition
+
+site:
+  name: "Hàng Gòn Quán"
+  tagline: "Tuyến giao hàng ngắn nhất để món còn nóng."
+  address: "490 Điện Biên Phủ, Phường 21, Bình Thạnh, TP. Hồ Chí Minh"
+  depot:
+    lat: 10.8012
+    lon: 106.7145
+    name: "Hàng Gòn Quán - Bếp Trung Tâm"
+  timezone: "Asia/Ho_Chi_Minh"
+  snap_max_distance_meters: 60.0
+
+# Cấu hình đa vùng đồ thị đường bộ
+regions:
+  binhthanh:
+    description: "Khu vực Bình Thạnh (demo nhỏ, 38 nút hand-crafted)"
+    mode: "legacy"               # Dùng đồ thị hand-crafted cũ
+    depot: [10.8012, 106.7145]
+    radius_km: 3.5
+    graph_file: "data/binhthanh_graph.pickle"
+    roads_geojson: "data/binhthanh_roads.geojson"
+
+  hcmc:
+    description: "Toàn TP.HCM (Production, OSMnx full graph)"
+    mode: "osmnx"                # Tải đồ thị thật từ OpenStreetMap
+    depot: [10.8012, 106.7145]
+    place_name: "Ho Chi Minh City, Vietnam"
+    network_type: "drive"        # Chỉ đường cho xe cơ giới
+    graph_file: "data/hcmc_graph.pickle"
+    roads_geojson: "data/hcmc_roads.geojson"
+    graphml_file: "data/hcmc_graph.graphml"
+
+  hcmc_compact:
+    description: "TP.HCM lõi (bán kính 10km từ depot, cân bằng kích thước/hiệu năng)"
+    mode: "osmnx"
+    depot: [10.8012, 106.7145]
+    radius_km: 10.0
+    network_type: "drive"
+    graph_file: "data/hcmc_compact_graph.pickle"
+    roads_geojson: "data/hcmc_compact_roads.geojson"
+    graphml_file: "data/hcmc_compact_graph.graphml"
+
+default_region: "hcmc_compact"   # Mặc định dùng vùng compact cho hiệu năng tốt
+
+# Tham số phương tiện & vận hành CVRP
+fleet:
+  vehicle_capacity: 40      # Sức chứa đồng nhất (tô/bát)
+  default_vehicles: 5       # Số xe tối đa mặc định
+  avg_speed_kmh: 30.0       # Tốc độ di chuyển trung bình trong đô thị
+  service_time_minutes: 3.0 # Thời gian dừng giao mỗi đơn
+
+# Tham số nhiệt động học Newton (Tham số giả định, cho phép hiệu chỉnh)
+thermal:
+  T0_celsius: 85.0          # Nhiệt độ ban đầu khi đóng gói xuất phát (°C)
+  Tenv_celsius: 30.0        # Nhiệt độ môi trường đô thị Sài Gòn (°C)
+  k_cooling_rate: 0.020     # Hệ số mất nhiệt túi giữ nhiệt (min^-1)
+  min_delivery_temp: 60.0   # Ngưỡng nhiệt độ tối thiểu khi đến tay khách (°C)
+
+# Tham số thuật toán & tìm kiếm cục bộ (Local Search)
+algorithm:
+  candidate_sample_size: 128
+  feature_set: "F28"
+  feature_patience: 30
+  max_actions: 100
+  ortools_time_limit_seconds: 5.0
+  dqn_timeout_seconds: 10.0
+
+# Cấu hình benchmark pipeline
+benchmark:
+  n_instances: 30              # Số instance test
+  customers_range: [15, 25]    # Số khách hàng mỗi instance
+  demand_range: [1, 8]         # Demand ngẫu nhiên mỗi khách
+  base_seed: 2026              # Seed cơ sở cho reproducibility
+  customer_radius_km: 8.0      # Bán kính scatter khách hàng quanh depot
+  protocols:
+    A_realtime:
+      description: "Realtime: 100 steps, 128 candidates"
+      max_steps: 100
+      max_candidates: 128
+      time_limit_sec: null
+    B_budget:
+      description: "Budget: time-limited 0.1s"
+      max_steps: 10000
+      max_candidates: 128
+      time_limit_sec: 0.1
+    C_full:
+      description: "Full: 5000 steps, 256 candidates"
+      max_steps: 5000
+      max_candidates: 256
+      time_limit_sec: 1.0

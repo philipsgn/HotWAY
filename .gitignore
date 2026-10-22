@@ -19,6 +19,7 @@ out/
 
 # Generated agent workspace
 /.agents/
+/cache/
 
 # Temporary test artifact
 /models/test_zip.tmp

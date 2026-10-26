@@ -1,9 +1,9 @@
 # Bản Thiết Kế Kiến Trúc Hệ Thống (ARCHITECTURE.MD) — HotWAY
 
-> **Tài liệu:** Thiết kế kiến trúc tổng thể, luồng dữ liệu & hợp đồng API  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/docs/DECISIONS.md)
+> **Tài liệu:** Thiết kế kiến trúc tổng thể, phân rã module, luồng dữ liệu & kiểm định chất lượng  
+> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
 
@@ -11,117 +11,89 @@
 
 ```mermaid
 flowchart TD
-    Config["config/site.yaml\n(Nguồn sự thật duy nhất: multi-region)"] --> GraphBuilder["src/data/build_graph.py\n(Đồ thị có hướng OSMnx & SCC)"]
-    GraphBuilder --> GraphArtifacts["data/hcmc_compact_graph.pickle (46k nút)\ndata/hcmc_compact_roads.geojson (107k cạnh)"]
-    
-    GraphArtifacts --> MatrixService["src/services/road_matrix.py\n(cKDTree Snap O(log N) & Dijkstra On-Demand)"]
-    
-    Gen["src/benchmark/instance_generator.py"] --> Instances["data/benchmark_instances/*.pickle\n(30 instances chuẩn hóa)"]
-    Instances --> Runner["src/benchmark/runner.py\n(750 lượt chạy qua 5 giao thức)"]
-    
-    Orders["Danh sách đơn hàng thực tế\n(Tọa độ WGS84 + Số tô)"] --> MatrixService
-    MatrixService --> CostMatrix["Ma trận khoảng cách C_ij\nMa trận thời gian t_ij\nHình học chặng leg_geometries"]
-    
-    CostMatrix --> Solver["src/cvrp_solver/search.py\n(CW khởi tạo + 4 Toán tử Local Search)"]
-    Trainer["src/rl/train_cvrp_rl.py"] --> Weights["src/cvrp_solver/weights/*.pt\n(PyTorch DQN / Double DQN)"]
-    Weights -.->|Tải trọng số đã train| Solver
-    
-    Solver --> Validator["src/cvrp_solver/validator.py\n(Kiểm tra độc lập 100% khả thi)"]
-    Validator --> Solution["CVRPSolution\n(Tuyến xe, ETA, Nhiệt độ Newton, Search Trace)"]
-    
-    Solution --> FastAPI["backend/app/api/cvrp_routing.py\nFastAPI Monolith (:8000)"]
-    Runner --> BenchmarkCSV["rel_result/*.csv\n(Bộ kết quả thực nghiệm tự sinh)"]
-    BenchmarkCSV --> FastAPI
-    
-    FastAPI -->|REST /api/v1| NextUI["frontend/\nNext.js 14 WebGIS (:3001)"]
+    subgraph S1["Tầng Dữ Liệu & Đồ Thị Đô Thị TP.HCM"]
+        OSM["Đồ thị OpenStreetMap TP.HCM (46k nút)"]
+        SubExt["src/graph/subgraph_extractor.py\n(Trích xuất đồ thị con Bình Thạnh 12 nút SCC)"]
+        AddrGen["src/graph/address_generator.py\n(Sinh 401 địa chỉ chuẩn & 151 địa chỉ OOD)"]
+        MatPre["Precomputed Matrices (.npz)\n(Ma trận cự ly & thời gian di chuyển)"]
+        
+        OSM --> SubExt --> SubGraph["data/binhthanh_routing_subgraph.pickle"]
+        OSM --> AddrGen --> AddrPools["data/address_pool_standard.json\ndata/address_pool_ood.json"]
+        AddrPools --> MatPre
+    end
+
+    subgraph S2["Môi Trường Mô Phỏng Gymnasium (src/envs/)"]
+        R_Env["GĐ1: RoutingEnv\n(Định tuyến ngẫu nhiên A->B trên đồ thị con)"]
+        D_Env["GĐ2: DispatchEnv (Semi-MDP)\n(Hàng đợi đơn hàng, FSM 5 trạng thái, Tích phân Lebesgue)"]
+        Router["src/routing/permutation_router.py\n(Gom cụm đường vòng D_detour <= 1.5km & hoán vị m! giao hàng)"]
+        
+        SubGraph --> R_Env
+        MatPre --> D_Env
+        D_Env <--> Router
+    end
+
+    subgraph S3["Tầng Thuật Toán & Tác Tử Ra Quyết Định"]
+        DP["src/envs/exact_dp.py\n(Quy hoạch động chính xác - Ground Truth GĐ1)"]
+        RuleBase["src/baselines/rule_baselines.py\n(Immediate, Periodic, BatchSize, AgeThreshold)"]
+        Prescient["src/baselines/prescient_solver.py\n(Tham chiếu Offline biết trước tương lai)"]
+        RL_Agents["src/agents/\n(DQN, Double DQN, PPO, Tabular Q)"]
+        
+        R_Env --> DP
+        D_Env --> RuleBase
+        D_Env --> Prescient
+        D_Env --> RL_Agents
+    end
+
+    subgraph S4["Tầng Đánh Giá, Kiểm Định & Đối Soát Khoa Học"]
+        TrainScript["scripts/train_agents.py\n(Huấn luyện >= 5 seeds, Ablation, Sensitivity)"]
+        EvalScript["scripts/compute_statistical_tests.py\n(Wilcoxon Signed-Rank & Holm-Bonferroni)"]
+        DocScript["scripts/make_report_tables.py\n(Sinh bảng Markdown & registry JSON)"]
+        TestFidelity["tests/test_report_fidelity.py\n(Kiểm thử T3: sai số số liệu < 1e-9)"]
+        
+        RL_Agents --> TrainScript --> Results["results/training/\n(Checkpoints .pt, Curves, Runs CSV)"]
+        RuleBase --> BaseResults["results/baselines/\n(Summary, Best configs)"]
+        Results & BaseResults --> EvalScript
+        EvalScript --> DocScript --> Registry["results/all_metrics_registry.json"]
+        Registry --> TestFidelity
+    end
+
+    subgraph S5["Thí Nghiệm Khởi Đầu E0 (Legacy CVRP - Bảo Tồn)"]
+        OldSolver["src/cvrp_solver/\n(Clarke-Wright + 4 toán tử Local Search)"]
+        OldResults["rel_result/*.csv\n(30 instances, Random beat DQN p=0.0072)"]
+    end
 ```
 
 ---
 
-## 2. Luồng Dữ Liệu Xử Lý Đầu Cuối (End-to-End Pipeline)
+## 2. Phân Tích Các Thành Phần Cốt Lõi
 
-1. **Khởi tạo đồ thị (`src/data/build_graph.py`):**
-   - Đọc cấu hình vùng từ `config/site.yaml`. Hỗ trợ chế độ `hcmc_compact` (bán kính 10km quanh Bếp Trung Tâm) và `binhthanh` (legacy).
-   - Tải mạng lưới đường cơ giới `drive` từ OpenStreetMap qua OSMnx, chuẩn hóa hình học cạnh thành toạ độ `[lat, lon]`, bổ sung tốc độ quy chuẩn theo phân cấp đường (motorway: 80km/h $\dots$ residential: 25km/h).
-   - Trích xuất thành phần liên thông mạnh lớn nhất (**SCC**) bảo đảm đồ thị liên thông 100% (**46,055 nút**, **107,224 cạnh**, **8,551 km đường**).
-2. **Xử lý không gian & Ma trận đường (`src/services/road_matrix.py`):**
-   - Xây dựng chỉ mục không gian **cKDTree** chiếu theo hệ tọa độ phẳng cực bộ, cho phép snap bất kỳ tọa độ GPS nào vào nút đường gần nhất trong thời gian $< 0.1\text{ ms}$ (độ phức tạp $O(\log N)$ thay vì quét tuyến tính).
-   - Tính toán ma trận chi phí bất đối xứng $C_{ij}$ và $t_{ij}$ bằng thuật toán Dijkstra đơn nguồn (`nx.single_source_dijkstra`) chỉ $n$ lần cho $n$ điểm dừng thay vì $n^2$ lần.
-   - Trích xuất mảng hình học chi tiết từng chặng `leg_geometries: [[[lat, lon], ...], ...]` bám sát 100% tim đường thực.
-3. **Giải bài toán CVRP & Local Search (`src/cvrp_solver/`):**
-   - Khởi tạo nghiệm ban đầu bằng Clarke-Wright Savings trên ma trận bất đối xứng.
-   - Vòng lặp cải tiến với 4 toán tử Local Search (`two_opt`, `intra_relocate`, `inter_relocate`, `inter_swap`).
-   - Tác tử RL (DQN và Double DQN) sử dụng mạng MLP ($28 \to 128 \to 128 \to 4$) tải trọng số thực tế đã huấn luyện từ `src/cvrp_solver/weights/` để đưa ra quyết định dựa trên vector trạng thái $F28$.
-   - Tính toán suy giảm nhiệt độ Newton dọc theo tuyến đường: $T(t) = T_{\text{env}} + (T_0 - T_{\text{env}}) e^{-kt}$.
-   - Ghi lại vết tìm kiếm (`search_trace`) phục vụ màn hình Search Replay.
-4. **Phục vụ API & Hiển thị (`backend/` & `frontend/`):**
-   - FastAPI cung cấp các endpoint chuẩn `/api/v1/scenarios`, `/api/v1/plans`, `/api/v1/strategies/benchmark`, `/api/v1/sim/{plan_id}`.
-   - Frontend Next.js hiển thị giao diện 3 cột OptimoRoute, cập nhật tuyến đường và trực quan hoá viễn trắc.
+### 2.1. Quản lý trạng thái đơn hàng (5-State Order FSM)
+Mỗi đơn hàng trong `DispatchEnv` chuyển trạng thái nghiêm ngặt theo máy hữu hạn trạng thái:
+$$\text{Placed} \xrightarrow{t_{\text{cook\_start}}} \text{Cooking} \xrightarrow{t_{\text{ready}}} \text{Ready} \xrightarrow{t_{\text{dispatch}}} \text{In-Transit} \xrightarrow{t_{\text{delivered}}} \text{Delivered}$$
+- Chỉ những đơn hàng có trạng thái **`Ready`** mới được phép đưa lên xe máy của tài xế.
+- Mọi đơn hàng đã đặt nhưng chưa được giao đều đóng góp vào số lượng đơn chờ $N_{\text{active}}(t)$ tại thời điểm $t$.
 
----
+### 2.2. Bảo toàn phần thưởng Bellman theo Tích phân Lebesgue
+Để bảo đảm tính tương đương toán học tuyệt đối giữa mục tiêu tối thiểu hóa tổng thời gian chờ của khách hàng và tối đa hóa phần thưởng tích lũy trong Semi-MDP:
+$$R_{\text{episode}} = \sum_{k=0}^{K-1} r_k = -\sum_{i=1}^{N} W_i$$
+Tại mỗi bước quyết định từ thời điểm $t_k$ đến $t_{k+1}$, phần thưởng được tính bằng tích phân diện tích chồng lấn thực tế của từng đơn hàng:
+$$r_k = -\sum_{i \in \text{Orders}} \max\left(0, \min(t_{k+1}, t_{\text{delivered}, i}) - \max(t_k, t_{\text{placed}, i})\right)$$
+Công thức này loại bỏ hoàn toàn sai số rời rạc hóa hình chữ nhật (Euler), đưa sai số số học về cấp độ máy tính ($< 10^{-11}$).
 
-## 3. Hợp Đồng API Chuẩn (JSON Schema)
-
-### 3.1. `POST /api/v1/plans`
-**Request:**
-```json
-{
-  "scenario_id": "scen_01ca60a1",
-  "strategy": "best",
-  "max_steps": 100,
-  "max_candidates": 128,
-  "thermal": {
-    "t0_c": 85.0,
-    "tenv_c": 30.0,
-    "k_rate": 0.020,
-    "min_temp": 60.0
-  }
-}
-```
-
-**Response mẫu (trích xuất từ hệ thống đang chạy):**
-```json
-{
-  "plan_id": "plan_cee82463",
-  "scenario_id": "scen_01ca60a1",
-  "strategy_requested": "best",
-  "strategy_used": "double_dqn",
-  "fallback": false,
-  "fallback_reason": null,
-  "runtime_sec": 0.145,
-  "metrics": {
-    "total_distance_km": 103.73,
-    "total_duration_min": 207.5,
-    "cw_initial_distance_km": 105.92,
-    "improvement_pct": 2.07,
-    "vehicles_used": 5,
-    "thermal_violations_count": 0,
-    "is_feasible": true
-  },
-  "routes": [
-    {
-      "vehicle_id": 1,
-      "distance_km": 21.48,
-      "duration_min": 42.8,
-      "total_load": 38,
-      "thermal_violations_count": 0,
-      "customer_indices": [1, 7, 8, 9],
-      "leg_geometries": [[[10.8012, 106.7145], [10.801, 106.715]]]
-    }
-  ]
-}
-```
+### 2.3. Bộ định tuyến hoán vị vét cạn (Permutation Router)
+Đối với mỗi hành động xuất phát với $m$ đơn hàng ($m \in \{1..4\}$):
+1. **Lọc đơn theo đường vòng:** Đơn hàng có thời gian sẵn sàng cũ nhất được chọn làm hạt nhân ($o_{\text{seed}}$). Các đơn hàng tiếp theo chỉ được gom nếu cự ly vòng lặp đường sá phát sinh không vượt quá ngưỡng $D_{\text{detour}} = 1.5\text{ km}$.
+2. **Tìm kiếm hoán vị tối ưu:** Do sức chứa xe máy nhỏ ($m \le 4$), không gian hoán vị $m! \le 24$ (tối đa 120 khi $m=5$) cho phép thuật toán duyệt vét cạn toàn bộ các thứ tự giao hàng và chọn ra thứ tự tối thiểu hóa tổng thời điểm giao $\sum_{i=1}^{m} t_{\text{giao}, i}$.
 
 ---
 
-## 4. Tiêu Chuẩn Hiệu Năng & Khả Năng Mở Rộng
+## 3. Kiến Trúc Kiểm Định 4 Tầng (T1 - T7)
 
-| Hạng mục | Quy chuẩn v4.0 (Bình Thạnh) | Nâng cấp v5.0 (TP.HCM Production) |
-|---|---|---|
-| **Quy mô đồ thị** | 38 nút, 84 cạnh | **46,055 nút, 107,224 cạnh** (8,551 km đường) |
-| **Snap tọa độ GPS** | Quét tuyến tính $O(N)$ (~5ms) | **cKDTree** $O(\log N)$ ($< 0.1\text{ms}$) |
-| **Tính ma trận chi phí** | Dijkstra $N^2$ lần (~2.4s) | **Single-source Dijkstra** $N$ lần (~0.2s) |
-| **Số lượng instance** | 1 instance demo tĩnh | **30 instances chuẩn hóa** lưu trữ pickle |
-| **Dữ liệu thực nghiệm** | Copy từ PDF có sẵn | **Pipeline tự sinh, 750 runs, tự train weights** |
-| **Trọng số mạng Q** | Khởi tạo ngẫu nhiên `randn` | **Trọng số huấn luyện PyTorch** (`.pt` checkpoints) |
-| **Kiểm thử tự động** | 6 test case | **15 test cases toàn diện 4 tầng** |
+Hệ thống tuân thủ nghiêm ngặt quy trình kiểm thử tự động với 25 ca kiểm thử:
+- **T1: Geometry & Directed Graph:** Bảo đảm đồ thị liên thông mạnh (SCC), không có đoạn thẳng nhân tạo, snap cKDTree trong bán kính cho phép.
+- **T2: CVRP Solver Feasibility & Capacity:** 100% nghiệm từ các thuật toán cũ (E0) và mới đều hợp lệ về tải trọng $Q$, số xe $K$, và thăm đủ khách hàng.
+- **T3: Report Fidelity & Numerical Audit:** Toàn bộ 97 số liệu trích xuất trong báo cáo phải trùng khớp hoàn toàn với file kết quả CSV/JSON với sai số $< 10^{-9}$.
+- **T4: Ground Truth Verification (GĐ1):** Tác tử RL trong môi trường định tuyến ngẫu nhiên phải hội tụ về đúng hàm giá trị của Quy hoạch động (Exact Value Iteration).
+- **T5: Bellman Equivalence (GĐ2):** Sai số giữa tổng phần thưởng và âm tổng thời gian chờ $< 10^{-9}$.
+- **T6: Multi-Seed & Non-Parametric Statistics:** Tối thiểu 5 seed huấn luyện, khoảng tin cậy Bootstrap 95%, kiểm định Wilcoxon có hiệu chỉnh Holm-Bonferroni.
+- **T7: Interface & Build Cleanliness (Cổng G6):** Đảm bảo build TypeScript sạch trên Next.js 14 cổng 3001 mà không phát sinh cảnh báo.

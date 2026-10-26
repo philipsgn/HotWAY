@@ -1,18 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import {
-  ListOrdered,
-  Route,
-  FileText,
-  BarChart2,
-  PlayCircle,
-  Radio,
-  X,
-  Pin,
-  MapPin,
-  Info,
-} from "lucide-react";
 import { OptimoTab } from "./OptimoSidebar";
 
 interface NavigationDrawerProps {
@@ -20,8 +8,8 @@ interface NavigationDrawerProps {
   onClose: () => void;
   activeTab: OptimoTab;
   onChangeTab: (tab: OptimoTab) => void;
-  ordersCount: number;
-  routesCount: number;
+  ordersCount?: number;
+  routesCount?: number;
   isPinned: boolean;
   onTogglePin: () => void;
 }
@@ -31,8 +19,6 @@ export default function NavigationDrawer({
   onClose,
   activeTab,
   onChangeTab,
-  ordersCount,
-  routesCount,
   isPinned,
   onTogglePin,
 }: NavigationDrawerProps) {
@@ -49,109 +35,85 @@ export default function NavigationDrawer({
 
   const navItems: {
     id: OptimoTab;
+    code: string;
     label: string;
-    icon: React.ElementType;
-    badge?: string;
+    badge: string;
     isSim?: boolean;
   }[] = [
     {
-      id: "orders",
-      label: "Đơn hàng",
-      icon: ListOrdered,
-      badge: ordersCount > 0 ? String(ordersCount) : undefined,
+      id: "t1_multicriteria",
+      code: "T1",
+      label: "Đa Tiêu Chí Tuyến Đi (A→B)",
+      badge: "PARETO",
     },
     {
-      id: "planning",
-      label: "Lập kế hoạch",
-      icon: Route,
-      badge: routesCount > 0 ? `${routesCount} xe` : undefined,
+      id: "t2_vrptw",
+      code: "T2",
+      label: "Lập Tuyến Đội Xe Giao Hàng",
+      badge: "VRPTW",
     },
     {
-      id: "route",
-      label: "Chi tiết tuyến",
-      icon: FileText,
-    },
-    {
-      id: "strategy_lab",
-      label: "Strategy Lab",
-      icon: BarChart2,
-    },
-    {
-      id: "search_replay",
-      label: "Search Replay",
-      icon: PlayCircle,
-    },
-    {
-      id: "live",
-      label: "Điều phối Live",
-      icon: Radio,
+      id: "t3_live",
+      code: "T3",
+      label: "Đổi Tuyến Thích Nghi Live",
       badge: "MÔ PHỎNG",
       isSim: true,
     },
   ];
 
-  if (!isOpen && !isPinned) return null;
-
   return (
     <>
-      {/* Dimmed Overlay (only when not pinned) */}
-      {!isPinned && (
+      {/* Backdrop */}
+      {isOpen && !isPinned && (
         <div
           onClick={onClose}
-          className="fixed inset-0 bg-primary-text/25 backdrop-blur-xs z-40 transition-opacity duration-250 ease-out"
+          className="fixed inset-0 bg-neutral-900/30 backdrop-blur-xs z-30 transition-opacity"
         />
       )}
 
-      {/* Drawer Container */}
+      {/* Drawer Panel */}
       <aside
-        className={`fixed top-0 left-0 bottom-0 w-72 bg-surface border-r border-border-warm z-50 flex flex-col justify-between shadow-floating transition-transform duration-250 ease-out ${
-          isOpen || isPinned ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 bottom-0 left-0 z-40 w-80 bg-white border-r border-neutral-300 transform transition-transform duration-200 ease-in-out flex flex-col justify-between font-sans ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div>
-          {/* Top Brand Header */}
-          <div className="p-4 border-b border-border-warm flex items-center justify-between">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-xl bg-sunken border border-border-warm flex items-center justify-center font-bold text-xs text-brand-gold">
-                HG
-              </div>
-              <div>
-                <span className="text-[10px] font-mono tracking-wider uppercase font-bold text-brand-gold block">
-                  HÀNG GÒN QUÁN
-                </span>
-                <h1 className="text-sm font-bold text-primary-text leading-tight">
-                  Điều Phối Giao Hàng
-                </h1>
-              </div>
+          {/* Header */}
+          <div className="p-4 border-b border-neutral-200 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 font-bold">
+                HOTWAY EXPERIMENTS
+              </span>
+              <h2 className="text-sm font-bold text-neutral-900 mt-0.5">
+                Bàn Điều Phối Tuyến Đường
+              </h2>
             </div>
-
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-1 font-mono text-xs">
               <button
                 onClick={onTogglePin}
-                title={isPinned ? "Bỏ ghim menu" : "Ghim menu cố định"}
-                className={`p-1.5 rounded-lg text-secondary-text hover:bg-sunken hover:text-primary-text transition hidden md:flex ${
-                  isPinned ? "text-brand-gold bg-brand-gold-soft" : ""
+                title={isPinned ? "Bỏ ghim ngăn kéo" : "Ghim ngăn kéo cố định"}
+                className={`px-2 py-1 border text-[11px] transition ${
+                  isPinned
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "border-neutral-300 text-neutral-700 hover:bg-neutral-100"
                 }`}
               >
-                <Pin className="w-4 h-4" />
+                {isPinned ? "[ĐÃ GHIM]" : "[GHIM]"}
               </button>
-              {!isPinned && (
-                <button
-                  onClick={onClose}
-                  aria-label="Đóng menu"
-                  className="p-1.5 rounded-lg text-secondary-text hover:bg-sunken hover:text-primary-text transition"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
+              <button
+                onClick={onClose}
+                className="px-2 py-1 border border-neutral-300 text-neutral-700 hover:bg-neutral-100 transition"
+              >
+                [X]
+              </button>
             </div>
           </div>
 
-          {/* Navigation Item List */}
-          <nav className="p-3 space-y-1">
+          {/* Navigation Items */}
+          <nav className="p-3 space-y-1.5">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
-              const Icon = item.icon;
+
               return (
                 <button
                   key={item.id}
@@ -159,58 +121,39 @@ export default function NavigationDrawer({
                     onChangeTab(item.id);
                     if (!isPinned) onClose();
                   }}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-warm text-xs font-medium transition ${
+                  className={`w-full text-left p-3 border transition ${
                     isActive
-                      ? "bg-brand-gold-soft text-primary-text font-semibold border border-brand-gold/40 shadow-soft"
-                      : "text-secondary-text hover:bg-sunken hover:text-primary-text"
+                      ? "bg-neutral-900 text-white border-neutral-900"
+                      : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-400"
                   }`}
                 >
-                  <div className="flex items-center space-x-2.5">
-                    <Icon
-                      className={`w-4 h-4 ${
-                        isActive ? "text-brand-brown" : "text-secondary-text"
-                      }`}
-                    />
-                    <span>{item.label}</span>
-                  </div>
-
-                  {item.badge && (
+                  <div className="flex items-center justify-between text-xs font-mono mb-1">
+                    <span className="font-bold">{item.code}</span>
                     <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold ${
-                        item.isSim
-                          ? "bg-amber-100 text-amber-800 border border-amber-300"
-                          : isActive
-                          ? "bg-brand-gold text-primary-text"
-                          : "bg-sunken text-secondary-text"
+                      className={`text-[9px] px-1.5 py-0.5 border ${
+                        isActive
+                          ? "border-neutral-500 text-neutral-200"
+                          : item.isSim
+                          ? "border-amber-400 text-amber-800 bg-amber-50"
+                          : "border-neutral-300 text-neutral-600 bg-neutral-50"
                       }`}
                     >
                       {item.badge}
                     </span>
-                  )}
+                  </div>
+                  <div className={`text-xs font-medium ${isActive ? "text-neutral-100" : "text-neutral-900"}`}>
+                    {item.label}
+                  </div>
                 </button>
               );
             })}
           </nav>
         </div>
 
-        {/* Clean System Info Footer */}
-        <div className="p-4 border-t border-border-warm space-y-2 bg-sunken/40">
-          <div className="flex items-start space-x-2 text-[11px] text-secondary-text">
-            <MapPin className="w-3.5 h-3.5 text-brand-gold shrink-0 mt-0.5" />
-            <div>
-              <span className="font-semibold text-primary-text">Bếp trung tâm:</span>
-              <p className="text-[10px] leading-tight">490 Điện Biên Phủ, P. 21, Bình Thạnh</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between text-[10px] text-secondary-text pt-1 border-t border-border-warm/60">
-            <span>Bán kính mạng lưới:</span>
-            <span className="font-mono font-bold text-primary-text">3.5 km</span>
-          </div>
-
-          <p className="text-[10px] text-secondary-text/80 italic text-center pt-1">
-            &ldquo;Tuyến giao hàng ngắn nhất để món còn nóng.&rdquo;
-          </p>
+        {/* Footer */}
+        <div className="p-4 border-t border-neutral-200 text-[11px] font-mono text-neutral-500 space-y-1">
+          <div>Backend: :8000 | Frontend: :3001</div>
+          <div className="text-emerald-700 font-bold">Cổng 3000: BẢO VỆ TUYỆT ĐỐI</div>
         </div>
       </aside>
     </>

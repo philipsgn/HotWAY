@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Menu, Search, Crosshair, ArrowRight, MapPin, X, Loader2 } from "lucide-react";
+import Link from "next/link";
 
 interface TopFloatingBarProps {
   onToggleDrawer: () => void;
@@ -14,7 +14,7 @@ interface TopFloatingBarProps {
 
 // Popular locations around Bình Thạnh / HCMC for instant fallback & speedy suggestions
 const PRESET_LOCATIONS = [
-  { name: "Hàng Gòn Quán - 490 Điện Biên Phủ", lat: 10.8012, lon: 106.7145 },
+  { name: "490 Điện Biên Phủ, Phường 21, Bình Thạnh", lat: 10.8012, lon: 106.7145 },
   { name: "Đại học HUTECH - 475A Điện Biên Phủ", lat: 10.8021, lon: 106.7148 },
   { name: "Pearl Plaza - 561A Điện Biên Phủ", lat: 10.7995, lon: 106.7185 },
   { name: "Landmark 81 - Vinhomes Central Park", lat: 10.7951, lon: 106.7218 },
@@ -59,14 +59,12 @@ export default function TopFloatingBar({
 
     const timer = setTimeout(async () => {
       setIsSearching(true);
-      // Filter presets first
       const q = query.toLowerCase();
       const localMatches = PRESET_LOCATIONS.filter((p) =>
         p.name.toLowerCase().includes(q)
       );
 
       try {
-        // Query OpenStreetMap Nominatim limited to Ho Chi Minh City
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           query + ", Bình Thạnh, TP.HCM"
         )}&limit=4&countrycodes=vn`;
@@ -103,37 +101,46 @@ export default function TopFloatingBar({
   };
 
   return (
-    <header className="absolute top-4 left-4 right-4 z-30 pointer-events-none">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
-        {/* Left: Drawer Toggle & Brand Badge */}
-        <div className="pointer-events-auto flex items-center bg-surface/95 backdrop-blur-md border border-border-warm rounded-warm p-1.5 shadow-soft">
+    <header className="absolute top-3 left-4 right-4 z-30 pointer-events-none font-sans">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        {/* Left: Return to Report & Drawer Toggle */}
+        <div className="pointer-events-auto flex items-center bg-white/95 backdrop-blur-sm border border-neutral-300 p-1 space-x-1.5">
+          <Link
+            href="/"
+            className="px-2.5 py-1 text-xs font-mono font-bold text-neutral-900 border border-neutral-300 hover:bg-neutral-100 transition"
+            title="Quay về trang Báo Cáo Nghiên Cứu"
+          >
+            ← BÁO CÁO
+          </Link>
+
           <button
             onClick={onToggleDrawer}
-            aria-label="Mở menu quản trị"
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-primary-text hover:bg-sunken active:bg-subtle transition"
+            aria-label="Mở danh mục điều phối"
+            className="px-2.5 py-1 text-xs font-mono text-neutral-700 border border-neutral-300 hover:bg-neutral-100 transition"
           >
-            <Menu className="w-5 h-5 text-brand-brown" />
+            MỤC LỤC
           </button>
-          <div className="hidden sm:flex flex-col pr-3 pl-2 border-l border-border-warm ml-1.5">
-            <span className="text-[10px] font-mono tracking-widest uppercase font-bold text-brand-gold">
-              HÀNG GÒN QUÁN
+
+          <div className="hidden sm:flex flex-col px-2 border-l border-neutral-200">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-neutral-500">
+              HOTWAY EXPERIMENTS
             </span>
-            <span className="text-xs font-semibold text-primary-text leading-tight">
-              Điều Phối Tuyến
+            <span className="text-xs font-bold text-neutral-900">
+              Bàn Điều Phối Tuyến Đường
             </span>
           </div>
         </div>
 
         {/* Center: Address Search Bar */}
         <div ref={searchRef} className="pointer-events-auto flex-1 max-w-md relative">
-          <div className="flex items-center bg-surface/95 backdrop-blur-md border border-border-warm rounded-warm px-3.5 py-2 shadow-soft focus-within:border-brand-gold focus-within:shadow-elevated transition">
-            <Search className="w-4 h-4 text-secondary-text shrink-0 mr-2" />
+          <div className="flex items-center bg-white/95 backdrop-blur-sm border border-neutral-300 px-3 py-1.5 focus-within:border-neutral-900 transition">
+            <span className="text-xs font-mono text-neutral-400 mr-2 select-none">SEARCH:</span>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm địa chỉ tại Bình Thạnh..."
-              className="w-full bg-transparent text-xs text-primary-text placeholder-secondary-text/70 focus:outline-none"
+              placeholder="Nhập địa chỉ tìm kiếm tại Bình Thạnh..."
+              className="w-full bg-transparent text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none font-mono"
             />
             {query && (
               <button
@@ -141,30 +148,27 @@ export default function TopFloatingBar({
                   setQuery("");
                   setResults([]);
                 }}
-                className="text-secondary-text hover:text-primary-text"
+                className="text-xs font-mono text-neutral-500 hover:text-neutral-900 px-1"
               >
-                <X className="w-3.5 h-3.5" />
+                [x]
               </button>
             )}
-            {isSearching && <Loader2 className="w-3.5 h-3.5 text-brand-gold animate-spin ml-2" />}
+            {isSearching && <span className="text-xs font-mono text-neutral-500 animate-pulse ml-1">[...]</span>}
           </div>
 
           {/* Autocomplete Dropdown */}
           {isOpen && results.length > 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border-warm rounded-warm shadow-floating p-1 z-40 max-h-64 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-300 p-1 z-40 max-h-60 overflow-y-auto">
               {results.map((item, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSelect(item)}
-                  className="w-full text-left p-2.5 rounded-xl hover:bg-sunken flex items-start space-x-2 text-xs transition"
+                  className="w-full text-left p-2 hover:bg-neutral-100 border-b border-neutral-100 last:border-0 text-xs transition"
                 >
-                  <MapPin className="w-3.5 h-3.5 text-brand-gold shrink-0 mt-0.5" />
-                  <div className="flex-1 overflow-hidden">
-                    <p className="text-primary-text font-medium truncate">{item.name}</p>
-                    <p className="text-[10px] text-secondary-text font-mono">
-                      {item.lat.toFixed(4)}, {item.lon.toFixed(4)}
-                    </p>
-                  </div>
+                  <p className="text-neutral-900 font-medium truncate">{item.name}</p>
+                  <p className="text-[10px] text-neutral-500 font-mono">
+                    {item.lat.toFixed(4)}, {item.lon.toFixed(4)}
+                  </p>
                 </button>
               ))}
             </div>
@@ -172,35 +176,22 @@ export default function TopFloatingBar({
         </div>
 
         {/* Right: Quick Action Buttons */}
-        <div className="pointer-events-auto flex items-center space-x-2">
+        <div className="pointer-events-auto flex items-center space-x-2 font-mono text-xs">
           <button
             onClick={onLocateUser}
             disabled={isLocating}
-            title="Định vị của tôi"
-            aria-label="Vị trí của tôi"
-            className={`w-9 h-9 rounded-warm bg-surface/95 backdrop-blur-md border border-border-warm shadow-soft flex items-center justify-center text-brand-brown hover:bg-sunken active:bg-subtle transition ${
-              isLocating ? "animate-spin text-brand-gold" : ""
-            }`}
+            title="Định vị thiết bị GPS"
+            className="h-8 px-2.5 bg-white/95 backdrop-blur-sm border border-neutral-300 text-neutral-800 hover:bg-neutral-100 transition"
           >
-            <Crosshair className="w-4 h-4" />
+            {isLocating ? "[...]" : "[GPS]"}
           </button>
 
           <button
             onClick={onQuickPlan}
             disabled={isPlanning}
-            className="h-9 px-4 rounded-warm bg-brand-gold hover:bg-brand-gold-hover active:bg-brand-gold-pressed text-primary-text font-bold text-xs shadow-soft flex items-center space-x-1.5 transition disabled:opacity-60"
+            className="h-8 px-3 bg-neutral-900 hover:bg-black text-white font-bold transition disabled:opacity-50"
           >
-            {isPlanning ? (
-              <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Đang tính...</span>
-              </>
-            ) : (
-              <>
-                <span>Lập tuyến</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </>
-            )}
+            {isPlanning ? "Đang tính..." : "Lập Tuyến →"}
           </button>
         </div>
       </div>

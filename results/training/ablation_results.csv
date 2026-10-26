@@ -1,0 +1,4 @@
+ablation,mean_wait_min
+No Spatial Feature,176.6967447365903
+No Arrival Rate Feature,171.99886392652004
+Gamma=0.95,213.39729049283906

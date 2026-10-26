@@ -1,57 +1,64 @@
 # Bản Đặc Tả Yêu Cầu Sản Phẩm (PRD) — HotWAY
 
-> **Tài liệu:** Yêu cầu sản phẩm hệ thống lập lịch & điều phối giao hàng CVRP  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Tài liệu liên quan:** [README.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/README.md) | [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ALGORITHM.md)
+> **Tài liệu:** Yêu cầu sản phẩm hệ thống học tăng cường điều phối giao vận thời gian thực  
+> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Tài liệu liên quan:** [README.md](file:///c:/Users/Asus/Documents/AI/HotWAY/README.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
 
 ## 1. Bài Toán & Mục Tiêu Sản Phẩm
 
-### 1.1. Bối cảnh bài toán
-Quán bánh canh Hàng Gòn (cơ sở 490 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM) phục vụ món ăn nóng có đặc tính suy giảm nhiệt nhanh theo thời gian. Mục tiêu vận hành là lập kế hoạch tuyến đường cho đội xe giao hàng đồng nhất sao cho tổng chi phí di chuyển là nhỏ nhất trên mạng lưới đường phố thực tế TP.HCM, đồng thời bảo đảm nhiệt độ khi giao đến tay khách hàng không thấp hơn ngưỡng cho phép ($T_{\min} = 60.0^\circ\text{C}$).
+### 1.1. Bối cảnh bài toán & Lý do đổi hướng
+Quán ăn đô thị tại TP.HCM phục vụ hàng trăm đơn hàng mỗi ngày trong điều kiện giao thông đông đúc, có mưa ngập và lưu lượng khách đỉnh nhọn vào giờ trưa (11:30 - 13:00) và tối (18:00 - 20:00).
+- **Hạn chế của mô hình CVRP cũ (Thí nghiệm E0):** Giả định bài toán tĩnh với ma trận chi phí cố định và ràng buộc làm nguội Newton. Kết quả thực nghiệm E0 chứng minh thuật toán ngẫu nhiên tốt hơn DQN trên lựa chọn toán tử Local Search, và nhiệt độ thức ăn là biến không quan sát được trên đường.
+- **Mục tiêu sản phẩm mới:** Chuyển trọng tâm hoàn toàn sang **Thời Gian Chờ Của Khách Hàng** ($W_i = t_{\text{giao}, i} - t_{\text{đặt}, i}$) và độ trễ so với lời hứa $\max(0, W_i - \text{ETA}_{\text{hứa}, i})$.
 
-### 1.2. Mô hình toán học
-Bài toán được mô hình hóa dưới dạng **Capacitated Vehicle Routing Problem (CVRP)** kết hợp ràng buộc thời gian di chuyển suy dẫn từ Định luật làm nguội Newton:
-$$\min \sum_{r \in \mathcal{R}} \text{dist}(r)$$
-Thỏa mãn:
-1. Mỗi khách hàng $i \in \{1..n\}$ được phục vụ đúng một lần.
-2. Tổng tải trọng mỗi tuyến $\sum_{i \in r} q_i \le Q$ (sức chứa xe $Q = 40$ tô).
-3. Số tuyến hoạt động $|\mathcal{R}| \le K$ (số xe tối đa).
-4. Mọi tuyến bắt đầu và kết thúc tại Depot (node $0$).
-5. Ràng buộc nhiệt độ: Thời gian trên xe $t_i \le t_{\max}$ để $T(t_i) \ge 60^\circ\text{C}$.
+### 1.2. Mô hình hóa bài toán (Semi-MDP Thời Gian Thực)
+Bài toán được hình thức hóa dưới dạng Semi-Markov Decision Process tại một quán ăn với đội xe máy $K=3$, sức chứa thùng hàng $Q=4$ đơn/chuyến:
+- **Thời điểm ra quyết định:** Bất cứ khi nào có ít nhất một tài xế rảnh tại quán.
+- **Hành động:** Chờ thêm ($\tau \le 10\text{ phút}$) để gom thêm đơn đang nấu, hoặc xuất phát ngay với $m \in \{1, 2, 3, 4\}$ đơn sẵn sàng.
+- **Quy tắc gom & giao hàng:** Gom đơn dựa trên đơn sẵn sàng cũ nhất và cự ly đường vòng $D_{\text{detour}} \le 1.5\text{ km}$; thứ tự giao hàng được giải tối ưu bằng vét cạn $m!$ hoán vị để tối thiểu hóa tổng thời điểm bàn giao $\sum_{i} t_{\text{giao}, i}$.
+- **Hàm mục tiêu:** Tối thiểu hóa tổng thời gian chờ tích lũy:
+  $$\min \mathbb{E}\left[ \sum_{i=1}^{N} W_i \right] \iff \max \mathbb{E}\left[ \sum_{t} r_t \right]$$
+  với phần thưởng từng bước $r_t = -\int_{t_k}^{t_{k+1}} N_{\text{active}}(t) \, dt$.
 
 ---
 
 ## 2. Đối Tượng Người Dùng (Personas)
 
-1. **Người điều phối giao hàng (Dispatcher):** Nhập danh sách đơn hàng trong ca, cấu hình số xe và sức chứa, bấm nút "Lập tuyến", xem thứ tự điểm dừng và theo dõi tiến độ giao hàng mô phỏng trên bản đồ MapLibre.
-2. **Tài xế giao hàng (Driver):** Xem danh sách điểm dừng của xe mình trên giao diện di động (PWA), xem thời gian dự kiến đến (ETA), số tô cần bàn giao, và bấm nút xác nhận hoàn thành đơn.
-3. **Kỹ sư dữ liệu & Hội đồng nghiệm thu (AI Data Engineer & Evaluator):** Khảo sát cấu trúc mạng lưới giao thông thực, chạy bộ sinh 30 benchmark instances, huấn luyện tác tử RL, tái tạo kết quả đối soát học thuật qua Jupyter Notebook, xác nhận tính trung thực khoa học tuyệt đối.
+1. **Người điều phối quán ăn (Restaurant Dispatcher):** Theo dõi luồng đơn hàng thời gian thực, trạng thái tài xế, lý do hệ thống quyết định "chờ gom" hay "xuất bến ngay", và chủ động can thiệp khi có biến động thời tiết hoặc đơn dồn ứ.
+2. **Khách hàng nhận món (Customer):** Nhận được thông báo thời gian giao hàng dự kiến (Promised ETA) chính xác, hạn chế tình trạng trễ hẹn quá cam kết.
+3. **Kỹ sư AI & Hội đồng nghiệm thu (AI Researcher & Evaluator):** Khảo sát hiệu năng giữa các mô hình RL (DQN, Double DQN, PPO) và các quy tắc heuristic (Immediate, Periodic, AgeThreshold), kiểm tra độ trung thực dữ liệu, tính khả thi của lộ trình và khả năng chịu tải đột biến (Surge stress test).
 
 ---
 
 ## 3. Phạm Vi Triển Khai (Scope)
 
 ### 3.1. Trong phạm vi (In-Scope)
-- **Đồ thị đường bộ chuẩn Production:** Mạng lưới giao thông có hướng thực tế toàn diện TP.HCM tải từ OpenStreetMap (OSMnx: **46,055 nút, 107,224 cạnh, 8,551 km đường**) cùng cơ chế fallback đồ thị Bình Thạnh (demo nhỏ).
-- **Spatial Indexing & On-Demand Dijkstra:** Dịch vụ ma trận khoảng cách/thời gian bất đối xứng gia tốc bằng cKDTree ($< 0.1\text{ms}$) và Dijkstra đơn nguồn.
-- **Thuật toán giải tối ưu:** Khởi tạo Clarke-Wright Savings và 4 toán tử tìm kiếm cục bộ (Two-opt, Intra-relocate, Inter-relocate, Inter-swap) điều phối bởi 5 chiến lược (Random, Cyclic, Greedy, DQN, Double DQN).
-- **Hệ thống Benchmark & RL:** Pipeline tự động sinh 30 instances thực tế, tự huấn luyện mạng Q-Network trên PyTorch và lưu checkpoint `.pt`.
-- **Giao diện điều phối OptimoRoute:** 6 màn hình chuyên biệt (Đơn hàng, Lập kế hoạch, Chi tiết tuyến, Strategy Lab, Search Replay, Điều phối Live) cùng Jupyter Notebook (`notebooks/cvrp_benchmark.ipynb`).
+- **Môi trường mô phỏng chuẩn Gymnasium:**
+  - `RoutingEnv` (GĐ1): Đồ thị con 12 nút SCC Bình Thạnh, so sánh Q-learning và DQN với chân lý Exact Value Iteration.
+  - `DispatchEnv` (GĐ2): Semi-MDP mô phỏng nhà hàng với thời gian bếp ngẫu nhiên, nhiễu giao thông log-normal, mưa bão, xung đơn đột biến, và tích phân Lebesgue bảo toàn phần thưởng Bellman sai số $< 10^{-9}$.
+- **Hệ thống tác tử & quy tắc đối chiếu:**
+  - 4 Baseline heuristic: Immediate, Periodic ($T=8\text{m}$), BatchSize ($k=1$), AgeThreshold ($\theta=10\text{m}$).
+  - 1 Tham chiếu lý thuyết: Offline Prescient Reference ($74.52\text{m}$).
+  - 3 Tác tử RL PyTorch: DQN, Double DQN, PPO với $\ge 5$ hạt giống huấn luyện và kiểm định Wilcoxon có hiệu chỉnh Holm.
+- **Tập dữ liệu địa lý chuẩn hóa:** 401 địa chỉ giao hàng snap chuẩn và 151 địa chỉ ngoại vi (OOD).
+- **Hệ thống kiểm thử tự động 4 tầng (T1 - T7):** Bao gồm kiểm thử độ trung thực tài liệu T3 đảm bảo 100% số liệu trong tài liệu sinh ra từ file kết quả.
+- **Giao diện WebGIS điều phối (Triển khai sau khi qua Cổng G5):** Cổng 3001, bảng điều khiển 5 trạng thái đơn, biểu đồ tải và replay trực quan.
 
 ### 3.2. Ngoài phạm vi (Out-of-Scope)
-- Game 3D lái xe, vật lý phản trọng lực, mô hình xe ảo, voucher khuyến mãi (đã xóa bỏ hoàn toàn).
-- Hệ thống định vị GPS phần cứng thực tế trên xe thật (thay bằng cơ chế mô phỏng vị trí toán học bám sát đồ thị đường).
-- Hệ thống thanh toán trực tuyến qua cổng ngân hàng.
+- Tuyệt đối không dùng cổng 3000 dưới mọi hình thức.
+- Ràng buộc nhiệt độ Newton và slogan "để món còn nóng" (đã bãi bỏ hoàn toàn).
+- Đội xe linh hoạt kiểu gọi xe ngoài (chỉ tập trung đội xe riêng $K=3$ của nhà hàng).
+- Thanh toán ví điện tử hay tích hợp máy in hóa đơn phần cứng.
 
 ---
 
-## 4. Tiêu Chí Chấp Nhận Đo Được (Acceptance Criteria)
+## 4. Tiêu Chí Nghiệm Thu Đo Được (Measurable Acceptance Criteria)
 
-1. **Khả thi 100%:** Nghiệm sinh ra từ mọi thuật toán phải được xác nhận hợp lệ bởi validator độc lập (phủ đủ khách, không lặp, tải $\le Q$, xe $\le K$).
-2. **Kỷ luật hình học:** 100% chặng di chuyển bám sát cạnh đồ thị có hướng; 0 đoạn thẳng nhân tạo; khoảng cách snap $\le 60\text{ m}$.
-3. **Trung thực số liệu:** Số liệu tại Strategy Lab khớp chính xác với kết quả chạy live của bộ benchmark (được ghi nhận trong `rel_result/summary_by_algorithm.csv`).
-4. **Hiệu năng:** Thời gian lập tuyến cho 20-30 đơn $\le 0.5\text{ s}$ trên đồ thị thật.
-5. **Cổng mạng:** Cổng 3000 được bảo toàn nguyên vẹn; Frontend chạy cổng 3001, Backend chạy cổng 8000.
+1. **Bảo toàn phần thưởng Bellman:** Sai số tuyệt đối giữa tổng phần thưởng tích lũy và âm tổng thời gian chờ $\left| \sum r_t - (-\sum W_i) \right| < 10^{-9}$ trên mọi episode.
+2. **Trung thực khoa học:** 100% số liệu đối sánh trong tài liệu khớp tuyệt đối với tệp kết quả CSV/JSON, được bảo đảm bởi bài test tự động `tests/test_report_fidelity.py`.
+3. **Kỷ luật hình học & Vận tốc xe máy:** Mọi chặng di chuyển tuân thủ hình học có hướng đồ thị TP.HCM, áp dụng đúng profile xe máy (giữ hẻm, bỏ đường cấm xe máy, thời gian dừng giao hàng, phạt đèn đỏ và rẽ).
+4. **Độ trễ suy luận online:** Mọi quyết định điều phối của tác tử RL phải thực thi trong thời gian $< 1.0\text{ ms}$ trên CPU luồng đơn.
+5. **Kỷ luật cổng mạng:** Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001 (không chỉnh sửa mã frontend/backend trước khi nghiệm thu Cổng G5).

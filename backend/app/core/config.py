@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     # 1. Project Identity & Metadata
     PROJECT_NAME: str = "HotWAY Dynamic Thermal Delivery Backend"
     VERSION: str = "1.0.0"
-    API_V1_STR: str = "/api"
+    API_V1_STR: str = "/api/v1"
     ENVIRONMENT: str = "development"  # development | production | test
     DEBUG: bool = True
 

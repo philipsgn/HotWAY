@@ -1,81 +1,66 @@
 # Bản Đặc Tả Kiểm Thử & Ma Trận Tính Năng (TESTING.MD) — HotWAY
 
-> **Tài liệu:** Khung kiểm thử tự động 4 tầng & Ma trận tính năng hệ thống (~35 mục)  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PLAN.md)
+> **Tài liệu:** Khung kiểm thử tự động 4 tầng (T1 - T7), 25/25 Tests Passing & Ma trận tính năng hệ thống  
+> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PLAN.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md)
 
 ---
 
-## 1. Khung Kiểm Thử Tự Động 4 Tầng (15/15 Tests Passing)
+## 1. Khung Kiểm Thử Tự Động 4 Tầng (25/25 Tests Passing)
 
 ```mermaid
 flowchart TD
-    T1["Tầng 1: Kỷ luật Hình học Đường bộ (tests/test_geometry.py - 5 tests)\n- Đồ thị có hướng MultiDiGraph\n- 0 vi phạm một chiều\n- Khoảng cách snap <= 60m\n- 0 đoạn thẳng nhân tạo\n- Liên thông mạnh SCC 100%"]
-    T2["Tầng 2: Tính Khả Thi Thuật Toán (tests/test_cvrp_solver.py - 6 tests)\n- Validator độc lập\n- Phủ khách 100%, không lặp\n- Tải trọng <= Q, Đội xe <= K\n- CW, Random, Cyclic, Greedy, DQN, Double DQN"]
-    T3["Tầng 3: Tính Nhất Quán Dữ Liệu Thực Nghiệm (tests/test_benchmark_data.py - 4 tests)\n- 25 hàng dữ liệu summary_by_algorithm\n- Khả thi 100% trên toàn bộ giao thức\n- 35 cặp so sánh Wilcoxon & Holm\n- Chi phí suy luận & bản lưu trữ đối chứng"]
-    T4["Tầng 4: Kiểm thử Tính Toàn Vẹn Hệ Thống (E2E / Lint / Build)\n- npm run build TypeScript\n- 0 import Three.js/Rapier\n- Bảo toàn cổng 3000\n- Không từ ngữ cấm"]
+    T1["Tầng 1: Kỷ Luật Hình Học & Đồ Thị Đô Thị (tests/test_geometry.py - 5 tests)\n- Đồ thị có hướng MultiDiGraph\n- 0 vi phạm một chiều, snap <= 60m\n- 0 đoạn thẳng nhân tạo\n- Liên thông mạnh SCC 100%"]
+    T2["Tầng 2: Tính Khả Thi Thuật Toán & E0 Audit (tests/test_cvrp_solver.py & test_benchmark_data.py - 10 tests)\n- Khả thi 100% nghiệm CW, Random, Greedy, DQN, DDQN\n- Dữ liệu E0 rel_result/ bảo tồn nguyên vẹn"]
+    T3["Tầng 3: Kiểm Chứng Môi Trường & Chân Lý Lý Thuyết (tests/test_routing_env.py & test_dispatch_env.py - 7 tests)\n- GĐ1: Hội tụ Value Iteration so với Q-learning\n- GĐ2: FSM 5 trạng thái & sức chứa xe máy Q=4\n- Bảo toàn phần thưởng Bellman sai số < 1e-9"]
+    T4["Tầng 4: Độ Trung Thực Số Liệu Nghiên Cứu (tests/test_report_fidelity.py - 3 tests)\n- Sai số số liệu tài liệu so với CSV/JSON < 1e-9\n- Đối soát tự động với all_metrics_registry.json"]
 
     T1 --> T2 --> T3 --> T4
 ```
 
 ---
 
-## 2. Ma Trận Tính Năng Hệ Thống Chuẩn Hóa (35 Mục)
+## 2. Chi Tiết 25 Ca Kiểm Thử Tự Động
 
-### Nhóm 1: Dữ Liệu Không Gian & Đồ Thị Đường Bộ (Mục 1 - 7)
-- **F01:** Nguồn sự thật duy nhất tại `config/site.yaml` (depot, bán kính, thông số đội xe, đa vùng `binhthanh` và `hcmc_compact`).
-- **F02:** Tải và xây dựng đồ thị đường bộ có hướng OSMnx toàn TP.HCM (**46,055 nút, 107,224 cạnh, 8,551 km đường**).
-- **F03:** Kiểm tra và trích xuất thành phần liên thông mạnh lớn nhất (SCC) đạt tỷ lệ liên thông 100%.
-- **F04:** Snap toạ độ điểm giao hàng vào nút giao thông gần nhất bằng **cKDTree** trong thời gian $< 0.1\text{ ms}$.
-- **F05:** Cảnh báo tự động khi khoảng cách snap vượt quá ngưỡng an toàn $\le 60\text{ m}$.
-- **F06:** Tính toán độ dài cạnh theo công thức Haversine chính xác.
-- **F07:** Xuất khẩu các định dạng lưu trữ: GraphML, cache pickle, và GeoJSON cho WebGIS (107k features).
-
-### Nhóm 2: Ma Trận Chi Phí & Mô Hình CVRP (Mục 8 - 14)
-- **F08:** Dịch vụ `road_matrix` tính toán ma trận khoảng cách bất đối xứng $C_{ij}$ bằng Dijkstra đơn nguồn.
-- **F09:** Tính toán ma trận thời gian di chuyển bất đối xứng $t_{ij}$.
-- **F10:** Lưu trữ và trích xuất hình học toạ độ chi tiết cho từng chặng (`leg_geometries: [[[lat, lon], ...], ...]`).
-- **F11:** Cơ chế lưu đệm bộ nhớ (in-memory cache) theo mã băm SHA-256 của tập nút.
-- **F12:** Khởi tạo nghiệm ban đầu bằng thuật toán Clarke-Wright Savings trên ma trận bất đối xứng.
-- **F13:** Bộ sinh 30 benchmark instances ngẫu nhiên chuẩn hóa (`data/benchmark_instances/`).
-- **F14:** Bộ validator độc lập kiểm tra tính khả thi và tính lại tổng khoảng cách.
-
-### Nhóm 3: Thuật Toán Tìm Kiếm Cục Bộ & Học Tăng Cường (Mục 15 - 22)
-- **F15:** Toán tử `two_opt` với công thức tính $\Delta C$ chính xác cho ma trận bất đối xứng.
-- **F16:** Toán tử `intra_relocate` di chuyển khách hàng trong cùng tuyến.
-- **F17:** Toán tử `inter_relocate` chuyển khách hàng giữa hai tuyến có kiểm tra tải $\le Q$.
-- **F18:** Toán tử `inter_swap` hoán đổi hai khách hàng giữa hai tuyến có kiểm tra tải $\le Q$.
-- **F19:** Lấy mẫu ngẫu nhiên tối đa 128/256 ứng viên mỗi bước theo luật chấp nhận giảm nghiêm ngặt.
-- **F20:** Vector đặc trưng trạng thái F28 (28 chiều) với `feature_patience = 30` độc lập.
-- **F21:** Huấn luyện mạng nơ-ron Q-Network (PyTorch MLP $28 \to 128 \to 128 \to 4$) cho DQN và Double DQN, lưu checkpoint tại `src/cvrp_solver/weights/`.
-- **F22:** Pipeline chạy benchmark tự động 750 lượt qua 5 giao thức ($A2, A, A3, B, B2$).
-
-### Nhóm 4: Ràng Buộc Nhiệt & Phân Tích Thống Kê (Mục 23 - 27)
-- **F23:** Định luật làm nguội Newton quy đổi sang giới hạn thời gian di chuyển tối đa $t_{\max} \approx 30.3\text{ phút}$.
-- **F24:** Tính toán nhiệt độ ước tính tại từng điểm dừng và gắn cờ cảnh báo quá hạn nhiệt.
-- **F25:** Xuất khẩu bảng tổng hợp thực nghiệm tự sinh `rel_result/summary_by_algorithm.csv`.
-- **F26:** Kiểm định thống kê theo cặp Wilcoxon Signed-Rank và hiệu chỉnh Holm-Bonferroni `rel_result/paired_comparisons.csv`.
-- **F27:** Đo lường chi phí suy luận và số candidate đánh giá thực tế `rel_result/per_decision_cost.csv`.
-
-### Nhóm 5: Backend API & Giao Diện Người Dùng (Mục 28 - 35)
-- **F28:** API `POST /api/v1/scenarios` tiếp nhận đơn hàng và tạo kịch bản mẫu tự động.
-- **F29:** API `POST /api/v1/plans` lập kế hoạch tuyến đường với cơ chế tự động fallback.
-- **F30:** API `GET /api/v1/strategies/benchmark` cung cấp số liệu thực nghiệm tự sinh nguyên bản.
-- **F31:** API `GET /api/v1/sim/{plan_id}` truyền phát toạ độ mô phỏng di chuyển tài xế.
-- **F32:** Giao diện điều phối 3 cột OptimoRoute: Sidebar cố định, bảng danh sách, bản đồ MapLibre.
-- **F33:** Màn hình Strategy Lab trình bày số liệu khoa học và phân tích cơ chế hoạt động của các phương pháp.
-- **F34:** Màn hình Search Replay phát lại từng bước chọn toán tử với thanh tua tốc độ $1\times, 4\times, 16\times$.
-- **F35:** Sổ tay Jupyter tương tác `notebooks/cvrp_benchmark.ipynb` phục vụ phân tích trực quan.
+| STT | Tệp kiểm thử | Tên bài kiểm thử | Mô tả & Điều kiện đạt | Kết quả |
+|---|---|---|---|---|
+| 1 | `test_geometry.py` | `test_graph_is_directed_and_strongly_connected` | Đồ thị TP.HCM liên thông mạnh 100% (SCC) | **PASS** |
+| 2 | `test_geometry.py` | `test_edge_properties_and_geometries` | Cạnh có chiều dài, toạ độ thực tế và vận tốc | **PASS** |
+| 3 | `test_geometry.py` | `test_shortest_path_follows_directed_edges` | Đường đi tuân thủ hướng đường một chiều | **PASS** |
+| 4 | `test_geometry.py` | `test_snap_point_within_threshold` | Snap toạ độ qua cKDTree $\le 60\text{ m}$ | **PASS** |
+| 5 | `test_geometry.py` | `test_zero_artificial_straight_lines` | Tuyệt đối không sinh đoạn thẳng nhân tạo | **PASS** |
+| 6 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[clarke_wright]` | Nghiệm Clarke-Wright 100% khả thi | **PASS** |
+| 7 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[random]` | Nghiệm Random Local Search 100% khả thi | **PASS** |
+| 8 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[cyclic]` | Nghiệm Cyclic Local Search 100% khả thi | **PASS** |
+| 9 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[greedy]` | Nghiệm Greedy Local Search 100% khả thi | **PASS** |
+| 10 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[dqn]` | Nghiệm DQN Local Search 100% khả thi | **PASS** |
+| 11 | `test_cvrp_solver.py` | `test_strategy_solution_is_feasible[double_dqn]` | Nghiệm Double DQN 100% khả thi | **PASS** |
+| 12 | `test_benchmark_data.py` | `test_summary_by_algorithm_loaded` | Nạp đủ 25 dòng số liệu thực nghiệm E0 | **PASS** |
+| 13 | `test_benchmark_data.py` | `test_paired_comparisons_holm_validity` | 35 cặp so sánh E0 có giá trị $p$ hợp lệ | **PASS** |
+| 14 | `test_benchmark_data.py` | `test_per_decision_cost_inference_overhead` | Chi phí suy luận E0 được lưu trữ đầy đủ | **PASS** |
+| 15 | `test_benchmark_data.py` | `test_legacy_reference_audit_trail_preserved` | Dữ liệu đối chứng E0 khớp tuyệt đối | **PASS** |
+| 16 | `test_routing_env.py` | `test_routing_env_determinism` | Môi trường GĐ1 hoàn toàn tái lập theo seed | **PASS** |
+| 17 | `test_routing_env.py` | `test_exact_value_iteration_convergence` | Tác tử hội tụ về đúng hàm giá trị Value Iteration | **PASS** |
+| 18 | `test_routing_env.py` | `test_zero_noise_equivalence` | Không có nhiễu thì đường đi trùng Dijkstra | **PASS** |
+| 19 | `test_dispatch_env.py` | `test_dispatch_env_determinism` | Môi trường GĐ2 hoàn toàn tái lập theo seed | **PASS** |
+| 20 | `test_dispatch_env.py` | `test_order_conservation_and_fsm` | Bảo toàn đơn hàng & tuân thủ 5 trạng thái FSM | **PASS** |
+| 21 | `test_dispatch_env.py` | `test_capacity_constraint` | Không bao giờ giao quá tải trọng $Q=4$ tô | **PASS** |
+| 22 | `test_dispatch_env.py` | `test_bellman_reward_exact_equivalence` | Sai số bảo toàn Bellman $\left\|\sum r_t - (-\sum W_i)\right\| < 10^{-9}$ | **PASS** |
+| 23 | `test_report_fidelity.py` | `test_registry_csv_fidelity_below_1e9` | 100% số liệu trong registry khớp CSV $< 10^{-9}$ | **PASS** |
+| 24 | `test_report_fidelity.py` | `test_markdown_document_matches_registry` | Số liệu trình bày trong Markdown khớp registry | **PASS** |
+| 25 | `test_report_fidelity.py` | `test_bellman_reward_conservation_across_all_runs` | Đẳng thức Bellman thỏa mãn trên toàn bộ test runs | **PASS** |
 
 ---
 
-## 3. Cổng Chất Lượng & Tiêu Chí Nghiệm Thu (Quality Gates)
+## 3. Các Cổng Kiểm Soát Chất Lượng (Quality Gates G0 - G6)
 
-| Cổng chất lượng | Điều kiện vượt qua | Kết quả kiểm thử |
-|---|---|---|
-| **Gate 1: Hình học (T1)** | 100% cạnh liên tiếp nằm trong đồ thị có hướng, snap $\le 60\text{ m}$ | `pytest tests/test_geometry.py` (**5/5 PASS**) |
-| **Gate 2: Khả thi (T2)** | Validator độc lập xác nhận 100% nghiệm hợp lệ trên cả 6 chiến lược | `pytest tests/test_cvrp_solver.py` (**6/6 PASS**) |
-| **Gate 3: Nhất quán (T3)** | Dữ liệu benchmark 750 lượt chạy tự sinh đạt 100% khả thi | `pytest tests/test_benchmark_data.py` (**4/4 PASS**) |
-| **Gate 4: Độ sạch mã nguồn (T7)** | `npm run build` thành công, 0 import Three.js/Rapier | `npm run build` (**PASS**) |
-| **Gate 5: An toàn cổng mạng (T6)** | Cổng 3000 hoàn toàn tự do, Frontend chạy trên 3001, Backend trên 8000 | `Get-NetTCPConnection` (**PASS**) |
+| Cổng | Tên cổng | Tiêu chí nghiệm thu | Trạng thái |
+|---|---|---|---|
+| **Gate G0** | Khảo sát & Phương pháp luận | Khảo sát tài liệu có tìm kiếm thực, đối soát số liệu E0 | **ĐẠT** |
+| **Gate G1** | Hình thức hóa bài toán | Đặc tả Semi-MDP, FSM 5 trạng thái, chứng minh Bellman | **ĐẠT** |
+| **Gate G2** | Môi trường & Kiểm thử | Gym environments GĐ1 & GĐ2, 7/7 tests vượt qua | **ĐẠT** |
+| **Gate G3** | Baseline & Dò siêu tham số | Dò lưới các tham số $T, k, \theta$, chạy Offline Prescient | **ĐẠT** |
+| **Gate G4** | Huấn luyện & Đánh giá RL | DQN, Double DQN, PPO trên 5 seeds, Ablations & Sensitivity | **ĐẠT** |
+| **Gate G5** | Báo cáo & Phân tích chuyên sâu | 3 RQ, phân tích nguyên nhân âm tính, kiểm thử T3 sai số $< 10^{-9}$ | **HOÀN TẤT** |
+| **Gate G6** | Giao diện Demo & API | Backend stream sự kiện (:8000), Frontend Next.js (:3001) | *Chờ phê duyệt* |

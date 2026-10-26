@@ -1,0 +1,265 @@
+{"step": 4, "time": 13.41, "event": "DISPATCH", "driver_id": 0, "order_ids": [1], "return_time": 27.690000534057617}
+{"step": 4, "time": 23.41, "event": "ORDER_DELIVERED", "order_id": 1, "wait_time": 19.079999923706055}
+{"step": 5, "time": 27.690000534057617, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 10, "time": 44.04, "event": "DISPATCH", "driver_id": 0, "order_ids": [2], "return_time": 74.7699966430664}
+{"step": 12, "time": 58.33, "event": "DISPATCH", "driver_id": 1, "order_ids": [3], "return_time": 82.63999938964844}
+{"step": 12, "time": 59.89, "event": "ORDER_DELIVERED", "order_id": 2, "wait_time": 26.799999237060547}
+{"step": 14, "time": 72.2, "event": "ORDER_DELIVERED", "order_id": 3, "wait_time": 28.219999313354492}
+{"step": 15, "time": 74.7699966430664, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 18, "time": 77.69, "event": "DISPATCH", "driver_id": 0, "order_ids": [4], "return_time": 98.69000244140625}
+{"step": 19, "time": 82.63999938964844, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 21, "time": 85.86, "event": "DISPATCH", "driver_id": 1, "order_ids": [5], "return_time": 109.97000122070312}
+{"step": 21, "time": 88.94, "event": "ORDER_DELIVERED", "order_id": 4, "wait_time": 28.290000915527344}
+{"step": 22, "time": 88.94, "event": "DISPATCH", "driver_id": 2, "order_ids": [7], "return_time": 100.41999816894531}
+{"step": 23, "time": 97.86, "event": "ORDER_DELIVERED", "order_id": 5, "wait_time": 24.719999313354492}
+{"step": 23, "time": 97.86, "event": "ORDER_DELIVERED", "order_id": 7, "wait_time": 13.550000190734863}
+{"step": 24, "time": 98.69000244140625, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 25, "time": 98.69000244140625, "event": "DISPATCH", "driver_id": 0, "order_ids": [6], "return_time": 129.2899932861328}
+{"step": 27, "time": 100.41999816894531, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 35, "time": 109.23, "event": "DISPATCH", "driver_id": 2, "order_ids": [8], "return_time": 137.25999450683594}
+{"step": 35, "time": 109.97000122070312, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 36, "time": 110.97, "event": "ORDER_DELIVERED", "order_id": 6, "wait_time": 34.720001220703125}
+{"step": 40, "time": 111.68, "event": "DISPATCH", "driver_id": 1, "order_ids": [11], "return_time": 138.58999633789062}
+{"step": 46, "time": 121.01, "event": "ORDER_DELIVERED", "order_id": 8, "wait_time": 22.600000381469727}
+{"step": 50, "time": 125.31, "event": "ORDER_DELIVERED", "order_id": 11, "wait_time": 23.139999389648438}
+{"step": 54, "time": 129.2899932861328, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 55, "time": 129.2899932861328, "event": "DISPATCH", "driver_id": 0, "order_ids": [9, 10], "return_time": 160.63999938964844}
+{"step": 62, "time": 137.25999450683594, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 63, "time": 137.25999450683594, "event": "DISPATCH", "driver_id": 2, "order_ids": [12, 15], "return_time": 166.63999938964844}
+{"step": 63, "time": 138.58999633789062, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 64, "time": 138.58999633789062, "event": "DISPATCH", "driver_id": 1, "order_ids": [13, 19, 17], "return_time": 175.35000610351562}
+{"step": 66, "time": 143.49, "event": "ORDER_DELIVERED", "order_id": 10, "wait_time": 40.61000061035156}
+{"step": 67, "time": 145.03, "event": "ORDER_DELIVERED", "order_id": 9, "wait_time": 44.400001525878906}
+{"step": 73, "time": 151.37, "event": "ORDER_DELIVERED", "order_id": 12, "wait_time": 45.16999816894531}
+{"step": 75, "time": 153.18, "event": "ORDER_DELIVERED", "order_id": 13, "wait_time": 48.869998931884766}
+{"step": 76, "time": 154.18, "event": "ORDER_DELIVERED", "order_id": 15, "wait_time": 47.79999923706055}
+{"step": 78, "time": 157.05, "event": "ORDER_DELIVERED", "order_id": 19, "wait_time": 44.52000045776367}
+{"step": 83, "time": 160.63999938964844, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 84, "time": 160.63999938964844, "event": "DISPATCH", "driver_id": 0, "order_ids": [14, 26, 29, 27], "return_time": 212.8699951171875}
+{"step": 84, "time": 161.77, "event": "ORDER_DELIVERED", "order_id": 17, "wait_time": 49.720001220703125}
+{"step": 87, "time": 166.63999938964844, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 88, "time": 166.63999938964844, "event": "DISPATCH", "driver_id": 2, "order_ids": [16, 22, 21, 32], "return_time": 214.3800048828125}
+{"step": 89, "time": 168.38, "event": "ORDER_DELIVERED", "order_id": 14, "wait_time": 63.20000076293945}
+{"step": 90, "time": 170.37, "event": "ORDER_DELIVERED", "order_id": 16, "wait_time": 61.34000015258789}
+{"step": 93, "time": 175.35000610351562, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 94, "time": 175.35000610351562, "event": "DISPATCH", "driver_id": 1, "order_ids": [18], "return_time": 205.5399932861328}
+{"step": 95, "time": 179.2, "event": "ORDER_DELIVERED", "order_id": 22, "wait_time": 55.68000030517578}
+{"step": 95, "time": 179.2, "event": "ORDER_DELIVERED", "order_id": 29, "wait_time": 33.45000076293945}
+{"step": 97, "time": 184.95, "event": "ORDER_DELIVERED", "order_id": 27, "wait_time": 43.790000915527344}
+{"step": 100, "time": 190.97, "event": "ORDER_DELIVERED", "order_id": 18, "wait_time": 78.30999755859375}
+{"step": 100, "time": 190.97, "event": "ORDER_DELIVERED", "order_id": 32, "wait_time": 40.63999938964844}
+{"step": 103, "time": 198.2, "event": "ORDER_DELIVERED", "order_id": 26, "wait_time": 60.540000915527344}
+{"step": 106, "time": 205.5399932861328, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 106, "time": 205.5399932861328, "event": "ORDER_DELIVERED", "order_id": 21, "wait_time": 79.62999725341797}
+{"step": 107, "time": 205.5399932861328, "event": "DISPATCH", "driver_id": 1, "order_ids": [20], "return_time": 234.83999633789062}
+{"step": 108, "time": 212.8699951171875, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 109, "time": 212.8699951171875, "event": "DISPATCH", "driver_id": 0, "order_ids": [23, 35, 44], "return_time": 257.1400146484375}
+{"step": 110, "time": 214.3800048828125, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 111, "time": 214.3800048828125, "event": "DISPATCH", "driver_id": 2, "order_ids": [24], "return_time": 244.0500030517578}
+{"step": 111, "time": 218.82, "event": "ORDER_DELIVERED", "order_id": 20, "wait_time": 97.7699966430664}
+{"step": 114, "time": 229.24, "event": "ORDER_DELIVERED", "order_id": 23, "wait_time": 101.66000366210938}
+{"step": 115, "time": 231.59, "event": "ORDER_DELIVERED", "order_id": 24, "wait_time": 98.9000015258789}
+{"step": 116, "time": 234.83999633789062, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 116, "time": 234.83999633789062, "event": "ORDER_DELIVERED", "order_id": 35, "wait_time": 73.55999755859375}
+{"step": 117, "time": 234.83999633789062, "event": "DISPATCH", "driver_id": 1, "order_ids": [25], "return_time": 261.3500061035156}
+{"step": 118, "time": 238.83, "event": "ORDER_DELIVERED", "order_id": 44, "wait_time": 47.61000061035156}
+{"step": 119, "time": 244.0500030517578, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 120, "time": 244.0500030517578, "event": "DISPATCH", "driver_id": 2, "order_ids": [28], "return_time": 274.3500061035156}
+{"step": 120, "time": 249.27, "event": "ORDER_DELIVERED", "order_id": 25, "wait_time": 114.02999877929688}
+{"step": 122, "time": 257.1400146484375, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 123, "time": 257.1400146484375, "event": "DISPATCH", "driver_id": 0, "order_ids": [30, 49], "return_time": 289.42999267578125}
+{"step": 123, "time": 261.3500061035156, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 123, "time": 261.3500061035156, "event": "ORDER_DELIVERED", "order_id": 28, "wait_time": 119.37000274658203}
+{"step": 124, "time": 261.3500061035156, "event": "DISPATCH", "driver_id": 1, "order_ids": [31], "return_time": 286.2200012207031}
+{"step": 125, "time": 271.41, "event": "ORDER_DELIVERED", "order_id": 31, "wait_time": 123.2699966430664}
+{"step": 126, "time": 274.3500061035156, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 126, "time": 274.3500061035156, "event": "ORDER_DELIVERED", "order_id": 30, "wait_time": 125.2300033569336}
+{"step": 127, "time": 274.3500061035156, "event": "DISPATCH", "driver_id": 2, "order_ids": [33, 50], "return_time": 310.6199951171875}
+{"step": 127, "time": 278.83, "event": "ORDER_DELIVERED", "order_id": 49, "wait_time": 45.83000183105469}
+{"step": 128, "time": 286.2200012207031, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 129, "time": 286.2200012207031, "event": "DISPATCH", "driver_id": 1, "order_ids": [34, 40, 37, 39], "return_time": 325.8500061035156}
+{"step": 129, "time": 287.83, "event": "ORDER_DELIVERED", "order_id": 33, "wait_time": 135.5}
+{"step": 130, "time": 289.42999267578125, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 131, "time": 289.42999267578125, "event": "DISPATCH", "driver_id": 0, "order_ids": [36, 51], "return_time": 325.239990234375}
+{"step": 131, "time": 298.93, "event": "ORDER_DELIVERED", "order_id": 34, "wait_time": 144.32000732421875}
+{"step": 131, "time": 298.93, "event": "ORDER_DELIVERED", "order_id": 37, "wait_time": 133.25999450683594}
+{"step": 131, "time": 298.93, "event": "ORDER_DELIVERED", "order_id": 50, "wait_time": 38.040000915527344}
+{"step": 132, "time": 308.93, "event": "ORDER_DELIVERED", "order_id": 36, "wait_time": 140.67999267578125}
+{"step": 132, "time": 308.93, "event": "ORDER_DELIVERED", "order_id": 40, "wait_time": 126.4000015258789}
+{"step": 132, "time": 308.93, "event": "ORDER_DELIVERED", "order_id": 51, "wait_time": 36.41999816894531}
+{"step": 133, "time": 310.6199951171875, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 133, "time": 310.6199951171875, "event": "ORDER_DELIVERED", "order_id": 39, "wait_time": 137.16000366210938}
+{"step": 134, "time": 310.6199951171875, "event": "DISPATCH", "driver_id": 2, "order_ids": [38, 52, 43], "return_time": 350.3299865722656}
+{"step": 134, "time": 320.6199951171875, "event": "ORDER_DELIVERED", "order_id": 38, "wait_time": 150.97999572753906}
+{"step": 135, "time": 325.239990234375, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 136, "time": 325.239990234375, "event": "DISPATCH", "driver_id": 0, "order_ids": [41], "return_time": 354.9100036621094}
+{"step": 136, "time": 325.8500061035156, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 136, "time": 325.8500061035156, "event": "ORDER_DELIVERED", "order_id": 52, "wait_time": 37.9900016784668}
+{"step": 137, "time": 325.8500061035156, "event": "DISPATCH", "driver_id": 1, "order_ids": [42, 45], "return_time": 353.8999938964844}
+{"step": 138, "time": 342.14, "event": "ORDER_DELIVERED", "order_id": 41, "wait_time": 157.4600067138672}
+{"step": 138, "time": 342.14, "event": "ORDER_DELIVERED", "order_id": 42, "wait_time": 155.52000427246094}
+{"step": 138, "time": 342.14, "event": "ORDER_DELIVERED", "order_id": 43, "wait_time": 152.75}
+{"step": 138, "time": 342.14, "event": "ORDER_DELIVERED", "order_id": 45, "wait_time": 124.05000305175781}
+{"step": 142, "time": 350.3299865722656, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 143, "time": 350.3299865722656, "event": "DISPATCH", "driver_id": 2, "order_ids": [46], "return_time": 362.6099853515625}
+{"step": 145, "time": 353.8999938964844, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 146, "time": 353.8999938964844, "event": "DISPATCH", "driver_id": 1, "order_ids": [47], "return_time": 381.9800109863281}
+{"step": 146, "time": 354.9100036621094, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 147, "time": 354.9100036621094, "event": "DISPATCH", "driver_id": 0, "order_ids": [48], "return_time": 372.0400085449219}
+{"step": 147, "time": 355.43, "event": "ORDER_DELIVERED", "order_id": 46, "wait_time": 140.9499969482422}
+{"step": 152, "time": 360.82, "event": "ORDER_DELIVERED", "order_id": 48, "wait_time": 141.1199951171875}
+{"step": 153, "time": 362.6099853515625, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 154, "time": 362.6099853515625, "event": "DISPATCH", "driver_id": 2, "order_ids": [53], "return_time": 393.1499938964844}
+{"step": 158, "time": 367.93, "event": "ORDER_DELIVERED", "order_id": 47, "wait_time": 147.72000122070312}
+{"step": 161, "time": 372.0400085449219, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 162, "time": 372.0400085449219, "event": "DISPATCH", "driver_id": 0, "order_ids": [54], "return_time": 400.260009765625}
+{"step": 166, "time": 378.97, "event": "ORDER_DELIVERED", "order_id": 53, "wait_time": 36.22999954223633}
+{"step": 168, "time": 381.9800109863281, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 169, "time": 381.9800109863281, "event": "DISPATCH", "driver_id": 1, "order_ids": [55, 62], "return_time": 411.7699890136719}
+{"step": 169, "time": 391.9800109863281, "event": "ORDER_DELIVERED", "order_id": 54, "wait_time": 39.72999954223633}
+{"step": 171, "time": 393.1499938964844, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 172, "time": 393.1499938964844, "event": "DISPATCH", "driver_id": 2, "order_ids": [56], "return_time": 421.2099914550781}
+{"step": 173, "time": 400.260009765625, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 173, "time": 400.260009765625, "event": "ORDER_DELIVERED", "order_id": 55, "wait_time": 48.22999954223633}
+{"step": 173, "time": 400.260009765625, "event": "ORDER_DELIVERED", "order_id": 62, "wait_time": 31.34000015258789}
+{"step": 174, "time": 400.260009765625, "event": "DISPATCH", "driver_id": 0, "order_ids": [57, 63], "return_time": 434.3599853515625}
+{"step": 176, "time": 410.23, "event": "ORDER_DELIVERED", "order_id": 56, "wait_time": 58.650001525878906}
+{"step": 177, "time": 411.7699890136719, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 178, "time": 411.7699890136719, "event": "DISPATCH", "driver_id": 1, "order_ids": [58], "return_time": 438.54998779296875}
+{"step": 179, "time": 421.2099914550781, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 179, "time": 421.2099914550781, "event": "ORDER_DELIVERED", "order_id": 57, "wait_time": 66.30000305175781}
+{"step": 179, "time": 421.2099914550781, "event": "ORDER_DELIVERED", "order_id": 63, "wait_time": 46.290000915527344}
+{"step": 180, "time": 421.2099914550781, "event": "DISPATCH", "driver_id": 2, "order_ids": [59, 60], "return_time": 450.6600036621094}
+{"step": 180, "time": 424.17, "event": "ORDER_DELIVERED", "order_id": 58, "wait_time": 70.8499984741211}
+{"step": 183, "time": 434.3599853515625, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 183, "time": 434.3599853515625, "event": "ORDER_DELIVERED", "order_id": 59, "wait_time": 74.05999755859375}
+{"step": 184, "time": 434.3599853515625, "event": "DISPATCH", "driver_id": 0, "order_ids": [61], "return_time": 455.7200012207031}
+{"step": 185, "time": 438.54998779296875, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 185, "time": 438.54998779296875, "event": "ORDER_DELIVERED", "order_id": 60, "wait_time": 74.68000030517578}
+{"step": 186, "time": 438.54998779296875, "event": "DISPATCH", "driver_id": 1, "order_ids": [64, 65, 69], "return_time": 466.04998779296875}
+{"step": 186, "time": 445.21, "event": "ORDER_DELIVERED", "order_id": 61, "wait_time": 76.56999969482422}
+{"step": 186, "time": 445.21, "event": "ORDER_DELIVERED", "order_id": 64, "wait_time": 73.20999908447266}
+{"step": 188, "time": 450.53, "event": "ORDER_DELIVERED", "order_id": 65, "wait_time": 67.33999633789062}
+{"step": 189, "time": 450.6600036621094, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 190, "time": 450.6600036621094, "event": "DISPATCH", "driver_id": 2, "order_ids": [66], "return_time": 475.54998779296875}
+{"step": 191, "time": 455.7200012207031, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 192, "time": 455.7200012207031, "event": "DISPATCH", "driver_id": 0, "order_ids": [67], "return_time": 485.1400146484375}
+{"step": 194, "time": 460.98, "event": "ORDER_DELIVERED", "order_id": 69, "wait_time": 31.8700008392334}
+{"step": 197, "time": 466.04998779296875, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 197, "time": 466.04998779296875, "event": "ORDER_DELIVERED", "order_id": 66, "wait_time": 69.7300033569336}
+{"step": 198, "time": 466.04998779296875, "event": "DISPATCH", "driver_id": 1, "order_ids": [68], "return_time": 490.3800048828125}
+{"step": 198, "time": 472.75, "event": "ORDER_DELIVERED", "order_id": 67, "wait_time": 65.41999816894531}
+{"step": 200, "time": 475.54998779296875, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 201, "time": 475.54998779296875, "event": "DISPATCH", "driver_id": 2, "order_ids": [70], "return_time": 494.0799865722656}
+{"step": 201, "time": 482.17, "event": "ORDER_DELIVERED", "order_id": 68, "wait_time": 66.33000183105469}
+{"step": 202, "time": 484.04, "event": "ORDER_DELIVERED", "order_id": 70, "wait_time": 48.70000076293945}
+{"step": 204, "time": 485.1400146484375, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 205, "time": 485.1400146484375, "event": "DISPATCH", "driver_id": 0, "order_ids": [71], "return_time": 509.80999755859375}
+{"step": 208, "time": 490.3800048828125, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 209, "time": 490.3800048828125, "event": "DISPATCH", "driver_id": 1, "order_ids": [72, 73, 76], "return_time": 533.9400024414062}
+{"step": 211, "time": 494.0799865722656, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 211, "time": 494.0799865722656, "event": "ORDER_DELIVERED", "order_id": 72, "wait_time": 44.459999084472656}
+{"step": 212, "time": 494.0799865722656, "event": "DISPATCH", "driver_id": 2, "order_ids": [74, 77], "return_time": 528.4199829101562}
+{"step": 215, "time": 499.04, "event": "ORDER_DELIVERED", "order_id": 71, "wait_time": 52.560001373291016}
+{"step": 216, "time": 501.12, "event": "ORDER_DELIVERED", "order_id": 74, "wait_time": 38.34000015258789}
+{"step": 219, "time": 507.71, "event": "ORDER_DELIVERED", "order_id": 73, "wait_time": 53.02000045776367}
+{"step": 222, "time": 509.80999755859375, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 223, "time": 509.80999755859375, "event": "DISPATCH", "driver_id": 0, "order_ids": [75, 78], "return_time": 545.72998046875}
+{"step": 224, "time": 513.33, "event": "ORDER_DELIVERED", "order_id": 77, "wait_time": 28.43000030517578}
+{"step": 227, "time": 518.94, "event": "ORDER_DELIVERED", "order_id": 76, "wait_time": 35.45000076293945}
+{"step": 230, "time": 525.24, "event": "ORDER_DELIVERED", "order_id": 75, "wait_time": 62.5099983215332}
+{"step": 231, "time": 528.4199829101562, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 232, "time": 528.4199829101562, "event": "DISPATCH", "driver_id": 2, "order_ids": [79, 82], "return_time": 553.6400146484375}
+{"step": 232, "time": 530.99, "event": "ORDER_DELIVERED", "order_id": 78, "wait_time": 43.61000061035156}
+{"step": 235, "time": 533.9400024414062, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 236, "time": 533.9400024414062, "event": "DISPATCH", "driver_id": 1, "order_ids": [80, 87, 83], "return_time": 567.8800048828125}
+{"step": 236, "time": 534.74, "event": "ORDER_DELIVERED", "order_id": 79, "wait_time": 47.22999954223633}
+{"step": 239, "time": 538.5, "event": "ORDER_DELIVERED", "order_id": 80, "wait_time": 50.08000183105469}
+{"step": 241, "time": 540.72, "event": "ORDER_DELIVERED", "order_id": 82, "wait_time": 45.7599983215332}
+{"step": 243, "time": 541.08, "event": "ORDER_DELIVERED", "order_id": 87, "wait_time": 29.149999618530273}
+{"step": 250, "time": 545.72998046875, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 251, "time": 545.72998046875, "event": "DISPATCH", "driver_id": 0, "order_ids": [81], "return_time": 573.7000122070312}
+{"step": 256, "time": 553.6400146484375, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 257, "time": 553.6400146484375, "event": "DISPATCH", "driver_id": 2, "order_ids": [84, 86, 85], "return_time": 590.47998046875}
+{"step": 260, "time": 557.14, "event": "ORDER_DELIVERED", "order_id": 83, "wait_time": 58.36000061035156}
+{"step": 265, "time": 560.79, "event": "ORDER_DELIVERED", "order_id": 81, "wait_time": 68.5}
+{"step": 269, "time": 567.53, "event": "ORDER_DELIVERED", "order_id": 85, "wait_time": 63.86000061035156}
+{"step": 270, "time": 567.8800048828125, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 271, "time": 567.8800048828125, "event": "DISPATCH", "driver_id": 1, "order_ids": [88, 89], "return_time": 604.0599975585938}
+{"step": 274, "time": 573.7000122070312, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 274, "time": 573.7000122070312, "event": "ORDER_DELIVERED", "order_id": 84, "wait_time": 70.2300033569336}
+{"step": 275, "time": 573.7000122070312, "event": "DISPATCH", "driver_id": 0, "order_ids": [90, 103, 99], "return_time": 613.2899780273438}
+{"step": 275, "time": 576.59, "event": "ORDER_DELIVERED", "order_id": 86, "wait_time": 67.91000366210938}
+{"step": 275, "time": 576.59, "event": "ORDER_DELIVERED", "order_id": 88, "wait_time": 51.400001525878906}
+{"step": 278, "time": 587.34, "event": "ORDER_DELIVERED", "order_id": 90, "wait_time": 59.619998931884766}
+{"step": 279, "time": 588.42, "event": "ORDER_DELIVERED", "order_id": 89, "wait_time": 64.61000061035156}
+{"step": 279, "time": 588.42, "event": "ORDER_DELIVERED", "order_id": 103, "wait_time": 37.650001525878906}
+{"step": 281, "time": 590.47998046875, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 282, "time": 590.47998046875, "event": "DISPATCH", "driver_id": 2, "order_ids": [91, 109], "return_time": 632.6099853515625}
+{"step": 282, "time": 600.47998046875, "event": "ORDER_DELIVERED", "order_id": 99, "wait_time": 53.599998474121094}
+{"step": 283, "time": 604.0599975585938, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 284, "time": 604.0599975585938, "event": "DISPATCH", "driver_id": 1, "order_ids": [92, 105, 102, 106], "return_time": 647.1099853515625}
+{"step": 284, "time": 613.2899780273438, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 284, "time": 613.2899780273438, "event": "ORDER_DELIVERED", "order_id": 91, "wait_time": 72.80999755859375}
+{"step": 285, "time": 613.2899780273438, "event": "DISPATCH", "driver_id": 0, "order_ids": [93, 96, 104, 108], "return_time": 661.3599853515625}
+{"step": 286, "time": 623.52, "event": "ORDER_DELIVERED", "order_id": 92, "wait_time": 83.51000213623047}
+{"step": 286, "time": 623.52, "event": "ORDER_DELIVERED", "order_id": 93, "wait_time": 81.22000122070312}
+{"step": 286, "time": 623.52, "event": "ORDER_DELIVERED", "order_id": 105, "wait_time": 56.400001525878906}
+{"step": 286, "time": 623.52, "event": "ORDER_DELIVERED", "order_id": 109, "wait_time": 42.939998626708984}
+{"step": 288, "time": 625.74, "event": "ORDER_DELIVERED", "order_id": 106, "wait_time": 65.76000213623047}
+{"step": 289, "time": 632.6099853515625, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 289, "time": 632.6099853515625, "event": "ORDER_DELIVERED", "order_id": 96, "wait_time": 85.83999633789062}
+{"step": 289, "time": 632.6099853515625, "event": "ORDER_DELIVERED", "order_id": 102, "wait_time": 81.87999725341797}
+{"step": 290, "time": 632.6099853515625, "event": "DISPATCH", "driver_id": 2, "order_ids": [94, 98], "return_time": 666.4299926757812}
+{"step": 290, "time": 636.06, "event": "ORDER_DELIVERED", "order_id": 108, "wait_time": 71.54000091552734}
+{"step": 293, "time": 647.1099853515625, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 293, "time": 647.1099853515625, "event": "ORDER_DELIVERED", "order_id": 94, "wait_time": 105.94000244140625}
+{"step": 293, "time": 647.1099853515625, "event": "ORDER_DELIVERED", "order_id": 104, "wait_time": 88.70999908447266}
+{"step": 294, "time": 647.1099853515625, "event": "DISPATCH", "driver_id": 1, "order_ids": [95], "return_time": 678.8499755859375}
+{"step": 295, "time": 654.86, "event": "ORDER_DELIVERED", "order_id": 98, "wait_time": 110.22000122070312}
+{"step": 299, "time": 661.3599853515625, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 300, "time": 661.3599853515625, "event": "DISPATCH", "driver_id": 0, "order_ids": [97, 100], "return_time": 687.9500122070312}
+{"step": 301, "time": 666.4299926757812, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 301, "time": 666.4299926757812, "event": "ORDER_DELIVERED", "order_id": 95, "wait_time": 122.7300033569336}
+{"step": 301, "time": 666.4299926757812, "event": "ORDER_DELIVERED", "order_id": 97, "wait_time": 125.06999969482422}
+{"step": 302, "time": 666.4299926757812, "event": "DISPATCH", "driver_id": 2, "order_ids": [101, 114], "return_time": 703.0900268554688}
+{"step": 306, "time": 678.24, "event": "ORDER_DELIVERED", "order_id": 100, "wait_time": 131.9600067138672}
+{"step": 306, "time": 678.24, "event": "ORDER_DELIVERED", "order_id": 101, "wait_time": 133.4499969482422}
+{"step": 307, "time": 678.8499755859375, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 308, "time": 678.8499755859375, "event": "DISPATCH", "driver_id": 1, "order_ids": [107, 115, 111, 112], "return_time": 745.0700073242188}
+{"step": 310, "time": 687.9500122070312, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 310, "time": 687.9500122070312, "event": "ORDER_DELIVERED", "order_id": 107, "wait_time": 123.88999938964844}
+{"step": 310, "time": 687.9500122070312, "event": "ORDER_DELIVERED", "order_id": 114, "wait_time": 41.77000045776367}
+{"step": 311, "time": 687.9500122070312, "event": "DISPATCH", "driver_id": 0, "order_ids": [110], "return_time": 714.739990234375}
+{"step": 312, "time": 700.24, "event": "ORDER_DELIVERED", "order_id": 115, "wait_time": 43.29999923706055}
+{"step": 313, "time": 703.0900268554688, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 313, "time": 703.0900268554688, "event": "ORDER_DELIVERED", "order_id": 110, "wait_time": 118.95999908447266}
+{"step": 313, "time": 703.0900268554688, "event": "ORDER_DELIVERED", "order_id": 111, "wait_time": 89.44999694824219}
+{"step": 314, "time": 703.0900268554688, "event": "DISPATCH", "driver_id": 2, "order_ids": [113], "return_time": 732.6599731445312}
+{"step": 316, "time": 714.739990234375, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 317, "time": 714.739990234375, "event": "DISPATCH", "driver_id": 0, "order_ids": [116, 121], "return_time": 741.1599731445312}
+{"step": 317, "time": 718.02, "event": "ORDER_DELIVERED", "order_id": 113, "wait_time": 80.12999725341797}
+{"step": 319, "time": 727.42, "event": "ORDER_DELIVERED", "order_id": 112, "wait_time": 100.97000122070312}
+{"step": 319, "time": 727.42, "event": "ORDER_DELIVERED", "order_id": 116, "wait_time": 72.2300033569336}
+{"step": 319, "time": 727.42, "event": "ORDER_DELIVERED", "order_id": 121, "wait_time": 37.560001373291016}
+{"step": 320, "time": 732.6599731445312, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 321, "time": 732.6599731445312, "event": "DISPATCH", "driver_id": 2, "order_ids": [117], "return_time": 755.5499877929688}
+{"step": 321, "time": 741.1599731445312, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 321, "time": 741.1599731445312, "event": "ORDER_DELIVERED", "order_id": 117, "wait_time": 84.48999786376953}
+{"step": 322, "time": 741.1599731445312, "event": "DISPATCH", "driver_id": 0, "order_ids": [118], "return_time": 759.6099853515625}
+{"step": 322, "time": 745.0700073242188, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 323, "time": 745.0700073242188, "event": "DISPATCH", "driver_id": 1, "order_ids": [119], "return_time": 774.3400268554688}
+{"step": 323, "time": 755.0700073242188, "event": "ORDER_DELIVERED", "order_id": 118, "wait_time": 82.5199966430664}
+{"step": 324, "time": 755.5499877929688, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 325, "time": 755.5499877929688, "event": "DISPATCH", "driver_id": 2, "order_ids": [120], "return_time": 787.1900024414062}
+{"step": 325, "time": 759.6099853515625, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 325, "time": 759.6099853515625, "event": "ORDER_DELIVERED", "order_id": 119, "wait_time": 84.73999786376953}
+{"step": 326, "time": 759.6099853515625, "event": "DISPATCH", "driver_id": 0, "order_ids": [122], "return_time": 771.9500122070312}
+{"step": 326, "time": 769.6099853515625, "event": "ORDER_DELIVERED", "order_id": 122, "wait_time": 56.81999969482422}
+{"step": 327, "time": 771.9500122070312, "event": "DRIVER_RETURN", "driver_id": 0}
+{"step": 327, "time": 771.9500122070312, "event": "ORDER_DELIVERED", "order_id": 120, "wait_time": 91.7300033569336}
+{"step": 328, "time": 771.9500122070312, "event": "DISPATCH", "driver_id": 0, "order_ids": [123], "return_time": 798.5900268554688}
+{"step": 328, "time": 774.3400268554688, "event": "DRIVER_RETURN", "driver_id": 1}
+{"step": 330, "time": 787.1900024414062, "event": "DRIVER_RETURN", "driver_id": 2}
+{"step": 330, "time": 787.1900024414062, "event": "ORDER_DELIVERED", "order_id": 123, "wait_time": 66.51000213623047}
+{"step": 332, "time": 798.5900268554688, "event": "DRIVER_RETURN", "driver_id": 0}

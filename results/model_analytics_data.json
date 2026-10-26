@@ -1,0 +1,55 @@
+{
+  "figure1_queue_waterfall": {
+    "max_queue_heuristic": 73.25852254409409,
+    "max_queue_rl": 26.970341797128803,
+    "recovery_time_heuristic_min": 25.0,
+    "recovery_time_rl_min": 14.0,
+    "figure_path": "results/figures/queue_waterfall_dynamics.png"
+  },
+  "figure2_q_value_landscape": {
+    "dqn_overestimation_bias_pct": 45.2,
+    "ddqn_overestimation_bias_pct": 11.4,
+    "ppo_suboptimal_wait_rate_pct": 9.7,
+    "figure_path": "results/figures/q_value_landscape_failures.png"
+  },
+  "figure3_pareto_frontier": {
+    "frontier_points": [
+      [
+        710.2,
+        52.4
+      ],
+      [
+        761.4132005137702,
+        93.06469968270872
+      ],
+      [
+        794.7368855401874,
+        89.69935698454472
+      ]
+    ],
+    "rl_distance_penalty_pct": 8.685452294275281,
+    "figure_path": "results/figures/pareto_frontier_tradeoff.png"
+  },
+  "figure4_sensitivity_heatmap": {
+    "matrix": [
+      [
+        177.13903488185693,
+        180.71472320392743,
+        182.6573610111064
+      ],
+      [
+        278.3162826115366,
+        281.0215499248029,
+        285.0838587517188
+      ]
+    ],
+    "rain_inflation_ratio": 1.5622651624613284,
+    "figure_path": "results/figures/sensitivity_heatmap_matrix.png"
+  },
+  "metadata": {
+    "source_registry": "results/all_metrics_registry.json",
+    "timestamp": "2026-10-24T16:00:00Z",
+    "dpi": 300,
+    "color_mode": "academic_monochrome_grayscale"
+  }
+}

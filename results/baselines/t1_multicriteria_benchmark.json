@@ -1,0 +1,1763 @@
+{
+  "summary": {
+    "num_pairs_evaluated": 50,
+    "avg_pareto_size": 2.42,
+    "avg_dist_saving_shortest_m": 27.539999999999967,
+    "avg_time_penalty_shortest_min": 0.571,
+    "avg_left_turns_fastest": 5.92,
+    "avg_left_turns_easiest": 5.9,
+    "avg_left_turn_reduction_pct": 0.33783783783782884
+  },
+  "pairs": [
+    {
+      "pair_idx": 0,
+      "origin": 1516645265,
+      "destination": 6332563147,
+      "euclidean_m": 1490.5,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2412.1,
+        "exp_time_min": 18.01,
+        "p90_time_min": 18.37,
+        "left_turns": 5,
+        "signals": 26
+      },
+      "shortest": {
+        "dist_m": 2396.4,
+        "exp_time_min": 18.39,
+        "p90_time_min": 18.82,
+        "left_turns": 5,
+        "signals": 27
+      },
+      "stable": {
+        "dist_m": 2412.1,
+        "exp_time_min": 18.01,
+        "p90_time_min": 18.37,
+        "left_turns": 5,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 2412.1,
+        "exp_time_min": 18.01,
+        "p90_time_min": 18.37,
+        "left_turns": 5,
+        "signals": 26
+      }
+    },
+    {
+      "pair_idx": 1,
+      "origin": 1516645265,
+      "destination": 5738206947,
+      "euclidean_m": 1722.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3163.9,
+        "exp_time_min": 21.56,
+        "p90_time_min": 22.09,
+        "left_turns": 7,
+        "signals": 28
+      },
+      "shortest": {
+        "dist_m": 3148.1,
+        "exp_time_min": 21.91,
+        "p90_time_min": 22.4,
+        "left_turns": 7,
+        "signals": 29
+      },
+      "stable": {
+        "dist_m": 3163.9,
+        "exp_time_min": 21.56,
+        "p90_time_min": 22.09,
+        "left_turns": 7,
+        "signals": 28
+      },
+      "easiest": {
+        "dist_m": 3163.9,
+        "exp_time_min": 21.56,
+        "p90_time_min": 22.09,
+        "left_turns": 7,
+        "signals": 28
+      }
+    },
+    {
+      "pair_idx": 2,
+      "origin": 1516645265,
+      "destination": 5775221677,
+      "euclidean_m": 1490.4,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2278.4,
+        "exp_time_min": 17.03,
+        "p90_time_min": 17.35,
+        "left_turns": 7,
+        "signals": 23
+      },
+      "shortest": {
+        "dist_m": 2262.7,
+        "exp_time_min": 17.42,
+        "p90_time_min": 17.75,
+        "left_turns": 7,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 2278.4,
+        "exp_time_min": 17.03,
+        "p90_time_min": 17.35,
+        "left_turns": 7,
+        "signals": 23
+      },
+      "easiest": {
+        "dist_m": 2278.4,
+        "exp_time_min": 17.03,
+        "p90_time_min": 17.35,
+        "left_turns": 7,
+        "signals": 23
+      }
+    },
+    {
+      "pair_idx": 3,
+      "origin": 1516645265,
+      "destination": 2030639096,
+      "euclidean_m": 1132.7,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2261.1,
+        "exp_time_min": 15.49,
+        "p90_time_min": 15.91,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "shortest": {
+        "dist_m": 2245.4,
+        "exp_time_min": 15.86,
+        "p90_time_min": 16.27,
+        "left_turns": 5,
+        "signals": 22
+      },
+      "stable": {
+        "dist_m": 2261.1,
+        "exp_time_min": 15.49,
+        "p90_time_min": 15.91,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "easiest": {
+        "dist_m": 2261.1,
+        "exp_time_min": 15.49,
+        "p90_time_min": 15.91,
+        "left_turns": 5,
+        "signals": 21
+      }
+    },
+    {
+      "pair_idx": 4,
+      "origin": 1516645265,
+      "destination": 5775221537,
+      "euclidean_m": 1735.5,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 3911.7,
+        "exp_time_min": 28.74,
+        "p90_time_min": 29.17,
+        "left_turns": 7,
+        "signals": 42
+      },
+      "shortest": {
+        "dist_m": 3789.1,
+        "exp_time_min": 30.08,
+        "p90_time_min": 30.55,
+        "left_turns": 9,
+        "signals": 44
+      },
+      "stable": {
+        "dist_m": 3895.9,
+        "exp_time_min": 29.09,
+        "p90_time_min": 29.53,
+        "left_turns": 7,
+        "signals": 43
+      },
+      "easiest": {
+        "dist_m": 3804.9,
+        "exp_time_min": 29.7,
+        "p90_time_min": 30.16,
+        "left_turns": 9,
+        "signals": 43
+      }
+    },
+    {
+      "pair_idx": 5,
+      "origin": 1516645265,
+      "destination": 5775221525,
+      "euclidean_m": 1894.2,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 3511.6,
+        "exp_time_min": 27.55,
+        "p90_time_min": 28.02,
+        "left_turns": 8,
+        "signals": 40
+      },
+      "shortest": {
+        "dist_m": 3495.9,
+        "exp_time_min": 27.96,
+        "p90_time_min": 28.38,
+        "left_turns": 8,
+        "signals": 41
+      },
+      "stable": {
+        "dist_m": 3640.3,
+        "exp_time_min": 27.87,
+        "p90_time_min": 28.39,
+        "left_turns": 8,
+        "signals": 40
+      },
+      "easiest": {
+        "dist_m": 3640.3,
+        "exp_time_min": 27.87,
+        "p90_time_min": 28.39,
+        "left_turns": 8,
+        "signals": 40
+      }
+    },
+    {
+      "pair_idx": 6,
+      "origin": 1516645265,
+      "destination": 12313135298,
+      "euclidean_m": 944.5,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 1768.9,
+        "exp_time_min": 12.52,
+        "p90_time_min": 12.91,
+        "left_turns": 3,
+        "signals": 17
+      },
+      "shortest": {
+        "dist_m": 1753.2,
+        "exp_time_min": 12.88,
+        "p90_time_min": 13.24,
+        "left_turns": 3,
+        "signals": 18
+      },
+      "stable": {
+        "dist_m": 1768.9,
+        "exp_time_min": 12.52,
+        "p90_time_min": 12.91,
+        "left_turns": 3,
+        "signals": 17
+      },
+      "easiest": {
+        "dist_m": 1768.9,
+        "exp_time_min": 12.52,
+        "p90_time_min": 12.91,
+        "left_turns": 3,
+        "signals": 17
+      }
+    },
+    {
+      "pair_idx": 7,
+      "origin": 1516645265,
+      "destination": 12437015526,
+      "euclidean_m": 1220.0,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 2075.9,
+        "exp_time_min": 15.3,
+        "p90_time_min": 15.68,
+        "left_turns": 3,
+        "signals": 22
+      },
+      "shortest": {
+        "dist_m": 2060.2,
+        "exp_time_min": 15.66,
+        "p90_time_min": 16.01,
+        "left_turns": 3,
+        "signals": 23
+      },
+      "stable": {
+        "dist_m": 2105.0,
+        "exp_time_min": 15.32,
+        "p90_time_min": 15.69,
+        "left_turns": 3,
+        "signals": 22
+      },
+      "easiest": {
+        "dist_m": 2105.0,
+        "exp_time_min": 15.32,
+        "p90_time_min": 15.69,
+        "left_turns": 3,
+        "signals": 22
+      }
+    },
+    {
+      "pair_idx": 8,
+      "origin": 1516645265,
+      "destination": 1497276531,
+      "euclidean_m": 1291.3,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 1977.5,
+        "exp_time_min": 14.19,
+        "p90_time_min": 14.54,
+        "left_turns": 3,
+        "signals": 20
+      },
+      "shortest": {
+        "dist_m": 1961.7,
+        "exp_time_min": 14.56,
+        "p90_time_min": 14.96,
+        "left_turns": 3,
+        "signals": 21
+      },
+      "stable": {
+        "dist_m": 1977.5,
+        "exp_time_min": 14.19,
+        "p90_time_min": 14.54,
+        "left_turns": 3,
+        "signals": 20
+      },
+      "easiest": {
+        "dist_m": 1977.5,
+        "exp_time_min": 14.19,
+        "p90_time_min": 14.54,
+        "left_turns": 3,
+        "signals": 20
+      }
+    },
+    {
+      "pair_idx": 9,
+      "origin": 1516645265,
+      "destination": 366446264,
+      "euclidean_m": 930.4,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 1460.6,
+        "exp_time_min": 12.28,
+        "p90_time_min": 12.62,
+        "left_turns": 3,
+        "signals": 18
+      },
+      "shortest": {
+        "dist_m": 1440.5,
+        "exp_time_min": 13.3,
+        "p90_time_min": 13.65,
+        "left_turns": 4,
+        "signals": 20
+      },
+      "stable": {
+        "dist_m": 1444.9,
+        "exp_time_min": 12.63,
+        "p90_time_min": 12.95,
+        "left_turns": 3,
+        "signals": 19
+      },
+      "easiest": {
+        "dist_m": 1460.6,
+        "exp_time_min": 12.28,
+        "p90_time_min": 12.62,
+        "left_turns": 3,
+        "signals": 18
+      }
+    },
+    {
+      "pair_idx": 10,
+      "origin": 1516645265,
+      "destination": 2030639114,
+      "euclidean_m": 1192.4,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2449.4,
+        "exp_time_min": 16.87,
+        "p90_time_min": 17.27,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "shortest": {
+        "dist_m": 2433.7,
+        "exp_time_min": 17.24,
+        "p90_time_min": 17.63,
+        "left_turns": 5,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 2449.4,
+        "exp_time_min": 16.87,
+        "p90_time_min": 17.27,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "easiest": {
+        "dist_m": 2449.4,
+        "exp_time_min": 16.87,
+        "p90_time_min": 17.27,
+        "left_turns": 5,
+        "signals": 23
+      }
+    },
+    {
+      "pair_idx": 11,
+      "origin": 1516645265,
+      "destination": 1497276524,
+      "euclidean_m": 1330.0,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2022.7,
+        "exp_time_min": 14.66,
+        "p90_time_min": 14.98,
+        "left_turns": 5,
+        "signals": 20
+      },
+      "shortest": {
+        "dist_m": 2006.9,
+        "exp_time_min": 15.03,
+        "p90_time_min": 15.39,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "stable": {
+        "dist_m": 2022.7,
+        "exp_time_min": 14.66,
+        "p90_time_min": 14.98,
+        "left_turns": 5,
+        "signals": 20
+      },
+      "easiest": {
+        "dist_m": 2022.7,
+        "exp_time_min": 14.66,
+        "p90_time_min": 14.98,
+        "left_turns": 5,
+        "signals": 20
+      }
+    },
+    {
+      "pair_idx": 12,
+      "origin": 1516645265,
+      "destination": 14278654580,
+      "euclidean_m": 1745.2,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3314.6,
+        "exp_time_min": 19.78,
+        "p90_time_min": 20.4,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "shortest": {
+        "dist_m": 3298.9,
+        "exp_time_min": 20.12,
+        "p90_time_min": 20.71,
+        "left_turns": 6,
+        "signals": 27
+      },
+      "stable": {
+        "dist_m": 3314.6,
+        "exp_time_min": 19.78,
+        "p90_time_min": 20.4,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 3314.6,
+        "exp_time_min": 19.78,
+        "p90_time_min": 20.4,
+        "left_turns": 6,
+        "signals": 26
+      }
+    },
+    {
+      "pair_idx": 13,
+      "origin": 1516645265,
+      "destination": 366372456,
+      "euclidean_m": 1008.7,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 2151.2,
+        "exp_time_min": 15.55,
+        "p90_time_min": 15.95,
+        "left_turns": 4,
+        "signals": 22
+      },
+      "shortest": {
+        "dist_m": 2073.1,
+        "exp_time_min": 16.63,
+        "p90_time_min": 17.03,
+        "left_turns": 5,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 2135.5,
+        "exp_time_min": 15.92,
+        "p90_time_min": 16.3,
+        "left_turns": 4,
+        "signals": 23
+      },
+      "easiest": {
+        "dist_m": 2151.2,
+        "exp_time_min": 15.55,
+        "p90_time_min": 15.95,
+        "left_turns": 4,
+        "signals": 22
+      }
+    },
+    {
+      "pair_idx": 14,
+      "origin": 1516645265,
+      "destination": 366381388,
+      "euclidean_m": 1799.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2832.6,
+        "exp_time_min": 21.25,
+        "p90_time_min": 21.65,
+        "left_turns": 9,
+        "signals": 30
+      },
+      "shortest": {
+        "dist_m": 2816.8,
+        "exp_time_min": 21.63,
+        "p90_time_min": 22.03,
+        "left_turns": 9,
+        "signals": 31
+      },
+      "stable": {
+        "dist_m": 2832.6,
+        "exp_time_min": 21.25,
+        "p90_time_min": 21.65,
+        "left_turns": 9,
+        "signals": 30
+      },
+      "easiest": {
+        "dist_m": 2832.6,
+        "exp_time_min": 21.25,
+        "p90_time_min": 21.65,
+        "left_turns": 9,
+        "signals": 30
+      }
+    },
+    {
+      "pair_idx": 15,
+      "origin": 1516645265,
+      "destination": 13181224430,
+      "euclidean_m": 1164.6,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 2478.6,
+        "exp_time_min": 17.48,
+        "p90_time_min": 17.88,
+        "left_turns": 5,
+        "signals": 24
+      },
+      "shortest": {
+        "dist_m": 2280.5,
+        "exp_time_min": 18.86,
+        "p90_time_min": 19.34,
+        "left_turns": 5,
+        "signals": 28
+      },
+      "stable": {
+        "dist_m": 2358.6,
+        "exp_time_min": 17.77,
+        "p90_time_min": 18.15,
+        "left_turns": 4,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 2342.9,
+        "exp_time_min": 18.15,
+        "p90_time_min": 18.56,
+        "left_turns": 4,
+        "signals": 27
+      }
+    },
+    {
+      "pair_idx": 16,
+      "origin": 1516645265,
+      "destination": 5777195826,
+      "euclidean_m": 1288.5,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 3222.9,
+        "exp_time_min": 20.41,
+        "p90_time_min": 21.04,
+        "left_turns": 4,
+        "signals": 28
+      },
+      "shortest": {
+        "dist_m": 3118.4,
+        "exp_time_min": 23.34,
+        "p90_time_min": 23.82,
+        "left_turns": 7,
+        "signals": 33
+      },
+      "stable": {
+        "dist_m": 3207.1,
+        "exp_time_min": 20.78,
+        "p90_time_min": 21.33,
+        "left_turns": 4,
+        "signals": 29
+      },
+      "easiest": {
+        "dist_m": 3222.9,
+        "exp_time_min": 20.41,
+        "p90_time_min": 21.04,
+        "left_turns": 4,
+        "signals": 28
+      }
+    },
+    {
+      "pair_idx": 17,
+      "origin": 1516645265,
+      "destination": 10118771782,
+      "euclidean_m": 1397.3,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2299.0,
+        "exp_time_min": 16.75,
+        "p90_time_min": 17.13,
+        "left_turns": 4,
+        "signals": 24
+      },
+      "shortest": {
+        "dist_m": 2283.3,
+        "exp_time_min": 17.13,
+        "p90_time_min": 17.51,
+        "left_turns": 4,
+        "signals": 25
+      },
+      "stable": {
+        "dist_m": 2299.0,
+        "exp_time_min": 16.75,
+        "p90_time_min": 17.13,
+        "left_turns": 4,
+        "signals": 24
+      },
+      "easiest": {
+        "dist_m": 2299.0,
+        "exp_time_min": 16.75,
+        "p90_time_min": 17.13,
+        "left_turns": 4,
+        "signals": 24
+      }
+    },
+    {
+      "pair_idx": 18,
+      "origin": 1516645265,
+      "destination": 2030638651,
+      "euclidean_m": 908.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 1413.4,
+        "exp_time_min": 11.57,
+        "p90_time_min": 11.87,
+        "left_turns": 4,
+        "signals": 16
+      },
+      "shortest": {
+        "dist_m": 1397.6,
+        "exp_time_min": 11.97,
+        "p90_time_min": 12.32,
+        "left_turns": 4,
+        "signals": 17
+      },
+      "stable": {
+        "dist_m": 1413.4,
+        "exp_time_min": 11.57,
+        "p90_time_min": 11.87,
+        "left_turns": 4,
+        "signals": 16
+      },
+      "easiest": {
+        "dist_m": 1413.4,
+        "exp_time_min": 11.57,
+        "p90_time_min": 11.87,
+        "left_turns": 4,
+        "signals": 16
+      }
+    },
+    {
+      "pair_idx": 19,
+      "origin": 1516645265,
+      "destination": 5738206941,
+      "euclidean_m": 1570.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2974.7,
+        "exp_time_min": 19.86,
+        "p90_time_min": 20.45,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "shortest": {
+        "dist_m": 2958.9,
+        "exp_time_min": 20.21,
+        "p90_time_min": 20.71,
+        "left_turns": 6,
+        "signals": 27
+      },
+      "stable": {
+        "dist_m": 2974.7,
+        "exp_time_min": 19.86,
+        "p90_time_min": 20.45,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 2974.7,
+        "exp_time_min": 19.86,
+        "p90_time_min": 20.45,
+        "left_turns": 6,
+        "signals": 26
+      }
+    },
+    {
+      "pair_idx": 20,
+      "origin": 1516645265,
+      "destination": 2022548957,
+      "euclidean_m": 1859.0,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2770.5,
+        "exp_time_min": 20.72,
+        "p90_time_min": 21.14,
+        "left_turns": 9,
+        "signals": 29
+      },
+      "shortest": {
+        "dist_m": 2754.8,
+        "exp_time_min": 21.11,
+        "p90_time_min": 21.51,
+        "left_turns": 9,
+        "signals": 30
+      },
+      "stable": {
+        "dist_m": 2770.5,
+        "exp_time_min": 20.72,
+        "p90_time_min": 21.14,
+        "left_turns": 9,
+        "signals": 29
+      },
+      "easiest": {
+        "dist_m": 2770.5,
+        "exp_time_min": 20.72,
+        "p90_time_min": 21.14,
+        "left_turns": 9,
+        "signals": 29
+      }
+    },
+    {
+      "pair_idx": 21,
+      "origin": 1516645265,
+      "destination": 14076115772,
+      "euclidean_m": 2250.3,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3383.4,
+        "exp_time_min": 24.23,
+        "p90_time_min": 24.67,
+        "left_turns": 9,
+        "signals": 33
+      },
+      "shortest": {
+        "dist_m": 3367.7,
+        "exp_time_min": 24.59,
+        "p90_time_min": 24.98,
+        "left_turns": 9,
+        "signals": 34
+      },
+      "stable": {
+        "dist_m": 3383.4,
+        "exp_time_min": 24.23,
+        "p90_time_min": 24.67,
+        "left_turns": 9,
+        "signals": 33
+      },
+      "easiest": {
+        "dist_m": 3383.4,
+        "exp_time_min": 24.23,
+        "p90_time_min": 24.67,
+        "left_turns": 9,
+        "signals": 33
+      }
+    },
+    {
+      "pair_idx": 22,
+      "origin": 1516645265,
+      "destination": 366409651,
+      "euclidean_m": 1410.3,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 2508.1,
+        "exp_time_min": 18.16,
+        "p90_time_min": 18.61,
+        "left_turns": 6,
+        "signals": 24
+      },
+      "shortest": {
+        "dist_m": 2492.4,
+        "exp_time_min": 18.52,
+        "p90_time_min": 18.99,
+        "left_turns": 6,
+        "signals": 25
+      },
+      "stable": {
+        "dist_m": 3273.4,
+        "exp_time_min": 21.99,
+        "p90_time_min": 22.55,
+        "left_turns": 4,
+        "signals": 30
+      },
+      "easiest": {
+        "dist_m": 2508.1,
+        "exp_time_min": 18.16,
+        "p90_time_min": 18.61,
+        "left_turns": 6,
+        "signals": 24
+      }
+    },
+    {
+      "pair_idx": 23,
+      "origin": 1516645265,
+      "destination": 13975421536,
+      "euclidean_m": 1250.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 1916.6,
+        "exp_time_min": 13.98,
+        "p90_time_min": 14.31,
+        "left_turns": 3,
+        "signals": 20
+      },
+      "shortest": {
+        "dist_m": 1900.8,
+        "exp_time_min": 14.36,
+        "p90_time_min": 14.71,
+        "left_turns": 3,
+        "signals": 21
+      },
+      "stable": {
+        "dist_m": 1916.6,
+        "exp_time_min": 13.98,
+        "p90_time_min": 14.31,
+        "left_turns": 3,
+        "signals": 20
+      },
+      "easiest": {
+        "dist_m": 1916.6,
+        "exp_time_min": 13.98,
+        "p90_time_min": 14.31,
+        "left_turns": 3,
+        "signals": 20
+      }
+    },
+    {
+      "pair_idx": 24,
+      "origin": 1516645265,
+      "destination": 1276696883,
+      "euclidean_m": 1349.3,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2222.2,
+        "exp_time_min": 15.52,
+        "p90_time_min": 15.95,
+        "left_turns": 5,
+        "signals": 20
+      },
+      "shortest": {
+        "dist_m": 2206.4,
+        "exp_time_min": 15.89,
+        "p90_time_min": 16.38,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "stable": {
+        "dist_m": 2222.2,
+        "exp_time_min": 15.52,
+        "p90_time_min": 15.95,
+        "left_turns": 5,
+        "signals": 20
+      },
+      "easiest": {
+        "dist_m": 2222.2,
+        "exp_time_min": 15.52,
+        "p90_time_min": 15.95,
+        "left_turns": 5,
+        "signals": 20
+      }
+    },
+    {
+      "pair_idx": 25,
+      "origin": 1516645265,
+      "destination": 5775034979,
+      "euclidean_m": 2193.1,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3394.5,
+        "exp_time_min": 24.3,
+        "p90_time_min": 24.75,
+        "left_turns": 7,
+        "signals": 34
+      },
+      "shortest": {
+        "dist_m": 3378.7,
+        "exp_time_min": 24.66,
+        "p90_time_min": 25.06,
+        "left_turns": 7,
+        "signals": 35
+      },
+      "stable": {
+        "dist_m": 3394.5,
+        "exp_time_min": 24.3,
+        "p90_time_min": 24.75,
+        "left_turns": 7,
+        "signals": 34
+      },
+      "easiest": {
+        "dist_m": 3394.5,
+        "exp_time_min": 24.3,
+        "p90_time_min": 24.75,
+        "left_turns": 7,
+        "signals": 34
+      }
+    },
+    {
+      "pair_idx": 26,
+      "origin": 1516645265,
+      "destination": 5775221656,
+      "euclidean_m": 1583.6,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 4257.6,
+        "exp_time_min": 30.87,
+        "p90_time_min": 31.31,
+        "left_turns": 7,
+        "signals": 45
+      },
+      "shortest": {
+        "dist_m": 4135.1,
+        "exp_time_min": 32.22,
+        "p90_time_min": 32.66,
+        "left_turns": 9,
+        "signals": 47
+      },
+      "stable": {
+        "dist_m": 4241.9,
+        "exp_time_min": 31.2,
+        "p90_time_min": 31.61,
+        "left_turns": 7,
+        "signals": 46
+      },
+      "easiest": {
+        "dist_m": 4150.8,
+        "exp_time_min": 31.82,
+        "p90_time_min": 32.25,
+        "left_turns": 9,
+        "signals": 46
+      }
+    },
+    {
+      "pair_idx": 27,
+      "origin": 1516645265,
+      "destination": 1671468679,
+      "euclidean_m": 1432.2,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 2424.4,
+        "exp_time_min": 17.47,
+        "p90_time_min": 17.92,
+        "left_turns": 6,
+        "signals": 23
+      },
+      "shortest": {
+        "dist_m": 2408.6,
+        "exp_time_min": 17.83,
+        "p90_time_min": 18.31,
+        "left_turns": 6,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 3357.2,
+        "exp_time_min": 22.81,
+        "p90_time_min": 23.33,
+        "left_turns": 5,
+        "signals": 31
+      },
+      "easiest": {
+        "dist_m": 2424.4,
+        "exp_time_min": 17.47,
+        "p90_time_min": 17.92,
+        "left_turns": 6,
+        "signals": 23
+      }
+    },
+    {
+      "pair_idx": 28,
+      "origin": 1516645265,
+      "destination": 729523353,
+      "euclidean_m": 2206.9,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3434.7,
+        "exp_time_min": 24.84,
+        "p90_time_min": 25.28,
+        "left_turns": 7,
+        "signals": 35
+      },
+      "shortest": {
+        "dist_m": 3418.9,
+        "exp_time_min": 25.19,
+        "p90_time_min": 25.63,
+        "left_turns": 7,
+        "signals": 36
+      },
+      "stable": {
+        "dist_m": 3434.7,
+        "exp_time_min": 24.84,
+        "p90_time_min": 25.28,
+        "left_turns": 7,
+        "signals": 35
+      },
+      "easiest": {
+        "dist_m": 3434.7,
+        "exp_time_min": 24.84,
+        "p90_time_min": 25.28,
+        "left_turns": 7,
+        "signals": 35
+      }
+    },
+    {
+      "pair_idx": 29,
+      "origin": 1516645265,
+      "destination": 2030639504,
+      "euclidean_m": 962.2,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 1533.2,
+        "exp_time_min": 12.67,
+        "p90_time_min": 13.0,
+        "left_turns": 4,
+        "signals": 18
+      },
+      "shortest": {
+        "dist_m": 1517.5,
+        "exp_time_min": 13.07,
+        "p90_time_min": 13.41,
+        "left_turns": 4,
+        "signals": 19
+      },
+      "stable": {
+        "dist_m": 1533.2,
+        "exp_time_min": 12.67,
+        "p90_time_min": 13.0,
+        "left_turns": 4,
+        "signals": 18
+      },
+      "easiest": {
+        "dist_m": 1533.2,
+        "exp_time_min": 12.67,
+        "p90_time_min": 13.0,
+        "left_turns": 4,
+        "signals": 18
+      }
+    },
+    {
+      "pair_idx": 30,
+      "origin": 1516645265,
+      "destination": 13194917077,
+      "euclidean_m": 2210.2,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3452.2,
+        "exp_time_min": 25.3,
+        "p90_time_min": 25.79,
+        "left_turns": 7,
+        "signals": 36
+      },
+      "shortest": {
+        "dist_m": 3436.5,
+        "exp_time_min": 25.68,
+        "p90_time_min": 26.17,
+        "left_turns": 7,
+        "signals": 37
+      },
+      "stable": {
+        "dist_m": 3452.2,
+        "exp_time_min": 25.3,
+        "p90_time_min": 25.79,
+        "left_turns": 7,
+        "signals": 36
+      },
+      "easiest": {
+        "dist_m": 3452.2,
+        "exp_time_min": 25.3,
+        "p90_time_min": 25.79,
+        "left_turns": 7,
+        "signals": 36
+      }
+    },
+    {
+      "pair_idx": 31,
+      "origin": 1516645265,
+      "destination": 2030639084,
+      "euclidean_m": 1191.6,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2509.5,
+        "exp_time_min": 17.22,
+        "p90_time_min": 17.66,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "shortest": {
+        "dist_m": 2493.7,
+        "exp_time_min": 17.62,
+        "p90_time_min": 18.1,
+        "left_turns": 5,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 2509.5,
+        "exp_time_min": 17.22,
+        "p90_time_min": 17.66,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "easiest": {
+        "dist_m": 2509.5,
+        "exp_time_min": 17.22,
+        "p90_time_min": 17.66,
+        "left_turns": 5,
+        "signals": 23
+      }
+    },
+    {
+      "pair_idx": 32,
+      "origin": 1516645265,
+      "destination": 5775035037,
+      "euclidean_m": 1911.6,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 3443.0,
+        "exp_time_min": 25.61,
+        "p90_time_min": 26.07,
+        "left_turns": 8,
+        "signals": 36
+      },
+      "shortest": {
+        "dist_m": 3427.3,
+        "exp_time_min": 26.0,
+        "p90_time_min": 26.55,
+        "left_turns": 8,
+        "signals": 37
+      },
+      "stable": {
+        "dist_m": 3571.7,
+        "exp_time_min": 25.94,
+        "p90_time_min": 26.45,
+        "left_turns": 8,
+        "signals": 36
+      },
+      "easiest": {
+        "dist_m": 3571.7,
+        "exp_time_min": 25.94,
+        "p90_time_min": 26.45,
+        "left_turns": 8,
+        "signals": 36
+      }
+    },
+    {
+      "pair_idx": 33,
+      "origin": 1516645265,
+      "destination": 366381336,
+      "euclidean_m": 1553.9,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2365.6,
+        "exp_time_min": 18.49,
+        "p90_time_min": 18.87,
+        "left_turns": 8,
+        "signals": 26
+      },
+      "shortest": {
+        "dist_m": 2349.8,
+        "exp_time_min": 18.86,
+        "p90_time_min": 19.23,
+        "left_turns": 8,
+        "signals": 27
+      },
+      "stable": {
+        "dist_m": 2365.6,
+        "exp_time_min": 18.49,
+        "p90_time_min": 18.87,
+        "left_turns": 8,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 2365.6,
+        "exp_time_min": 18.49,
+        "p90_time_min": 18.87,
+        "left_turns": 8,
+        "signals": 26
+      }
+    },
+    {
+      "pair_idx": 34,
+      "origin": 1516645265,
+      "destination": 1497312816,
+      "euclidean_m": 1305.4,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2355.9,
+        "exp_time_min": 16.37,
+        "p90_time_min": 16.83,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "shortest": {
+        "dist_m": 2340.2,
+        "exp_time_min": 16.75,
+        "p90_time_min": 17.19,
+        "left_turns": 5,
+        "signals": 24
+      },
+      "stable": {
+        "dist_m": 2355.9,
+        "exp_time_min": 16.37,
+        "p90_time_min": 16.83,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "easiest": {
+        "dist_m": 2355.9,
+        "exp_time_min": 16.37,
+        "p90_time_min": 16.83,
+        "left_turns": 5,
+        "signals": 23
+      }
+    },
+    {
+      "pair_idx": 35,
+      "origin": 1516645265,
+      "destination": 366455478,
+      "euclidean_m": 2254.1,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3269.4,
+        "exp_time_min": 23.4,
+        "p90_time_min": 23.83,
+        "left_turns": 9,
+        "signals": 32
+      },
+      "shortest": {
+        "dist_m": 3253.7,
+        "exp_time_min": 23.78,
+        "p90_time_min": 24.22,
+        "left_turns": 9,
+        "signals": 33
+      },
+      "stable": {
+        "dist_m": 3269.4,
+        "exp_time_min": 23.4,
+        "p90_time_min": 23.83,
+        "left_turns": 9,
+        "signals": 32
+      },
+      "easiest": {
+        "dist_m": 3269.4,
+        "exp_time_min": 23.4,
+        "p90_time_min": 23.83,
+        "left_turns": 9,
+        "signals": 32
+      }
+    },
+    {
+      "pair_idx": 36,
+      "origin": 1516645265,
+      "destination": 4947173950,
+      "euclidean_m": 1431.2,
+      "pareto_size": 3,
+      "fastest": {
+        "dist_m": 2569.0,
+        "exp_time_min": 18.16,
+        "p90_time_min": 18.64,
+        "left_turns": 6,
+        "signals": 25
+      },
+      "shortest": {
+        "dist_m": 2553.3,
+        "exp_time_min": 18.51,
+        "p90_time_min": 18.95,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "stable": {
+        "dist_m": 3337.6,
+        "exp_time_min": 21.09,
+        "p90_time_min": 21.56,
+        "left_turns": 5,
+        "signals": 28
+      },
+      "easiest": {
+        "dist_m": 2569.0,
+        "exp_time_min": 18.16,
+        "p90_time_min": 18.64,
+        "left_turns": 6,
+        "signals": 25
+      }
+    },
+    {
+      "pair_idx": 37,
+      "origin": 1516645265,
+      "destination": 5733023047,
+      "euclidean_m": 1684.7,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 2896.6,
+        "exp_time_min": 19.81,
+        "p90_time_min": 20.33,
+        "left_turns": 6,
+        "signals": 25
+      },
+      "shortest": {
+        "dist_m": 2869.2,
+        "exp_time_min": 20.69,
+        "p90_time_min": 21.03,
+        "left_turns": 4,
+        "signals": 30
+      },
+      "stable": {
+        "dist_m": 2880.8,
+        "exp_time_min": 20.16,
+        "p90_time_min": 20.61,
+        "left_turns": 6,
+        "signals": 26
+      },
+      "easiest": {
+        "dist_m": 2885.0,
+        "exp_time_min": 20.28,
+        "p90_time_min": 20.69,
+        "left_turns": 4,
+        "signals": 29
+      }
+    },
+    {
+      "pair_idx": 38,
+      "origin": 1516645265,
+      "destination": 5777195817,
+      "euclidean_m": 1229.1,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 2807.7,
+        "exp_time_min": 18.67,
+        "p90_time_min": 19.15,
+        "left_turns": 5,
+        "signals": 25
+      },
+      "shortest": {
+        "dist_m": 2792.0,
+        "exp_time_min": 19.04,
+        "p90_time_min": 19.48,
+        "left_turns": 5,
+        "signals": 26
+      },
+      "stable": {
+        "dist_m": 3269.7,
+        "exp_time_min": 21.67,
+        "p90_time_min": 22.27,
+        "left_turns": 4,
+        "signals": 31
+      },
+      "easiest": {
+        "dist_m": 3254.0,
+        "exp_time_min": 22.02,
+        "p90_time_min": 22.59,
+        "left_turns": 4,
+        "signals": 32
+      }
+    },
+    {
+      "pair_idx": 39,
+      "origin": 1516645265,
+      "destination": 1497313028,
+      "euclidean_m": 1118.5,
+      "pareto_size": 4,
+      "fastest": {
+        "dist_m": 2303.5,
+        "exp_time_min": 15.88,
+        "p90_time_min": 16.26,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "shortest": {
+        "dist_m": 2260.9,
+        "exp_time_min": 18.77,
+        "p90_time_min": 19.17,
+        "left_turns": 6,
+        "signals": 27
+      },
+      "stable": {
+        "dist_m": 2352.8,
+        "exp_time_min": 17.09,
+        "p90_time_min": 17.51,
+        "left_turns": 4,
+        "signals": 25
+      },
+      "easiest": {
+        "dist_m": 2337.1,
+        "exp_time_min": 17.45,
+        "p90_time_min": 17.85,
+        "left_turns": 4,
+        "signals": 26
+      }
+    },
+    {
+      "pair_idx": 40,
+      "origin": 1516645265,
+      "destination": 5777274193,
+      "euclidean_m": 1794.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2922.9,
+        "exp_time_min": 20.26,
+        "p90_time_min": 20.64,
+        "left_turns": 4,
+        "signals": 29
+      },
+      "shortest": {
+        "dist_m": 2907.2,
+        "exp_time_min": 20.63,
+        "p90_time_min": 21.03,
+        "left_turns": 4,
+        "signals": 30
+      },
+      "stable": {
+        "dist_m": 2922.9,
+        "exp_time_min": 20.26,
+        "p90_time_min": 20.64,
+        "left_turns": 4,
+        "signals": 29
+      },
+      "easiest": {
+        "dist_m": 2922.9,
+        "exp_time_min": 20.26,
+        "p90_time_min": 20.64,
+        "left_turns": 4,
+        "signals": 29
+      }
+    },
+    {
+      "pair_idx": 41,
+      "origin": 1516645265,
+      "destination": 5776272379,
+      "euclidean_m": 1602.1,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 3197.6,
+        "exp_time_min": 23.04,
+        "p90_time_min": 23.53,
+        "left_turns": 10,
+        "signals": 31
+      },
+      "shortest": {
+        "dist_m": 3181.9,
+        "exp_time_min": 23.43,
+        "p90_time_min": 23.89,
+        "left_turns": 10,
+        "signals": 32
+      },
+      "stable": {
+        "dist_m": 3197.6,
+        "exp_time_min": 23.04,
+        "p90_time_min": 23.53,
+        "left_turns": 10,
+        "signals": 31
+      },
+      "easiest": {
+        "dist_m": 3197.6,
+        "exp_time_min": 23.04,
+        "p90_time_min": 23.53,
+        "left_turns": 10,
+        "signals": 31
+      }
+    },
+    {
+      "pair_idx": 42,
+      "origin": 1516645265,
+      "destination": 5671815998,
+      "euclidean_m": 1544.7,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2524.0,
+        "exp_time_min": 18.54,
+        "p90_time_min": 18.92,
+        "left_turns": 4,
+        "signals": 27
+      },
+      "shortest": {
+        "dist_m": 2508.2,
+        "exp_time_min": 18.92,
+        "p90_time_min": 19.3,
+        "left_turns": 4,
+        "signals": 28
+      },
+      "stable": {
+        "dist_m": 2524.0,
+        "exp_time_min": 18.54,
+        "p90_time_min": 18.92,
+        "left_turns": 4,
+        "signals": 27
+      },
+      "easiest": {
+        "dist_m": 2524.0,
+        "exp_time_min": 18.54,
+        "p90_time_min": 18.92,
+        "left_turns": 4,
+        "signals": 27
+      }
+    },
+    {
+      "pair_idx": 43,
+      "origin": 1516645265,
+      "destination": 8359531323,
+      "euclidean_m": 1102.0,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2417.5,
+        "exp_time_min": 16.55,
+        "p90_time_min": 16.96,
+        "left_turns": 5,
+        "signals": 22
+      },
+      "shortest": {
+        "dist_m": 2401.8,
+        "exp_time_min": 16.9,
+        "p90_time_min": 17.35,
+        "left_turns": 5,
+        "signals": 23
+      },
+      "stable": {
+        "dist_m": 2417.5,
+        "exp_time_min": 16.55,
+        "p90_time_min": 16.96,
+        "left_turns": 5,
+        "signals": 22
+      },
+      "easiest": {
+        "dist_m": 2417.5,
+        "exp_time_min": 16.55,
+        "p90_time_min": 16.96,
+        "left_turns": 5,
+        "signals": 22
+      }
+    },
+    {
+      "pair_idx": 44,
+      "origin": 1516645265,
+      "destination": 11420177370,
+      "euclidean_m": 1148.7,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2513.1,
+        "exp_time_min": 17.02,
+        "p90_time_min": 17.45,
+        "left_turns": 6,
+        "signals": 22
+      },
+      "shortest": {
+        "dist_m": 2497.4,
+        "exp_time_min": 17.41,
+        "p90_time_min": 17.9,
+        "left_turns": 6,
+        "signals": 23
+      },
+      "stable": {
+        "dist_m": 2513.1,
+        "exp_time_min": 17.02,
+        "p90_time_min": 17.45,
+        "left_turns": 6,
+        "signals": 22
+      },
+      "easiest": {
+        "dist_m": 2513.1,
+        "exp_time_min": 17.02,
+        "p90_time_min": 17.45,
+        "left_turns": 6,
+        "signals": 22
+      }
+    },
+    {
+      "pair_idx": 45,
+      "origin": 1516645265,
+      "destination": 5775221683,
+      "euclidean_m": 1590.0,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2400.3,
+        "exp_time_min": 18.09,
+        "p90_time_min": 18.46,
+        "left_turns": 8,
+        "signals": 24
+      },
+      "shortest": {
+        "dist_m": 2384.5,
+        "exp_time_min": 18.46,
+        "p90_time_min": 18.88,
+        "left_turns": 8,
+        "signals": 25
+      },
+      "stable": {
+        "dist_m": 2400.3,
+        "exp_time_min": 18.09,
+        "p90_time_min": 18.46,
+        "left_turns": 8,
+        "signals": 24
+      },
+      "easiest": {
+        "dist_m": 2400.3,
+        "exp_time_min": 18.09,
+        "p90_time_min": 18.46,
+        "left_turns": 8,
+        "signals": 24
+      }
+    },
+    {
+      "pair_idx": 46,
+      "origin": 1516645265,
+      "destination": 2030638853,
+      "euclidean_m": 1724.6,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2554.2,
+        "exp_time_min": 19.69,
+        "p90_time_min": 20.08,
+        "left_turns": 8,
+        "signals": 28
+      },
+      "shortest": {
+        "dist_m": 2538.5,
+        "exp_time_min": 20.06,
+        "p90_time_min": 20.43,
+        "left_turns": 8,
+        "signals": 29
+      },
+      "stable": {
+        "dist_m": 2554.2,
+        "exp_time_min": 19.69,
+        "p90_time_min": 20.08,
+        "left_turns": 8,
+        "signals": 28
+      },
+      "easiest": {
+        "dist_m": 2554.2,
+        "exp_time_min": 19.69,
+        "p90_time_min": 20.08,
+        "left_turns": 8,
+        "signals": 28
+      }
+    },
+    {
+      "pair_idx": 47,
+      "origin": 1516645265,
+      "destination": 676534735,
+      "euclidean_m": 1378.8,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2397.0,
+        "exp_time_min": 17.93,
+        "p90_time_min": 18.29,
+        "left_turns": 9,
+        "signals": 24
+      },
+      "shortest": {
+        "dist_m": 2381.3,
+        "exp_time_min": 18.3,
+        "p90_time_min": 18.71,
+        "left_turns": 9,
+        "signals": 25
+      },
+      "stable": {
+        "dist_m": 2397.0,
+        "exp_time_min": 17.93,
+        "p90_time_min": 18.29,
+        "left_turns": 9,
+        "signals": 24
+      },
+      "easiest": {
+        "dist_m": 2397.0,
+        "exp_time_min": 17.93,
+        "p90_time_min": 18.29,
+        "left_turns": 9,
+        "signals": 24
+      }
+    },
+    {
+      "pair_idx": 48,
+      "origin": 1516645265,
+      "destination": 2403042641,
+      "euclidean_m": 1381.3,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2121.9,
+        "exp_time_min": 15.32,
+        "p90_time_min": 15.7,
+        "left_turns": 7,
+        "signals": 20
+      },
+      "shortest": {
+        "dist_m": 2106.1,
+        "exp_time_min": 15.7,
+        "p90_time_min": 16.09,
+        "left_turns": 7,
+        "signals": 21
+      },
+      "stable": {
+        "dist_m": 2121.9,
+        "exp_time_min": 15.32,
+        "p90_time_min": 15.7,
+        "left_turns": 7,
+        "signals": 20
+      },
+      "easiest": {
+        "dist_m": 2121.9,
+        "exp_time_min": 15.32,
+        "p90_time_min": 15.7,
+        "left_turns": 7,
+        "signals": 20
+      }
+    },
+    {
+      "pair_idx": 49,
+      "origin": 1516645265,
+      "destination": 5776272446,
+      "euclidean_m": 1141.7,
+      "pareto_size": 2,
+      "fastest": {
+        "dist_m": 2316.6,
+        "exp_time_min": 15.7,
+        "p90_time_min": 16.06,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "shortest": {
+        "dist_m": 2300.8,
+        "exp_time_min": 16.08,
+        "p90_time_min": 16.43,
+        "left_turns": 5,
+        "signals": 22
+      },
+      "stable": {
+        "dist_m": 2316.6,
+        "exp_time_min": 15.7,
+        "p90_time_min": 16.06,
+        "left_turns": 5,
+        "signals": 21
+      },
+      "easiest": {
+        "dist_m": 2316.6,
+        "exp_time_min": 15.7,
+        "p90_time_min": 16.06,
+        "left_turns": 5,
+        "signals": 21
+      }
+    }
+  ]
+}

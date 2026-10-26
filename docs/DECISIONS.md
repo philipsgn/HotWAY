@@ -1,7 +1,7 @@
 # BẢN GHI QUYẾT ĐỊNH THIẾT KẾ & KIẾN TRÚC (DECISIONS.MD) — HotWAY
 
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
+> **Phiên bản:** v6.0.0 (Dynamic Real-Time Dispatch & Adaptive Routing Edition)  
+> **Ngày cập nhật:** 24/10/2026  
 
 ---
 
@@ -41,3 +41,109 @@
 - **Pipeline tự động:** 100% dữ liệu có thể tái tạo qua 3 lệnh: `python -m src.benchmark.instance_generator`, `python -m src.rl.train_cvrp_rl`, `python -m src.benchmark.runner`, và `python -m src.benchmark.analysis`.
 - **Bản lưu trữ lịch sử:** Toàn bộ bảng số liệu trích xuất từ PDF gốc được lưu trữ cẩn thận tại `rel_result/legacy_pdf_reference/` để phục vụ công tác thanh tra khoa học khi cần đối chiếu.
 - **Jupyter Notebook:** Cung cấp notebook `notebooks/cvrp_benchmark.ipynb` tương tác trực tiếp với đồ thị, phân bố khách hàng và kết quả kiểm định thống kê.
+
+## 8. Chuyển Hướng Nghiên Cứu v6.0: Từ CVRP Tĩnh Sang Điều Phối Động & Chọn Đường Thích Nghi
+- **Bối cảnh:** Kết quả nghiệm thu E0 xác nhận rằng đối với CVRP tĩnh khởi tạo từ Clarke-Wright, không gian cải thiện chỉ khoảng ~2%, dẫn đến việc tác tử RL (DQN) không có lợi thế vượt trội so với Random/Greedy ($p_{\text{Holm}} = 0,0072$). Hơn nữa, ràng buộc nhiệt độ Newton dựa trên giả định không quan sát được nhiệt độ bếp thực tế.
+- **Lựa chọn chuyển hướng:**
+  1. Bảo lưu toàn bộ thư mục `rel_result/` làm "Thí nghiệm khởi đầu E0" và minh chứng khoa học cho bước chuyển hướng.
+  2. Bỏ hoàn toàn ràng buộc nhiệt độ Newton và câu chủ đạo "để món còn nóng".
+  3. Đặt mục tiêu cốt lõi vào **Thời gian chờ của khách hàng ($W_i = t_{\text{giao}, i} - t_{\text{đặt}, i}$)**, độ trễ ETA cam kết, và hệ số Gini công bằng.
+- **Phương án bị loại:** Tiếp tục tối ưu siêu tham số trên bài toán CVRP tĩnh chọn toán tử Local Search (bị loại vì bản chất bài toán không có đủ dư địa cho RL tạo đột phá).
+
+## 9. Quyết Định Kiến Trúc GĐ1: Chọn Đường Thích Nghi (Adaptive Routing)
+- **Bối cảnh:** Cần một bài toán nền tảng nơi Quy hoạch động (Value Iteration) giải được nghiệm giải tích tối ưu $100\%$ làm thước đo đối chiếu tuyệt đối (Ground Truth).
+- **Lựa chọn:** Trích xuất đồ thị con 10–15 nút thực tế từ OpenStreetMap TP.HCM quanh Hàng Gòn Quán (Bình Thạnh) với 3 trạng thái tắc nghẽn (Thông, Chậm, Kẹt) theo mô hình chuyển trạng thái Markov. Đồ thị con được tinh chỉnh bảo đảm tính liên thông mạnh (Strongly Connected Component).
+- **Lý do:** Vừa bảo đảm bám sát địa lý thực tế Sài Gòn, vừa bảo đảm tính hội tụ chính xác của Value Iteration.
+- **Phương án bị loại:** Đồ thị lưới nhân tạo (bị loại để bám sát bản đồ OSM thực tế).
+
+## 10. Quyết Định Kiến Trúc GĐ2: Điều Phối Đơn Hàng Tại Quán Ăn (Dynamic Restaurant Dispatch)
+- **Mô phỏng thời gian:** Áp dụng mô phỏng sự kiện rời rạc (**Event-driven Simulation**). Môi trường nhảy bước trực tiếp đến các thời điểm quyết định (khi tài xế rảnh hoặc có đơn mới khi có tài xế rảnh). Thưởng bước: $r_t = -\Delta t \times n_{\text{undelivered}}(t)$.
+- **Lý do:** Tăng tốc độ mô phỏng gấp 20–50 lần so với fixed-tick từng phút, tối ưu hóa triệt để cho môi trường tính toán 2 cores CPU / 3.7GB RAM.
+- **Quy tắc xuất phát:** Khi chọn xuất phát với $m$ đơn ($1 \le m \le Q$), áp dụng quy tắc **FIFO** (chọn $m$ đơn có thời gian chờ lâu nhất) kết hợp định tuyến chặng giao bằng **Nearest Insertion** trên ma trận đường bộ có hướng OSMnx. Quy tắc gom cụm địa lý (Spatial Clustering) được kiểm chứng trong phần Ablation Study.
+- **Xử lý cuối ca (End-of-Episode):** Áp dụng **Pha xả sạch đơn (Drain Phase)** sau 22:00 (không nhận thêm đơn mới, mô phỏng tiếp tục đến khi toàn bộ đơn được phục vụ). Bảo đảm tổng thưởng Bellman bằng ĐÚNG tổng thời gian chờ của 100% khách hàng với sai số $< 10^{-9}$.
+- **Chính sách cam kết ETA:** Sử dụng chuẩn định mức tĩnh (Standard SLA Buffer): $\text{ETA}_{\text{hứa}, i} = t_{\text{đặt}, i} + \mu_{\text{prep}} + \frac{d(\text{depot}, c_i)}{v_{\text{avg}}} + 15\text{ phút đệm}$.
+
+## 11. Các Quyết Định Kỹ Thuật Bổ Sung Cho Hoàn Thiện Cổng G1 (v6.1.0)
+1. **Hành động Chờ & Semi-MDP:** Hành động $a=0$ là bước nhảy tới sự kiện kế tiếp (đơn mới, tài xế về, bếp xong) với trần thời gian chờ tối đa $\tau_{\max} = 10\text{ phút}$. Mô hình hóa theo Semi-MDP với hàm chiết khấu thời gian thực $\gamma(\Delta t) = e^{-\beta \Delta t}$ hoặc $\gamma^{\Delta t}$. Pha xả sạch đơn cuối ca (Drain Phase) chạy đến khi giao hết để bảo đảm tuyệt đối đẳng thức $\sum r_k = -\sum W_i$ (sai số $< 10^{-9}$).
+2. **Máy trạng thái đơn hàng 5 bước:** Tách bạch 5 trạng thái: `PLACED` (Đã đặt) $\to$ `COOKING` (Đang nấu) $\to$ `READY` (Sẵn sàng) $\to$ `DELIVERING` (Đang giao) $\to$ `DELIVERED` (Đã giao). Ràng buộc cứng: Chỉ có đơn ở trạng thái `READY` mới được phép bốc xếp lên xe.
+3. **Quy tắc gom đơn & Hoán vị định tuyến:** Khi chọn xuất phát $m$ đơn: lấy đơn `READY` cũ nhất làm gốc (seed), thêm $m-1$ đơn gần nhất thỏa mãn giới hạn đường vòng $\text{detour} \le 1.5\text{ km}$. Thứ tự giao: duyệt vét cạn $m! \le 120$ hoán vị để tìm thứ tự tối thiểu hóa tổng thời điểm giao $\sum t_{\text{arrival}}$ (chi phí tính toán $< 0.1\text{ ms}$).
+4. **Profile xe máy đô thị:** Lọc đồ thị OSMnx giữ lại và ưu tiên mạng hẻm (`service`, `residential`, `living_street`), loại bỏ đường cấm xe máy; phân cấp tốc độ theo loại đường (32/22/14 km/h); phạt đèn đỏ (25s) và rẽ trái (12s); hệ số mưa $\eta_{\text{rain}} = 1.40$; thời gian dừng tại nhà khách $t_{\text{service}} \sim \text{Lognormal}(\mu=\ln 3, \sigma=0.25)$. Sức chứa thùng xe máy $Q = 4$ tô/đơn (ghi vào bảng giả định).
+5. **Bộ sinh sự kiện & Đợt đột biến:** Nền NHPP (2 đỉnh trưa/tối) kết hợp đợt đột biến ngẫu nhiên (thời lượng 20-60 phút, hệ số $2\times - 4\times$, cụm không gian). Có kịch bản quá tải vượt công suất phục vụ. Huấn luyện ngẫu nhiên hóa tham số; đánh giá trên mẫu chưa từng thấy; báo cáo $p90$ riêng cho khung giờ đột biến và đồ thị độ dài hàng đợi.
+6. **Chốt công thức Cam kết ETA:** $\text{ETA}_{\text{hứa}, i} = t_{\text{đặt}, i} + \mu_{\text{prep}} + \frac{d(\text{depot}, c_i)}{\bar{v}_{\text{direct}}} + 15\text{ phút}$.
+7. **Tập địa chỉ đóng băng:** 400 địa chỉ giao hàng chuẩn đã snap và tính sẵn ma trận trong bán kính 5km để mô phỏng cực nhanh; 150 địa chỉ riêng biệt cho kiểm thử ngoài phân phối (OOD).
+8. **Chuẩn hóa thuật ngữ tham chiếu:** Đổi "cận dưới offline" thành "Tham chiếu offline biết trước tương lai (Offline Prescient Reference)".
+9. **Đồ thị con GĐ1:** Trích xuất từ khu vực Bình Thạnh có nhiều đường song song và hẻm (12-16 nút liên thông mạnh) để Value Iteration giải nghiệm tối ưu giải tích.
+10. **Bổ sung G2:** Thêm định dạng log sự kiện `events.jsonl` và trình xem trực quan Matplotlib (`scripts/view_event_log.py`) để kiểm tra logic bằng mắt trước khi train diện rộng.
+11. **Bổ sung G6:** Backend FastAPI chạy trực tiếp môi trường `src/envs` và stream sự kiện; Frontend MapLibre chỉ vẽ và cung cấp bảng điều phối hoàn chỉnh (FSM đơn/tài xế, lý do quyết định, bơm đột biến, bật mưa, mô phỏng song song cùng seed, đèn báo kiểm tra bất biến).
+12. **Đối soát số liệu E0 & Tra lại Ulmer 2021:**
+    - Tác giả Ulmer 2021 chính xác: Marlin W. Ulmer, Barrett W. Thomas, Ann Melissa Campbell, và Nicholas Woyak.
+    - Đối soát số liệu E0 với `rel_result/`: Dữ liệu gốc PDF (A2, 24 instances) ghi nhận Random 656,359 km vs DQN 657,897 km ($p_{\text{Holm}} = 0,0072$); Dữ liệu tái lập 30 instances TP.HCM ghi nhận Greedy 103,727 km vs DQN 103,813 km. Đã cập nhật đồng bộ vào `00_survey.md`.
+
+
+## 13. Quyết Định Nghiệm Thu Cổng G4 & G5 và Kiểm Thử Độ Trung Thực Số Liệu T3 (v6.1.0)
+- **Bối cảnh:** Cần nghiệm thu kết quả huấn luyện mô hình RL (DQN, Double DQN, PPO), các phân tích Ablation, Phân tích độ nhạy, và đối so sánh có kiểm định giả thuyết thống kê Wilcoxon theo cặp và hiệu chỉnh Holm-Bonferroni.
+- **Quyết định:**
+  1. Triển khai script `scripts/make_report_tables.py` đọc trực tiếp từ `results/training/` và `results/baselines/` để tự động sinh bảng biểu trong `docs/research/05_results_comparison.md` và `docs/research/06_analysis.md`, triệt để không gõ tay bất kỳ con số nào.
+  2. Tạo sổ đăng ký số liệu chuẩn `results/all_metrics_registry.json` niêm phong 97 giá trị đo lường thực nghiệm.
+  3. Xây dựng kiểm thử tự động `tests/test_report_fidelity.py` (Test T3) kiểm tra sai số số học giữa tài liệu, registry và CSV $< 10^{-9}$.
+  4. Báo cáo đầy đủ và trung thực kết quả âm tính: Tác tử RL (DQN $114.06\text{m}$, DDQN $118.29\text{m}$, PPO $118.94\text{m}$) không đánh bại được quy tắc trực giác Immediate ($89.70\text{m}$) do tính nhạy cảm cao của hàng đợi xe máy trước các quyết định "chờ" sai lầm trong thời điểm xung tải.
+- **Kỷ luật Cổng G5:** Giữ nguyên vẹn mã nguồn `frontend/` và `backend/`, bảo vệ tuyệt đối cổng 3000, dừng lại để trình bày báo cáo đầy đủ cho Lead Engineer & User phê duyệt trước khi chuyển sang Cổng G6.
+
+## 14. Quyết Định Triển Khai Cổng G6: Backend Stream API (:8000) & Giao Diện WebGIS OptimoRoute (:3001) (v6.1.0)
+- **Bối cảnh:** Sau khi Gate G5 được nghiệm thu khoa học, dự án chuyển sang Cổng G6 để hoàn thiện trải nghiệm vận hành và trực quan hóa toàn diện hệ thống điều phối thời gian thực.
+- **Quyết định Backend:**
+  1. Xây dựng module `backend/app/api/realtime_dispatch.py` cung cấp endpoint `/api/v1/sim/stream` truyền phát sự kiện rời rạc bằng Server-Sent Events (SSE) trực tiếp từ môi trường `DispatchEnv`.
+  2. Bổ sung endpoint `/api/v1/sim/parallel` cho phép chạy so sánh đối đầu 2 chính sách (ví dụ: Immediate vs Double DQN) trên cùng một hạt giống ngẫu nhiên để quan sát sự khác biệt về độ dài hàng đợi và thời gian chờ.
+  3. Cung cấp endpoint `/api/v1/sim/benchmark_summary` truyền tải trực tiếp 97 chỉ số khoa học đã được niêm phong từ `results/all_metrics_registry.json`.
+  4. Sắp xếp thứ tự nạp router trong `backend/app/main.py` để tránh hiện tượng route shadowing giữa route tham số `/sim/{plan_id}` của CVRP cũ và các route tĩnh mới.
+- **Quyết định Frontend:**
+  1. Tái cấu trúc `ScreenLiveDispatch.tsx` theo chuẩn OptimoRoute 3 cột và bảng màu butter-cream (`#19100a`, `#c99a4a`, `#f4ede2`).
+  2. Hiển thị trực quan 5 trạng thái vòng đời đơn hàng FSM: `PLACED` $\to$ `COOKING` $\to$ `READY` $\to$ `DELIVERING` $\to$ `DELIVERED`.
+  3. Bổ sung banner giải thích lý do ra quyết định của tác tử (Explainability Banner) cho từng bước thời gian thực.
+  4. Cung cấp nút bơm đột biến tải (`Surge Burst x3.5`), gạt chuyển thời tiết mưa bão (`Rain 1.4x`), và bộ điều khiển tốc độ phát lại ($5\times, 20\times, 50\times$).
+  5. Tích hợp huy hiệu Invariant Inspector xác nhận trực tiếp đẳng thức Bellman sai số $< 10^{-9}$ và ràng buộc sức chứa $Q \le 4$.
+  6. Nâng cấp `ScreenStrategyLab.tsx` hiển thị bảng đối so sánh nghiệm thu, kiểm định Wilcoxon, và minh chứng kết quả âm tính một cách minh bạch.
+- **Bảo toàn cổng mạng & Build sạch:**
+  - Backend chạy cổng **8000**, Frontend chạy cổng **3001**. Cổng **3000** được bảo vệ tuyệt đối.
+  - Bản build Next.js 14 (`npm run build`) biên dịch thành công 100% không phát sinh lỗi TypeScript.
+  - Toàn bộ 29 ca kiểm thử tự động (T1 - T7) đều vượt qua.
+
+## 15. Quyết Định Nâng Cấp Final Production, Final Model Analytic & Công Bố Học Thuật (v6.2.0)
+- **Bối cảnh:** Dự án HotWAY hoàn thành toàn bộ chuỗi nghiên cứu và bước vào giai đoạn đóng gói chuẩn Final Production, Final Model Analytic, và Báo cáo nghiên cứu học thuật chuẩn quốc tế IEEE/ACM.
+- **Tinh gọn kiến trúc & Cô lập E0:**
+  1. Chuyển toàn bộ mã nguồn CVRP tĩnh cũ sang thư mục `archive_e0/` (`archive_e0/src/cvrp_solver`, `archive_e0/src/benchmark`, `archive_e0/src/rl`, `archive_e0/backend`, `archive_e0/tests`), giữ nguyên vẹn dữ liệu gốc tại `rel_result/`.
+  2. Xóa các tài liệu dư thừa không còn phù hợp (`run.md`, `AUDIT_REPORT.md`).
+  3. Frontend tinh gọn về 3 phân hệ phục vụ sản xuất: `live` (Điều phối Live Semi-MDP), `orders` (Quản lý đơn hàng), `strategy_lab` (Strategy Lab & Benchmark). Kiểm tra `npm run build` thành công 100% không lỗi type.
+- **Phân tích mô hình 4 chiều (Final Model Analytic):**
+  1. Xây dựng module `scripts/generate_model_analytics.py` sinh 4 biểu đồ học thuật chuẩn đơn sắc 300 DPI tại `results/figures/`:
+     - *Queue Waterfall & Saturation Dynamics* (`queue_waterfall_dynamics.png`): Sự bùng nổ hàng đợi khi đột biến tải $3.5\times$, chứng minh heuristic gom đơn gây nghẽn 73 đơn trong khi điều phối động giải phóng nhanh hơn 44%.
+     - *Q-Value Landscape & Failure Modes* (`q_value_landscape_failures.png`): Phân tích thiên lệch phóng đại giá trị hành động Chờ ($+45.2\%$ ở DQN) và tỷ lệ chọn nhầm hành động của Double DQN ($14.1\%$).
+     - *Pareto Efficiency Frontier* (`pareto_frontier_tradeoff.png`): Đồ thị đánh đổi giữa thời gian chờ và số km di chuyển; các tác tử RL nằm trọn trong vùng bị lấn át.
+     - *Multi-parametric Sensitivity Matrix* (`sensitivity_heatmap_matrix.png`): Ma trận độ nhạy $2 \times 3$ giữa Mưa bão đô thị ($1.0\times / 1.4\times$) và Tốc độ bếp ($8\text{m}, 12\text{m}, 16\text{m}$).
+  2. Lưu trữ toàn bộ số liệu phân tích cấu trúc tại `results/model_analytics_data.json`.
+- **Báo cáo nghiên cứu chuẩn IEEE/ACM & Xuất PDF đơn sắc:**
+  1. Phát triển script `scripts/export_pdf_report.py` sử dụng thư viện `reportlab` biên dịch `docs/HotWAY_Final_Research_Report.pdf` theo định dạng bài báo học thuật chuẩn quốc tế (Title 18-20pt, Section 13-14pt, Subsection 11-12pt, Body 9.5-10pt, bảng biểu kèm số liệu chính xác, biểu đồ nhúng nét cao, số trang Page X of Y, và tuyệt đối không dùng đường phân cách ngang `---`).
+  2. Tạo bản Markdown đồng bộ `docs/FINAL_RESEARCH_REPORT.md` tuân thủ nguyên tắc không sử dụng dòng kẻ ngang `---`.
+  3. Cập nhật `README.md` thành bản giới thiệu Production Showcase chuẩn mực.
+- **Xác thực tự động Codex Terminal & Niêm phong chứng chỉ:**
+  1. Xây dựng `scripts/verify_terminal_reproducibility.py` kiểm tra tự động mã băm SHA-256 của 12 tệp trọng yếu, kiểm định độ khớp số học sai lệch $< 10^{-9}$ so với `all_metrics_registry.json`, xác minh an toàn cổng mạng (Backend 8000, Frontend 3001, cấm 3000), và thực thi bộ kiểm thử `pytest tests/ -v`.
+  2. Niêm phong kết quả vào chứng chỉ kiểm định chất lượng: `results/TERMINAL_VERIFICATION_AUDIT.json`.
+
+## 16. Chuyển Hướng Nghiên Cứu v7.0: Tối Ưu Đường Đi Xe Máy Đô Thị Đa Tiêu Chí & Thích Nghi (T1 - T2 - T3)
+- **Bối cảnh & Động cơ:**
+  1. Loại bỏ hoàn toàn mô hình quán ăn, bếp nấu, phương trình nhiệt Newton, và bài toán "chờ hay gom đơn" làm bài toán lõi. Đối tượng phục vụ chuẩn hóa thành mọi loại hàng hóa bưu kiện giao chặng cuối bằng xe máy đô thị xuất phát từ Kho phân loại hoặc Bưu cục.
+  2. Bảo tồn `rel_result/` làm minh chứng cho Thí nghiệm khởi đầu E0 (CVRP tĩnh, RL chọn toán tử, kết quả âm tính Random $656.359\text{ km}$ tốt hơn DQN $657.897\text{ km}$, $p_{\text{Holm}} = 0.0072$) và là động lực khoa học của bước chuyển hướng; ghi rõ các giả định nhiệt độ của E0 không còn dùng.
+  3. Trọng tâm nghiên cứu mới là **TỐI ƯU ĐƯỜNG ĐI (ROUTE OPTIMIZATION)**. Đơn hàng là đầu vào phụ, trong đó đơn tồn nhận mức ưu tiên cao hơn ($w_i = 1 + \alpha \cdot \text{tuổi}_i / \tau$).
+- **Cấu trúc 3 tầng bài toán:**
+  1. *T1 (Chọn đường đa tiêu chí giữa 2 điểm):* Sinh $k$ tuyến ứng viên (penalized edge / $k$-shortest simple paths), đánh giá Monte Carlo cự ly, thời gian kỳ vọng, phân vị $p90$, số lần rẽ, số lần rẽ trái cắt dòng xe đối diện, tỷ lệ hẻm proxy, số nút đèn tín hiệu; lọc tập Pareto phi lấn át và dán 4 nhãn: Nhanh nhất kỳ vọng, Ngắn nhất cự ly, Ổn định nhất p90, Dễ đi nhất.
+  2. *T2 (Lập tuyến nhiều điểm VRPTW):* 1 kho, $K$ xe máy, tải trọng/số gói, khung giờ nhận hàng mềm, dwell time, ưu tiên đơn tồn. So sánh các solver (CW+LS E0, Google OR-Tools, PyVRP/VROOM) trên ma trận theo khung giờ rồi đánh giá nghiệm trong môi trường mô phỏng ngẫu nhiên thực.
+  3. *T3 (Đổi đường thích nghi khi kẹt xe bằng RL):* MDP trên đồ thị con SCC, mạng dùng chung chấm điểm cạnh ứng viên, đối chiếu tuyệt đối với nghiệm giải tích chính xác từ Quy hoạch động Value Iteration (Ground Truth $V^*$).
+- **Lựa chọn công cụ & Ràng buộc tài nguyên:**
+  1. Toàn bộ công cụ là nguồn mở, miễn phí (tra cứu thực tế ngày 25/10/2026): OSMnx (~5.9k stars, MIT), NetworkX (~15k stars, BSD), Google OR-Tools (~14.3k stars, Apache-2.0), PyVRP (~717 stars, MIT), Gymnasium (~7.5k stars, Apache-2.0), PyTorch CPU (~85k stars, BSD), MapLibre GL JS (~6.2k stars, BSD).
+  2. Ràng buộc phần cứng máy kiểm thử: Windows, CPU 2 nhân, RAM khả dụng ~3.7 GB, không GPU. Tuyệt đối không chạy Dijkstra trên 46.055 nút trong vòng lặp; huấn luyện và mô phỏng tập trung trên đồ thị con và ma trận tính sẵn 300–500 địa chỉ.
+  3. Mô hình giao thông `TrafficProvider`: Triển khai 3 bản gồm `SyntheticProvider` (chuỗi Markov 3 trạng thái Thông/Chậm/Kẹt, sự cố đột xuất, mưa bão $\eta=1.40$, nhiễu log-normal), `ReplayProvider`, và `LiveProvider` (tùy chọn). Giao diện luôn gắn nhãn nguồn rõ ràng (LIVE, REPLAY, MÔ PHỎNG).
+- **Quy chuẩn tài liệu & Ngoại lệ demo mỏng T1:**
+  1. Giới hạn độ dài $\le 4$ trang cho `00_survey.md` (G0) và `01_problem_formulation.md` (G1), viết súc tích bằng bảng và công thức.
+  2. Dừng chờ duyệt chính thức ở Cổng G1 và Cổng G5.
+  3. *Ngoại lệ có chủ đích:* Ngay sau khi nộp bản nháp G1, triển khai ngay lát cắt chạy được T1 (sinh bảng so sánh và biểu đồ lưu vào `results/`) và cho phép xây dựng một Demo mỏng cho T1 trước G5 (trang bản đồ 4 tuyến chỉ đọc từ `results/`, dán nhãn MÔ PHỎNG). Các màn hình còn lại đợi sau khi nghiệm thu G5.
+  4. Cổng mạng: Backend cố định cổng **8000**, Frontend cố định cổng **3001**, cấm tuyệt đối cổng **3000**.

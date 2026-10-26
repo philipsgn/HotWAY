@@ -1,9 +1,9 @@
 # Cấu hình địa điểm và thông số vận hành duy nhất (Single Source of Truth)
-# v5.0 — Multi-Region Production Edition
+# v6.1 — Urban Motorbike Real-Time Dispatch Edition
 
 site:
   name: "Hàng Gòn Quán"
-  tagline: "Tuyến giao hàng ngắn nhất để món còn nóng."
+  tagline: "Tối ưu thời gian chờ của khách hàng bằng điều phối thông minh."
   address: "490 Điện Biên Phủ, Phường 21, Bình Thạnh, TP. Hồ Chí Minh"
   depot:
     lat: 10.8012
@@ -12,81 +12,99 @@ site:
   timezone: "Asia/Ho_Chi_Minh"
   snap_max_distance_meters: 60.0
 
-# Cấu hình đa vùng đồ thị đường bộ
+# Cấu hình vùng đồ thị đường bộ
 regions:
-  binhthanh:
-    description: "Khu vực Bình Thạnh (demo nhỏ, 38 nút hand-crafted)"
-    mode: "legacy"               # Dùng đồ thị hand-crafted cũ
+  binhthanh_subgraph:
+    description: "Đồ thị con Bình Thạnh nhiều đường song song và hẻm (GĐ1 Adaptive Routing)"
+    mode: "osmnx_subgraph"
     depot: [10.8012, 106.7145]
-    radius_km: 3.5
-    graph_file: "data/binhthanh_graph.pickle"
-    roads_geojson: "data/binhthanh_roads.geojson"
-
-  hcmc:
-    description: "Toàn TP.HCM (Production, OSMnx full graph)"
-    mode: "osmnx"                # Tải đồ thị thật từ OpenStreetMap
-    depot: [10.8012, 106.7145]
-    place_name: "Ho Chi Minh City, Vietnam"
-    network_type: "drive"        # Chỉ đường cho xe cơ giới
-    graph_file: "data/hcmc_graph.pickle"
-    roads_geojson: "data/hcmc_roads.geojson"
-    graphml_file: "data/hcmc_graph.graphml"
+    n_nodes: 14
+    strongly_connected: true
+    graph_file: "data/binhthanh_routing_subgraph.pickle"
 
   hcmc_compact:
-    description: "TP.HCM lõi (bán kính 10km từ depot, cân bằng kích thước/hiệu năng)"
+    description: "TP.HCM lõi bán kính 5km từ depot cho điều phối xe máy (GĐ2)"
     mode: "osmnx"
     depot: [10.8012, 106.7145]
-    radius_km: 10.0
-    network_type: "drive"
+    radius_km: 5.0
+    network_type: "drive_service"    # Bao gồm cả đường hẻm, bỏ đường cấm xe máy
     graph_file: "data/hcmc_compact_graph.pickle"
     roads_geojson: "data/hcmc_compact_roads.geojson"
-    graphml_file: "data/hcmc_compact_graph.graphml"
 
-default_region: "hcmc_compact"   # Mặc định dùng vùng compact cho hiệu năng tốt
+default_region: "hcmc_compact"
 
-# Tham số phương tiện & vận hành CVRP
+# Profile xe máy đô thị Sài Gòn (Urban Motorbike Profile)
 fleet:
-  vehicle_capacity: 40      # Sức chứa đồng nhất (tô/bát)
-  default_vehicles: 5       # Số xe tối đa mặc định
-  avg_speed_kmh: 30.0       # Tốc độ di chuyển trung bình trong đô thị
-  service_time_minutes: 3.0 # Thời gian dừng giao mỗi đơn
+  vehicle_type: "motorbike"
+  vehicle_capacity: 4         # Sức chứa thùng xe máy: 4 đơn/chuyến (giả định vận hành)
+  default_vehicles: 3         # Số lượng tài xế mặc định của quán (K in 2..5)
+  min_vehicles: 2
+  max_vehicles: 5
+  speeds_kmh:
+    primary_secondary: 32.0   # Đường trục chính
+    tertiary_residential: 22.0 # Đường nội bộ
+    alley_service: 14.0       # Hẻm nhỏ
+    default_free_flow: 25.0
+  penalties:
+    traffic_light_sec: 25.0   # Chờ đèn đỏ trung bình
+    left_turn_sec: 12.0       # Phạt rẽ trái cắt dòng xung đột
+  service_time:
+    mean_minutes: 3.0         # Dừng bàn giao tại nhà khách trong hẻm
+    sigma: 0.25
+  weather:
+    rain_factor: 1.40         # Hệ số giảm tốc khi trời mưa (vận tốc giảm 28%)
 
-# Tham số nhiệt động học Newton (Tham số giả định, cho phép hiệu chỉnh)
-thermal:
-  T0_celsius: 85.0          # Nhiệt độ ban đầu khi đóng gói xuất phát (°C)
-  Tenv_celsius: 30.0        # Nhiệt độ môi trường đô thị Sài Gòn (°C)
-  k_cooling_rate: 0.020     # Hệ số mất nhiệt túi giữ nhiệt (min^-1)
-  min_delivery_temp: 60.0   # Ngưỡng nhiệt độ tối thiểu khi đến tay khách (°C)
+# Mô hình thời gian bếp chế biến (Kitchen Prep Time)
+kitchen:
+  distribution: "lognormal"
+  mean_minutes: 12.0          # Trung bình 12 phút
+  sigma: 0.35                 # Độ lệch chuẩn log
+  min_prep_minutes: 5.0
+  max_prep_minutes: 30.0
 
-# Tham số thuật toán & tìm kiếm cục bộ (Local Search)
+# Dòng đơn hàng & Sự kiện đợt đột biến (Demand & Surges)
+demand:
+  baseline_nhpp:
+    peak_lunch:
+      start_hour: 11.5
+      end_hour: 13.0
+      rate_orders_per_hour: 25.0
+    peak_dinner:
+      start_hour: 18.0
+      end_hour: 19.5
+      rate_orders_per_hour: 22.0
+    off_peak_rate: 6.0
+  surges:
+    probability_per_day: 0.8
+    duration_min_range: [20.0, 60.0]
+    multiplier_range: [2.0, 4.0]
+    spatial_cluster: true
+  address_pools:
+    standard_pool_size: 400   # 400 địa chỉ giao hàng đã snap sẵn ma trận
+    ood_pool_size: 150        # 150 địa chỉ riêng biệt cho kiểm thử ngoài phân phối
+
+# Cam kết SLA và Hàm tiện ích
+sla:
+  promised_eta:
+    prep_offset_minutes: 12.0
+    direct_speed_kmh: 25.0
+    buffer_minutes: 15.0      # SLA chuẩn giao trong 35-45 phút
+  utility:
+    lateness_penalty_lambda: 2.0  # Phạt trễ hẹn trong hàm tiện ích U
+
+# Tham số Semi-MDP & Thuật toán
 algorithm:
-  candidate_sample_size: 128
-  feature_set: "F28"
-  feature_patience: 30
-  max_actions: 100
-  ortools_time_limit_seconds: 5.0
-  dqn_timeout_seconds: 10.0
+  semi_mdp:
+    max_wait_tau_minutes: 10.0 # Trần thời gian chờ tối đa khi chọn action a=0
+    detour_max_km: 1.5         # Giới hạn đường vòng khi gom đơn
+    permutation_search: true   # Vét cạn hoán vị tối thiểu tổng thời điểm giao
+  discount_factor: 0.99
+  dqn_hidden_dims: [64, 64]
+  ppo_clip_epsilon: 0.2
+  offline_prescient_time_limit_sec: 10.0 # Tham chiếu offline biết trước tương lai
 
-# Cấu hình benchmark pipeline
-benchmark:
-  n_instances: 30              # Số instance test
-  customers_range: [15, 25]    # Số khách hàng mỗi instance
-  demand_range: [1, 8]         # Demand ngẫu nhiên mỗi khách
-  base_seed: 2026              # Seed cơ sở cho reproducibility
-  customer_radius_km: 8.0      # Bán kính scatter khách hàng quanh depot
-  protocols:
-    A_realtime:
-      description: "Realtime: 100 steps, 128 candidates"
-      max_steps: 100
-      max_candidates: 128
-      time_limit_sec: null
-    B_budget:
-      description: "Budget: time-limited 0.1s"
-      max_steps: 10000
-      max_candidates: 128
-      time_limit_sec: 0.1
-    C_full:
-      description: "Full: 5000 steps, 256 candidates"
-      max_steps: 5000
-      max_candidates: 256
-      time_limit_sec: 1.0
+# Cổng mạng hệ thống (Network Port Disciplines)
+ports:
+  backend: 8000
+  frontend: 3001
+  strictly_prohibited: 3000   # Tuyệt đối cấm sử dụng cổng 3000

@@ -2,69 +2,44 @@
 
 import React from "react";
 import { OptimoTab } from "./OptimoSidebar";
-import { ListOrdered, Route, FileText, BarChart2, PlayCircle, Radio } from "lucide-react";
 
 interface FloatingTabBarProps {
   activeTab: OptimoTab;
   onChangeTab: (tab: OptimoTab) => void;
-  ordersCount: number;
-  routesCount: number;
+  ordersCount?: number;
+  routesCount?: number;
 }
 
 export default function FloatingTabBar({
   activeTab,
   onChangeTab,
-  ordersCount,
-  routesCount,
 }: FloatingTabBarProps) {
-  const tabs: { id: OptimoTab; label: string; icon: React.ElementType; badge?: string }[] = [
-    { id: "orders", label: "Đơn hàng", icon: ListOrdered, badge: ordersCount > 0 ? String(ordersCount) : undefined },
-    { id: "planning", label: "Lập kế hoạch", icon: Route, badge: routesCount > 0 ? `${routesCount} xe` : undefined },
-    { id: "route", label: "Chi tiết", icon: FileText },
-    { id: "strategy_lab", label: "Strategy Lab", icon: BarChart2 },
-    { id: "search_replay", label: "Replay", icon: PlayCircle },
-    { id: "live", label: "Live", icon: Radio, badge: "MÔ PHỎNG" },
+  const tabs: { id: OptimoTab; label: string; num: string }[] = [
+    { id: "t1_multicriteria", label: "T1: Đa Tiêu Chí (A→B)", num: "01" },
+    { id: "t2_vrptw", label: "T2: Lập Tuyến Đội Xe (VRPTW)", num: "02" },
+    { id: "t3_live", label: "T3: Đổi Đường Thích Nghi (SSE)", num: "03" },
   ];
 
   return (
     <nav
       aria-label="Thanh phân hệ chính"
-      className="pointer-events-auto bg-surface/95 backdrop-blur-md border border-border-warm rounded-warm p-1 shadow-soft flex items-center space-x-1 overflow-x-auto max-w-full"
+      className="pointer-events-auto bg-white/95 backdrop-blur-xs border border-[#e5e5e5] p-1 flex items-center space-x-1 font-mono text-xs shadow-xs"
     >
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
-        const Icon = tab.icon;
 
         return (
           <button
             key={tab.id}
             onClick={() => onChangeTab(tab.id)}
-            className={`relative flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+            className={`px-3 py-1.5 transition text-left whitespace-nowrap ${
               isActive
-                ? "bg-brand-gold-soft text-primary-text font-bold shadow-xs"
-                : "text-secondary-text hover:bg-sunken hover:text-primary-text"
+                ? "bg-[#111111] text-white font-bold"
+                : "text-[#555555] hover:text-[#111111] hover:bg-[#f5f4f0]"
             }`}
           >
-            <Icon className={`w-3.5 h-3.5 ${isActive ? "text-brand-brown" : "text-secondary-text"}`} />
-            <span>{tab.label}</span>
-            {tab.badge && (
-              <span
-                className={`text-[9px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
-                  tab.badge === "MÔ PHỎNG"
-                    ? "bg-amber-100 text-amber-800 border border-amber-300"
-                    : isActive
-                    ? "bg-brand-gold text-primary-text"
-                    : "bg-sunken text-secondary-text"
-                }`}
-              >
-                {tab.badge}
-              </span>
-            )}
-
-            {/* Active Gold Underline Indicator */}
-            {isActive && (
-              <div className="absolute -bottom-1 left-3 right-3 h-0.5 bg-brand-gold rounded-full" />
-            )}
+            <span className="text-[10px] text-[#888888] mr-1.5">{tab.num}</span>
+            <span className="font-sans font-medium">{tab.label}</span>
           </button>
         );
       })}

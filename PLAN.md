@@ -1,82 +1,87 @@
-# Kế Hoạch Triển Khai & Bàn Giao Kỹ Thuật (PLAN.MD) — HotWAY
+# Kế Hoạch Triển Khai Nghiên Cứu & Bàn Giao Kỹ Thuật (PLAN.MD) — HotWAY
 
-> **Tài liệu:** Kế hoạch thực hiện hợp nhất từ PLAN, PHASES và ROADMAP  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/TESTING.md)
+> **Tài liệu:** Kế hoạch thực hiện 7 Cổng Nghiên cứu (Gate G0 - G6) cho hướng học tăng cường điều phối thời gian thực  
+> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
 
 ---
 
-## 5 Giai Đoạn Triển Khai v5.0 (AI Data Engineer Edition)
+## 1. Lộ Trình 7 Cổng Nghiên Cứu Chuẩn Mực (Gate G0 — G6)
 
 ```mermaid
 flowchart LR
-    G1["Phase 1\nĐồ thị TP.HCM OSMnx\n(46k nút, 107k cạnh)"] --> G2["Phase 2\nInstance Generator\n(30 instances chuẩn)"]
-    G2 --> G3["Phase 3\nHuấn luyện RL PyTorch\n(DQN & Double DQN F28)"]
-    G3 --> G4["Phase 4\nBenchmark & Thống Kê\n(750 runs, Wilcoxon/Holm)"]
-    G4 --> G5["Phase 5\nTích hợp UI & Notebook\n(6 màn hình, Jupyter)"]
+    G0["G0: Khảo Sát & Đối Soát\n(Đã hoàn tất)"] --> G1["G1: Hình Thức Hóa Bài Toán\n(Đã hoàn tất)"]
+    G1 --> G2["G2: Môi Trường & Kiểm Thử\n(Đã hoàn tất)"]
+    G2 --> G3["G3: Baseline & Dò Siêu Tham Số\n(Đã hoàn tất)"]
+    G3 --> G4["G4: Huấn Luyện & Đánh Giá RL\n(Đã hoàn tất)"]
+    G4 --> G5["G5: Báo Cáo & Phân Tích Chuyên Sâu\n(Hoàn tất & Đóng băng)"]
+    G5 -->|DỪNG CHỜ PHÊ DUYỆT| G6["G6: Giao Diện Demo & Stream API\n(Chờ lệnh triển khai)"]
 ```
 
 ---
 
-### Giai Đoạn 1: Đồ Thị Đường Bộ TP.HCM Thực Tế & Spatial Indexing
-- **Mục tiêu:** Thay thế đồ thị 38 nút bằng đồ thị đường bộ thực tế toàn TP.HCM từ OpenStreetMap (OSMnx) và dịch vụ ma trận gia tốc.
-- **Đầu ra kiểm chứng được:**
-  - `data/hcmc_compact_graph.pickle` (**46,055 nút**, **107,224 cạnh**, **8,551.9 km đường**).
-  - `data/hcmc_compact_graph.graphml`, `data/hcmc_compact_roads.geojson`.
-  - Mạng lưới liên thông mạnh 100% (SCC Verified).
-  - `src/services/road_matrix.py` tích hợp **cKDTree** snapping thời gian thực ($< 0.1\text{ms}$) và Dijkstra đơn nguồn.
-- **Checklist nghiệm thu:**
-  - [x] Tạo `config/site.yaml` đa vùng (`binhthanh` demo, `hcmc_compact` production).
-  - [x] Nâng cấp `src/data/build_graph.py` tải OSMnx và chuẩn hóa toạ độ.
-  - [x] Vượt qua 5/5 test case hình học tại `tests/test_geometry.py`.
+## 2. Chi Tiết Thực Hiện Từng Cổng (Gate G0 — G6)
 
----
+### Cổng G0: Khảo Sát Tài Liệu & Đối Soát Thí Nghiệm Khởi Đầu E0
+- **Mục tiêu:** Khảo sát các công trình nghiên cứu về Dynamic Dispatching (Semi-MDP, Deep RL, Heuristics); tra cứu danh tính tác giả chuẩn xác; kiểm tra và đối soát kết quả E0 tại `rel_result/`.
+- **Đầu ra hoàn thành:**
+  - `docs/research/00_survey.md`: 11 trích dẫn khoa học được kiểm chứng qua tìm kiếm web thực (chỉnh sửa đúng tác giả bài báo Ulmer et al. 2021: *Marlin W. Ulmer, Barrett W. Thomas, Ann Melissa Campbell, Nicholas Woyak*).
+  - Đối soát số liệu E0: Random ($656.359\text{ km}$) tốt hơn DQN ($657.897\text{ km}$, $p_{\text{Holm}} = 0.0072$) trên PDF A2; Greedy ($103.727\text{ km}$) tốt hơn DQN ($103.813\text{ km}$) trên 30 OSMnx instances.
+  - [x] Đã nghiệm thu & đóng băng.
 
-### Giai Đoạn 2: Bộ Sinh Dữ Liệu Thực Nghiệm (Instance Generator)
-- **Mục tiêu:** Xây dựng pipeline tự động sinh dữ liệu CVRP ngẫu nhiên bám theo tim đường thật TP.HCM, thay thế dữ liệu tĩnh cũ.
-- **Đầu ra kiểm chứng được:**
-  - `src/benchmark/instance_generator.py`.
-  - Thư mục `data/benchmark_instances/` chứa **30 instances chuẩn hóa** (`HCMC_VN_01.pickle` $\dots$ `HCMC_VN_30.pickle`) cùng index tóm tắt `instances_index.json`.
-  - Mỗi instance gồm 15-25 khách hàng, tọa độ snap chính xác vào nút đường, tải ngẫu nhiên [1, 8] tô, sức chứa $Q=40$.
-- **Checklist nghiệm thu:**
-  - [x] Bộ sinh dữ liệu kiểm soát hoàn toàn bằng seed (`base_seed + instance_idx`) bảo đảm tính khả lặp 100%.
-  - [x] Tự động tính toán ma trận chi phí bất đối xứng cho từng instance từ đồ thị OSMnx thật.
+### Cổng G1: Hình Thức Hóa Toán Học & Đặc Tả Cấu Hình
+- **Mục tiêu:** Xây dựng mô hình toán học chặt chẽ cho GĐ1 (Routing thích nghi có Value Iteration ground truth) và GĐ2 (Dynamic dispatch Semi-MDP cho một quán).
+- **Đầu ra hoàn thành:**
+  - `docs/research/01_problem_formulation.md`: Không gian trạng thái 12 chiều, không gian hành động rời rạc 5 lựa chọn, máy trạng thái đơn hàng 5 pha, chứng minh bảo toàn phần thưởng Bellman theo tích phân Lebesgue.
+  - `config/site.yaml`: Nguồn sự thật duy nhất (profile xe máy đô thị, mưa $1.4\times$, thông số NHPP và surge bursts, SLA buffer 15m).
+  - `docs/DECISIONS.md`: Ghi nhận đầy đủ 12 quyết định kỹ thuật từ D1 đến D12.
+  - [x] Đã nghiệm thu & đóng băng.
 
----
+### Cổng G2: Môi Trường Mô Phỏng & Kiểm Thử Tính Hợp Lệ
+- **Mục tiêu:** Triển khai môi trường Gymnasium chuẩn cho GĐ1 và GĐ2, trích xuất dữ liệu địa lý thực tế, xây dựng bộ định tuyến hoán vị và visualizer log sự kiện.
+- **Đầu ra hoàn thành:**
+  - `src/graph/subgraph_extractor.py`: Trích xuất đồ thị con 12 nút SCC Bình Thạnh (`data/binhthanh_routing_subgraph.pickle`, SHA256: `a67035e6...`).
+  - `src/graph/address_generator.py`: Sinh 401 địa chỉ chuẩn và 151 địa chỉ OOD kèm ma trận `.npz`.
+  - `src/routing/permutation_router.py`: Bộ gom đơn đường vòng $D_{\text{detour}} \le 1.5\text{ km}$ và vét cạn $m!$ hoán vị tối ưu thứ tự giao hàng.
+  - `src/envs/routing_env.py` & `src/envs/exact_dp.py`: Môi trường GĐ1 và bộ giải Value Iteration chính xác.
+  - `src/envs/dispatch_env.py`: Môi trường GĐ2 Semi-MDP với tích phân Lebesgue.
+  - `scripts/view_event_log.py`: Trình trực quan hóa log sự kiện Matplotlib (`results/figures/event_log_inspection.png`).
+  - `docs/research/02_environment_spec.md`: Đặc tả môi trường và sổ đăng ký mã băm SHA-256.
+  - [x] 7/7 tests môi trường ban đầu PASS. Đã nghiệm thu.
 
-### Giai Đoạn 3: Huấn Luyện Tác Tử RL Tuyến Đường (PyTorch DQN / Double DQN)
-- **Mục tiêu:** Huấn luyện mạng nơ-ron Q-Network ($28 \to 128 \to 128 \to 4$) thực sự chọn toán tử Local Search, lưu trữ trọng số có thể kiểm tra.
-- **Đầu ra kiểm chứng được:**
-  - `src/rl/train_cvrp_rl.py`: Pipeline huấn luyện Q-learning với Replay Buffer và $\epsilon$-greedy.
-  - `src/cvrp_solver/weights/dqn_model.pt` & `src/cvrp_solver/weights/double_dqn_model.pt`.
-  - `rel_result/training_curves.csv`: Ghi nhận loss, reward và quãng đường tiết kiệm qua từng episode.
-- **Checklist nghiệm thu:**
-  - [x] Tích hợp bộ trích xuất đặc trưng trạng thái $F28$ chuẩn mực.
-  - [x] `src/cvrp_solver/search.py` tự động nạp trọng số đã train khi chạy chiến lược DQN/Double DQN.
+### Cổng G3: Baseline Quy Tắc & Dò Siêu Tham Số
+- **Mục tiêu:** Triển khai các quy tắc trực giác (Immediate, Periodic, BatchSize, AgeThreshold) và bộ giải tham chiếu Offline Prescient; dò lưới tham số công bằng trên tập validation.
+- **Đầu ra hoàn thành:**
+  - `src/baselines/rule_baselines.py` & `src/baselines/prescient_solver.py`.
+  - `scripts/run_baselines.py`: Dò lưới tìm ra cấu hình tối ưu ($T^* = 8.0\text{m}$, $k^* = 1$, $\theta^* = 10.0\text{m}$).
+  - `results/baselines/summary_baseline_test.csv` & `raw_baseline_runs.csv`: Immediate đạt $89.70\text{m}$, Offline Prescient đạt $74.52\text{m}$.
+  - `docs/research/03_baselines.md`: Báo cáo chi tiết kết quả baseline.
+  - [x] Đã nghiệm thu.
 
----
+### Cổng G4: Huấn Luyện & Đánh Giá Tác Tử Học Tăng Cường
+- **Mục tiêu:** Huấn luyện DQN, Double DQN, PPO trên $\ge 5$ hạt giống; chạy phân tích ablation, độ nhạy và kiểm thử ngoại suy OOD.
+- **Đầu ra hoàn thành:**
+  - `src/agents/`: Triển khai PyTorch độc lập cho Tabular Q, DQN, Double DQN, PPO.
+  - `scripts/train_agents.py`: Huấn luyện 15 checkpoint (5 seeds $\times$ 3 thuật toán), lưu trữ đường cong học và đánh giá trên Frozen Test Set.
+  - `results/training/summary_rl_test.csv`: DQN đạt $114.06\text{m}$, DDQN đạt $118.29\text{m}$, PPO đạt $118.94\text{m}$.
+  - `results/training/ablation_results.csv`: Đo lường vai trò của đặc trưng không gian và tốc độ đơn đến.
+  - `results/training/sensitivity_analysis.csv`: Đánh giá tác động của mưa ngập ($1.4\times$) và tốc độ bếp.
+  - `scripts/compute_statistical_tests.py`: Kiểm định Wilcoxon theo cặp và hiệu chỉnh Holm (`results/training/paired_comparisons_rl.csv`).
+  - `docs/research/04_training_protocol.md` & `05_results_comparison.md`.
+  - [x] Đã nghiệm thu.
 
-### Giai Đoạn 4: Benchmark Tự Động & Kiểm Định Thống Kê Chuyên Sâu
-- **Mục tiêu:** Thực thi 750 lượt chạy qua 5 giao thức ($A2, A, A3, B, B2$) và kiểm định khoa học.
-- **Đầu ra kiểm chứng được:**
-  - `src/benchmark/runner.py` & `src/benchmark/analysis.py`.
-  - `rel_result/raw_runs.csv`: 750 dòng dữ liệu chi tiết từng lượt chạy.
-  - `rel_result/summary_by_algorithm.csv`: 25 dòng tóm tắt hiệu năng, độ khả thi 100%, 95% Bootstrap CI.
-  - `rel_result/paired_comparisons.csv`: 35 cặp so sánh với phép thử Wilcoxon Signed-Rank và hiệu chỉnh Holm-Bonferroni.
-  - `rel_result/per_decision_cost.csv`: Thời gian suy luận mạng nơ-ron và số ứng viên khảo sát.
-- **Checklist nghiệm thu:**
-  - [x] Vượt qua 4/4 test case dữ liệu tại `tests/test_benchmark_data.py`.
-  - [x] Lưu trữ bản đối chứng lịch sử tại `rel_result/legacy_pdf_reference/`.
+### Cổng G5: Báo Cáo Phân Tích Chuyên Sâu & Kiểm Định Độ Trung Thực (Hiện Tại)
+- **Mục tiêu:** Phân tích 3 câu hỏi nghiên cứu (RQ1, RQ2, RQ3), lý giải nguyên nhân khoa học của kết quả âm tính, xây dựng công cụ sinh tự động bảng biểu và kiểm thử T3 sai số $< 10^{-9}$.
+- **Đầu ra hoàn thành:**
+  - `scripts/make_report_tables.py`: Tự động trích xuất kết quả ra Markdown và niêm phong 97 chỉ số tại `results/all_metrics_registry.json`.
+  - `tests/test_report_fidelity.py`: Kiểm thử T3 kiểm tra độ sai lệch số học $< 10^{-9}$.
+  - `docs/research/06_analysis.md`: Báo cáo phân tích chuyên sâu 3 RQ, ablation, độ nhạy và các mối đe dọa đến tính giá trị.
+  - Toàn bộ 25/25 test cases trong kho mã nguồn đều **PASS tuyệt đối**.
+  - **DỪNG TẠI ĐÂY CHỜ PHÊ DUYỆT CỦA USER TRƯỚC KHI BƯỚC VÀO CỔNG G6.**
 
----
-
-### Giai Đoạn 5: Giao Diện OptimoRoute & Jupyter Notebook Tương Tác
-- **Mục tiêu:** Hoàn thiện trải nghiệm người dùng và cung cấp công cụ phân tích tương tác.
-- **Đầu ra kiểm chứng được:**
-  - `notebooks/cvrp_benchmark.ipynb`: Notebook trực quan hóa toàn diện đồ thị, phân bố khách hàng, đường cong học RL, biểu đồ hộp so sánh chi phí và kiểm định thống kê.
-  - Giao diện 6 màn hình WebGIS (Đơn hàng, Lập kế hoạch, Chi tiết tuyến, Strategy Lab, Search Replay, Điều phối Live).
-  - Vượt qua 15/15 test cases toàn diện trong kho mã nguồn.
-- **Checklist nghiệm thu:**
-  - [x] Backend FastAPI phản hồi đầy đủ dữ liệu mới từ `rel_result/`.
-  - [x] Cổng 3000 được bảo vệ an toàn, Frontend chạy cổng 3001, Backend chạy cổng 8000.
+### Cổng G6: Giao Diện Demo & Backend Stream API (Chờ Triển Khai)
+- **Mục tiêu:** Triển khai giao diện WebGIS điều phối thời gian thực kiểu OptimoRoute với bảng màu butter-cream, máy trạng thái 5 pha, trực quan hóa luồng đơn hàng, bơm đột biến tải và mưa bão, chạy song song 2 kịch bản cùng seed.
+- **Kỷ luật triển khai:**
+  - Tuyệt đối không chạm vào `frontend/` và `backend/` trước khi Cổng G5 được nghiệm thu.
+  - Backend chạy cổng **8000**, Frontend chạy cổng **3001** (Cổng 3000 được bảo vệ nguyên vẹn).

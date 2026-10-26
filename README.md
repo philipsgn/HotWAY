@@ -1,115 +1,113 @@
-# HotWAY — Nền Tảng Lập Lịch & Tối Ưu Tuyến Giao Hàng CVRP
+# HotWAY — Nền Tảng Học Tăng Cường Điều Phối Thời Gian Thực Cho Giao Vận Đô Thị
 
-> **Tài liệu:** Tổng quan dự án và hướng dẫn vận hành  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/docs/DECISIONS.md)
-
----
-
-## 1. Giới Thiệu Dự Án
-
-HotWAY là hệ thống điều phối và tối ưu hóa tuyến đường giao hàng chuẩn **Production** cho chuỗi quán ăn nóng (bếp trung tâm tại 490 Điện Biên Phủ, Bình Thạnh, TP.HCM) dựa trên mô hình toán **Capacitated Vehicle Routing Problem (CVRP)** kết hợp ràng buộc nhiệt động học Newton.
-
-Hệ thống tích hợp mạng lưới đường bộ có hướng thực tế từ **OpenStreetMap** qua OSMnx (**46,055 nút, 107,224 cạnh, 8,551 km đường đô thị**), dịch vụ ma trận bất đối xứng gia tốc bằng **cKDTree** ($< 0.1\text{ms}$) và thuật toán tìm kiếm đường đi ngắn nhất Dijkstra đơn nguồn.
-
-Toàn bộ kết quả đối soát học thuật trong thư mục `rel_result/` được **tự tay sinh ra từ pipeline benchmark độc lập** (30 instances chuẩn, 5 giao thức đánh giá, 750 lượt chạy thực nghiệm), tự huấn luyện mô hình **DQN và Double DQN** với vector đặc trưng $F28$ trên PyTorch, và kiểm định bằng phép thử phi tham số **Wilcoxon Signed-Rank** kèm hiệu chỉnh **Holm-Bonferroni**.
-
-**Câu chủ đạo:** *Tuyến giao hàng ngắn nhất để món còn nóng.*
+> **Tài liệu:** Báo cáo Tổng Quan Hệ Thống & Hướng Dẫn Vận Hành Production  
+> **Phiên bản:** v6.2.0 (Real-Time RL Restaurant Dispatch Edition - Production & Final Publication)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Báo cáo nghiên cứu chính thức:** [docs/HotWAY_Final_Research_Report.pdf](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/HotWAY_Final_Research_Report.pdf) | [docs/FINAL_RESEARCH_REPORT.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/FINAL_RESEARCH_REPORT.md)  
+> **Tài liệu kỹ thuật liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
 
 ---
 
-## 2. Giao Diện Người Dùng (OptimoRoute WebGIS Layout)
+## 1. Giới Thiệu Dự Án & Tóm Tắt Đổi Hướng Nghiên Cứu
 
-1. **Bàn Điều Phối & Lập Kế Hoạch (Planning):** Người điều phối chọn số xe, sức chứa thùng hàng ($Q=40$), ngưỡng nhiệt độ tối thiểu ($60^\circ\text{C}$), chọn phương pháp giải và nhận tuyến đường bám sát hình học đường thật trên bản đồ MapLibre.
-2. **Strategy Lab (Nghiệm Thu Khoa Học):** Đối chiếu khoa học giữa tác tử DQN/Double DQN và các baseline theo các giao thức $A, A2, A3, B, B2$; giải thích 3 nguyên nhân cốt lõi vì sao DQN không vượt qua được baseline trên dữ liệu nghiệm thu thực tế.
-3. **Search Replay & Điều Phối Live:** Phát lại từng bước chọn toán tử của Local Search với thanh tua tốc độ $1\times, 4\times, 16\times$ và theo dõi xe mô phỏng di chuyển trên đồ thị có hướng thật.
-4. **Interactive Notebook (`notebooks/cvrp_benchmark.ipynb`):** Sổ tay Jupyter phân tích trực quan toàn diện từ cấu trúc đồ thị, phân bố khách hàng, đường cong học RL đến biểu đồ hộp so sánh chi phí và kiểm định thống kê.
+HotWAY là hệ thống điều phối giao hàng thời gian thực chuẩn **Production & Research** cho nhà hàng đô thị tại TP.HCM. Dự án tập trung giải quyết bài toán cốt lõi: **Tối thiểu hóa thời gian chờ đợi của khách hàng** ($W_i = t_{\text{giao}, i} - t_{\text{đặt}, i}$) bằng phương pháp Học tăng cường (Reinforcement Learning) kết hợp quy hoạch động tổ hợp dưới dạng **Semi-Markov Decision Process (Semi-MDP)**.
+
+### 1.1. Thí Nghiệm Khởi Đầu E0 (Động cơ chuyển hướng)
+* **Hướng cũ (v5.0.0):** Mô hình hóa CVRP tĩnh kết hợp phương trình làm nguội Newton, dùng DQN chọn 1 trong 4 toán tử Local Search trên đồ thị TP.HCM.
+* **Kết quả đối soát học thuật:** Toàn bộ kết quả thực nghiệm và mã nguồn cũ được lưu trữ nguyên vẹn tại `archive_e0/` và `rel_result/`. Thuật toán ngẫu nhiên (Random) đạt chi phí $656.359\text{ km}$, tốt hơn tác tử DQN $657.897\text{ km}$ ($p_{\text{Holm}} = 0.0072$).
+* **Bài học khoa học:** Lời giải Clarke-Wright khởi tạo đã quá gần biên tối ưu khiến dư địa cải thiện của Local Search chỉ còn khoảng $0.1\%$. Do đó, việc dùng RL để chọn toán tử cục bộ không mang lại giá trị khác biệt. Đồng thời, nhiệt độ thức ăn phụ thuộc vào quy trình bếp chứ không quan sát được trên đường. Dự án đã **bỏ hoàn toàn ràng buộc nhiệt độ Newton và câu slogan "để món còn nóng"**, chuyển toàn bộ trọng tâm sang **Thời Gian Chờ Của Khách Hàng**.
+
+### 1.2. Hai Bài Toán Cốt Lõi
+1. **Giai đoạn 1 (GĐ1 - Nền tảng kiểm chứng):** Định tuyến thích nghi $A \to B$ trên đồ thị con 12 nút strongly connected (SCC) tại Bình Thạnh; đối chiếu chân lý với **Quy hoạch động chính xác (Exact Value Iteration)**.
+2. **Giai đoạn 2 (GĐ2 - Lõi nghiên cứu HotWAY):** Điều phối đơn tại quán ăn dưới dạng **Semi-MDP**. Quá trình đơn đến Poisson không đồng nhất với đợt bùng nổ đột biến (Surge $3.5\times$); máy trạng thái đơn 5 pha (`Placed` $\to$ `Cooking` $\to$ `Ready` $\to$ `In-Transit` $\to$ `Delivered`); bảo đảm đẳng thức bảo toàn phần thưởng Bellman $\sum R = -\sum W_i$ với sai số tuyệt đối $< 10^{-11}$.
 
 ---
 
-## 3. Hướng Dẫn Khởi Chạy (3 Lệnh Duy Nhất)
+## 2. Bảng Tổng Hợp Kết Quả Thực Nghiệm & Đối Soát Khoa Học
 
-### Lệnh 1: Khởi động cơ sở hạ tầng Backend (Docker hoặc Local)
-```bash
-# Khởi chạy backend qua docker:
-docker compose up -d
+Toàn bộ số liệu trong bảng được sinh tự động từ tệp kết quả gốc tại `results/all_metrics_registry.json` và vượt qua kiểm thử độ trung thực T3 (`tests/test_report_fidelity.py`):
 
-# Hoặc khởi chạy local development trực tiếp:
-uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
-```
-Backend FastAPI hoạt động tại `http://localhost:8000`, cung cấp tài liệu OpenAPI tại `http://localhost:8000/docs`.
+| Phương pháp / Mô hình | Thời gian chờ TB $W$ (phút) | 95% Bootstrap CI | p90 (phút) | Tỷ lệ trễ ETA (%) | Gini khách | Tải tài xế (%) | Tổng km | p_Holm vs Imm |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Immediate (Xuất phát ngay)** | **89.70** | [78.27, 98.62] | 173.57 | 81.6% | 0.324 | 91.4% | 794.7 | Reference |
+| **BatchSize ($k=1$)** | 89.70 | [78.27, 98.62] | 173.57 | 81.6% | 0.324 | 91.4% | 794.7 | 1.000 |
+| **AgeThreshold ($\theta=10.0\text{m}$)** | 90.39 | [78.42, 99.36] | 171.77 | 82.9% | 0.319 | 91.3% | 794.7 | 0.375 |
+| **Periodic ($T=8.0\text{m}$)** | 93.06 | [80.66, 103.41] | 173.50 | 88.2% | 0.305 | 87.6% | 761.4 | 0.375 |
+| **DQN (5 seeds)** | 114.06 | [103.82, 125.37] | 214.93 | 85.0% | 0.331 | 91.3% | 862.0 | 0.375 |
+| **Double DQN (5 seeds)** | 118.29 | [102.82, 136.50] | 238.83 | 84.7% | 0.333 | 89.3% | 840.1 | 0.375 |
+| **PPO (5 seeds)** | 118.94 | [112.16, 126.19] | 227.45 | 87.6% | 0.332 | 90.5% | 863.8 | 0.375 |
 
-### Lệnh 2: Khởi chạy Giao diện Frontend (Cổng 3001)
-```bash
-cd frontend && npm run dev
-# Hoặc chạy bản build production: npm run start -- -p 3001
-```
-Giao diện mở tại `http://localhost:3001` (Cổng 3000 được bảo vệ nguyên vẹn).
+> **Công bố kết quả âm tính (Open Science):** Dưới lưu lượng đô thị dày đặc và thời gian nấu bếp ngẫu nhiên log-normal, quy tắc phản xạ **Immediate Dispatch** đạt hiệu quả cao nhất ($89.70\text{ min}$), vượt trội hơn DQN ($114.06\text{ min}$), Double DQN ($118.29\text{ min}$) và PPO ($118.94\text{ min}$). Các mô hình RL bị thiên lệch phóng đại giá trị hành động Chờ (overestimation bias $+45.2\%$ ở DQN) dẫn đến tích tụ hàng đợi dây chuyền.
 
-### Lệnh 3: Chạy toàn bộ kiểm thử tự động
+---
+
+## 3. Kiến Trúc 4 Chiều Phân Tích Mô Hình (Deep Model Analytics)
+
+Các biểu đồ phân tích chuyên sâu được sinh tự động tại `results/figures/`:
+1. **Queue Waterfall & Saturation Dynamics (`queue_waterfall_dynamics.png`):** Phân tích sự tích tụ hàng đợi dưới đợt đột biến $3.5\times$; heuristic gom đơn gây nghẽn đỉnh điểm 73 đơn, trong khi điều phối động giải phóng hàng đợi nhanh hơn 44%.
+2. **Q-Value Landscape & Failure Modes (`q_value_landscape_failures.png`):** Vết phân rã hàm giá trị $Q(s, a)$, chứng minh Double DQN khắc phục thiên lệch phóng đại của DQN nhưng vẫn chịu tỷ lệ chọn nhầm hành động chờ $14.1\%$.
+3. **Pareto Efficiency Frontier (`pareto_frontier_tradeoff.png`):** Biên hiệu quả Pareto giữa Thời gian chờ khách hàng và Tổng quãng đường km; Periodic Dispatch tiết kiệm cự ly ($761.4\text{ km}$) nhưng tăng thời gian chờ ($93.06\text{ min}$); các tác tử RL nằm hoàn toàn trong vùng bị lấn át.
+4. **Multi-parametric Sensitivity Matrix (`sensitivity_heatmap_matrix.png`):** Ma trận độ nhạy $2 \times 3$ giữa Mưa bão đô thị ($1.0\times$ vs $1.4\times$) và Tốc độ bếp ($8\text{m}, 12\text{m}, 16\text{m}$). Mưa bão làm thời gian chờ tăng $+56.2\%$.
+
+---
+
+## 4. Hướng Dẫn Vận Hành & Tái Lập (Reproducibility)
+
+### 4.1. Chạy Bộ Kiểm Thử Tự Động
 ```bash
 pytest tests/ -v
 ```
-*(Toàn bộ 15/15 tests thuộc 4 tầng Gate 1-5 đều PASS tuyệt đối: Geometry, Solver Feasibility, Data Consistency, Audit Trail)*.
 
----
-
-## 4. Pipeline Dành Cho AI Data Engineer
-
-Dự án cung cấp bộ công cụ dòng lệnh hoàn chỉnh để tái tạo toàn bộ dữ liệu từ đầu:
-
+### 4.2. Khởi Động Backend API Server (:8000)
 ```bash
-# 1. Tải và xây dựng đồ thị OSMnx TP.HCM (46k nút, 107k cạnh, SCC 100%):
-python -m src.data.build_graph --region hcmc_compact
+uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+* API Documentation: `http://localhost:8000/docs`
+* Event Stream SSE: `http://localhost:8000/api/v1/sim/stream`
+* Benchmark Summary: `http://localhost:8000/api/v1/sim/benchmark_summary`
 
-# 2. Sinh bộ dữ liệu 30 instances chuẩn trên đường thật TP.HCM:
-python -m src.benchmark.instance_generator --region hcmc_compact
+### 4.3. Khởi Động Frontend WebGIS Console (:3001)
+```bash
+cd frontend
+npm run build
+npm run start -- -p 3001
+```
+* Giao diện người dùng: `http://localhost:3001`
+* **Quy tắc an toàn mạng:** Cổng **3000** tuyệt đối bị cấm sử dụng.
 
-# 3. Huấn luyện tác tử DQN & Double DQN trên F28 features:
-python -m src.rl.train_cvrp_rl --instances-dir data/benchmark_instances --episodes 25
+### 4.4. Tái Lập Biểu Đồ & Xuất Báo Cáo Học Thuật PDF
+```bash
+# 1. Sinh 4 biểu đồ phân tích chuyên sâu & tệp kết quả
+python -m scripts.generate_model_analytics
 
-# 4. Chạy Benchmark 750 lượt trên 5 giao thức (A2, A, A3, B, B2):
-python -m src.benchmark.runner
-
-# 5. Thực hiện kiểm định thống kê Wilcoxon & Holm-Bonferroni:
-python -m src.benchmark.analysis
-
-# 6. Khởi động Jupyter Notebook tương tác:
-jupyter notebook notebooks/cvrp_benchmark.ipynb
+# 2. Biên dịch báo cáo chuẩn IEEE/ACM dạng PDF đơn sắc
+python scripts/export_pdf_report.py
 ```
 
 ---
 
-## 5. Cấu Trúc Thư Mục Dự Án
+## 5. Cấu Trúc Thư Mục Chuẩn Tinh Gọn
 
 ```
 HotWAY/
-├── config/
-│   └── site.yaml             # Nguồn sự thật duy nhất (depot, multi-region, fleet, thermal)
-├── data/
-│   ├── hcmc_compact_graph.pickle # Đồ thị TP.HCM OSMnx (46,055 nút, 107,224 cạnh)
-│   ├── hcmc_compact_graph.graphml# Định dạng GraphML tiêu chuẩn
-│   ├── hcmc_compact_roads.geojson# Dữ liệu hình học cạnh cho MapLibre (107k features)
-│   ├── binhthanh_graph.pickle    # Đồ thị thu nhỏ Bình Thạnh (legacy demo)
-│   └── benchmark_instances/      # 30 instances chuẩn hóa (HCMC_VN_01 -> HCMC_VN_30)
-├── notebooks/
-│   └── cvrp_benchmark.ipynb      # Jupyter Notebook phân tích học thuật trực quan
-├── rel_result/                   # Bộ kết quả thực nghiệm khoa học tự sinh 100%
-│   ├── raw_runs.csv              # 750 bản ghi chạy chi tiết từng bước
-│   ├── summary_by_algorithm.csv  # Bảng tổng hợp theo phương pháp (A, A2, A3, B, B2)
-│   ├── paired_comparisons.csv    # Kiểm định thống kê Wilcoxon & Holm-Bonferroni
-│   ├── per_decision_cost.csv     # Chi phí tính toán và số candidate đánh giá
-│   ├── training_curves.csv       # Đường cong học của DQN và Double DQN
-│   └── legacy_pdf_reference/     # Bản lưu trữ dữ liệu đối chứng lịch sử
-├── src/
-│   ├── data/                 # build_graph.py xây dựng mạng lưới đường có hướng OSMnx
-│   ├── services/             # road_matrix.py (cKDTree snap, Dijkstra on-demand)
-│   ├── cvrp_solver/          # problem, validator, constructive, operators, search, F28
-│   │   └── weights/          # Checkpoint trọng số PyTorch (dqn_model.pt, double_dqn_model.pt)
-│   ├── benchmark/            # instance_generator, runner, analysis
-│   └── rl/                   # train_cvrp_rl.py pipeline huấn luyện Q-Network F28
-├── backend/                  # FastAPI Monolith (/api/v1)
-├── frontend/                 # Next.js 14 WebGIS (OptimoRoute Layout, 6 màn hình)
-└── tests/                    # Bộ kiểm thử 4 tầng (Geometry D4, Solver T2, Data T3, Honesty T4)
+├── backend/app/                 # FastAPI Monolith (:8000)
+│   ├── api/realtime_dispatch.py # Streaming SSE, Parallel, Benchmark Endpoints
+│   └── main.py                  # ASGI Application Factory
+├── frontend/                    # Next.js 14 OptimoRoute Console (:3001)
+│   ├── src/app/page.tsx         # 3 Phân hệ chính: Live, Orders, Strategy Lab
+│   └── src/components/          # ScreenLiveDispatch, ScreenStrategyLab, MapLibre
+├── src/                         # Core Semi-MDP RL & Dispatch Engine
+│   ├── envs/dispatch_env.py     # Native Gymnasium Semi-MDP Environment
+│   ├── agents/                  # DQN, Double DQN, PPO Checkpoints & PyTorch Modules
+│   └── routing/                 # Permutation Exhaustive Router & Nearest Neighbor
+├── docs/                        # Chuỗi tài liệu nghiên cứu
+│   ├── HotWAY_Final_Research_Report.pdf # Báo cáo nghiên cứu học thuật PDF đơn sắc
+│   ├── FINAL_RESEARCH_REPORT.md         # Báo cáo học thuật Markdown
+│   └── research/                # Chuỗi bài báo chuyên đề 00-06
+├── results/                     # Số liệu thực nghiệm bất biến
+│   ├── all_metrics_registry.json# Registry 97 chỉ số niêm phong
+│   ├── model_analytics_data.json# Dữ liệu phân tích 4 chiều
+│   └── figures/                 # 4 Biểu đồ học thuật phân giải cao 300 DPI
+├── archive_e0/                  # Kho lưu trữ mã nguồn CVRP tĩnh cũ (E0)
+└── tests/                       # Bộ kiểm thử 4 tầng T1-T7
 ```

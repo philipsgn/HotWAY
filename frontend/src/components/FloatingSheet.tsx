@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Minimize2, Maximize2, X, ChevronUp, ChevronDown } from "lucide-react";
 
 interface FloatingSheetProps {
   title: string;
@@ -9,7 +8,7 @@ interface FloatingSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  width?: number; // desktop width in px (380 - 520)
+  width?: number;
   storageKey?: string;
 }
 
@@ -22,21 +21,15 @@ export default function FloatingSheet({
   width = 440,
   storageKey = "hotway_sheet_state",
 }: FloatingSheetProps) {
-  // Desktop collapse state
   const [isCollapsed, setIsCollapsed] = useState(false);
-  // Mobile snap state: 'peek' (120px) | 'half' (50vh) | 'full' (88vh) | 'closed'
-  const [mobileSnap, setMobileSnap] = useState<"peek" | "half" | "full">("half");
 
-  // Read saved collapse state from localStorage with try/catch
   useEffect(() => {
     try {
       const saved = localStorage.getItem(storageKey);
       if (saved !== null) {
         setIsCollapsed(saved === "true");
       }
-    } catch (e) {
-      // Ignore localStorage errors (private browsing, etc.)
-    }
+    } catch (e) {}
   }, [storageKey]);
 
   const handleToggleCollapse = () => {
@@ -53,56 +46,50 @@ export default function FloatingSheet({
 
   return (
     <>
-      {/* 1. Desktop Left Floating Sheet (md and up) */}
+      {/* Desktop Left Flat Panel (md and up) */}
       <section
         aria-label={title}
-        style={{ width: isCollapsed ? "52px" : `${width}px` }}
-        className={`hidden md:flex flex-col absolute top-20 bottom-6 left-6 z-20 bg-surface/98 backdrop-blur-md border border-border-warm rounded-warm-lg shadow-floating transition-all duration-300 ease-out overflow-hidden`}
+        style={{ width: isCollapsed ? "44px" : `${width}px` }}
+        className="hidden md:flex flex-col absolute top-20 bottom-6 left-6 z-20 bg-white/98 backdrop-blur-xs border border-[#e5e5e5] transition-all duration-200 ease-out overflow-hidden shadow-sm"
       >
         {/* Header Bar */}
-        <div className="p-3.5 border-b border-border-warm flex items-center justify-between bg-sunken/40 shrink-0">
+        <div className="p-3 border-b border-[#e5e5e5] flex items-center justify-between bg-[#fcfbf9] shrink-0 font-mono">
           {!isCollapsed ? (
             <div className="flex items-center space-x-2 overflow-hidden">
-              <h2 className="text-xs font-bold text-primary-text uppercase tracking-wider truncate">
+              <span className="text-[11px] font-bold text-[#111111] uppercase tracking-wider truncate font-sans">
                 {title}
-              </h2>
+              </span>
               {badge && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-brand-gold-soft text-primary-text font-semibold shrink-0">
+                <span className="text-[9px] px-1.5 py-0.5 border border-[#d4d4d4] text-[#555555] font-bold shrink-0">
                   {badge}
                 </span>
               )}
             </div>
           ) : (
-            <div className="w-full flex justify-center">
-              <span className="text-[10px] font-mono font-bold text-brand-gold rotate-90 origin-center whitespace-nowrap mt-4">
-                {title}
-              </span>
+            <div className="w-full text-center text-xs font-bold text-[#111111]">
+              HW
             </div>
           )}
 
-          <div className="flex items-center space-x-1 shrink-0">
+          <div className="flex items-center space-x-1 shrink-0 text-xs text-[#555555]">
             <button
               onClick={handleToggleCollapse}
-              aria-label={isCollapsed ? "Mở rộng bảng" : "Thu gọn bảng"}
               title={isCollapsed ? "Mở rộng" : "Thu gọn"}
-              className="p-1 rounded-lg text-secondary-text hover:bg-sunken hover:text-primary-text transition"
+              className="px-1.5 py-0.5 hover:text-[#111111] hover:bg-[#f0f0f0] transition font-mono"
             >
-              {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+              {isCollapsed ? "[+]" : "[-]"}
             </button>
-            {!isCollapsed && (
-              <button
-                onClick={onClose}
-                aria-label="Đóng bảng"
-                title="Đóng bảng"
-                className="p-1 rounded-lg text-secondary-text hover:bg-sunken hover:text-primary-text transition"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+            <button
+              onClick={onClose}
+              title="Đóng bảng"
+              className="px-1.5 py-0.5 hover:text-[#111111] hover:bg-[#f0f0f0] transition font-mono"
+            >
+              [x]
+            </button>
           </div>
         </div>
 
-        {/* Sheet Content Body */}
+        {/* Panel Body */}
         {!isCollapsed && (
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {children}
@@ -110,59 +97,18 @@ export default function FloatingSheet({
         )}
       </section>
 
-      {/* 2. Mobile Bottom Sheet (below md) */}
-      <section
-        aria-label={title}
-        style={{
-          height:
-            mobileSnap === "peek" ? "140px" : mobileSnap === "half" ? "52vh" : "88vh",
-        }}
-        className="md:hidden flex flex-col fixed bottom-0 left-0 right-0 z-30 bg-surface/98 backdrop-blur-md border-t border-border-warm rounded-t-warm-lg shadow-floating transition-all duration-300 ease-out overflow-hidden"
-      >
-        {/* Drag handle & header */}
-        <div className="p-3 border-b border-border-warm flex flex-col items-center shrink-0 bg-sunken/40">
-          {/* Visual swipe pill */}
-          <div className="w-10 h-1 bg-border-warm rounded-full mb-2" />
-
-          <div className="w-full flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <h2 className="text-xs font-bold text-primary-text uppercase tracking-wider">
-                {title}
-              </h2>
-              {badge && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-brand-gold-soft text-primary-text font-semibold">
-                  {badge}
-                </span>
-              )}
-            </div>
-
-            <div className="flex items-center space-x-1">
-              <button
-                onClick={() => {
-                  if (mobileSnap === "peek") setMobileSnap("half");
-                  else if (mobileSnap === "half") setMobileSnap("full");
-                  else setMobileSnap("peek");
-                }}
-                className="p-1 text-secondary-text hover:text-primary-text"
-              >
-                {mobileSnap === "full" ? (
-                  <ChevronDown className="w-4 h-4" />
-                ) : (
-                  <ChevronUp className="w-4 h-4" />
-                )}
-              </button>
-              <button onClick={onClose} className="p-1 text-secondary-text hover:text-primary-text">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+      {/* Mobile Flat Bottom Sheet */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#e5e5e5] max-h-[70vh] flex flex-col">
+        <div className="p-3 border-b border-[#e5e5e5] flex items-center justify-between bg-[#fcfbf9] font-mono text-xs">
+          <span className="font-bold text-[#111111] truncate">{title}</span>
+          <button onClick={onClose} className="px-2 py-0.5 text-[#555555] hover:text-[#111111]">
+            [x]
+          </button>
         </div>
-
-        {/* Mobile Body */}
-        <div className="flex-1 overflow-y-auto p-3.5 space-y-3 pb-8">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {children}
         </div>
-      </section>
+      </div>
     </>
   );
 }

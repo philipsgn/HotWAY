@@ -1,0 +1,1883 @@
+{
+  "summary": {
+    "Greedy Urgency": {
+      "mean_dist_km": 99.5,
+      "mean_duration_min": 315.5,
+      "mean_wait_min": 48.03,
+      "mean_late_rate_pct": 39.0,
+      "mean_stoch_late_rate_pct": 59.5,
+      "mean_backlog_penalty": 394.99,
+      "mean_solve_time_sec": 0.0006
+    },
+    "Clarke-Wright + LS": {
+      "mean_dist_km": 73.63,
+      "mean_duration_min": 257.95,
+      "mean_wait_min": 37.45,
+      "mean_late_rate_pct": 30.6,
+      "mean_stoch_late_rate_pct": 42.9,
+      "mean_backlog_penalty": 244.78,
+      "mean_solve_time_sec": 0.0015
+    },
+    "Google OR-Tools": {
+      "mean_dist_km": 79.81,
+      "mean_duration_min": 268.06,
+      "mean_wait_min": 32.29,
+      "mean_late_rate_pct": 7.5,
+      "mean_stoch_late_rate_pct": 38.6,
+      "mean_backlog_penalty": 29.54,
+      "mean_solve_time_sec": 4.0428
+    }
+  },
+  "instances": [
+    {
+      "instance_id": "inst_01_N15_K3",
+      "num_orders": 15,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              7,
+              15,
+              6,
+              14,
+              12,
+              3,
+              13,
+              5,
+              0
+            ],
+            [
+              0,
+              8,
+              11,
+              10,
+              9,
+              1,
+              4,
+              2,
+              0
+            ]
+          ],
+          "total_dist_km": 54.77000045776367,
+          "total_route_time_min": 176.61,
+          "makespan_min": 91.83,
+          "avg_wait_min": 44.53,
+          "late_rate_pct": 33.3,
+          "total_lateness_min": 115.20999908447266,
+          "backlog_penalty": 201.80999755859375,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0014,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 62.1,
+            "stoch_late_rate_p90": 66.7,
+            "stoch_avg_wait_mean": 60.1,
+            "stoch_duration_mean": 234.07
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              7,
+              4,
+              2,
+              12,
+              13,
+              5,
+              3,
+              0
+            ],
+            [
+              0,
+              8,
+              11,
+              0
+            ],
+            [
+              0,
+              10,
+              9,
+              1,
+              15,
+              6,
+              14,
+              0
+            ]
+          ],
+          "total_dist_km": 51.689998626708984,
+          "total_route_time_min": 170.04,
+          "makespan_min": 72.72,
+          "avg_wait_min": 29.21,
+          "late_rate_pct": 20.0,
+          "total_lateness_min": 14.800000190734863,
+          "backlog_penalty": 33.25,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0007,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 40.0,
+            "stoch_late_rate_p90": 40.0,
+            "stoch_avg_wait_mean": 38.41,
+            "stoch_duration_mean": 225.68
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              15,
+              6,
+              14,
+              3,
+              0
+            ],
+            [
+              0,
+              7,
+              4,
+              2,
+              12,
+              13,
+              5,
+              0
+            ],
+            [
+              0,
+              8,
+              11,
+              10,
+              9,
+              1,
+              0
+            ]
+          ],
+          "total_dist_km": 52.720001220703125,
+          "total_route_time_min": 171.68,
+          "makespan_min": 64.17,
+          "avg_wait_min": 27.13,
+          "late_rate_pct": 0.0,
+          "total_lateness_min": 0.0,
+          "backlog_penalty": 0.0,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 4.4035,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 26.7,
+            "stoch_late_rate_p90": 26.7,
+            "stoch_avg_wait_mean": 36.58,
+            "stoch_duration_mean": 229.91
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_02_N15_K3",
+      "num_orders": 15,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              8,
+              9,
+              13,
+              7,
+              6,
+              3,
+              10,
+              12,
+              0
+            ],
+            [
+              0,
+              11,
+              4,
+              1,
+              5,
+              2,
+              15,
+              14,
+              0
+            ]
+          ],
+          "total_dist_km": 65.51000213623047,
+          "total_route_time_min": 202.22,
+          "makespan_min": 101.64,
+          "avg_wait_min": 49.92,
+          "late_rate_pct": 40.0,
+          "total_lateness_min": 173.1999969482422,
+          "backlog_penalty": 270.3800048828125,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0004,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 64.5,
+            "stoch_late_rate_p90": 66.7,
+            "stoch_avg_wait_mean": 67.73,
+            "stoch_duration_mean": 272.01
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              6,
+              3,
+              10,
+              8,
+              14,
+              0
+            ],
+            [
+              0,
+              5,
+              2,
+              11,
+              1,
+              4,
+              12,
+              0
+            ],
+            [
+              0,
+              7,
+              13,
+              9,
+              15,
+              0
+            ]
+          ],
+          "total_dist_km": 55.380001068115234,
+          "total_route_time_min": 193.13,
+          "makespan_min": 79.26,
+          "avg_wait_min": 36.31,
+          "late_rate_pct": 33.3,
+          "total_lateness_min": 52.380001068115234,
+          "backlog_penalty": 98.4800033569336,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0006,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 42.1,
+            "stoch_late_rate_p90": 46.7,
+            "stoch_avg_wait_mean": 45.75,
+            "stoch_duration_mean": 244.75
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              15,
+              4,
+              1,
+              11,
+              12,
+              0
+            ],
+            [
+              0,
+              14,
+              8,
+              2,
+              5,
+              0
+            ],
+            [
+              0,
+              10,
+              3,
+              6,
+              9,
+              13,
+              7,
+              0
+            ]
+          ],
+          "total_dist_km": 60.4900016784668,
+          "total_route_time_min": 190.17,
+          "makespan_min": 70.77,
+          "avg_wait_min": 29.57,
+          "late_rate_pct": 0.0,
+          "total_lateness_min": 0.0,
+          "backlog_penalty": 0.0,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 4.0015,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 35.7,
+            "stoch_late_rate_p90": 46.7,
+            "stoch_avg_wait_mean": 39.44,
+            "stoch_duration_mean": 250.21
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_03_N15_K3",
+      "num_orders": 15,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              11,
+              15,
+              2,
+              13,
+              4,
+              14,
+              6,
+              9,
+              0
+            ],
+            [
+              0,
+              10,
+              1,
+              7,
+              8,
+              3,
+              5,
+              12,
+              0
+            ]
+          ],
+          "total_dist_km": 66.43000030517578,
+          "total_route_time_min": 204.43,
+          "makespan_min": 111.83,
+          "avg_wait_min": 52.23,
+          "late_rate_pct": 53.3,
+          "total_lateness_min": 173.8300018310547,
+          "backlog_penalty": 306.07000732421875,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0002,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 74.1,
+            "stoch_late_rate_p90": 80.0,
+            "stoch_avg_wait_mean": 70.47,
+            "stoch_duration_mean": 269.64
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              8,
+              7,
+              6,
+              14,
+              12,
+              3,
+              0
+            ],
+            [
+              0,
+              15,
+              2,
+              13,
+              9,
+              11,
+              4,
+              1,
+              10,
+              0
+            ]
+          ],
+          "total_dist_km": 57.15999984741211,
+          "total_route_time_min": 184.19,
+          "makespan_min": 110.85,
+          "avg_wait_min": 43.02,
+          "late_rate_pct": 40.0,
+          "total_lateness_min": 160.32000732421875,
+          "backlog_penalty": 364.2200012207031,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0006,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 44.5,
+            "stoch_late_rate_p90": 53.3,
+            "stoch_avg_wait_mean": 56.62,
+            "stoch_duration_mean": 239.21
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              7,
+              8,
+              10,
+              1,
+              4,
+              0
+            ],
+            [
+              0,
+              5,
+              3,
+              12,
+              9,
+              6,
+              14,
+              0
+            ],
+            [
+              0,
+              11,
+              2,
+              13,
+              15,
+              0
+            ]
+          ],
+          "total_dist_km": 60.08000183105469,
+          "total_route_time_min": 190.82,
+          "makespan_min": 65.2,
+          "avg_wait_min": 30.94,
+          "late_rate_pct": 0.0,
+          "total_lateness_min": 0.0,
+          "backlog_penalty": 0.0,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 4.0011,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 41.1,
+            "stoch_late_rate_p90": 53.3,
+            "stoch_avg_wait_mean": 41.07,
+            "stoch_duration_mean": 251.56
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_04_N15_K3",
+      "num_orders": 15,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              4,
+              15,
+              13,
+              3,
+              12,
+              6,
+              14,
+              1,
+              0
+            ],
+            [
+              0,
+              10,
+              8,
+              2,
+              9,
+              7,
+              11,
+              5,
+              0
+            ]
+          ],
+          "total_dist_km": 82.55999755859375,
+          "total_route_time_min": 243.13,
+          "makespan_min": 134.38,
+          "avg_wait_min": 55.41,
+          "late_rate_pct": 46.7,
+          "total_lateness_min": 225.32000732421875,
+          "backlog_penalty": 388.1300048828125,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0002,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 65.9,
+            "stoch_late_rate_p90": 73.3,
+            "stoch_avg_wait_mean": 74.36,
+            "stoch_duration_mean": 325.01
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              10,
+              2,
+              1,
+              12,
+              11,
+              6,
+              14,
+              8,
+              0
+            ],
+            [
+              0,
+              4,
+              13,
+              15,
+              3,
+              5,
+              0
+            ],
+            [
+              0,
+              9,
+              7,
+              0
+            ]
+          ],
+          "total_dist_km": 63.84000015258789,
+          "total_route_time_min": 204.55,
+          "makespan_min": 95.27,
+          "avg_wait_min": 40.18,
+          "late_rate_pct": 26.7,
+          "total_lateness_min": 86.44999694824219,
+          "backlog_penalty": 146.13999938964844,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 0.0006,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 45.1,
+            "stoch_late_rate_p90": 46.7,
+            "stoch_avg_wait_mean": 54.04,
+            "stoch_duration_mean": 268.19
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              3,
+              5,
+              7,
+              9,
+              0
+            ],
+            [
+              0,
+              4,
+              15,
+              13,
+              6,
+              11,
+              12,
+              0
+            ],
+            [
+              0,
+              8,
+              10,
+              2,
+              1,
+              14,
+              0
+            ]
+          ],
+          "total_dist_km": 68.48999786376953,
+          "total_route_time_min": 209.37,
+          "makespan_min": 71.88,
+          "avg_wait_min": 33.43,
+          "late_rate_pct": 6.7,
+          "total_lateness_min": 0.10000000149011612,
+          "backlog_penalty": 0.18000000715255737,
+          "num_served": 15,
+          "is_complete": true,
+          "solve_time_sec": 4.0012,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 45.6,
+            "stoch_late_rate_p90": 46.7,
+            "stoch_avg_wait_mean": 45.65,
+            "stoch_duration_mean": 282.62
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_05_N25_K4",
+      "num_orders": 25,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              3,
+              17,
+              23,
+              10,
+              21,
+              9,
+              4,
+              20,
+              0
+            ],
+            [
+              0,
+              2,
+              22,
+              7,
+              24,
+              1,
+              8,
+              25,
+              13,
+              0
+            ],
+            [
+              0,
+              6,
+              12,
+              11,
+              15,
+              18,
+              19,
+              16,
+              5,
+              0
+            ],
+            [
+              0,
+              14,
+              0
+            ]
+          ],
+          "total_dist_km": 97.05999755859375,
+          "total_route_time_min": 315.25,
+          "makespan_min": 109.9,
+          "avg_wait_min": 43.39,
+          "late_rate_pct": 32.0,
+          "total_lateness_min": 177.36000061035156,
+          "backlog_penalty": 290.3699951171875,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0006,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 51.8,
+            "stoch_late_rate_p90": 56.0,
+            "stoch_avg_wait_mean": 55.89,
+            "stoch_duration_mean": 412.84
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              19,
+              15,
+              11,
+              18,
+              8,
+              25,
+              13,
+              16,
+              0
+            ],
+            [
+              0,
+              3,
+              17,
+              23,
+              10,
+              21,
+              4,
+              14,
+              20,
+              0
+            ],
+            [
+              0,
+              9,
+              24,
+              1,
+              7,
+              22,
+              2,
+              5,
+              12,
+              0
+            ]
+          ],
+          "total_dist_km": 69.0,
+          "total_route_time_min": 248.02,
+          "makespan_min": 84.93,
+          "avg_wait_min": 35.84,
+          "late_rate_pct": 28.0,
+          "total_lateness_min": 117.33000183105469,
+          "backlog_penalty": 210.05999755859375,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0024,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 39.8,
+            "stoch_late_rate_p90": 44.0,
+            "stoch_avg_wait_mean": 44.2,
+            "stoch_duration_mean": 315.43
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              6,
+              16,
+              13,
+              5,
+              2,
+              20,
+              0
+            ],
+            [
+              0,
+              7,
+              22,
+              14,
+              9,
+              24,
+              1,
+              0
+            ],
+            [
+              0,
+              19,
+              15,
+              11,
+              18,
+              8,
+              25,
+              0
+            ],
+            [
+              0,
+              12,
+              3,
+              17,
+              23,
+              10,
+              21,
+              4,
+              0
+            ]
+          ],
+          "total_dist_km": 77.4800033569336,
+          "total_route_time_min": 261.23,
+          "makespan_min": 75.8,
+          "avg_wait_min": 29.16,
+          "late_rate_pct": 0.0,
+          "total_lateness_min": 0.0,
+          "backlog_penalty": 0.0,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 4.0046,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 30.2,
+            "stoch_late_rate_p90": 36.0,
+            "stoch_avg_wait_mean": 37.8,
+            "stoch_duration_mean": 337.59
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_06_N25_K4",
+      "num_orders": 25,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              1,
+              17,
+              3,
+              8,
+              18,
+              23,
+              21,
+              5,
+              0
+            ],
+            [
+              0,
+              24,
+              25,
+              12,
+              9,
+              2,
+              4,
+              7,
+              11,
+              0
+            ],
+            [
+              0,
+              16,
+              10,
+              15,
+              13,
+              19,
+              6,
+              14,
+              20,
+              0
+            ],
+            [
+              0,
+              22,
+              0
+            ]
+          ],
+          "total_dist_km": 114.2300033569336,
+          "total_route_time_min": 357.72,
+          "makespan_min": 121.36,
+          "avg_wait_min": 52.04,
+          "late_rate_pct": 48.0,
+          "total_lateness_min": 322.0400085449219,
+          "backlog_penalty": 645.4099731445312,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0006,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 63.7,
+            "stoch_late_rate_p90": 70.4,
+            "stoch_avg_wait_mean": 68.46,
+            "stoch_duration_mean": 476.81
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              18,
+              17,
+              3,
+              8,
+              22,
+              0
+            ],
+            [
+              0,
+              2,
+              5,
+              21,
+              4,
+              20,
+              24,
+              7,
+              11,
+              0
+            ],
+            [
+              0,
+              25,
+              23,
+              19,
+              14,
+              6,
+              0
+            ],
+            [
+              0,
+              1,
+              13,
+              15,
+              16,
+              10,
+              12,
+              9,
+              0
+            ]
+          ],
+          "total_dist_km": 86.06999969482422,
+          "total_route_time_min": 291.01,
+          "makespan_min": 82.07,
+          "avg_wait_min": 37.03,
+          "late_rate_pct": 32.0,
+          "total_lateness_min": 117.05000305175781,
+          "backlog_penalty": 252.88999938964844,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0016,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 51.4,
+            "stoch_late_rate_p90": 56.0,
+            "stoch_avg_wait_mean": 48.28,
+            "stoch_duration_mean": 378.17
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              25,
+              24,
+              6,
+              14,
+              19,
+              0
+            ],
+            [
+              0,
+              22,
+              3,
+              8,
+              17,
+              18,
+              1,
+              0
+            ],
+            [
+              0,
+              13,
+              15,
+              16,
+              10,
+              12,
+              9,
+              2,
+              21,
+              0
+            ],
+            [
+              0,
+              11,
+              7,
+              20,
+              4,
+              5,
+              23,
+              0
+            ]
+          ],
+          "total_dist_km": 94.30000305175781,
+          "total_route_time_min": 302.92,
+          "makespan_min": 84.42,
+          "avg_wait_min": 34.94,
+          "late_rate_pct": 16.0,
+          "total_lateness_min": 8.069999694824219,
+          "backlog_penalty": 10.520000457763672,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 4.0019,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 47.7,
+            "stoch_late_rate_p90": 56.0,
+            "stoch_avg_wait_mean": 46.96,
+            "stoch_duration_mean": 402.73
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_07_N25_K4",
+      "num_orders": 25,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              8,
+              11,
+              22,
+              24,
+              17,
+              5,
+              21,
+              20,
+              0
+            ],
+            [
+              0,
+              4,
+              9,
+              18,
+              19,
+              12,
+              7,
+              2,
+              23,
+              0
+            ],
+            [
+              0,
+              6,
+              13,
+              16,
+              1,
+              10,
+              14,
+              25,
+              3,
+              0
+            ],
+            [
+              0,
+              15,
+              0
+            ]
+          ],
+          "total_dist_km": 101.08999633789062,
+          "total_route_time_min": 324.47,
+          "makespan_min": 115.62,
+          "avg_wait_min": 43.19,
+          "late_rate_pct": 36.0,
+          "total_lateness_min": 228.6699981689453,
+          "backlog_penalty": 483.3299865722656,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0002,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 50.2,
+            "stoch_late_rate_p90": 52.0,
+            "stoch_avg_wait_mean": 54.93,
+            "stoch_duration_mean": 423.75
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              11,
+              0
+            ],
+            [
+              0,
+              10,
+              6,
+              13,
+              16,
+              1,
+              23,
+              25,
+              14,
+              0
+            ],
+            [
+              0,
+              15,
+              20,
+              21,
+              5,
+              9,
+              19,
+              4,
+              18,
+              0
+            ],
+            [
+              0,
+              12,
+              7,
+              22,
+              3,
+              24,
+              17,
+              2,
+              8,
+              0
+            ]
+          ],
+          "total_dist_km": 72.76000213623047,
+          "total_route_time_min": 267.52,
+          "makespan_min": 92.29,
+          "avg_wait_min": 32.97,
+          "late_rate_pct": 28.0,
+          "total_lateness_min": 104.23999786376953,
+          "backlog_penalty": 255.63999938964844,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0008,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 37.0,
+            "stoch_late_rate_p90": 40.0,
+            "stoch_avg_wait_mean": 41.14,
+            "stoch_duration_mean": 342.17
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              2,
+              20,
+              15,
+              8,
+              10,
+              14,
+              0
+            ],
+            [
+              0,
+              25,
+              6,
+              13,
+              16,
+              1,
+              23,
+              0
+            ],
+            [
+              0,
+              11,
+              12,
+              7,
+              17,
+              3,
+              24,
+              22,
+              0
+            ],
+            [
+              0,
+              18,
+              4,
+              19,
+              9,
+              5,
+              21,
+              0
+            ]
+          ],
+          "total_dist_km": 75.05000305175781,
+          "total_route_time_min": 265.57,
+          "makespan_min": 75.37,
+          "avg_wait_min": 30.98,
+          "late_rate_pct": 12.0,
+          "total_lateness_min": 19.149999618530273,
+          "backlog_penalty": 44.869998931884766,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 4.0015,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 37.3,
+            "stoch_late_rate_p90": 44.0,
+            "stoch_avg_wait_mean": 40.08,
+            "stoch_duration_mean": 344.26
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_08_N25_K4",
+      "num_orders": 25,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              25,
+              3,
+              2,
+              18,
+              19,
+              16,
+              4,
+              11,
+              0
+            ],
+            [
+              0,
+              24,
+              1,
+              14,
+              21,
+              15,
+              23,
+              17,
+              22,
+              0
+            ],
+            [
+              0,
+              9,
+              12,
+              10,
+              7,
+              8,
+              5,
+              13,
+              20,
+              0
+            ],
+            [
+              0,
+              6,
+              0
+            ]
+          ],
+          "total_dist_km": 107.80000305175781,
+          "total_route_time_min": 335.95,
+          "makespan_min": 134.96,
+          "avg_wait_min": 45.74,
+          "late_rate_pct": 28.0,
+          "total_lateness_min": 170.52999877929688,
+          "backlog_penalty": 331.2099914550781,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0005,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 56.6,
+            "stoch_late_rate_p90": 60.0,
+            "stoch_avg_wait_mean": 60.2,
+            "stoch_duration_mean": 446.74
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              21,
+              6,
+              20,
+              9,
+              2,
+              3,
+              7,
+              18,
+              0
+            ],
+            [
+              0,
+              15,
+              11,
+              13,
+              4,
+              16,
+              12,
+              10,
+              19,
+              0
+            ],
+            [
+              0,
+              24,
+              14,
+              1,
+              23,
+              17,
+              0
+            ],
+            [
+              0,
+              22,
+              25,
+              8,
+              5,
+              0
+            ]
+          ],
+          "total_dist_km": 83.18000030517578,
+          "total_route_time_min": 290.22,
+          "makespan_min": 95.53,
+          "avg_wait_min": 42.5,
+          "late_rate_pct": 40.0,
+          "total_lateness_min": 204.0500030517578,
+          "backlog_penalty": 473.6000061035156,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 0.0015,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 47.0,
+            "stoch_late_rate_p90": 52.0,
+            "stoch_avg_wait_mean": 54.26,
+            "stoch_duration_mean": 371.3
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              10,
+              12,
+              16,
+              11,
+              13,
+              4,
+              0
+            ],
+            [
+              0,
+              5,
+              23,
+              17,
+              15,
+              8,
+              7,
+              18,
+              19,
+              0
+            ],
+            [
+              0,
+              22,
+              20,
+              9,
+              2,
+              3,
+              25,
+              0
+            ],
+            [
+              0,
+              1,
+              24,
+              6,
+              21,
+              14,
+              0
+            ]
+          ],
+          "total_dist_km": 82.73999786376953,
+          "total_route_time_min": 288.28,
+          "makespan_min": 81.56,
+          "avg_wait_min": 36.23,
+          "late_rate_pct": 20.0,
+          "total_lateness_min": 29.18000030517578,
+          "backlog_penalty": 79.30999755859375,
+          "num_served": 25,
+          "is_complete": true,
+          "solve_time_sec": 4.0029,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 38.9,
+            "stoch_late_rate_p90": 42.4,
+            "stoch_avg_wait_mean": 46.2,
+            "stoch_duration_mean": 372.96
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_09_N40_K5",
+      "num_orders": 40,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              16,
+              9,
+              12,
+              15,
+              21,
+              28,
+              29,
+              4,
+              0
+            ],
+            [
+              0,
+              27,
+              19,
+              17,
+              35,
+              7,
+              36,
+              30,
+              32,
+              0
+            ],
+            [
+              0,
+              23,
+              40,
+              39,
+              18,
+              14,
+              6,
+              3,
+              8,
+              0
+            ],
+            [
+              0,
+              37,
+              25,
+              11,
+              34,
+              22,
+              24,
+              26,
+              5,
+              0
+            ],
+            [
+              0,
+              2,
+              38,
+              33,
+              13,
+              31,
+              10,
+              20,
+              1,
+              0
+            ]
+          ],
+          "total_dist_km": 154.19000244140625,
+          "total_route_time_min": 503.71,
+          "makespan_min": 141.29,
+          "avg_wait_min": 46.44,
+          "late_rate_pct": 32.5,
+          "total_lateness_min": 324.5899963378906,
+          "backlog_penalty": 513.5499877929688,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 0.0013,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 48.2,
+            "stoch_late_rate_p90": 52.5,
+            "stoch_avg_wait_mean": 59.92,
+            "stoch_duration_mean": 659.37
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              25,
+              1,
+              37,
+              26,
+              8,
+              24,
+              3,
+              11,
+              0
+            ],
+            [
+              0,
+              34,
+              6,
+              20,
+              28,
+              21,
+              4,
+              29,
+              22,
+              0
+            ],
+            [
+              0,
+              7,
+              38,
+              5,
+              13,
+              35,
+              17,
+              19,
+              27,
+              0
+            ],
+            [
+              0,
+              15,
+              31,
+              40,
+              39,
+              18,
+              14,
+              10,
+              32,
+              0
+            ],
+            [
+              0,
+              33,
+              36,
+              30,
+              2,
+              23,
+              16,
+              9,
+              12,
+              0
+            ]
+          ],
+          "total_dist_km": 95.83000183105469,
+          "total_route_time_min": 363.56,
+          "makespan_min": 87.81,
+          "avg_wait_min": 38.54,
+          "late_rate_pct": 25.0,
+          "total_lateness_min": 129.19000244140625,
+          "backlog_penalty": 292.1099853515625,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 0.0043,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 39.1,
+            "stoch_late_rate_p90": 42.5,
+            "stoch_avg_wait_mean": 48.0,
+            "stoch_duration_mean": 455.54
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              34,
+              11,
+              25,
+              1,
+              37,
+              5,
+              35,
+              31,
+              0
+            ],
+            [
+              0,
+              15,
+              10,
+              18,
+              14,
+              6,
+              21,
+              4,
+              29,
+              0
+            ],
+            [
+              0,
+              33,
+              36,
+              30,
+              2,
+              7,
+              38,
+              13,
+              17,
+              0
+            ],
+            [
+              0,
+              22,
+              20,
+              28,
+              3,
+              24,
+              8,
+              26,
+              32,
+              0
+            ],
+            [
+              0,
+              27,
+              19,
+              23,
+              16,
+              9,
+              12,
+              39,
+              40,
+              0
+            ]
+          ],
+          "total_dist_km": 113.73999786376953,
+          "total_route_time_min": 403.39,
+          "makespan_min": 123.17,
+          "avg_wait_min": 35.83,
+          "late_rate_pct": 12.5,
+          "total_lateness_min": 81.80999755859375,
+          "backlog_penalty": 124.66999816894531,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 4.0024,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 39.5,
+            "stoch_late_rate_p90": 42.5,
+            "stoch_avg_wait_mean": 44.88,
+            "stoch_duration_mean": 517.27
+          }
+        }
+      }
+    },
+    {
+      "instance_id": "inst_10_N40_K5",
+      "num_orders": 40,
+      "results": {
+        "Greedy Urgency": {
+          "routes": [
+            [
+              0,
+              25,
+              16,
+              38,
+              10,
+              30,
+              4,
+              36,
+              9,
+              0
+            ],
+            [
+              0,
+              33,
+              20,
+              12,
+              6,
+              21,
+              2,
+              22,
+              8,
+              0
+            ],
+            [
+              0,
+              26,
+              19,
+              7,
+              15,
+              32,
+              24,
+              14,
+              17,
+              0
+            ],
+            [
+              0,
+              18,
+              35,
+              34,
+              27,
+              5,
+              39,
+              11,
+              28,
+              0
+            ],
+            [
+              0,
+              40,
+              29,
+              31,
+              3,
+              1,
+              23,
+              13,
+              37,
+              0
+            ]
+          ],
+          "total_dist_km": 151.35000610351562,
+          "total_route_time_min": 491.5,
+          "makespan_min": 112.32,
+          "avg_wait_min": 47.41,
+          "late_rate_pct": 40.0,
+          "total_lateness_min": 317.19000244140625,
+          "backlog_penalty": 519.6400146484375,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 0.0005,
+          "solver": "Greedy Urgency",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 57.9,
+            "stoch_late_rate_p90": 62.5,
+            "stoch_avg_wait_mean": 61.29,
+            "stoch_duration_mean": 640.59
+          }
+        },
+        "Clarke-Wright + LS": {
+          "routes": [
+            [
+              0,
+              7,
+              24,
+              9,
+              14,
+              17,
+              32,
+              36,
+              26,
+              0
+            ],
+            [
+              0,
+              18,
+              4,
+              35,
+              30,
+              5,
+              10,
+              39,
+              38,
+              0
+            ],
+            [
+              0,
+              29,
+              28,
+              31,
+              21,
+              3,
+              2,
+              22,
+              11,
+              0
+            ],
+            [
+              0,
+              27,
+              34,
+              15,
+              19,
+              16,
+              25,
+              8,
+              1,
+              0
+            ],
+            [
+              0,
+              23,
+              20,
+              33,
+              13,
+              40,
+              12,
+              37,
+              6,
+              0
+            ]
+          ],
+          "total_dist_km": 101.4000015258789,
+          "total_route_time_min": 367.22,
+          "makespan_min": 85.55,
+          "avg_wait_min": 38.92,
+          "late_rate_pct": 32.5,
+          "total_lateness_min": 170.9600067138672,
+          "backlog_penalty": 321.42999267578125,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 0.0024,
+          "solver": "Clarke-Wright + LS",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 42.8,
+            "stoch_late_rate_p90": 45.0,
+            "stoch_avg_wait_mean": 49.98,
+            "stoch_duration_mean": 469.67
+          }
+        },
+        "Google OR-Tools": {
+          "routes": [
+            [
+              0,
+              34,
+              27,
+              38,
+              39,
+              10,
+              19,
+              24,
+              36,
+              0
+            ],
+            [
+              0,
+              15,
+              26,
+              32,
+              17,
+              7,
+              9,
+              14,
+              30,
+              0
+            ],
+            [
+              0,
+              11,
+              3,
+              2,
+              16,
+              18,
+              35,
+              5,
+              4,
+              0
+            ],
+            [
+              0,
+              6,
+              1,
+              12,
+              40,
+              13,
+              33,
+              20,
+              23,
+              0
+            ],
+            [
+              0,
+              37,
+              25,
+              8,
+              29,
+              28,
+              31,
+              22,
+              21,
+              0
+            ]
+          ],
+          "total_dist_km": 113.01000213623047,
+          "total_route_time_min": 397.22,
+          "makespan_min": 86.59,
+          "avg_wait_min": 34.71,
+          "late_rate_pct": 7.5,
+          "total_lateness_min": 17.68000030517578,
+          "backlog_penalty": 35.83000183105469,
+          "num_served": 40,
+          "is_complete": true,
+          "solve_time_sec": 4.0077,
+          "solver": "Google OR-Tools",
+          "stochastic_simulation": {
+            "stoch_late_rate_mean": 43.1,
+            "stoch_late_rate_p90": 45.0,
+            "stoch_avg_wait_mean": 44.4,
+            "stoch_duration_mean": 516.13
+          }
+        }
+      }
+    }
+  ]
+}

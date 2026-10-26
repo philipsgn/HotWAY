@@ -2,10 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { Compass, Crosshair, Home, AlertTriangle, Layers } from "lucide-react";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 export const ROUTE_COLORS = [
-  "#2563eb", // 1. Xanh dương
+  "#1d4ed8", // 1. Xanh dương
   "#d97706", // 2. Vàng hổ phách
   "#059669", // 3. Xanh ngọc lục bảo
   "#7c3aed", // 4. Tím hoa cà
@@ -34,8 +34,8 @@ export interface RouteData {
     arrival_time_sec: number;
     elapsed_time_min: number;
     demand: number;
-    estimated_temp_c: number;
-    thermal_violation: boolean;
+    estimated_temp_c?: number;
+    thermal_violation?: boolean;
   }[];
 }
 
@@ -130,14 +130,13 @@ export default function OptimoMap({
       map.addControl(
         new maplibregl.AttributionControl({
           compact: true,
-          customAttribution: "Dữ liệu OpenStreetMap © HotWAY",
+          customAttribution: "Dữ liệu OpenStreetMap (ODbL) | HotWAY",
         }),
         "bottom-right"
       );
 
       // Handle style load error -> Fallback to standard raster tiles
       map.on("error", (e) => {
-        // If vector style failed to load, fall back gracefully
         if (!mapLoaded && e.error && e.error.message?.includes("style")) {
           console.warn("Chuyển sang bản đồ dự phòng OSM Raster...");
           map.setStyle(RASTER_FALLBACK_STYLE);
@@ -166,22 +165,21 @@ export default function OptimoMap({
 
     if (!depotMarkerRef.current) {
       const el = document.createElement("div");
-      el.className = "group cursor-pointer";
+      el.className = "cursor-pointer";
       el.innerHTML = `
-        <div class="relative flex items-center justify-center">
-          <div class="absolute w-9 h-9 bg-amber-500/30 rounded-full animate-ping"></div>
-          <div class="relative w-8 h-8 bg-[#3B2A1A] border-2 border-[#E0A83A] rounded-xl shadow-lg flex items-center justify-center text-amber-300 font-bold text-xs">
-            HG
+        <div class="flex flex-col items-center">
+          <div class="px-1.5 py-0.5 bg-neutral-900 text-white text-[9px] font-mono font-bold tracking-widest uppercase border border-white">
+            DEPOT
           </div>
-          <div class="absolute -bottom-1 w-2 h-2 bg-[#3B2A1A] rotate-45 border-r border-b border-[#E0A83A]"></div>
+          <div class="w-3 h-3 bg-neutral-900 border-2 border-white -mt-1 rotate-45"></div>
         </div>
       `;
 
-      const popup = new maplibregl.Popup({ offset: 20 }).setHTML(`
-        <div class="p-1 space-y-1">
-          <div class="text-[10px] font-mono uppercase tracking-wider text-amber-700 font-bold">Bếp Trung Tâm</div>
-          <div class="text-xs font-bold text-[#3B2A1A]">${depot.name}</div>
-          <div class="text-[11px] text-[#8A7355]">490 Điện Biên Phủ, P. 21, Bình Thạnh</div>
+      const popup = new maplibregl.Popup({ offset: 15 }).setHTML(`
+        <div class="p-2 space-y-1 font-sans text-xs">
+          <div class="text-[10px] font-mono uppercase tracking-wider text-neutral-500 font-bold">BƯU CỤC TẬP KẾT HÀNG</div>
+          <div class="font-bold text-neutral-900">${depot.name}</div>
+          <div class="text-[11px] text-neutral-600 font-mono">Tọa độ: ${depot.lat.toFixed(4)}, ${depot.lon.toFixed(4)}</div>
         </div>
       `);
 
@@ -203,7 +201,7 @@ export default function OptimoMap({
     markersRef.current = {};
 
     // Map order_id to route color & sequence index
-    const orderRouteMap = new Map<string, { color: string; seq: number; temp?: number; eta?: string }>();
+    const orderRouteMap = new Map<string, { color: string; seq: number; eta?: string }>();
     routes.forEach((r) => {
       const color = ROUTE_COLORS[(r.vehicle_id - 1) % ROUTE_COLORS.length];
       if (r.stops) {
@@ -211,7 +209,6 @@ export default function OptimoMap({
           orderRouteMap.set(st.order_id, {
             color,
             seq: idx + 1,
-            temp: st.estimated_temp_c,
             eta: `${Math.round(st.elapsed_time_min)} phút`,
           });
         });
@@ -221,18 +218,17 @@ export default function OptimoMap({
     orders.forEach((ord, index) => {
       const routeInfo = orderRouteMap.get(ord.id);
       const isSelected = selectedOrderId === ord.id;
-      const markerColor = routeInfo ? routeInfo.color : "#8B5E34";
+      const markerColor = routeInfo ? routeInfo.color : "#171717";
       const seqNumber = routeInfo ? routeInfo.seq : index + 1;
 
       const el = document.createElement("div");
-      el.className = "cursor-pointer transition-transform duration-200 hover:scale-125";
+      el.className = "cursor-pointer transition-transform duration-150 hover:scale-110";
       el.innerHTML = `
         <div class="relative flex items-center justify-center">
-          ${isSelected ? '<div class="absolute w-8 h-8 rounded-full bg-amber-400/40 animate-ping"></div>' : ''}
-          <div style="background-color: ${markerColor};" class="w-6 h-6 rounded-full border-2 border-white shadow-md flex items-center justify-center text-white text-[11px] font-bold font-mono">
+          ${isSelected ? '<div class="absolute w-7 h-7 bg-neutral-900/20 animate-ping"></div>' : ''}
+          <div style="background-color: ${markerColor};" class="w-5 h-5 border border-white flex items-center justify-center text-white text-[10px] font-mono font-bold">
             ${seqNumber}
           </div>
-          <div style="border-top-color: ${markerColor};" class="absolute -bottom-1 border-solid border-t-4 border-x-transparent border-x-4 border-b-0"></div>
         </div>
       `;
 
@@ -241,33 +237,25 @@ export default function OptimoMap({
       });
 
       const popupHTML = `
-        <div class="p-1 space-y-1 text-xs">
-          <div class="flex items-center justify-between border-b border-[#E6D9BC] pb-1">
-            <span class="font-mono font-bold text-[#3B2A1A]">${ord.id}</span>
-            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-[#FBE9B7] text-[#8B5E34] font-semibold">
-              ${ord.demand || 1} tô
+        <div class="p-2 space-y-1 font-sans text-xs">
+          <div class="flex items-center justify-between border-b border-neutral-200 pb-1 font-mono">
+            <span class="font-bold text-neutral-900">${ord.id}</span>
+            <span class="text-[10px] text-neutral-600">
+              ${ord.demand || 1} kiện
             </span>
           </div>
-          <div class="text-[11px] text-[#3B2A1A] font-medium">${ord.name || "Điểm giao hàng"}</div>
-          <div class="text-[10px] text-[#8A7355] font-mono">Tọa độ: ${ord.lat.toFixed(4)}, ${ord.lon.toFixed(4)}</div>
-          ${routeInfo && routeInfo.temp ? `
-            <div class="flex items-center justify-between text-[11px] pt-1">
-              <span class="text-[#8A7355]">Nhiệt độ dự kiến:</span>
-              <span class="font-mono font-bold ${routeInfo.temp >= 60 ? 'text-[#4E8F5A]' : 'text-[#C2493D]'}">
-                ${routeInfo.temp.toFixed(1)}°C
-              </span>
-            </div>
-          ` : ''}
+          <div class="text-[11px] text-neutral-800 font-medium">${ord.name || "Điểm giao hàng"}</div>
+          <div class="text-[10px] text-neutral-500 font-mono">Tọa độ: ${ord.lat.toFixed(4)}, ${ord.lon.toFixed(4)}</div>
           ${routeInfo && routeInfo.eta ? `
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="text-[#8A7355]">Thời gian tới:</span>
-              <span class="font-mono text-[#3B2A1A]">${routeInfo.eta}</span>
+            <div class="flex items-center justify-between text-[11px] pt-1 border-t border-neutral-100 font-mono">
+              <span class="text-neutral-500">Dự kiến đến:</span>
+              <span class="font-bold text-neutral-900">${routeInfo.eta}</span>
             </div>
           ` : ''}
         </div>
       `;
 
-      const popup = new maplibregl.Popup({ offset: 16 }).setHTML(popupHTML);
+      const popup = new maplibregl.Popup({ offset: 12 }).setHTML(popupHTML);
 
       const marker = new maplibregl.Marker({ element: el })
         .setLngLat([ord.lon, ord.lat])
@@ -330,18 +318,18 @@ export default function OptimoMap({
           },
         });
 
-        // 1. Casing line (2px white border for high contrast)
+        // 1. Casing line (white border for high contrast)
         map.addLayer({
           id: casingLayerId,
           type: "line",
           source: sourceId,
           layout: {
-            "line-join": "round",
-            "line-cap": "round",
+            "line-join": "miter",
+            "line-cap": "butt",
           },
           paint: {
             "line-color": "#FFFFFF",
-            "line-width": 6,
+            "line-width": 5,
             "line-opacity": 0.95,
           },
         });
@@ -352,13 +340,13 @@ export default function OptimoMap({
           type: "line",
           source: sourceId,
           layout: {
-            "line-join": "round",
-            "line-cap": "round",
+            "line-join": "miter",
+            "line-cap": "butt",
           },
           paint: {
             "line-color": color,
-            "line-width": 3.8,
-            "line-opacity": 0.92,
+            "line-width": 3,
+            "line-opacity": 0.95,
           },
         });
       }
@@ -372,10 +360,9 @@ export default function OptimoMap({
     if (userLocation) {
       if (!userMarkerRef.current) {
         const el = document.createElement("div");
-        el.className = "relative flex items-center justify-center";
+        el.className = "flex items-center justify-center";
         el.innerHTML = `
-          <div class="absolute w-8 h-8 rounded-full bg-blue-500/30 animate-ping"></div>
-          <div class="w-4 h-4 rounded-full bg-blue-600 border-2 border-white shadow-md"></div>
+          <div class="w-3 h-3 bg-neutral-900 border-2 border-white"></div>
         `;
         const marker = new maplibregl.Marker({ element: el })
           .setLngLat([userLocation.lon, userLocation.lat])
@@ -398,16 +385,12 @@ export default function OptimoMap({
       const vColor = ROUTE_COLORS[(simVehicle.vehicle_id - 1) % ROUTE_COLORS.length];
       if (!simMarkerRef.current) {
         const el = document.createElement("div");
-        el.className = "flex flex-col items-center cursor-pointer";
+        el.className = "flex flex-col items-center cursor-pointer font-mono";
         el.innerHTML = `
-          <div class="bg-amber-600 text-white text-[9px] font-mono px-1.5 py-0.2 rounded font-bold shadow mb-0.5 tracking-wider">
-            MÔ PHỎNG
+          <div class="bg-neutral-900 text-white text-[9px] px-1 py-0.5 border border-white tracking-wider">
+            XE ${simVehicle.vehicle_id} [MÔ PHỎNG]
           </div>
-          <div class="relative flex items-center justify-center">
-            <div style="background-color: ${vColor};" class="w-7 h-7 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold">
-              🚚
-            </div>
-          </div>
+          <div style="background-color: ${vColor};" class="w-3 h-3 border border-white mt-0.5"></div>
         `;
         const marker = new maplibregl.Marker({ element: el })
           .setLngLat([simVehicle.lon, simVehicle.lat])
@@ -439,49 +422,46 @@ export default function OptimoMap({
   const handleZoomOut = () => mapRef.current?.zoomOut();
 
   return (
-    <div className="relative w-full h-full overflow-hidden select-none">
+    <div className="relative w-full h-full overflow-hidden select-none font-sans">
       {/* 1. MapLibre Canvas Container */}
       <div ref={mapContainer} className="w-full h-full" />
 
       {/* 2. Map Error Banner if any */}
       {mapError && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 bg-surface border border-status-danger/40 text-primary-text px-4 py-2.5 rounded-warm shadow-elevated flex items-center space-x-2 text-xs">
-          <AlertTriangle className="w-4 h-4 text-status-danger" />
-          <span>{mapError} Vui lòng kiểm tra kết nối mạng.</span>
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 bg-white border border-red-300 text-red-900 px-4 py-2 font-mono text-xs">
+          <span>[LỖI]: {mapError} Vui lòng kiểm tra kết nối mạng.</span>
         </div>
       )}
 
       {/* 3. Floating Quick Action Controls (Bottom Right) */}
-      <div className="absolute bottom-6 right-5 z-10 flex flex-col space-y-2">
+      <div className="absolute bottom-6 right-5 z-10 flex flex-col space-y-1 font-mono text-xs">
         <button
           onClick={handleResetToDepot}
-          title="Về bếp Hàng Gòn Quán"
-          aria-label="Về bếp trung tâm"
-          className="w-10 h-10 rounded-xl bg-surface border border-border-warm shadow-soft flex items-center justify-center text-primary-text hover:bg-sunken hover:border-brand-gold active:scale-95 transition"
+          title="Về bưu cục trung tâm"
+          aria-label="Về bưu cục trung tâm"
+          className="h-8 px-2.5 bg-white border border-neutral-300 text-neutral-800 hover:bg-neutral-100 active:bg-neutral-200 transition"
         >
-          <Home className="w-4 h-4 text-brand-brown" />
+          [Kho]
         </button>
 
         {onLocateUser && (
           <button
             onClick={onLocateUser}
             disabled={isLocating}
-            title="Vị trí của tôi"
+            title="Vị trí thiết bị GPS"
             aria-label="Định vị vị trí của tôi"
-            className={`w-10 h-10 rounded-xl bg-surface border border-border-warm shadow-soft flex items-center justify-center text-primary-text hover:bg-sunken hover:border-brand-gold active:scale-95 transition ${
-              isLocating ? "animate-spin text-brand-gold" : ""
-            }`}
+            className="h-8 px-2.5 bg-white border border-neutral-300 text-neutral-800 hover:bg-neutral-100 active:bg-neutral-200 transition"
           >
-            <Crosshair className="w-4 h-4 text-brand-brown" />
+            {isLocating ? "[...]" : "[GPS]"}
           </button>
         )}
 
-        <div className="flex flex-col rounded-xl bg-surface border border-border-warm shadow-soft overflow-hidden">
+        <div className="flex border border-neutral-300 bg-white">
           <button
             onClick={handleZoomIn}
             title="Phóng to"
             aria-label="Phóng to bản đồ"
-            className="w-10 h-9 flex items-center justify-center text-sm font-bold text-primary-text hover:bg-sunken border-b border-border-warm active:bg-subtle transition"
+            className="w-7 h-8 flex items-center justify-center font-bold text-neutral-800 hover:bg-neutral-100 border-r border-neutral-300 transition"
           >
             +
           </button>
@@ -489,7 +469,7 @@ export default function OptimoMap({
             onClick={handleZoomOut}
             title="Thu nhỏ"
             aria-label="Thu nhỏ bản đồ"
-            className="w-10 h-9 flex items-center justify-center text-sm font-bold text-primary-text hover:bg-sunken active:bg-subtle transition"
+            className="w-7 h-8 flex items-center justify-center font-bold text-neutral-800 hover:bg-neutral-100 transition"
           >
             -
           </button>
@@ -497,20 +477,19 @@ export default function OptimoMap({
       </div>
 
       {/* 4. Small Map Legend Overlay (Top Right) */}
-      <div className="hidden sm:flex absolute top-20 right-5 z-10 bg-surface/90 backdrop-blur-md border border-border-warm rounded-warm px-3 py-2 text-[11px] shadow-soft items-center space-x-3 text-secondary-text">
+      <div className="hidden sm:flex absolute top-20 right-5 z-10 bg-white/95 backdrop-blur-sm border border-neutral-300 px-3 py-1.5 text-[11px] font-mono items-center space-x-3 text-neutral-600">
         <div className="flex items-center space-x-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#E0A83A] border border-[#3B2A1A]"></span>
-          <span className="text-primary-text font-medium">Bếp 490 Điện Biên Phủ</span>
+          <span className="inline-block w-2 h-2 bg-neutral-900"></span>
+          <span className="text-neutral-900 font-semibold uppercase">DEPOT</span>
         </div>
-        <span>•</span>
-        <div className="flex items-center space-x-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-route-1 border border-white"></span>
-          <span>{orders.length} điểm giao</span>
+        <span>|</span>
+        <div>
+          <span>{orders.length} ĐIỂM GIAO</span>
         </div>
         {routes.length > 0 && (
           <>
-            <span>•</span>
-            <span className="font-mono text-primary-text font-semibold">{routes.length} xe</span>
+            <span>|</span>
+            <span className="text-neutral-900 font-bold">{routes.length} TUYẾN XE</span>
           </>
         )}
       </div>

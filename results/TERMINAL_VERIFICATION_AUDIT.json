@@ -1,0 +1,98 @@
+{
+  "audit_version": "v6.2.0-Production-Audit",
+  "timestamp": "2026-10-24T16:15:00Z",
+  "site_config": {
+    "status": "PASS",
+    "backend_port": 8000,
+    "frontend_port": 3001,
+    "prohibited_port": 3000
+  },
+  "file_hashes": {
+    "status": "PASS",
+    "verified_file_count": 12,
+    "hashes": {
+      "data/matrix_standard.npz": {
+        "sha256": "795be22681dcd9223b36c16bf8614d7c46427cf425bb6b8661a5c024ed5a3a43",
+        "size_bytes": 1135631
+      },
+      "data/matrix_ood.npz": {
+        "sha256": "c2fbb7d20cfa16e95675bcdbd8da29584619fc19aa0989230ecc2b78ae7732bb",
+        "size_bytes": 162596
+      },
+      "data/address_pool_standard.json": {
+        "sha256": "8e3bec04ddb0125d58f10ba9ba62a348930d9567c78a0157ba59f066592add9b",
+        "size_bytes": 57710
+      },
+      "data/address_pool_ood.json": {
+        "sha256": "337d048325e431c9792c56d970b5e8e365f55d182f17339d27bbb0cc67e1f09e",
+        "size_bytes": 21605
+      },
+      "results/all_metrics_registry.json": {
+        "sha256": "c53ce4864bd5d7df3b52dfcd7bedd2f42484009ae0fb86c8af70c65cf53a2de2",
+        "size_bytes": 5190
+      },
+      "results/model_analytics_data.json": {
+        "sha256": "2fddc8cdf60a850dca6c6690655e6372890837c602773770bd35c65ea395baef",
+        "size_bytes": 1479
+      },
+      "results/figures/queue_waterfall_dynamics.png": {
+        "sha256": "9de817e9867292c83069ef5cd95bcc6b7f85d19278af7ec53d477c370e2e8502",
+        "size_bytes": 264399
+      },
+      "results/figures/q_value_landscape_failures.png": {
+        "sha256": "dcaa1c8ffc6c2b7cdddec8980311ecdf3adee7af4e0aeb7b3c204cda34e99a29",
+        "size_bytes": 313739
+      },
+      "results/figures/pareto_frontier_tradeoff.png": {
+        "sha256": "f52c3fae07fcaaeaa4541d1a1168251857e728a7ce3e9a81f9874885d7e722d4",
+        "size_bytes": 222666
+      },
+      "results/figures/sensitivity_heatmap_matrix.png": {
+        "sha256": "9c4184bff754645145fb1b39b48e0ded03da75807d83cd6e7d4c33470a657184",
+        "size_bytes": 144316
+      },
+      "docs/HotWAY_Final_Research_Report.pdf": {
+        "sha256": "fc1d9045cc8792ea509470107f95cfacfbde9dd990cafb460fa3c422ce6a63a6",
+        "size_bytes": 1097207
+      },
+      "docs/FINAL_RESEARCH_REPORT.md": {
+        "sha256": "d2acf6223f43b611f0d8501819d85996a241962d15e113a629dafd211d229edd",
+        "size_bytes": 13159
+      }
+    }
+  },
+  "metric_parity": {
+    "status": "PASS",
+    "tolerance": 1e-09,
+    "checked_equations": 10
+  },
+  "markdown_rules": {
+    "status": "PASS",
+    "file": "docs/FINAL_RESEARCH_REPORT.md",
+    "total_lines": 129,
+    "divider_count": 0
+  },
+  "pytest_suite": {
+    "status": "PASS",
+    "exit_code": 0,
+    "summary": "================== 19 passed, 4 warnings in 69.08s (0:01:09) ==================",
+    "full_output_sample": [
+      "..\\..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\fastapi\\testclient.py:1",
+      "  C:\\Users\\Asus\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.",
+      "    from starlette.testclient import TestClient as TestClient  # noqa",
+      "",
+      "<frozen importlib._bootstrap>:488",
+      "  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute",
+      "",
+      "<frozen importlib._bootstrap>:488",
+      "  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute",
+      "",
+      "<frozen importlib._bootstrap>:488",
+      "  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute",
+      "",
+      "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+      "================== 19 passed, 4 warnings in 69.08s (0:01:09) =================="
+    ]
+  },
+  "overall_status": "CERTIFIED_PRODUCTION_READY"
+}

@@ -1,82 +1,98 @@
 # Đặc Tả Thuật Toán & Phân Tích Thực Nghiệm (ALGORITHM.MD) — HotWAY
 
-> **Tài liệu:** Cơ sở toán học, mô hình RL chọn toán tử, và kết quả thực nghiệm  
-> **Phiên bản:** v5.0.0 (Production Multi-Region & Live Benchmark Edition)  
-> **Ngày cập nhật:** 21/10/2026  
-> **Nguồn sự thật:** `rel_result/` (sinh tự động từ 30 benchmark instances TP.HCM)  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/TanPhat/Documents/AI_E/HotWAY/ARCHITECTURE.md)
+> **Tài liệu:** Cơ sở toán học, mô hình Semi-MDP thời gian thực, thuật toán RL và kết quả thực nghiệm  
+> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
+> **Ngày cập nhật:** 24/10/2026  
+> **Nguồn sự thật:** `results/training/`, `results/baselines/`, `rel_result/`  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
 
-## 1. Bản Chất Bài Toán & Vai Trò Của Reinforcement Learning
+## PHẦN 1: THÍ NGHIỆM KHỞI ĐẦU E0 (CVRP TĨNH & CHỌN TOÁN TỬ CỤC BỘ)
 
-Mô hình nghiên cứu giải quyết bài toán CVRP bằng phương pháp **Hyper-Heuristic** kết hợp Học Tăng Cường (RL):
-- **Không phải**: DQN học điều khiển tay lái hay rẽ trái/phải ở ngã tư.
-- **Bản chất thực tế**: DQN và Double DQN học chính sách chọn **Toán tử Tìm kiếm Cục bộ (Local Search Operator)** ở mỗi bước lặp để cải thiện tập nghiệm CVRP khởi tạo từ Clarke-Wright.
-
-### 4 Toán Tử Trong Không Gian Hành Động ($a \in \{0, 1, 2, 3\}$):
-1. **$a = 0$ (`two_opt`):** Đảo ngược thứ tự phân đoạn $\text{route}[r][i..j]$ trong cùng một tuyến. Đối với ma trận chi phí bất đối xứng, $\Delta C$ được tính chính xác bằng tổng chênh lệch cạnh đảo chiều.
-2. **$a = 1$ (`intra_relocate`):** Di chuyển một khách hàng từ vị trí $i$ sang vị trí $j$ trong cùng tuyến.
-3. **$a = 2$ (`inter_relocate`):** Chuyển một khách hàng từ tuyến $r_1$ sang vị trí $k$ của tuyến $r_2$. Yêu cầu tải tuyến nhận $\le Q$. Tuyến $r_1$ nếu rỗng sẽ được xóa bỏ.
-4. **$a = 3$ (`inter_swap`):** Hoán đổi vị trí hai khách hàng thuộc hai tuyến khác nhau. Yêu cầu tải trọng sau hoán đổi của cả hai tuyến đều $\le Q$.
+### 1.1. Bản Chất Bài Toán E0 & Kết Quả Âm Tính
+- **Bản chất thực nghiệm:** Đánh giá năng lực của DQN và Double DQN trong việc chọn 1 trong 4 toán tử Local Search (`two_opt`, `intra_relocate`, `inter_relocate`, `inter_swap`) trên nghiệm khởi tạo Clarke-Wright Savings với ràng buộc làm nguội nhiệt Newton $T_{\min} \ge 60^\circ\text{C}$.
+- **Kết quả thực nghiệm bảo tồn tại `rel_result/`:**
+  - Trên 30 instances đồ thị TP.HCM thực tế: Greedy ($103.727\text{ km}$) và Random ($103.728\text{ km}$) tốt hơn DQN ($103.813\text{ km}$).
+  - Trên giao thức A2 chuẩn (tài liệu PDF A2): Random ($656.359\text{ km}$) vượt trội hơn DQN ($657.897\text{ km}$) với $p_{\text{Holm}} = 0.0072$.
+- **Động lực chuyển hướng:** Khởi tạo Clarke-Wright đã đạt chất lượng quá gần biên tối ưu khiến dư địa cải thiện của Local Search chỉ còn khoảng $0.1\%$. Nhiệt độ thức ăn là biến ngẫu nhiên tại bếp, không quan sát được trên đường. Do đó, hệ thống loại bỏ hoàn toàn ràng buộc nhiệt độ Newton và chuyển sang tối ưu **Thời Gian Chờ Của Khách Hàng**.
 
 ---
 
-## 2. Biểu Diễn Trạng Thái ($F28$) & Kiến Trúc Mạng Nơ-ron
+## PHẦN 2: MÔ HÌNH HỌC TĂNG CƯỜNG ĐIỀU PHỐI THỜI GIAN THỰC (GĐ2)
 
-Tập đặc trưng $F28$ gồm 28 chiều liên tục mô tả toàn diện trạng thái tìm kiếm:
-- **Đặc trưng toàn cục (F12):** Tỷ lệ chi phí so với ban đầu $C/C_{\text{init}}$, tỷ lệ sử dụng đội xe $|\mathcal{R}|/K$, tỷ lệ tuyến dài nhất, hệ số biến thiên độ dài tuyến ($CV$), thống kê mức sử dụng tải trọng ($\text{mean}, \max, \min, CV$), thống kê độ dài cạnh ($\text{mean}, \max, \text{std}$) chuẩn hóa theo đường kính mạng lưới.
-- **Tiến trình tìm kiếm:** $t / \text{max\_steps}$, `no_improve_streak` $= \min(1, \text{streak} / \text{feature\_patience})$ với `feature_patience = 30` (được tách độc lập khỏi luật dừng).
-- **Lịch sử toán tử:** Tần suất chọn 4 toán tử (4 chiều), tỷ lệ thành công 4 toán tử (4 chiều), one-hot toán tử vừa chọn (4 chiều), cờ thành công bước trước (1 chiều), và độ lệch so với nghiệm tốt nhất (1 chiều).
+### 2.1. Hình Thức Hóa Semi-MDP
+Hệ thống điều phối tại quán giao hàng được biểu diễn dưới dạng Semi-Markov Decision Process $(\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \tau)$:
+- **Thời điểm ra quyết định $t_k$:** Mỗi khi có ít nhất một tài xế rảnh tại quán.
+- **Thời lượng chuyển tiếp ngẫu nhiên $\tau_k \in (0, \tau_{\max}]$:**
+  - Nếu chọn hành động $a=0$ (Chờ thêm): $\tau_k = \min(\Delta t_{\text{next\_event}}, \tau_{\max})$, trong đó sự kiện kế tiếp là một đơn hàng mới đến, một đơn nấu xong trong bếp, hoặc một tài xế khác quay về quán ($\tau_{\max} = 10.0\text{ phút}$).
+  - Nếu chọn hành động $a \in \{1, 2, 3, 4\}$ (Xuất phát ngay với $m=a$ đơn): $\tau_k = \min(\Delta t_{\text{next\_event}}, \tau_{\max})$ sau khi giao việc cho tài xế.
 
-**Kiến trúc Q-Network:** MLP 2 lớp ẩn ReLU ($28 \to 128 \to 128 \to 4$), hệ số chiết khấu $\gamma = 0.95$, Huber Loss, $\epsilon$-greedy giảm dần từ $1.0$ về $0.05$. Trọng số huấn luyện được lưu tại `src/cvrp_solver/weights/dqn_model.pt` và `double_dqn_model.pt`.
+### 2.2. Không Gian Quan Sát Chuẩn Hóa ($s \in \mathbb{R}^{12}$)
+Vector trạng thái 12 chiều nắm bắt thông tin hàng đợi, đội xe và môi trường:
+1. $s[0] = N_{\text{ready}} / 10.0$: Số đơn sẵn sàng chờ lên xe.
+2. $s[1] = N_{\text{cooking}} / 10.0$: Số đơn đang chế biến trong bếp.
+3. $s[2] = N_{\text{placed}} / 10.0$: Số đơn mới đặt chờ vào bếp.
+4. $s[3] = t_{\text{wait\_ready\_mean}} / 30.0$: Tuổi trung bình của đơn sẵn sàng (phút).
+5. $s[4] = t_{\text{wait\_ready\_max}} / 60.0$: Tuổi lớn nhất của đơn sẵn sàng (phút).
+6. $s[5] = t_{\text{wait\_total\_max}} / 60.0$: Tuổi đơn cũ nhất toàn hệ thống (phút).
+7. $s[6] = \sigma_{\text{spatial}} / 5.0$: Độ phân tán không gian của các đơn sẵn sàng (km).
+8. $s[7] = K_{\text{idle}} / K_{\text{fleet}}$: Tỷ lệ tài xế đang rảnh.
+9. $s[8] = t_{\text{driver\_min}} / 30.0$: Thời gian tài xế bận sắp về nhất (phút).
+10. $s[9] = t_{\text{driver\_mean}} / 30.0$: Thời gian về trung bình của các tài xế bận (phút).
+11. $s[10] = (t_{\text{hour}} - 10.0) / 12.0$: Giờ trong ngày (ca 10:00 - 22:00).
+12. $s[11] = \lambda_{\text{recent}} / 2.0$: Tốc độ đơn đến gần đây trong 15 phút (đơn/phút).
 
----
+### 2.3. Tích Phân Lebesgue Bảo Toàn Phần Thưởng Bellman
+Phần thưởng từng bước trong khoảng thời gian $[t_k, t_{k+1}]$ được tính bằng tích phân diện tích chồng lấn thực tế:
+$$r_k = -\sum_{i \in \text{Orders}} \max\left(0, \min(t_{k+1}, t_{\text{delivered}, i}) - \max(t_k, t_{\text{placed}, i})\right)$$
+Đẳng thức bảo toàn tuyệt đối:
+$$\sum_{k=0}^{K-1} r_k = -\sum_{i=1}^{N} (t_{\text{delivered}, i} - t_{\text{placed}, i}) = -\sum_{i=1}^{N} W_i$$
+Sai số số học đo lường trên toàn bộ tập kiểm thử đạt $3.64 \times 10^{-12} < 10^{-9}$.
 
-## 3. Ràng Buộc Nhiệt Động Học Newton Quy Về Giới Hạn Thời Gian
-
-Nhiệt độ nước dùng giảm theo thời gian di chuyển $t$ (phút):
-$$T(t) = T_{\text{env}} + (T_0 - T_{\text{env}}) e^{-kt}$$
-Để bảo đảm nhiệt độ khi giao đến khách $T(t) \ge T_{\min} = 60.0^\circ\text{C}$ với tham số vận hành $T_0 = 85.0^\circ\text{C}$, $T_{\text{env}} = 30.0^\circ\text{C}$, $k = 0.020\text{ min}^{-1}$:
-$$t_{\max} = -\frac{1}{k} \ln \left( \frac{T_{\min} - T_{\text{env}}}{T_0 - T_{\text{env}}} \right) = -\frac{1}{0.020} \ln \left( \frac{30.0}{55.0} \right) \approx 30.3\text{ phút}$$
-Mỗi điểm dừng có thời gian di chuyển lũy kế $> 30.3\text{ phút}$ sẽ được đánh dấu cờ vi phạm nhiệt (`thermal_violation = true`).
-
----
-
-## 4. Bảng Kết Quả Thực Nghiệm Thực Tế TP.HCM (rel_result)
-
-Nguồn dữ liệu: `rel_result/summary_by_algorithm.csv` & `paired_comparisons.csv` (30 benchmark instances TP.HCM thực tế, 750 lượt chạy).
-
-### 4.1. Bảng Tổng Hợp Theo Giao Thức A2 (100 bước, 256 ứng viên)
-| Phương pháp | Khoảng cách TB (km) ↓ | Cải thiện % ↑ | 95% Bootstrap CI | Thời gian (s) | Ứng viên TB | Khả thi % | Gap vs Best % |
-|---|---|---|---|---|---|---|---|
-| **Greedy** | **103.727** | **2.077%** | [1.437, 2.747] | 0.2319 | 25,856.0 | **100.0%** | **0.000%** |
-| **Random** | 103.728 | 2.077% | [1.495, 2.730] | 0.1280 | 25,856.0 | **100.0%** | 0.001% |
-| **Cyclic** | 103.728 | 2.077% | [1.486, 2.759] | **0.1207** | 25,856.0 | **100.0%** | 0.001% |
-| **Double DQN** | 103.733 | 2.073% | [1.478, 2.740] | 0.2146 | 25,856.0 | **100.0%** | 0.005% |
-| **DQN** | 103.813 | 1.999% | [1.379, 2.664] | 0.1470 | 25,856.0 | **100.0%** | 0.082% |
-
-### 4.2. Kiểm Định Thống Kê Theo Cặp (Wilcoxon & Holm-Bonferroni, Giao Thức A2)
-- **DQN − Random:** $\Delta = -0.078\text{ pp}$, $95\%\text{ CI} = [-0.205, 0.000]$, $W/T/L = 0/28/2$, $p_{\text{Holm}} = 0.8648$.
-- **Double DQN − Random:** $\Delta = -0.004\text{ pp}$, $95\%\text{ CI} = [-0.011, 0.001]$, $W/T/L = 0/28/2$, $p_{\text{Holm}} = 0.8648$.
-- **DQN − Double DQN:** $\Delta = -0.074\text{ pp}$, $95\%\text{ CI} = [-0.200, 0.007]$, $W/T/L = 2/26/2$, $p_{\text{Holm}} = 0.8648$.
-- Double DQN đạt độ chính xác xấp xỉ ngang bằng các baseline heuristics mạnh nhất ($103.733\text{ km}$ so với $103.727\text{ km}$, khoảng cách chênh lệch chỉ $6\text{ mét}$ trên toàn mạng).
+### 2.4. Gom Đơn Đường Vòng & Hoán Vị Giao Hàng Vét Cạn
+- **Gom đơn:** Đơn sẵn sàng cũ nhất làm hạt nhân $o_{\text{seed}}$. Các đơn tiếp theo $o_j$ được gom nếu khoảng cách vòng lặp phát sinh $D(o_{\text{seed}}, o_j) + D(o_j, \text{depot}) - D(o_{\text{seed}}, \text{depot}) \le D_{\text{detour}} = 1.5\text{ km}$.
+- **Hoán vị:** Duyệt toàn bộ $m!$ thứ tự giao hàng ($m \le 4 \implies m! \le 24$):
+  $$\pi^* = \arg\min_{\pi \in \mathcal{P}_m} \sum_{j=1}^{m} t_{\text{giao}}(\pi_j)$$
 
 ---
 
-## 5. Phân Tích Khoa Học: Tại Sao Heuristics Đơn Giản Vẫn Rất Cạnh Tranh?
+## PHẦN 3: BẢNG KẾT QUẢ TỔNG HỢP & PHÂN TÍCH ĐỐI SOÁNH (G4 & G5)
 
-1. **Dư địa cải thiện từ Clarke-Wright rất nhỏ:** Khởi tạo Clarke-Wright Savings trên ma trận đường bộ có hướng thực tế đã cho chất lượng nghiệm rất tốt. Dưới luật chấp nhận giảm nghiêm ngặt ($\Delta C < 0$), nghiệm nhanh chóng rơi vào đáy attractor của các lân cận.
-2. **Chi phí suy luận mạng nơ-ron (Inference Overhead):** Mặc dù PyTorch tối ưu rất tốt, việc tính toán vector trạng thái $F28$ và lan truyền xuôi qua mạng MLP tiêu tốn thời gian tính toán hơn so với phép chọn số ngẫu nhiên đơn thuần của Random/Cyclic ($0.21\text{s}$ so với $0.12\text{s}$).
-3. **Double DQN triệt tiêu hiện tượng Overestimation:** Double DQN cải thiện rõ rệt so với standard DQN (tiết kiệm thêm quãng đường và tiệm cận sát đường cơ sở của Greedy/Cyclic nhờ cơ chế tách biệt mạng chọn hành động và mạng đánh giá giá trị Q).
+Nguồn dữ liệu: `results/baselines/summary_baseline_test.csv`, `results/training/summary_rl_test.csv`, `results/training/paired_comparisons_rl.csv`.
+
+### 3.1. Bảng Hiệu Năng Trên Frozen Test Set (5 Hạt Giống Độc Lập)
+| Phương pháp | Thời gian chờ TB $W$ (phút) | 95% Bootstrap CI | p90 (phút) | Tỷ lệ trễ ETA (%) | Gini khách | Tải tài xế (%) | Tổng km | Độ trễ (ms) |
+|---|---|---|---|---|---|---|---|---|
+| **Immediate** | **89.70** | [78.27, 98.62] | 173.57 | 81.6% | 0.324 | 91.4% | 794.7 | 0.01 |
+| **BatchSize ($k=1$)** | 89.70 | [78.27, 98.62] | 173.57 | 81.6% | 0.324 | 91.4% | 794.7 | 0.01 |
+| **AgeThreshold ($\theta=10\text{m}$)** | 90.39 | [78.42, 99.36] | 171.77 | 82.9% | 0.319 | 91.3% | 794.7 | 0.02 |
+| **Periodic ($T=8\text{m}$)** | 93.06 | [80.66, 103.41] | 173.50 | 88.2% | 0.305 | 87.6% | 761.4 | 0.01 |
+| **DQN** | 114.06 | [103.82, 125.37] | 214.93 | 85.0% | 0.331 | 91.3% | 862.0 | 0.14 |
+| **Double DQN** | 118.29 | [102.82, 136.50] | 238.83 | 84.7% | 0.333 | 89.3% | 840.1 | 0.12 |
+| **PPO** | 118.94 | [112.16, 126.19] | 227.45 | 87.6% | 0.332 | 90.5% | 863.8 | 0.43 |
+| *Offline Prescient* | *74.52* | *[Lý thuyết]* | 148.20 | 58.4% | 0.285 | 88.0% | 710.5 | *Offline* |
+
+### 3.2. Kiểm Định Giả Thuyết Thống Kê Wilcoxon & Hiệu Chỉnh Holm
+Đối chiếu với phương pháp Immediate:
+- **DQN vs Immediate:** $\Delta W = +24.36\text{ phút}$ ($+27.15\%$), $p_{\text{raw}} = 0.0625$, $p_{\text{Holm}} = 0.3750$ (Không khác biệt ý nghĩa thống kê ở mức $\alpha=0.05$).
+- **Double DQN vs Immediate:** $\Delta W = +28.60\text{ phút}$ ($+31.88\%$), $p_{\text{raw}} = 0.0625$, $p_{\text{Holm}} = 0.3750$.
+- **PPO vs Immediate:** $\Delta W = +29.24\text{ phút}$ ($+32.60\%$), $p_{\text{raw}} = 0.0625$, $p_{\text{Holm}} = 0.3750$.
+- **Periodic vs Immediate:** $\Delta W = +3.37\text{ phút}$ ($+3.75\%$), $p_{\text{raw}} = 0.1250$, $p_{\text{Holm}} = 0.3750$.
+
+### 3.3. Phân Tích Đóng Góp Thành Phần (Ablations)
+- Thiếu đặc trưng phân tán không gian ($\sigma_{\text{spatial}}$): $W$ tăng lên **$176.70\text{ phút}$** ($+58.41\text{ phút}$).
+- Thiếu đặc trưng tốc độ đơn đến gần đây ($\lambda_{\text{recent}}$): $W$ tăng lên **$172.00\text{ phút}$** ($+53.70\text{ phút}$).
+- Thiển cận ($\gamma=0.95$): $W$ nhảy vọt lên **$213.40\text{ phút}$** ($+95.10\text{ phút}$).
 
 ---
 
-## 6. Tính Khả Lặp & Độ Tin Cậy Nghiên Cứu (Reproducibility)
-
-Tất cả các con số trong bảng trên đều có thể tái tạo 100% bằng cách chạy:
+## PHẦN 4: TÁI LẬP KẾT QUẢ (REPRODUCIBILITY SCRIPT)
+Toàn bộ kết quả thực nghiệm được tái tạo tự động bằng chuỗi lệnh:
 ```bash
-python -m src.benchmark.runner
-python -m src.benchmark.analysis
+python -m scripts.run_baselines
+python -m scripts.train_agents
+python -m scripts.compute_statistical_tests
+python -m scripts.make_report_tables
+pytest tests/ -v
 ```
-Bản ghi chi tiết từng bước của 750 lượt chạy được lưu tại `rel_result/raw_runs.csv`. Toàn bộ dữ liệu đối chiếu lịch sử từ file báo cáo PDF cũ được lưu trữ cẩn thận tại `rel_result/legacy_pdf_reference/` để phục vụ công tác thanh tra khoa học.

@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "clean": "node -e \"try { require('fs').rmSync('.next', {recursive:true,force:true}); console.log('Cleaned .next'); } catch(e){}\"",
+    "clean:cache": "node -e \"try { require('fs').rmSync('.next/cache', {recursive:true,force:true}); console.log('Cleaned .next/cache'); } catch(e){}\"",
+    "dev": "npm run clean:cache && next dev -p 3001",
+    "dev:clean": "npm run clean && next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint"

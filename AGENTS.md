@@ -1,27 +1,28 @@
 # Cơ Chế Đa Tác Tử (AGENTS.MD) — HotWAY
 
-> **Tài liệu:** Phân công trách nhiệm 4 vai trò chuyên biệt & hợp đồng chuyển giao kỹ thuật  
-> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
-> **Ngày cập nhật:** 24/10/2026  
-> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
+> **Tài liệu:** Phân công trách nhiệm 5 vai trò chuyên biệt & hợp đồng chuyển giao kỹ thuật  
+> **Phiên bản:** v7.0.0 (Executive Monochromatic Routing & WebGIS Edition)  
+> **Ngày cập nhật:** 27/10/2026  
+> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md)
 
 ---
 
-## 1. Cơ Cấu 4 Vai Trò Chuyên Biệt
+## 1. Cơ Cấu 5 Vai Trò Chuyên Biệt
 
-Để duy trì chất lượng hệ thống và bảo đảm kỷ luật kỹ thuật, dự án phân chia thành 4 vai trò chuyên trách:
+Để duy trì chất lượng hệ thống, tính trung thực khoa học và ngôn ngữ thẩm mỹ chuyên nghiệp chuẩn trình bày cấp quản lý, dự án thiết lập cơ cấu 5 vai trò chuyên trách:
 
 ```mermaid
 flowchart TD
-    Lead["Lead Engineer & Technical Writer\n(Giám sát kiến trúc, kiểm thử T1-T7, báo cáo Gate G0-G5, bảo vệ cổng 3000)"]
-    
+    Lead["Lead Engineer & QA\n(Giám sát kiến trúc, kiểm thử T1-T7, báo cáo Gate G0-G5, bảo vệ cổng 3000)"]
+    Designer["Designer & UI/UX Director\n(Thiết kế đơn sắc Monochromatic, tương phản Gradient từng Section, Typography cao cấp)"]
     Algo["1. AI Researcher & Algorithm Engineer\n(Semi-MDP DispatchEnv, Permutation Router, DQN/DDQN/PPO, Benchmark & Tests)"]
     BE["2. Backend Engineer\n(FastAPI /api/v1/sim/stream, Event Streamer, Port 8000)"]
-    FE["3. Frontend Engineer\n(Next.js 14 OptimoRoute UI, Butter-Cream Palette, MapLibre, Port 3001)"]
+    FE["3. Frontend Engineer\n(Next.js 14 Swiss Editorial WebGIS, Minimal Menu Dropdown, MapLibre, Port 3001)"]
 
-    Lead -->|Yêu cầu kỷ luật D4, công thức toán & kiểm định| Algo
+    Lead -->|Kỷ luật khoa học & Tiêu chuẩn tái lập| Algo
     Lead -->|Đặc tả API Schema & Cổng mạng| BE
-    Lead -->|Quy chuẩn UX OptimoRoute, 5 trạng thái đơn| FE
+    Designer -->|Quy chuẩn Design System & Bảng màu tương phản| FE
+    Lead -->|Giám sát tích hợp & Build sạch| FE
 
     Algo -->|Mô hình Semi-MDP, Checkpoint PyTorch, Metrics Registry| BE
     BE -->|REST / SSE Event Stream & GeoJSON Tuyến| FE
@@ -37,36 +38,16 @@ flowchart TD
 
 | Tên vai trò | Mã định danh | Trách nhiệm cốt lõi | Thư mục sở hữu độc quyền |
 |---|---|---|---|
+| **Designer & UI/UX Director** | `designer_agent` | Xây dựng ngôn ngữ thẩm mỹ Đơn sắc (Monochromatic) chuẩn Executive, thiết lập nhịp điệu tương phản Gradient giữa các Section (Dark/Light alternating), loại bỏ hoàn toàn board card rườm rà và icon AI, tinh chỉnh typography chuyên nghiệp, tối giản thanh điều hướng với Menu Dropdown. | `DESIGN_SYSTEM.md`, `frontend/src/app/globals.css`, các token giao diện |
 | **AI Researcher & Algorithm Engineer** | `algorithm_engineer` | Xây dựng đồ thị con 12 nút SCC, sinh 401 địa chỉ chuẩn và 151 địa chỉ OOD, triển khai môi trường Gymnasium `RoutingEnv` (GĐ1) và `DispatchEnv` (GĐ2), bộ gom đơn đường vòng và hoán vị vét cạn, huấn luyện DQN, Double DQN, PPO trên PyTorch, tính toán kiểm định Wilcoxon và Holm, đảm bảo đẳng thức Bellman và độ trung thực số liệu T3. | `src/envs/`, `src/routing/`, `src/graph/`, `src/agents/`, `src/baselines/`, `scripts/`, `results/`, `tests/` |
 | **Backend Engineer** | `backend_engineer` | Xây dựng REST & Event-Stream API chuẩn `/api/v1/sim/stream`, tích hợp trực tiếp môi trường `DispatchEnv` để phát viễn trắc theo bước thời gian, đóng gói Docker container backend cổng 8000. | `backend/`, `src/services/`, `docker-compose.yml`, `config/site.yaml` |
-| **Frontend Engineer** | `frontend_engineer` | Xây dựng giao diện WebGIS 3 cột OptimoRoute với bảng màu butter-cream; hiển thị máy trạng thái đơn hàng 5 pha, lý do quyết định của tác tử, nút bơm đột biến tải và mưa bão, chạy song song 2 kịch bản cùng seed; bảo đảm build TypeScript không lỗi trên cổng 3001. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
-| **Lead Engineer & QA** | `lead_engineer_writer` | Biên soạn và bảo trì chuỗi tài liệu nghiên cứu chuẩn mực (`docs/research/`), giám sát kiểm thử 4 tầng (25 ca kiểm thử T1-T7), bảo đảm tính trung thực khoa học (báo cáo đầy đủ kết quả âm tính), và bảo vệ nguyên vẹn cổng mạng 3000. | `README.md`, `PRD.md`, `ARCHITECTURE.md`, `ALGORITHM.md`, `DESIGN_SYSTEM.md`, `PLAN.md`, `AGENTS.md`, `TESTING.md`, `docs/DECISIONS.md`, `docs/research/` |
+| **Frontend Engineer** | `frontend_engineer` | Hiện thực hóa mã nguồn giao diện Next.js 14 theo sát thiết kế của Designer Agent; hỗ trợ hiển thị 3 màn hình T1/T2/T3, bản đồ MapLibre GL JS, thanh menu thu gọn, đảm bảo build TypeScript sạch 100% trên cổng 3001. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
+| **Lead Engineer & QA** | `lead_engineer_writer` | Biên soạn và bảo trì chuỗi tài liệu nghiên cứu chuẩn mực (`docs/research/`), giám sát kiểm thử 4 tầng (43 ca kiểm thử tự động), bảo đảm tính trung thực khoa học (báo cáo đầy đủ kết quả âm tính), và bảo vệ nguyên vẹn cổng mạng 3000. | `README.md`, `PRD.md`, `ARCHITECTURE.md`, `ALGORITHM.md`, `PLAN.md`, `AGENTS.md`, `TESTING.md`, `docs/DECISIONS.md`, `docs/research/` |
 
 ---
 
-## 3. Hợp Đồng Chuyển Giao Giữa Các Vai Trò
-
-### 3.1. Hợp đồng giữa Algorithm Engineer và Backend Engineer
-- **Giao diện môi trường mô phỏng điều phối:**
-```python
-from src.envs.dispatch_env import DispatchEnv
-
-env = DispatchEnv(
-    matrix_path="data/matrix_standard.npz",
-    address_pool_path="data/address_pool_standard.json",
-    enable_event_logging=True,
-    rain_factor=1.0,
-    kitchen_mean_min=12.0,
-)
-obs, info = env.reset(seed=2026)
-next_obs, reward, terminated, truncated, info = env.step(action)
-metrics = env.get_metrics()
-```
-- **Hợp đồng sự kiện truyền phát (Event Payload):**
-Mỗi bước nhảy của môi trường sinh ra sự kiện chứa thông tin:
-`{event_type: "ORDER_PLACED" | "COOK_START" | "ORDER_READY" | "DISPATCH" | "DELIVERY", timestamp: float, order_id: int, driver_id: int, coordinates: [lat, lon]}`.
-
-### 3.2. Hợp đồng giữa Backend Engineer và Frontend Engineer
-- Tất cả API endpoint đều sử dụng tiền tố `/api/v1/`.
-- Cổng mạng: Backend hoạt động tại cổng **8000**, Frontend hoạt động tại cổng **3001**. Tuyệt đối cấm sử dụng cổng **3000**.
-- Frontend không được phép can thiệp trước khi Gate G5 được Lead Engineer và User nghiệm thu chính thức.
+## 3. Hợp Đồng Chuyển Giao Giữa Designer Agent và Frontend Engineer
+1. **Bộ quy tắc Không Thẻ Board Card & Không Icon:** Toàn bộ component không sử dụng icon trang trí (`lucide-react`) hay thẻ bo góc lồng nhau dạng AI template. Phân cách bằng nhịp màu Section, đường hairline `border-b` và typography phân cấp.
+2. **Nhịp điệu tương phản giữa các Section:** Từng section của Landing Page phải có nền độc lập, luân phiên tương phản giữa Dark (Obsidian / Deep Charcoal với gradient tinh tế) và Light (Pure White / Off-white / Silver).
+3. **Thanh Menu Thu Gọn:** Toàn bộ danh sách 6 mục báo cáo (`01 Bối Cảnh` đến `06 Tái Lập`) được gom vào menu xổ xuống (`[Mục Lục ▾]`), giữ cho thanh đỉnh gọn gàng tối đa.
+4. **Cổng mạng bắt buộc:** Frontend chạy cổng **3001**, Backend chạy cổng **8000**, Cổng **3000** tuyệt đối cấm dùng.

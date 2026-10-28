@@ -1,8 +1,8 @@
 # Bản Thiết Kế Kiến Trúc Hệ Thống (ARCHITECTURE.MD) — HotWAY
 
 > **Tài liệu:** Thiết kế kiến trúc tổng thể, phân rã module, luồng dữ liệu & kiểm định chất lượng  
-> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
-> **Ngày cập nhật:** 24/10/2026  
+> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
+> **Ngày cập nhật:** 28/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
@@ -61,6 +61,19 @@ flowchart TD
         OldSolver["src/cvrp_solver/\n(Clarke-Wright + 4 toán tử Local Search)"]
         OldResults["rel_result/*.csv\n(30 instances, Random beat DQN p=0.0072)"]
     end
+
+    subgraph S6["Tầng Lập Tuyến Nơ-ron & Giao Thông Trực Tuyến (T2+)"]
+        AttnModel["src/agents/attention_model/model.py\n(Transformer Attention Model Kool et al. 2019)"]
+        TimeEnv["src/agents/attention_model/time_dependent_env.py\n(Môi trường C(t) cao điểm TP.HCM)"]
+        TrafficAdapt["src/services/live_traffic_adapter.py\n(Fallback 3 lớp: TomTom -> HERE -> Offline)"]
+        NeuralServ["src/services/neural_tsp_service.py\n(CPU Serving < 15ms)"]
+        KaggleTrain["notebooks/kaggle_train_attention_tsp.ipynb\n(Huấn luyện GPU 2x T4 trên Kaggle)"]
+        
+        AttnModel --> KaggleTrain --> Weights["results/attention_tsp50_hcmc.pt"]
+        Weights --> NeuralServ
+        TimeEnv --> KaggleTrain
+        TrafficAdapt --> NeuralServ
+    end
 ```
 
 ---
@@ -87,7 +100,21 @@ Công thức này loại bỏ hoàn toàn sai số rời rạc hóa hình chữ 
 
 ---
 
-## 3. Kiến Trúc Kiểm Định 4 Tầng (T1 - T7)
+### 2.4. Mô hình Attention Model cho TSP Động (Kool et al., 2019) & Fallback Giao Thông 3 Lớp (T2+)
+1. **Cấu trúc mạng Transformer Encoder - Pointer Decoder:**
+   - Encoder: 3 lớp Multi-Head Attention ($d_h=128$, 8 attention heads, Feed-Forward 512 chiều, LayerNorm).
+   - Decoder: MHA Pointer Mechanism kết hợp vector ngữ cảnh động $h_{(c)}^{(t)} = [h_{(N)}^{(t)}, h_{\pi_{t-1}}, h_{\pi_1}, C(t_{\text{current}})]$ trích xuất xác suất chọn điểm tiếp theo qua cơ chế che mặt nạ (masking).
+2. **Kiến trúc phân tách phần cứng (Kaggle GPU vs Local CPU Serving):**
+   - Huấn luyện: Thực thi trên Kaggle GPU (2x NVIDIA T4, 16GB VRAM) với thuật toán REINFORCE và Greedy Rollout Baseline qua notebook `notebooks/kaggle_train_attention_tsp.ipynb`.
+   - Phục vụ (Inference & Serving): Trọng số nơ-ron `results/attention_tsp50_hcmc.pt` được nạp trực tiếp lên CPU qua `NeuralTSPService` với độ trễ suy luận $< 15\text{ ms}$ cho đồ thị TSP-50.
+3. **Kiến trúc dự phòng giao thông 3 lớp (Live Traffic Fallback Pipeline):**
+   - **Lớp 1 (Chính):** TomTom Routing API (ma trận thời gian thực theo lưu lượng xe máy).
+   - **Lớp 2 (Dự phòng thứ cấp):** HERE Routing API khi TomTom vượt hạn mức gói miễn phí (2.500 req/ngày).
+   - **Lớp 3 (Ngoại tuyến / Tự cung cấp):** Ma trận khoảng cách OSRM/đồ thị OSMnx kết hợp hàm hệ số giờ cao điểm $C(t)$ (2.1x sáng, 2.25x chiều).
+
+---
+
+## 3. Kiến Trúc Kiểm Định 4 Tầng (T1 - T8)
 
 Hệ thống tuân thủ nghiêm ngặt quy trình kiểm thử tự động với 25 ca kiểm thử:
 - **T1: Geometry & Directed Graph:** Bảo đảm đồ thị liên thông mạnh (SCC), không có đoạn thẳng nhân tạo, snap cKDTree trong bán kính cho phép.
@@ -97,3 +124,4 @@ Hệ thống tuân thủ nghiêm ngặt quy trình kiểm thử tự động v�
 - **T5: Bellman Equivalence (GĐ2):** Sai số giữa tổng phần thưởng và âm tổng thời gian chờ $< 10^{-9}$.
 - **T6: Multi-Seed & Non-Parametric Statistics:** Tối thiểu 5 seed huấn luyện, khoảng tin cậy Bootstrap 95%, kiểm định Wilcoxon có hiệu chỉnh Holm-Bonferroni.
 - **T7: Interface & Build Cleanliness (Cổng G6):** Đảm bảo build TypeScript sạch trên Next.js 14 cổng 3001 mà không phát sinh cảnh báo.
+- **T8: Neural TSP Attention & Fallback Integrity:** Kiểm thử tính hợp lệ của hoán vị thăm đủ $N$ điểm không trùng lặp, cơ chế mask ngăn chu trình rỗng, và tính trơn tru của 3 lớp fallback khi API ngoại tuyến.

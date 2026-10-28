@@ -22,6 +22,9 @@ from src.envs.adaptive_routing_env import AdaptiveRoutingEnv
 from src.traffic.provider import SyntheticProvider, TrafficState
 from src.agents.baseline_policies import StaticDijkstraPolicy, DynamicDijkstraPolicy
 from src.agents.candidate_edge_dqn import EdgeScoringDQNAgent, extract_candidate_edge_features
+from src.services.neural_tsp_service import NeuralTSPService
+from src.services.live_traffic_adapter import LiveTrafficAdapter
+
 
 router = APIRouter(tags=["Route Optimization & Adaptive Dispatch"])
 
@@ -328,3 +331,53 @@ async def stream_simulation(
             "X-Accel-Buffering": "no",
         },
     )
+
+
+# =========================================================================
+# 5. T2+: Neural TSP Optimization (Kool et al., 2019 Attention Model)
+# =========================================================================
+class MultiStopRequest(BaseModel):
+    depot: Dict[str, Any]
+    stops: List[Dict[str, Any]]
+    departure_hour: float = 8.0
+
+
+@router.post('/optimize-route/attention', summary='Solve dynamic TSP via Neural Attention Model')
+async def optimize_route_attention(req: MultiStopRequest):
+    """
+    Solves multi-stop itinerary permutation using Transformer Attention Model (Kool et al., ICLR 2019).
+    Computes time-dependent transit duration on HCMC road network.
+    """
+    service = NeuralTSPService()
+    result = service.solve(
+        depot=req.depot,
+        stops=req.stops,
+        departure_hour=req.departure_hour,
+    )
+    result['attribution'] = 'MÔ PHỎNG (Kool et al. Attention Model)'
+    return result
+
+
+@router.get('/traffic/travel-time', summary='Query segment travel time with 3-layer live fallback')
+async def get_travel_time(
+    origin_lat: float = Query(..., description='Origin latitude'),
+    origin_lon: float = Query(..., description='Origin longitude'),
+    dest_lat: float = Query(..., description='Destination latitude'),
+    dest_lon: float = Query(..., description='Destination longitude'),
+    departure_hour: float = Query(8.0, description='Hour of day (0-24)'),
+):
+    """
+    3-Layer Live Traffic Pipeline:
+    Layer 1: TomTom Traffic API (Live duration matrix)
+    Layer 2: HERE Routing API (Secondary fallback)
+    Layer 3: Offline Graph Matrix * Empirical C(t) Congestion Multiplier
+    """
+    adapter = LiveTrafficAdapter()
+    res = adapter.get_segment_travel_time(
+        origin_lat=origin_lat,
+        origin_lon=origin_lon,
+        dest_lat=dest_lat,
+        dest_lon=dest_lon,
+        departure_hour=departure_hour,
+    )
+    return res

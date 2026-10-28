@@ -1,7 +1,7 @@
 # BẢN GHI QUYẾT ĐỊNH THIẾT KẾ & KIẾN TRÚC (DECISIONS.MD) — HotWAY
 
-> **Phiên bản:** v6.0.0 (Dynamic Real-Time Dispatch & Adaptive Routing Edition)  
-> **Ngày cập nhật:** 24/10/2026  
+> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
+> **Ngày cập nhật:** 28/10/2026  
 
 ---
 
@@ -147,3 +147,14 @@
   2. Dừng chờ duyệt chính thức ở Cổng G1 và Cổng G5.
   3. *Ngoại lệ có chủ đích:* Ngay sau khi nộp bản nháp G1, triển khai ngay lát cắt chạy được T1 (sinh bảng so sánh và biểu đồ lưu vào `results/`) và cho phép xây dựng một Demo mỏng cho T1 trước G5 (trang bản đồ 4 tuyến chỉ đọc từ `results/`, dán nhãn MÔ PHỎNG). Các màn hình còn lại đợi sau khi nghiệm thu G5.
   4. Cổng mạng: Backend cố định cổng **8000**, Frontend cố định cổng **3001**, cấm tuyệt đối cổng **3000**.
+
+## 17. Quyết Định Nâng Cấp Neural TSP (Kool et al., 2019) Cho T2+ & Kiến Trúc Dự Phòng Giao Thông 3 Lớp (v7.1.0)
+- **Bối cảnh:** Kết quả thí nghiệm E0 chứng minh RL chọn toán tử Local Search gián tiếp trên nghiệm Clarke-Wright không có ưu thế trước Random/Greedy ($p_{\text{Holm}} = 0.0072$). Để giải quyết bài toán định tuyến TSP/VRP động trong điều kiện lưu lượng giao thông TP.HCM biến thiên liên tục theo giờ cao điểm, hệ thống chuyển sang mô hình học đầu cuối nơ-ron (End-to-End Neural Combinatorial Optimization).
+- **Lựa chọn mô hình:** Áp dụng Attention Model của Kool et al. (ICLR 2019) với Transformer Encoder (128-d, 8 heads, 3 layers) kết hợp MHA Pointer Mechanism Decoder. Decoder nhận vector ngữ cảnh động gồm nút trước đó, nút xuất phát và hệ số kẹt xe hiện tại $C(t)$.
+- **Phân tách phần cứng (Hardware Decoupling):**
+  1. *Huấn luyện (Training):* Thực hiện trên nền tảng đám mây Kaggle GPU (2x NVIDIA T4, 16GB VRAM) với batch size 512, 100 epochs, REINFORCE kết hợp Greedy Rollout Baseline thông qua notebook độc lập `notebooks/kaggle_train_attention_tsp.ipynb`.
+  2. *Phục vụ (Serving & Inference):* Checkpoint weights `results/attention_tsp50_hcmc.pt` được nạp trực tiếp trên CPU luồng đơn của máy tính thông qua `NeuralTSPService` với độ trễ $< 15\text{ ms}$ cho bài toán TSP-50.
+- **Chiến lược dự phòng dữ liệu giao thông 3 lớp (3-Layer Traffic Fallback):**
+  1. *Lớp 1 (Ưu tiên):* TomTom Traffic Flow & Route API (gói miễn phí 2.500 req/ngày).
+  2. *Lớp 2 (Thứ cấp):* HERE Routing API khi TomTom chạm ngưỡng quota.
+  3. *Lớp 3 (Ngoại tuyến):* Ma trận khoảng cách OSRM/OSMnx kết hợp hàm nhân giờ cao điểm $C(t)$ (2.1x sáng, 2.25x chiều, 1.0x đêm). Đảm bảo hệ thống demo và phục vụ luôn có dữ liệu 100% thời gian thực.

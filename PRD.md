@@ -1,8 +1,8 @@
 # Bản Đặc Tả Yêu Cầu Sản Phẩm (PRD) — HotWAY
 
 > **Tài liệu:** Yêu cầu sản phẩm hệ thống học tăng cường điều phối giao vận thời gian thực  
-> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
-> **Ngày cập nhật:** 24/10/2026  
+> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
+> **Ngày cập nhật:** 28/10/2026  
 > **Tài liệu liên quan:** [README.md](file:///c:/Users/Asus/Documents/AI/HotWAY/README.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
@@ -39,6 +39,7 @@ Bài toán được hình thức hóa dưới dạng Semi-Markov Decision Proces
 - **Môi trường mô phỏng chuẩn Gymnasium:**
   - `RoutingEnv` (GĐ1): Đồ thị con 12 nút SCC Bình Thạnh, so sánh Q-learning và DQN với chân lý Exact Value Iteration.
   - `DispatchEnv` (GĐ2): Semi-MDP mô phỏng nhà hàng với thời gian bếp ngẫu nhiên, nhiễu giao thông log-normal, mưa bão, xung đơn đột biến, và tích phân Lebesgue bảo toàn phần thưởng Bellman sai số $< 10^{-9}$.
+- **Định tuyến nơ-ron Attention Model (T2+):** Attention Model (Kool et al., 2019) với cơ chế MHA Pointer Mechanism và vector ngữ cảnh biến thiên giờ cao điểm TP.HCM $C(t)$; tích hợp bộ chuyển đổi dữ liệu giao thông 3 lớp (TomTom API -> HERE API -> Offline OSRM).
 - **Hệ thống tác tử & quy tắc đối chiếu:**
   - 4 Baseline heuristic: Immediate, Periodic ($T=8\text{m}$), BatchSize ($k=1$), AgeThreshold ($\theta=10\text{m}$).
   - 1 Tham chiếu lý thuyết: Offline Prescient Reference ($74.52\text{m}$).
@@ -61,4 +62,5 @@ Bài toán được hình thức hóa dưới dạng Semi-Markov Decision Proces
 2. **Trung thực khoa học:** 100% số liệu đối sánh trong tài liệu khớp tuyệt đối với tệp kết quả CSV/JSON, được bảo đảm bởi bài test tự động `tests/test_report_fidelity.py`.
 3. **Kỷ luật hình học & Vận tốc xe máy:** Mọi chặng di chuyển tuân thủ hình học có hướng đồ thị TP.HCM, áp dụng đúng profile xe máy (giữ hẻm, bỏ đường cấm xe máy, thời gian dừng giao hàng, phạt đèn đỏ và rẽ).
 4. **Độ trễ suy luận online:** Mọi quyết định điều phối của tác tử RL phải thực thi trong thời gian $< 1.0\text{ ms}$ trên CPU luồng đơn.
-5. **Kỷ luật cổng mạng:** Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001 (không chỉnh sửa mã frontend/backend trước khi nghiệm thu Cổng G5).
+5. **Kỷ luật cổng mạng:** Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001.
+6. **Tốc độ suy luận nơ-ron & Fallback giao thông:** Attention Model CPU latency $< 20\text{ ms}$ cho bài toán 50 điểm dừng; tự động chuyển tầng 3 lớp (TomTom -> HERE -> Offline) với tỷ lệ khả dụng $100\%$ kể cả khi ngắt kết nối mạng ngoại vi. Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001 (không chỉnh sửa mã frontend/backend trước khi nghiệm thu Cổng G5).

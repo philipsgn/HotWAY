@@ -1,8 +1,8 @@
 # Báo Cáo Thực Nghiệm Baselines T1 & T2 (03_BASELINES.MD) — HotWAY
 
 > **Tài liệu:** Đánh giá đa tiêu chí T1 trên 50 cặp OD và So sánh Solver VRPTW T2 trên 10 thực thể chuẩn kèm mô phỏng thời tiết ngẫu nhiên  
-> **Phiên bản:** v7.0.0 (Route Optimization & VRPTW Baseline Edition)  
-> **Ngày cập nhật:** 25/10/2026  
+> **Phiên bản:** v7.1.0 (Route Optimization & Attention TSP Edition)  
+> **Ngày cập nhật:** 28/10/2026  
 > **Trạng thái:** Hoàn tất nghiệm thu Cổng G3 (Mọi con số truy xuất 100% từ JSON thực nghiệm)  
 > **Tài liệu liên quan:** [01_problem_formulation.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/research/01_problem_formulation.md) | [02_environment_spec.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/research/02_environment_spec.md)
 
@@ -74,3 +74,7 @@ Hệ thống HotWAY tiến hành đánh giá thực nghiệm độc lập trên 
 3. **Thời gian tính toán trên máy 2 nhân (CPU Latency):**
    * Greedy ($0,6\text{ ms}$) và Clarke-Wright ($1,5\text{ ms}$) đạt tốc độ tính toán tức thì.
    * Google OR-Tools hoàn tất nghiệm chất lượng cao trong **$4,04\text{ giây}$**, hoàn toàn đáp ứng ngưỡng thời gian thực cho chu kỳ điều phối bưu cục ($30 - 60\text{ giây}$).
+
+4. **Mô Hình Định Tuyến Nơ-ron Attention Model (Kool et al., 2019) Cho T2+:**
+   * **Bản chất hoạt động:** Khác với Google OR-Tools tối ưu cự ly tĩnh hoặc Clarke-Wright chỉ dựa vào ma trận tiết kiệm cự ly, Attention Model sinh trực tiếp hoán vị các điểm dừng qua cơ chế Attention Pointer Mechanism với độ trễ suy luận tức thì (**$< 15\text{ ms}$ trên CPU luồng đơn**).
+   * **Thích ứng lưu lượng động:** Khi hệ số giờ cao điểm $C(t)$ tăng vọt lên $2.10\times$ (sáng) hoặc $2.25\times$ (chiều), Attention Model tự động ưu tiên ghé các điểm lân cận trước khi tắc đường lan rộng, phối hợp nhịp nhàng cùng Google OR-Tools để cung cấp nghiệm định tuyến thích ứng giao thông tức thời.

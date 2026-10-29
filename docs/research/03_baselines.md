@@ -1,8 +1,8 @@
 # Báo Cáo Thực Nghiệm Baselines T1 & T2 (03_BASELINES.MD) — HotWAY
 
 > **Tài liệu:** Đánh giá đa tiêu chí T1 trên 50 cặp OD và So sánh Solver VRPTW T2 trên 10 thực thể chuẩn kèm mô phỏng thời tiết ngẫu nhiên  
-> **Phiên bản:** v7.1.0 (Route Optimization & Attention TSP Edition)  
-> **Ngày cập nhật:** 28/10/2026  
+> **Phiên bản:** v7.2.0 (Multi-Model 100-POI Benchmark & DQN Ablation Edition)  
+> **Ngày cập nhật:** 29/10/2026  
 > **Trạng thái:** Hoàn tất nghiệm thu Cổng G3 (Mọi con số truy xuất 100% từ JSON thực nghiệm)  
 > **Tài liệu liên quan:** [01_problem_formulation.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/research/01_problem_formulation.md) | [02_environment_spec.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/research/02_environment_spec.md)
 
@@ -78,3 +78,22 @@ Hệ thống HotWAY tiến hành đánh giá thực nghiệm độc lập trên 
 4. **Mô Hình Định Tuyến Nơ-ron Attention Model (Kool et al., 2019) Cho T2+:**
    * **Bản chất hoạt động:** Khác với Google OR-Tools tối ưu cự ly tĩnh hoặc Clarke-Wright chỉ dựa vào ma trận tiết kiệm cự ly, Attention Model sinh trực tiếp hoán vị các điểm dừng qua cơ chế Attention Pointer Mechanism với độ trễ suy luận tức thì (**$< 15\text{ ms}$ trên CPU luồng đơn**).
    * **Thích ứng lưu lượng động:** Khi hệ số giờ cao điểm $C(t)$ tăng vọt lên $2.10\times$ (sáng) hoặc $2.25\times$ (chiều), Attention Model tự động ưu tiên ghé các điểm lân cận trước khi tắc đường lan rộng, phối hợp nhịp nhàng cùng Google OR-Tools để cung cấp nghiệm định tuyến thích ứng giao thông tức thời.
+
+---
+
+## 5. Kết Quả Nghiệm Thu Bộ Khung 4 Mô Hình Trên 100 Hành Trình POI TP.HCM
+
+*Nguồn dữ liệu:* [`results/benchmark_summary_table.csv`](file:///c:/Users/Asus/Documents/AI/HotWAY/results/benchmark_summary_table.csv) và [`results/benchmark_multi_model_results.json`](file:///c:/Users/Asus/Documents/AI/HotWAY/results/benchmark_multi_model_results.json)  
+*Bộ dữ liệu kiểm thử:* 100 hành trình phân tầng ($25$ ca $N=10$, $25$ ca $N=20$, $25$ ca $N=30$, $25$ ca $N=50$) trích xuất từ 401 địa chỉ OpenStreetMap TP.HCM với ma trận cự ly và thời gian động $C(t)$.
+
+| Mô hình thuật toán | Thời lượng TB (phút) | Cự ly TB (km) | Optimality Gap (%) | Độ trễ CPU luồng đơn (ms) | Tỷ lệ thất bại Zero-Shot | Checkpoint Size (MB) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Google OR-Tools (Guided Local Search)** | **$177,8	ext{ m}$** | **$60,8	ext{ km}$** | **$0,0\%$** *(Chuẩn)* | $1001,73	ext{ ms}$ | **$0,0\%$** | *N/A (C++)* |
+| **Attention Model (Graph Transformer)** | $364,9	ext{ m}$ | $128,7	ext{ km}$ | $94,5\%$ | **$16,49	ext{ ms}$** | **$0,0\%$** | $0,98	ext{ MB}$ |
+| **Pointer Network (Bi-LSTM + A2C)** | $448,2	ext{ m}$ | $160,2	ext{ km}$ | $137,5\%$ | $9,60	ext{ ms}$ | $0,0\%$ | $0,82	ext{ MB}$ |
+| **Dueling DQN (Masked Action Space)** | $445,4	ext{ m}$ | $111,5	ext{ km}$ | $154,2\%$ | $6,38	ext{ ms}$ | **$50,0\%$ (Thất bại khi $N > 20$)** | $1,24	ext{ MB}$ |
+
+### Nhận Định Khoa Học Trọng Yếu:
+1. **Google OR-Tools** đạt chất lượng lộ trình tối ưu nhất (177.8 phút), làm cận chuẩn cho toàn bộ nghiên cứu với chi phí thời gian tính toán ~1 giây.
+2. **Attention Model (Kool et al., 2019)** đạt tốc độ suy luận tức thì ($16.49	ext{ ms}$ trên CPU), bất biến hoán vị và tổng quát hóa Zero-Shot $0.0\%$ thất bại trên mọi kích thước đồ thị ($N=10, 20, 30, 50$), trở thành mô hình trung tâm phục vụ điều phối tái định tuyến thời gian thực.
+3. **Dueling DQN** bộc lộ sự suy thoái nghiêm trọng khi kích thước đồ thị vượt quá $N_{\max}=20$ (thất bại $50/100$ ca) và Gap tối ưu lên tới $154.2\%$, cung cấp bằng chứng thực nghiệm đầy đủ giải trình trước Hội đồng lý do bãi bỏ DQN khỏi sản phẩm thương mại.

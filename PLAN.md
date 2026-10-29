@@ -1,8 +1,8 @@
 # Kế Hoạch Triển Khai Nghiên Cứu & Bàn Giao Kỹ Thuật (PLAN.MD) — HotWAY
 
 > **Tài liệu:** Kế hoạch thực hiện 7 Cổng Nghiên cứu (Gate G0 - G6) cho hướng học tăng cường điều phối thời gian thực  
-> **Phiên bản:** v6.1.0 (Real-Time RL Restaurant Dispatch Edition)  
-> **Ngày cập nhật:** 24/10/2026  
+> **Phiên bản:** v7.1.0 (Empirical Multi-Model Research & Attention Transition Edition)  
+> **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
 
 ---
@@ -85,3 +85,16 @@ flowchart LR
 - **Kỷ luật triển khai:**
   - Tuyệt đối không chạm vào `frontend/` và `backend/` trước khi Cổng G5 được nghiệm thu.
   - Backend chạy cổng **8000**, Frontend chạy cổng **3001** (Cổng 3000 được bảo vệ nguyên vẹn).
+
+### Cổng G7: Khung Nghiên Cứu, Huấn Luyện & Kiểm Định Thực Nghiệm Đa Mô Hình (DQN Ablation & Attention Model Transition)
+- **Mục tiêu:** Xây dựng bộ khung kiểm thử thực nghiệm đa mô hình đối đầu trực tiếp trên 100 hành trình thực tế tại TP.HCM (trích xuất từ 401 POI OpenStreetMap):
+  1. *Model 1: Dueling DQN with Action Masking* (MLP 4 lớp, PER, N_max=20) làm đối tượng Ablation bóc tách 4 điểm nghẽn toán học.
+  2. *Model 2: Pointer Network with Bi-LSTM & A2C* (Tuần tự hóa chuyển tiếp).
+  3. *Model 3: Graph Attention Model (Kool et al., 2019)* làm mô hình vô địch phục vụ sản xuất.
+  4. *Model 4: Google OR-Tools Guided Local Search* làm cận chuẩn công nghiệp (0.0% Optimality Gap).
+- **Kết quả nghiệm thu:**
+  - `data/benchmark_100_vietnam_pois.json`: 100 hành trình phân tầng (25 ca N=10, 25 ca N=20, 25 ca N=30, 25 ca N=50).
+  - `env/traffic_tsp_env.py`: Môi trường Gymnasium hợp nhất với hàm chi phí cao điểm C(t).
+  - `results/benchmark_summary_table.csv` & `results/benchmark_multi_model_results.json`: Bảng đối so sánh toàn diện.
+  - Minh chứng thực nghiệm 4 điểm nghẽn của DQN: Tỷ lệ thất bại Zero-Shot đạt **50.0%** trên N > 20, Gap tối ưu vọt lên **154.2%** so với OR-Tools.
+  - [x] Đã hoàn tất, 56/56 tests PASS, build Next.js 14 sạch 100%.

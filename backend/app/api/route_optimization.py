@@ -381,3 +381,17 @@ async def get_travel_time(
         departure_hour=departure_hour,
     )
     return res
+
+
+@router.get('/routing/benchmark-multi-model', summary='Return 4-Model Comparative Benchmark results on 100 POIs')
+async def get_multi_model_benchmark():
+    bench_file = Path('results/benchmark_multi_model_results.json')
+    if not bench_file.exists():
+        raise HTTPException(status_code=404, detail='Benchmark results not found on disk.')
+    with open(bench_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return {
+        'summary': data['summary'],
+        'dqn_fatal_flaws': data['dqn_fatal_flaws_diagnostic'],
+        'metadata': data['metadata']
+    }

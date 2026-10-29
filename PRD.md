@@ -1,8 +1,8 @@
 # Bản Đặc Tả Yêu Cầu Sản Phẩm (PRD) — HotWAY
 
 > **Tài liệu:** Yêu cầu sản phẩm hệ thống học tăng cường điều phối giao vận thời gian thực  
-> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
-> **Ngày cập nhật:** 28/10/2026  
+> **Phiên bản:** v7.2.0 (Empirical Multi-Model Benchmark & Production POI Edition)  
+> **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [README.md](file:///c:/Users/Asus/Documents/AI/HotWAY/README.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
@@ -39,6 +39,11 @@ Bài toán được hình thức hóa dưới dạng Semi-Markov Decision Proces
 - **Môi trường mô phỏng chuẩn Gymnasium:**
   - `RoutingEnv` (GĐ1): Đồ thị con 12 nút SCC Bình Thạnh, so sánh Q-learning và DQN với chân lý Exact Value Iteration.
   - `DispatchEnv` (GĐ2): Semi-MDP mô phỏng nhà hàng với thời gian bếp ngẫu nhiên, nhiễu giao thông log-normal, mưa bão, xung đơn đột biến, và tích phân Lebesgue bảo toàn phần thưởng Bellman sai số $< 10^{-9}$.
+- **Bộ Khung Nghiên Cứu Đa Mô Hình (Cổng G7):**
+  - Môi trường Gymnasium hợp nhất `env/traffic_tsp_env.py` với hàm chi phí giờ cao điểm $C(t)$ cho mạng lưới đường bộ Việt Nam.
+  - 4 Mô hình so sánh đối đầu: Dueling DQN with Action Masking, Pointer Network with A2C, Attention Model (Kool et al., 2019), và Google OR-Tools Guided Local Search.
+  - Tập dữ liệu 100 hành trình Production POI phân tầng ($N=10, 20, 30, 50$) tại TP.HCM & các đô thị lớn.
+  - Minh chứng 4 điểm nghẽn toán học tử huyệt của DQN (cứng nhắc chiều tensor, bùng nổ tổ hợp, thiếu bất biến hoán vị, suy thoái zero-shot 50%).
 - **Định tuyến nơ-ron Attention Model (T2+):** Attention Model (Kool et al., 2019) với cơ chế MHA Pointer Mechanism và vector ngữ cảnh biến thiên giờ cao điểm TP.HCM $C(t)$; tích hợp bộ chuyển đổi dữ liệu giao thông 3 lớp (TomTom API -> HERE API -> Offline OSRM).
 - **Hệ thống tác tử & quy tắc đối chiếu:**
   - 4 Baseline heuristic: Immediate, Periodic ($T=8\text{m}$), BatchSize ($k=1$), AgeThreshold ($\theta=10\text{m}$).
@@ -63,4 +68,5 @@ Bài toán được hình thức hóa dưới dạng Semi-Markov Decision Proces
 3. **Kỷ luật hình học & Vận tốc xe máy:** Mọi chặng di chuyển tuân thủ hình học có hướng đồ thị TP.HCM, áp dụng đúng profile xe máy (giữ hẻm, bỏ đường cấm xe máy, thời gian dừng giao hàng, phạt đèn đỏ và rẽ).
 4. **Độ trễ suy luận online:** Mọi quyết định điều phối của tác tử RL phải thực thi trong thời gian $< 1.0\text{ ms}$ trên CPU luồng đơn.
 5. **Kỷ luật cổng mạng:** Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001.
-6. **Tốc độ suy luận nơ-ron & Fallback giao thông:** Attention Model CPU latency $< 20\text{ ms}$ cho bài toán 50 điểm dừng; tự động chuyển tầng 3 lớp (TomTom -> HERE -> Offline) với tỷ lệ khả dụng $100\%$ kể cả khi ngắt kết nối mạng ngoại vi. Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001 (không chỉnh sửa mã frontend/backend trước khi nghiệm thu Cổng G5).
+6. **Tốc độ suy luận nơ-ron & Fallback giao thông:** Attention Model CPU latency $< 20\text{ ms}$ cho bài toán 50 điểm dừng; tự động chuyển tầng 3 lớp (TomTom -> HERE -> Offline) với tỷ lệ khả dụng $100\%$ kể cả khi ngắt kết nối mạng ngoại vi.
+7. **Nghiệm thu Bộ Khung 4 Mô Hình (Cổng G7):** Đánh giá đầy đủ trên 100 hành trình Production POI; xuất bản file `results/benchmark_summary_table.csv` và `results/benchmark_multi_model_results.json`; giải trình rõ ràng 4 điểm nghẽn của DQN cho Hội đồng bảo vệ. Attention Model CPU latency $< 20\text{ ms}$ cho bài toán 50 điểm dừng; tự động chuyển tầng 3 lớp (TomTom -> HERE -> Offline) với tỷ lệ khả dụng $100\%$ kể cả khi ngắt kết nối mạng ngoại vi. Cổng 3000 được bảo vệ nguyên vẹn; Backend cổng 8000; Frontend cổng 3001 (không chỉnh sửa mã frontend/backend trước khi nghiệm thu Cổng G5).

@@ -1,9 +1,9 @@
 # Cơ Chế Đa Tác Tử (AGENTS.MD) — HotWAY
 
-> **Tài liệu:** Phân công trách nhiệm 5 vai trò chuyên biệt & hợp đồng chuyển giao kỹ thuật  
-> **Phiên bản:** v7.0.0 (Executive Monochromatic Routing & WebGIS Edition)  
-> **Ngày cập nhật:** 27/10/2026  
-> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md)
+> **Tài liệu:** Phân công trách nhiệm 5 vai trò chuyên biệt, hợp đồng chuyển giao kỹ thuật & Kỷ luật Sprint 7 ngày nước rút  
+> **Phiên bản:** v7.2.0 (Empirical Multi-Model Research & 7-Day Sprint Edition)  
+> **Ngày cập nhật:** 29/10/2026  
+> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PLAN.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md)
 
 ---
 
@@ -13,36 +13,41 @@
 
 ```mermaid
 flowchart TD
-    Lead["Lead Engineer & QA\n(Giám sát kiến trúc, kiểm thử T1-T7, báo cáo Gate G0-G5, bảo vệ cổng 3000)"]
-    Designer["Designer & UI/UX Director\n(Thiết kế đơn sắc Monochromatic, tương phản Gradient từng Section, Typography cao cấp)"]
-    Algo["1. AI Researcher & Algorithm Engineer\n(Semi-MDP DispatchEnv, Permutation Router, DQN/DDQN/PPO, Benchmark & Tests)"]
-    BE["2. Backend Engineer\n(FastAPI /api/v1/sim/stream, Event Streamer, Port 8000)"]
-    FE["3. Frontend Engineer\n(Next.js 14 Swiss Editorial WebGIS, Minimal Menu Dropdown, MapLibre, Port 3001)"]
+    Lead["Lead Engineer & QA
+(Giám sát kiến trúc, kiểm thử T1-T8 56 bài test, bảo vệ tính trung thực khoa học, xuất báo cáo PDF IEEE/ACM, bảo vệ cổng 3000)"]
+    Designer["Designer & UI/UX Director
+(Ngôn ngữ Đơn sắc Monochromatic, tương phản Gradient Dark/Light từng Section, Typography Manrope, 0 Icon, 0 Card)"]
+    Algo["1. AI Researcher & Algorithm Engineer
+(Môi trường Gymnasium env/, 4 Models: DQN, PointerNet, Attention Model, OR-Tools, train.py, evaluate_benchmark.py)"]
+    BE["2. Backend Engineer
+(services/ Fallback Router 3 lớp, api/main.py Serving CPU < 20ms, FastAPI Backend Port 8000)"]
+    FE["3. Frontend Engineer
+(Next.js 14 Swiss Editorial WebGIS Port 3001, ScreenT2VRPTW 4 Models & DQN Ablation, MapLibre GL JS)"]
 
     Lead -->|Kỷ luật khoa học & Tiêu chuẩn tái lập| Algo
     Lead -->|Đặc tả API Schema & Cổng mạng| BE
     Designer -->|Quy chuẩn Design System & Bảng màu tương phản| FE
     Lead -->|Giám sát tích hợp & Build sạch| FE
 
-    Algo -->|Mô hình Semi-MDP, Checkpoint PyTorch, Metrics Registry| BE
-    BE -->|REST / SSE Event Stream & GeoJSON Tuyến| FE
+    Algo -->|100 POI Benchmark CSV/JSON & Weights .pt| BE
+    BE -->|REST Endpoints /optimize-route & Benchmark API| FE
 
-    Algo -->|Kiểm thử môi trường T3-T5 & Tái lập số liệu| Lead
-    BE -->|Kiểm thử tích hợp & Fallback T6| Lead
-    FE -->|Kiểm thử giao diện & Build sạch T7| Lead
+    Algo -->|Kiểm thử môi trường 56 tests & Tái lập số liệu| Lead
+    BE -->|Kiểm thử tích hợp & Fallback 3 lớp| Lead
+    FE -->|Kiểm thử giao diện & Build sạch 6/6 static pages| Lead
 ```
 
 ---
 
-## 2. Phạm Vi Thư Mục & Trách Nhiệm Từng Vai Trò
+## 2. Phạm Vi Thư Mục & Trách Nhiệm Từng Vai Trò (v7.2.0)
 
-| Tên vai trò | Mã định danh | Trách nhiệm cốt lõi | Thư mục sở hữu độc quyền |
+| Tên vai trò | Mã định danh | Trách nhiệm cốt lõi | Thư mục & Tệp sở hữu độc quyền |
 |---|---|---|---|
-| **Designer & UI/UX Director** | `designer_agent` | Xây dựng ngôn ngữ thẩm mỹ Đơn sắc (Monochromatic) chuẩn Executive, thiết lập nhịp điệu tương phản Gradient giữa các Section (Dark/Light alternating), loại bỏ hoàn toàn board card rườm rà và icon AI, tinh chỉnh typography chuyên nghiệp, tối giản thanh điều hướng với Menu Dropdown. | `DESIGN_SYSTEM.md`, `frontend/src/app/globals.css`, các token giao diện |
-| **AI Researcher & Algorithm Engineer** | `algorithm_engineer` | Xây dựng đồ thị con 12 nút SCC, sinh 401 địa chỉ chuẩn và 151 địa chỉ OOD, triển khai môi trường Gymnasium `RoutingEnv` (GĐ1) và `DispatchEnv` (GĐ2), bộ gom đơn đường vòng và hoán vị vét cạn, huấn luyện DQN, Double DQN, PPO trên PyTorch, tính toán kiểm định Wilcoxon và Holm, đảm bảo đẳng thức Bellman và độ trung thực số liệu T3. | `src/envs/`, `src/routing/`, `src/graph/`, `src/agents/`, `src/baselines/`, `scripts/`, `results/`, `tests/` |
-| **Backend Engineer** | `backend_engineer` | Xây dựng REST & Event-Stream API chuẩn `/api/v1/sim/stream`, tích hợp trực tiếp môi trường `DispatchEnv` để phát viễn trắc theo bước thời gian, đóng gói Docker container backend cổng 8000. | `backend/`, `src/services/`, `docker-compose.yml`, `config/site.yaml` |
-| **Frontend Engineer** | `frontend_engineer` | Hiện thực hóa mã nguồn giao diện Next.js 14 theo sát thiết kế của Designer Agent; hỗ trợ hiển thị 3 màn hình T1/T2/T3, bản đồ MapLibre GL JS, thanh menu thu gọn, đảm bảo build TypeScript sạch 100% trên cổng 3001. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
-| **Lead Engineer & QA** | `lead_engineer_writer` | Biên soạn và bảo trì chuỗi tài liệu nghiên cứu chuẩn mực (`docs/research/`), giám sát kiểm thử 4 tầng (43 ca kiểm thử tự động), bảo đảm tính trung thực khoa học (báo cáo đầy đủ kết quả âm tính), và bảo vệ nguyên vẹn cổng mạng 3000. | `README.md`, `PRD.md`, `ARCHITECTURE.md`, `ALGORITHM.md`, `PLAN.md`, `AGENTS.md`, `TESTING.md`, `docs/DECISIONS.md`, `docs/research/` |
+| **Designer & UI/UX Director** | `designer_agent` | Xây dựng ngôn ngữ thẩm mỹ Đơn sắc (Monochromatic) chuẩn Executive, thiết lập nhịp điệu tương phản Gradient giữa các Section (Dark/Light alternating), loại bỏ hoàn toàn board card rườm rà và icon AI, tinh chỉnh typography Manrope chuyên nghiệp, tối giản thanh điều hướng với Menu Dropdown. | `DESIGN_SYSTEM.md`, `frontend/src/app/globals.css`, các token giao diện |
+| **AI Researcher & Algorithm Engineer** | `algorithm_engineer` | Xây dựng và duy trì: môi trường `env/traffic_tsp_env.py` (Gymnasium với C(t) và Action Masking); 4 mô hình đối đầu (`models/dqn_agent.py`, `models/pointer_net.py`, `models/attention_model.py`, `models/ortools_solver.py`); công cụ huấn luyện `train.py`; công cụ đánh giá `evaluate_benchmark.py` trên 100 POI Production; bóc tách 4 điểm nghẽn tử huyệt của DQN. | `env/`, `models/`, `train.py`, `evaluate_benchmark.py`, `notebooks/`, `results/`, `tests/` |
+| **Backend Engineer** | `backend_engineer` | Xây dựng tầng dịch vụ `services/` (TomTom API, HERE, OSRM client, Fallback Router 3 lớp), dịch vụ phục vụ suy luận `api/main.py` trên CPU < 20ms, và backend FastAPI chính tại `backend/app/` trên cổng **8000**. | `services/`, `api/`, `backend/`, `docker-compose.yml`, `config/site.yaml` |
+| **Frontend Engineer** | `frontend_engineer` | Hiện thực hóa mã nguồn giao diện Next.js 14 theo sát thiết kế của Designer Agent; hỗ trợ hiển thị màn hình T1/T2/T3, bảng đối soát 4 mô hình và hộp chẩn đoán DQN ablation (`ScreenT2VRPTW.tsx`), bản đồ MapLibre GL JS, thanh menu thu gọn, đảm bảo build TypeScript sạch 100% trên cổng **3001**. | `frontend/src/app/`, `frontend/src/components/`, `frontend/public/` |
+| **Lead Engineer & QA** | `lead_engineer_writer` | Biên soạn và bảo trì chuỗi tài liệu nghiên cứu chuẩn mực (`docs/research/`, `PLAN.md`, `PRD.md`, `ARCHITECTURE.md`), giám sát kiểm thử 56 ca kiểm thử tự động, bảo đảm tính trung thực khoa học (báo cáo đầy đủ hai kết quả âm tính E0/T3 và DQN ablation), xuất bản báo cáo học thuật PDF chuẩn IEEE/ACM và bảo vệ an toàn cổng mạng 3000. | `README.md`, `PRD.md`, `ARCHITECTURE.md`, `ALGORITHM.md`, `PLAN.md`, `AGENTS.md`, `TESTING.md`, `docs/DECISIONS.md`, `docs/research/`, `docs/FINAL_RESEARCH_REPORT.md` |
 
 ---
 
@@ -51,3 +56,13 @@ flowchart TD
 2. **Nhịp điệu tương phản giữa các Section:** Từng section của Landing Page phải có nền độc lập, luân phiên tương phản giữa Dark (Obsidian / Deep Charcoal với gradient tinh tế) và Light (Pure White / Off-white / Silver).
 3. **Thanh Menu Thu Gọn:** Toàn bộ danh sách 6 mục báo cáo (`01 Bối Cảnh` đến `06 Tái Lập`) được gom vào menu xổ xuống (`[Mục Lục ▾]`), giữ cho thanh đỉnh gọn gàng tối đa.
 4. **Cổng mạng bắt buộc:** Frontend chạy cổng **3001**, Backend chạy cổng **8000**, Cổng **3000** tuyệt đối cấm dùng.
+
+---
+
+## 4. Kỷ Luật Sprint 7 Ngày Nước Rút (1-Week Sprint to Final Defense)
+
+Để bảo đảm tiến độ báo cáo Hội đồng nghiệm thu trong 7 ngày còn lại, toàn bộ 5 tác tử tuân thủ nghiêm ngặt 4 nguyên tắc:
+1. **Bảo toàn 100% Dữ Liệu Thực Nghiệm (Scientific Integrity):** Mọi số liệu trong báo cáo và slide thuyết trình phải đồng bộ tuyệt đối với `results/benchmark_summary_table.csv` và `results/benchmark_multi_model_results.json`. Nghiêm cấm bịa đặt hoặc làm tròn sai lệch số liệu.
+2. **Chế Độ Kiểm Tra Liên Tục (Continuous Verification):** Mọi thay đổi mã nguồn phải vượt qua toàn bộ 56 tests (`python -m pytest tests/`) và biên dịch Next.js 14 sạch (`npm --prefix frontend run build`) trước khi chuyển giao.
+3. **Cơ Chế Phục Vụ CPU Tức Thì:** Mô hình Attention Model và OR-Tools phục vụ cục bộ trên CPU máy tính với độ trễ < 20ms; không bắt buộc người chấm phải có GPU chuyên dụng.
+4. **Đóng Băng Giao Diện Trước 24 Giờ:** Toàn bộ giao diện WebGIS Demo và Landing Page Report phải được nghiệm thu và đóng băng ít nhất 24 giờ trước thời điểm báo cáo chính thức để tập trung hoàn thiện Slide và Báo cáo PDF.

@@ -4,2806 +4,3206 @@
     "node_id": 5776272443,
     "lat": 10.8012,
     "lon": 106.7145,
-    "name": "Hang Gon Quan - Depot"
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot - 490 Điện Biên Phủ)"
   },
   {
     "id": 1,
     "node_id": 411918898,
     "lat": 10.7823656,
     "lon": 106.6962441,
-    "dist_depot_km": 2.8866573148404746
+    "dist_depot_km": 2.8866573148404746,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #001)"
   },
   {
     "id": 2,
     "node_id": 5789199835,
     "lat": 10.8238622,
     "lon": 106.6844848,
-    "dist_depot_km": 4.127719707971167
+    "dist_depot_km": 4.127719707971167,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #002)"
   },
   {
     "id": 3,
     "node_id": 12554508659,
     "lat": 10.7759785,
     "lon": 106.7331943,
-    "dist_depot_km": 3.4629998274088005
+    "dist_depot_km": 3.4629998274088005,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #003)"
   },
   {
     "id": 4,
     "node_id": 3099866246,
     "lat": 10.8273652,
     "lon": 106.7012464,
-    "dist_depot_km": 3.2439863309894457
+    "dist_depot_km": 3.2439863309894457,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #004)"
   },
   {
     "id": 5,
     "node_id": 5740707083,
     "lat": 10.8262068,
     "lon": 106.7250987,
-    "dist_depot_km": 3.0067017967553977
+    "dist_depot_km": 3.0067017967553977,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #005)"
   },
   {
     "id": 6,
     "node_id": 3137343109,
     "lat": 10.8291408,
     "lon": 106.7058685,
-    "dist_depot_km": 3.2410756899763435
+    "dist_depot_km": 3.2410756899763435,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #006)"
   },
   {
     "id": 7,
     "node_id": 3137351459,
     "lat": 10.8333437,
     "lon": 106.7051949,
-    "dist_depot_km": 3.7093960014390777
+    "dist_depot_km": 3.7093960014390777,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #007)"
   },
   {
     "id": 8,
     "node_id": 2654781843,
     "lat": 10.812336,
     "lon": 106.7261351,
-    "dist_depot_km": 1.7712474570698555
+    "dist_depot_km": 1.7712474570698555,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #008)"
   },
   {
     "id": 9,
     "node_id": 5780792890,
     "lat": 10.8286561,
     "lon": 106.7371033,
-    "dist_depot_km": 3.9194220086426896
+    "dist_depot_km": 3.9194220086426896,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #009)"
   },
   {
     "id": 10,
     "node_id": 366434693,
     "lat": 10.8025752,
     "lon": 106.7277922,
-    "dist_depot_km": 1.4573110388785615
+    "dist_depot_km": 1.4573110388785615,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #010)"
   },
   {
     "id": 11,
     "node_id": 5740781069,
     "lat": 10.82552,
     "lon": 106.7188209,
-    "dist_depot_km": 2.740322018204235
+    "dist_depot_km": 2.740322018204235,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #011)"
   },
   {
     "id": 12,
     "node_id": 11358542015,
     "lat": 10.8295596,
     "lon": 106.7314604,
-    "dist_depot_km": 3.650904211115269
+    "dist_depot_km": 3.650904211115269,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #012)"
   },
   {
     "id": 13,
     "node_id": 4947173926,
     "lat": 10.796702,
     "lon": 106.7251518,
-    "dist_depot_km": 1.2641733561773663
+    "dist_depot_km": 1.2641733561773663,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #013)"
   },
   {
     "id": 14,
     "node_id": 2291045534,
     "lat": 10.7923912,
     "lon": 106.6825852,
-    "dist_depot_km": 3.6145430359181363
+    "dist_depot_km": 3.6145430359181363,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #014)"
   },
   {
     "id": 15,
     "node_id": 5742675572,
     "lat": 10.8293996,
     "lon": 106.7232354,
-    "dist_depot_km": 3.2718552216507986
+    "dist_depot_km": 3.2718552216507986,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #015)"
   },
   {
     "id": 16,
     "node_id": 2692325236,
     "lat": 10.7895436,
     "lon": 106.7288928,
-    "dist_depot_km": 2.033904284777337
+    "dist_depot_km": 2.033904284777337,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #016)"
   },
   {
     "id": 17,
     "node_id": 2403042651,
     "lat": 10.8000068,
     "lon": 106.711127,
-    "dist_depot_km": 0.39089176830261196
+    "dist_depot_km": 0.39089176830261196,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #017)"
   },
   {
     "id": 18,
     "node_id": 7861519680,
     "lat": 10.79805,
     "lon": 106.7215,
-    "dist_depot_km": 0.8395126452525388
+    "dist_depot_km": 0.8395126452525388,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #018)"
   },
   {
     "id": 19,
     "node_id": 1671468747,
     "lat": 10.8128655,
     "lon": 106.7048638,
-    "dist_depot_km": 1.667511054408449
+    "dist_depot_km": 1.667511054408449,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #019)"
   },
   {
     "id": 20,
     "node_id": 366392767,
     "lat": 10.7873615,
     "lon": 106.7337274,
-    "dist_depot_km": 2.5989496832219636
+    "dist_depot_km": 2.5989496832219636,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #020)"
   },
   {
     "id": 21,
     "node_id": 5744767372,
     "lat": 10.7680353,
     "lon": 106.7234035,
-    "dist_depot_km": 3.807131128930082
+    "dist_depot_km": 3.807131128930082,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #021)"
   },
   {
     "id": 22,
     "node_id": 3727364030,
     "lat": 10.8304327,
     "lon": 106.7306732,
-    "dist_depot_km": 3.6930433390187014
+    "dist_depot_km": 3.6930433390187014,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #022)"
   },
   {
     "id": 23,
     "node_id": 1394527835,
     "lat": 10.8062282,
     "lon": 106.6778334,
-    "dist_depot_km": 4.036657123581697
+    "dist_depot_km": 4.036657123581697,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #023)"
   },
   {
     "id": 24,
     "node_id": 4952435138,
     "lat": 10.8048217,
     "lon": 106.7416661,
-    "dist_depot_km": 2.9891696951527646
+    "dist_depot_km": 2.9891696951527646,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #024)"
   },
   {
     "id": 25,
     "node_id": 4066896256,
     "lat": 10.7902697,
     "lon": 106.7369258,
-    "dist_depot_km": 2.7296202354221673
+    "dist_depot_km": 2.7296202354221673,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #025)"
   },
   {
     "id": 26,
     "node_id": 4032228932,
     "lat": 10.8112254,
     "lon": 106.7073402,
-    "dist_depot_km": 1.359335663172702
+    "dist_depot_km": 1.359335663172702,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #026)"
   },
   {
     "id": 27,
     "node_id": 411917825,
     "lat": 10.7922967,
     "lon": 106.6880823,
-    "dist_depot_km": 3.0452338244559836
+    "dist_depot_km": 3.0452338244559836,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #027)"
   },
   {
     "id": 28,
     "node_id": 5778212578,
     "lat": 10.7802391,
     "lon": 106.6820057,
-    "dist_depot_km": 4.238626144062197
+    "dist_depot_km": 4.238626144062197,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #028)"
   },
   {
     "id": 29,
     "node_id": 411925950,
     "lat": 10.7872537,
     "lon": 106.7050041,
-    "dist_depot_km": 1.8623689814758086
+    "dist_depot_km": 1.8623689814758086,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #029)"
   },
   {
     "id": 30,
     "node_id": 5818114154,
     "lat": 10.8277795,
     "lon": 106.6845459,
-    "dist_depot_km": 4.401268349018437
+    "dist_depot_km": 4.401268349018437,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #030)"
   },
   {
     "id": 31,
     "node_id": 3137351486,
     "lat": 10.8342872,
     "lon": 106.7046534,
-    "dist_depot_km": 3.8263831848499783
+    "dist_depot_km": 3.8263831848499783,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #031)"
   },
   {
     "id": 32,
     "node_id": 2408534558,
     "lat": 10.7972949,
     "lon": 106.6937251,
-    "dist_depot_km": 2.306260646815236
+    "dist_depot_km": 2.306260646815236,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #032)"
   },
   {
     "id": 33,
     "node_id": 4947229064,
     "lat": 10.7794663,
     "lon": 106.7281711,
-    "dist_depot_km": 2.8358032226312124
+    "dist_depot_km": 2.8358032226312124,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #033)"
   },
   {
     "id": 34,
     "node_id": 5735415567,
     "lat": 10.7982655,
     "lon": 106.7316323,
-    "dist_depot_km": 1.8961804766929111
+    "dist_depot_km": 1.8961804766929111,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #034)"
   },
   {
     "id": 35,
     "node_id": 4666207257,
     "lat": 10.7712549,
     "lon": 106.6937631,
-    "dist_depot_km": 4.0200178984647685
+    "dist_depot_km": 4.0200178984647685,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #035)"
   },
   {
     "id": 36,
     "node_id": 5773531493,
     "lat": 10.7958356,
     "lon": 106.7020095,
-    "dist_depot_km": 1.486365428867388
+    "dist_depot_km": 1.486365428867388,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #036)"
   },
   {
     "id": 37,
     "node_id": 5733023071,
     "lat": 10.8097796,
     "lon": 106.7034068,
-    "dist_depot_km": 1.5394497632858022
+    "dist_depot_km": 1.5394497632858022,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #037)"
   },
   {
     "id": 38,
     "node_id": 5778363358,
     "lat": 10.8033958,
     "lon": 106.719265,
-    "dist_depot_km": 0.5738750156932205
+    "dist_depot_km": 0.5738750156932205,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #038)"
   },
   {
     "id": 39,
     "node_id": 6639817392,
     "lat": 10.8064184,
     "lon": 106.7534132,
-    "dist_depot_km": 4.282197630220104
+    "dist_depot_km": 4.282197630220104,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #039)"
   },
   {
     "id": 40,
     "node_id": 6351635172,
     "lat": 10.8016682,
     "lon": 106.6784905,
-    "dist_depot_km": 3.926583928678667
+    "dist_depot_km": 3.926583928678667,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #040)"
   },
   {
     "id": 41,
     "node_id": 8370787641,
     "lat": 10.8305615,
     "lon": 106.6889628,
-    "dist_depot_km": 4.286588272082379
+    "dist_depot_km": 4.286588272082379,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #041)"
   },
   {
     "id": 42,
     "node_id": 5786407181,
     "lat": 10.8149618,
     "lon": 106.6805046,
-    "dist_depot_km": 4.009063143946187
+    "dist_depot_km": 4.009063143946187,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #042)"
   },
   {
     "id": 43,
     "node_id": 12237520493,
     "lat": 10.7637621,
     "lon": 106.7000609,
-    "dist_depot_km": 4.443830610678577
+    "dist_depot_km": 4.443830610678577,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #043)"
   },
   {
     "id": 44,
     "node_id": 3138809812,
     "lat": 10.8281423,
     "lon": 106.6946209,
-    "dist_depot_km": 3.6934617161667926
+    "dist_depot_km": 3.6934617161667926,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #044)"
   },
   {
     "id": 45,
     "node_id": 6349849615,
     "lat": 10.799072,
     "lon": 106.6733108,
-    "dist_depot_km": 4.497208035737178
+    "dist_depot_km": 4.497208035737178,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #045)"
   },
   {
     "id": 46,
     "node_id": 6855606318,
     "lat": 10.7692548,
     "lon": 106.7249475,
-    "dist_depot_km": 3.7243978065077448
+    "dist_depot_km": 3.7243978065077448,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #046)"
   },
   {
     "id": 47,
     "node_id": 13449623451,
     "lat": 10.7800542,
     "lon": 106.7349956,
-    "dist_depot_km": 3.2408613860834037
+    "dist_depot_km": 3.2408613860834037,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #047)"
   },
   {
     "id": 48,
     "node_id": 8812267897,
     "lat": 10.8046696,
     "lon": 106.7071346,
-    "dist_depot_km": 0.8906464673600007
+    "dist_depot_km": 0.8906464673600007,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #048)"
   },
   {
     "id": 49,
     "node_id": 5765007180,
     "lat": 10.7961407,
     "lon": 106.6789759,
-    "dist_depot_km": 3.913814628774312
+    "dist_depot_km": 3.913814628774312,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #049)"
   },
   {
     "id": 50,
     "node_id": 11115825030,
     "lat": 10.8001644,
     "lon": 106.7011153,
-    "dist_depot_km": 1.4639002275236848
+    "dist_depot_km": 1.4639002275236848,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #050)"
   },
   {
     "id": 51,
     "node_id": 4604903936,
     "lat": 10.7712396,
     "lon": 106.6872316,
-    "dist_depot_km": 4.460871084458587
+    "dist_depot_km": 4.460871084458587,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #051)"
   },
   {
     "id": 52,
     "node_id": 8584616903,
     "lat": 10.7797134,
     "lon": 106.7163777,
-    "dist_depot_km": 2.3937836865546607
+    "dist_depot_km": 2.3937836865546607,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #052)"
   },
   {
     "id": 53,
     "node_id": 5763269260,
     "lat": 10.7738573,
     "lon": 106.6866191,
-    "dist_depot_km": 4.295668306456321
+    "dist_depot_km": 4.295668306456321,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #053)"
   },
   {
     "id": 54,
     "node_id": 5778363383,
     "lat": 10.8015059,
     "lon": 106.7192904,
-    "dist_depot_km": 0.5234163519142554
+    "dist_depot_km": 0.5234163519142554,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #054)"
   },
   {
     "id": 55,
     "node_id": 2496916393,
     "lat": 10.8185533,
     "lon": 106.6908331,
-    "dist_depot_km": 3.2201250844282026
+    "dist_depot_km": 3.2201250844282026,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #055)"
   },
   {
     "id": 56,
     "node_id": 411918820,
     "lat": 10.7830804,
     "lon": 106.682391,
-    "dist_depot_km": 4.0375630757697945
+    "dist_depot_km": 4.0375630757697945,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #056)"
   },
   {
     "id": 57,
     "node_id": 14280255865,
     "lat": 10.7998458,
     "lon": 106.6793414,
-    "dist_depot_km": 3.836409363315199
+    "dist_depot_km": 3.836409363315199,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #057)"
   },
   {
     "id": 58,
     "node_id": 411925089,
     "lat": 10.7655737,
     "lon": 106.6956108,
-    "dist_depot_km": 4.458698034332629
+    "dist_depot_km": 4.458698034332629,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #058)"
   },
   {
     "id": 59,
     "node_id": 5779523160,
     "lat": 10.8123726,
     "lon": 106.7196583,
-    "dist_depot_km": 1.3617333639545268
+    "dist_depot_km": 1.3617333639545268,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #059)"
   },
   {
     "id": 60,
     "node_id": 11232925411,
     "lat": 10.8035368,
     "lon": 106.7199771,
-    "dist_depot_km": 0.6510859484745044
+    "dist_depot_km": 0.6510859484745044,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #060)"
   },
   {
     "id": 61,
     "node_id": 13063076806,
     "lat": 10.7963239,
     "lon": 106.6860583,
-    "dist_depot_km": 3.1479753599239007
+    "dist_depot_km": 3.1479753599239007,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #061)"
   },
   {
     "id": 62,
     "node_id": 2022540517,
     "lat": 10.7961269,
     "lon": 106.7166287,
-    "dist_depot_km": 0.6090711526935313
+    "dist_depot_km": 0.6090711526935313,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #062)"
   },
   {
     "id": 63,
     "node_id": 2489022397,
     "lat": 10.838602,
     "lon": 106.7302268,
-    "dist_depot_km": 4.491806246679954
+    "dist_depot_km": 4.491806246679954,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #063)"
   },
   {
     "id": 64,
     "node_id": 5779558945,
     "lat": 10.8227092,
     "lon": 106.7380726,
-    "dist_depot_km": 3.50801870099387
+    "dist_depot_km": 3.50801870099387,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #064)"
   },
   {
     "id": 65,
     "node_id": 411918912,
     "lat": 10.7864515,
     "lon": 106.6976719,
-    "dist_depot_km": 2.458989233791793
+    "dist_depot_km": 2.458989233791793,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #065)"
   },
   {
     "id": 66,
     "node_id": 2925962148,
     "lat": 10.8078655,
     "lon": 106.7039712,
-    "dist_depot_km": 1.3657571397814972
+    "dist_depot_km": 1.3657571397814972,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #066)"
   },
   {
     "id": 67,
     "node_id": 366433763,
     "lat": 10.800483,
     "lon": 106.7235332,
-    "dist_depot_km": 0.988131253737516
+    "dist_depot_km": 0.988131253737516,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #067)"
   },
   {
     "id": 68,
     "node_id": 366416151,
     "lat": 10.8037001,
     "lon": 106.7217033,
-    "dist_depot_km": 0.8329865443381463
+    "dist_depot_km": 0.8329865443381463,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #068)"
   },
   {
     "id": 69,
     "node_id": 6665151130,
     "lat": 10.7689544,
     "lon": 106.714141,
-    "dist_depot_km": 3.5794756286821836
+    "dist_depot_km": 3.5794756286821836,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #069)"
   },
   {
     "id": 70,
     "node_id": 5792540003,
     "lat": 10.8290509,
     "lon": 106.689912,
-    "dist_depot_km": 4.091987874488454
+    "dist_depot_km": 4.091987874488454,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #070)"
   },
   {
     "id": 71,
     "node_id": 3727364033,
     "lat": 10.8289018,
     "lon": 106.7324329,
-    "dist_depot_km": 3.6439198524140872
+    "dist_depot_km": 3.6439198524140872,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #071)"
   },
   {
     "id": 72,
     "node_id": 701666216,
     "lat": 10.778085,
     "lon": 106.6816418,
-    "dist_depot_km": 4.406640448387996
+    "dist_depot_km": 4.406640448387996,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #072)"
   },
   {
     "id": 73,
     "node_id": 5789199827,
     "lat": 10.8239333,
     "lon": 106.6848295,
-    "dist_depot_km": 4.102834603758719
+    "dist_depot_km": 4.102834603758719,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #073)"
   },
   {
     "id": 74,
     "node_id": 2692325481,
     "lat": 10.7927891,
     "lon": 106.7428818,
-    "dist_depot_km": 3.2323309510433766
+    "dist_depot_km": 3.2323309510433766,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #074)"
   },
   {
     "id": 75,
     "node_id": 3985459708,
     "lat": 10.8024888,
     "lon": 106.7498154,
-    "dist_depot_km": 3.8532163930126764
+    "dist_depot_km": 3.8532163930126764,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #075)"
   },
   {
     "id": 76,
     "node_id": 739149943,
     "lat": 10.8165161,
     "lon": 106.7111954,
-    "dist_depot_km": 1.737849486849432
+    "dist_depot_km": 1.737849486849432,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #076)"
   },
   {
     "id": 77,
     "node_id": 2036083425,
     "lat": 10.7906706,
     "lon": 106.718853,
-    "dist_depot_km": 1.26145729285673
+    "dist_depot_km": 1.26145729285673,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #077)"
   },
   {
     "id": 78,
     "node_id": 2634496780,
     "lat": 10.8230336,
     "lon": 106.7167541,
-    "dist_depot_km": 2.4359597173287932
+    "dist_depot_km": 2.4359597173287932,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #078)"
   },
   {
     "id": 79,
     "node_id": 2043347015,
     "lat": 10.7762943,
     "lon": 106.7009788,
-    "dist_depot_km": 3.133064419735235
+    "dist_depot_km": 3.133064419735235,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #079)"
   },
   {
     "id": 80,
     "node_id": 2358070584,
     "lat": 10.7687542,
     "lon": 106.7032974,
-    "dist_depot_km": 3.802978503140983
+    "dist_depot_km": 3.802978503140983,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #080)"
   },
   {
     "id": 81,
     "node_id": 5721608413,
     "lat": 10.7983664,
     "lon": 106.6746095,
-    "dist_depot_km": 4.360756681171993
+    "dist_depot_km": 4.360756681171993,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #081)"
   },
   {
     "id": 82,
     "node_id": 366468939,
     "lat": 10.8085347,
     "lon": 106.7386646,
-    "dist_depot_km": 2.757670919392457
+    "dist_depot_km": 2.757670919392457,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #082)"
   },
   {
     "id": 83,
     "node_id": 5740707043,
     "lat": 10.8257009,
     "lon": 106.7224493,
-    "dist_depot_km": 2.8543757892336927
+    "dist_depot_km": 2.8543757892336927,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #083)"
   },
   {
     "id": 84,
     "node_id": 411926438,
     "lat": 10.7731556,
     "lon": 106.6976491,
-    "dist_depot_km": 3.6146974543083017
+    "dist_depot_km": 3.6146974543083017,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #084)"
   },
   {
     "id": 85,
     "node_id": 2028465827,
     "lat": 10.7934332,
     "lon": 106.718263,
-    "dist_depot_km": 0.9547681220948964
+    "dist_depot_km": 0.9547681220948964,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #085)"
   },
   {
     "id": 86,
     "node_id": 5418455090,
     "lat": 10.7924603,
     "lon": 106.7278988,
-    "dist_depot_km": 1.7536780199197772
+    "dist_depot_km": 1.7536780199197772,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #086)"
   },
   {
     "id": 87,
     "node_id": 5743246543,
     "lat": 10.8302158,
     "lon": 106.7430219,
-    "dist_depot_km": 4.47709357967843
+    "dist_depot_km": 4.47709357967843,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #087)"
   },
   {
     "id": 88,
     "node_id": 5740554227,
     "lat": 10.8264359,
     "lon": 106.7428256,
-    "dist_depot_km": 4.169542578061661
+    "dist_depot_km": 4.169542578061661,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #088)"
   },
   {
     "id": 89,
     "node_id": 5779558929,
     "lat": 10.8241543,
     "lon": 106.7361847,
-    "dist_depot_km": 3.475934486583974
+    "dist_depot_km": 3.475934486583974,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #089)"
   },
   {
     "id": 90,
     "node_id": 2965462041,
     "lat": 10.7709749,
     "lon": 106.7169352,
-    "dist_depot_km": 3.365476441036942
+    "dist_depot_km": 3.365476441036942,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #090)"
   },
   {
     "id": 91,
     "node_id": 6627017363,
     "lat": 10.8072743,
     "lon": 106.755234,
-    "dist_depot_km": 4.49225597497697
+    "dist_depot_km": 4.49225597497697,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #091)"
   },
   {
     "id": 92,
     "node_id": 724232845,
     "lat": 10.8037371,
     "lon": 106.7539589,
-    "dist_depot_km": 4.311547048976834
+    "dist_depot_km": 4.311547048976834,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #092)"
   },
   {
     "id": 93,
     "node_id": 1271148316,
     "lat": 10.7925545,
     "lon": 106.7415076,
-    "dist_depot_km": 3.0971558487759747
+    "dist_depot_km": 3.0971558487759747,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #093)"
   },
   {
     "id": 94,
     "node_id": 1852879374,
     "lat": 10.8162011,
     "lon": 106.7234067,
-    "dist_depot_km": 1.9276207176792952
+    "dist_depot_km": 1.9276207176792952,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #094)"
   },
   {
     "id": 95,
     "node_id": 9404261909,
     "lat": 10.7675797,
     "lon": 106.6950501,
-    "dist_depot_km": 4.292324986035617
+    "dist_depot_km": 4.292324986035617,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #095)"
   },
   {
     "id": 96,
     "node_id": 3138809948,
     "lat": 10.8302367,
     "lon": 106.6977503,
-    "dist_depot_km": 3.7045234262778535
+    "dist_depot_km": 3.7045234262778535,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #096)"
   },
   {
     "id": 97,
     "node_id": 8366157666,
     "lat": 10.7861754,
     "lon": 106.7388484,
-    "dist_depot_km": 3.1351611569052675
+    "dist_depot_km": 3.1351611569052675,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #097)"
   },
   {
     "id": 98,
     "node_id": 14301931995,
     "lat": 10.8354135,
     "lon": 106.6956367,
-    "dist_depot_km": 4.3188719491449445
+    "dist_depot_km": 4.3188719491449445,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #098)"
   },
   {
     "id": 99,
     "node_id": 5777274357,
     "lat": 10.8066955,
     "lon": 106.7020619,
-    "dist_depot_km": 1.4870423045660546
+    "dist_depot_km": 1.4870423045660546,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #099)"
   },
   {
     "id": 100,
     "node_id": 3137388490,
     "lat": 10.8283943,
     "lon": 106.7141568,
-    "dist_depot_km": 3.0187992351208917
+    "dist_depot_km": 3.0187992351208917,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #100)"
   },
   {
     "id": 101,
     "node_id": 2692325394,
     "lat": 10.7952537,
     "lon": 106.7446396,
-    "dist_depot_km": 3.3518537614954247
+    "dist_depot_km": 3.3518537614954247,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #101)"
   },
   {
     "id": 102,
     "node_id": 8366178080,
     "lat": 10.8347859,
     "lon": 106.726183,
-    "dist_depot_km": 3.939658224113884
+    "dist_depot_km": 3.939658224113884,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #102)"
   },
   {
     "id": 103,
     "node_id": 2351177734,
     "lat": 10.8033095,
     "lon": 106.6909017,
-    "dist_depot_km": 2.5836366114532665
+    "dist_depot_km": 2.5836366114532665,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #103)"
   },
   {
     "id": 104,
     "node_id": 2671785663,
     "lat": 10.8020009,
     "lon": 106.7476747,
-    "dist_depot_km": 3.618244262445575
+    "dist_depot_km": 3.618244262445575,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #104)"
   },
   {
     "id": 105,
     "node_id": 11400065408,
     "lat": 10.8171201,
     "lon": 106.7179015,
-    "dist_depot_km": 1.8056307151479245
+    "dist_depot_km": 1.8056307151479245,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #105)"
   },
   {
     "id": 106,
     "node_id": 5740460907,
     "lat": 10.7800004,
     "lon": 106.7179014,
-    "dist_depot_km": 2.382201323402934
+    "dist_depot_km": 2.382201323402934,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #106)"
   },
   {
     "id": 107,
     "node_id": 8816902909,
     "lat": 10.7905808,
     "lon": 106.7305563,
-    "dist_depot_km": 2.110513182012718
+    "dist_depot_km": 2.110513182012718,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #107)"
   },
   {
     "id": 108,
     "node_id": 411918889,
     "lat": 10.7925735,
     "lon": 106.7023758,
-    "dist_depot_km": 1.6323050972901874
+    "dist_depot_km": 1.6323050972901874,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #108)"
   },
   {
     "id": 109,
     "node_id": 4067989187,
     "lat": 10.8203312,
     "lon": 106.6924108,
-    "dist_depot_km": 3.210951301393644
+    "dist_depot_km": 3.210951301393644,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #109)"
   },
   {
     "id": 110,
     "node_id": 5021881543,
     "lat": 10.806677,
     "lon": 106.7516579,
-    "dist_depot_km": 4.096813283689958
+    "dist_depot_km": 4.096813283689958,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #110)"
   },
   {
     "id": 111,
     "node_id": 3700940807,
     "lat": 10.7680808,
     "lon": 106.7226502,
-    "dist_depot_km": 3.782111148118197
+    "dist_depot_km": 3.782111148118197,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #111)"
   },
   {
     "id": 112,
     "node_id": 11124700455,
     "lat": 10.8365985,
     "lon": 106.7285796,
-    "dist_depot_km": 4.218477603037959
+    "dist_depot_km": 4.218477603037959,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #112)"
   },
   {
     "id": 113,
     "node_id": 5737826542,
     "lat": 10.8117979,
     "lon": 106.7153174,
-    "dist_depot_km": 1.1797381744863082
+    "dist_depot_km": 1.1797381744863082,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #113)"
   },
   {
     "id": 114,
     "node_id": 4952626238,
     "lat": 10.779321,
     "lon": 106.725593,
-    "dist_depot_km": 2.7130899570792413
+    "dist_depot_km": 2.7130899570792413,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #114)"
   },
   {
     "id": 115,
     "node_id": 5798936902,
     "lat": 10.8252698,
     "lon": 106.6858981,
-    "dist_depot_km": 4.106540703038256
+    "dist_depot_km": 4.106540703038256,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #115)"
   },
   {
     "id": 116,
     "node_id": 1767194040,
     "lat": 10.7652489,
     "lon": 106.7014571,
-    "dist_depot_km": 4.236398150636991
+    "dist_depot_km": 4.236398150636991,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #116)"
   },
   {
     "id": 117,
     "node_id": 1852879556,
     "lat": 10.8197831,
     "lon": 106.7266753,
-    "dist_depot_km": 2.452983217535149
+    "dist_depot_km": 2.452983217535149,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #117)"
   },
   {
     "id": 118,
     "node_id": 13056731695,
     "lat": 10.80124,
     "lon": 106.71348,
-    "dist_depot_km": 0.11130271191844185
+    "dist_depot_km": 0.11130271191844185,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #118)"
   },
   {
     "id": 119,
     "node_id": 5740554293,
     "lat": 10.8239829,
     "lon": 106.7407871,
-    "dist_depot_km": 3.8223413675046873
+    "dist_depot_km": 3.8223413675046873,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #119)"
   },
   {
     "id": 120,
     "node_id": 2036083091,
     "lat": 10.7894374,
     "lon": 106.7192295,
-    "dist_depot_km": 1.4037940124596393
+    "dist_depot_km": 1.4037940124596393,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #120)"
   },
   {
     "id": 121,
     "node_id": 5738429900,
     "lat": 10.7913317,
     "lon": 106.7335805,
-    "dist_depot_km": 2.3511650958472914
+    "dist_depot_km": 2.3511650958472914,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #121)"
   },
   {
     "id": 122,
     "node_id": 11052082820,
     "lat": 10.8294672,
     "lon": 106.7247581,
-    "dist_depot_km": 3.331049965713219
+    "dist_depot_km": 3.331049965713219,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #122)"
   },
   {
     "id": 123,
     "node_id": 2489022407,
     "lat": 10.8373627,
     "lon": 106.7235221,
-    "dist_depot_km": 4.132839457427014
+    "dist_depot_km": 4.132839457427014,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #123)"
   },
   {
     "id": 124,
     "node_id": 2493366312,
     "lat": 10.8191249,
     "lon": 106.6898647,
-    "dist_depot_km": 3.342715030887373
+    "dist_depot_km": 3.342715030887373,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #124)"
   },
   {
     "id": 125,
     "node_id": 2654781884,
     "lat": 10.8152239,
     "lon": 106.7330625,
-    "dist_depot_km": 2.553326195547274
+    "dist_depot_km": 2.553326195547274,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #125)"
   },
   {
     "id": 126,
     "node_id": 2964936530,
     "lat": 10.82347,
     "lon": 106.719801,
-    "dist_depot_km": 2.5386421292166492
+    "dist_depot_km": 2.5386421292166492,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #126)"
   },
   {
     "id": 127,
     "node_id": 6331271883,
     "lat": 10.7961611,
     "lon": 106.6907296,
-    "dist_depot_km": 2.651433859334551
+    "dist_depot_km": 2.651433859334551,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #127)"
   },
   {
     "id": 128,
     "node_id": 2654781894,
     "lat": 10.8136364,
     "lon": 106.7260975,
-    "dist_depot_km": 1.8720616878011165
+    "dist_depot_km": 1.8720616878011165,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #128)"
   },
   {
     "id": 129,
     "node_id": 3216187614,
     "lat": 10.8272308,
     "lon": 106.7062538,
-    "dist_depot_km": 3.026077117760081
+    "dist_depot_km": 3.026077117760081,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #129)"
   },
   {
     "id": 130,
     "node_id": 5019781007,
     "lat": 10.8089298,
     "lon": 106.7528522,
-    "dist_depot_km": 4.268789469608297
+    "dist_depot_km": 4.268789469608297,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #130)"
   },
   {
     "id": 131,
     "node_id": 2036083164,
     "lat": 10.7832972,
     "lon": 106.7049734,
-    "dist_depot_km": 2.242307286172994
+    "dist_depot_km": 2.242307286172994,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #131)"
   },
   {
     "id": 132,
     "node_id": 411921020,
     "lat": 10.7897473,
     "lon": 106.6773349,
-    "dist_depot_km": 4.2469656292823
+    "dist_depot_km": 4.2469656292823,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #132)"
   },
   {
     "id": 133,
     "node_id": 411919314,
     "lat": 10.7850779,
     "lon": 106.6770231,
-    "dist_depot_km": 4.460921683181629
+    "dist_depot_km": 4.460921683181629,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #133)"
   },
   {
     "id": 134,
     "node_id": 5740554284,
     "lat": 10.8260234,
     "lon": 106.7355162,
-    "dist_depot_km": 3.5837192939489433
+    "dist_depot_km": 3.5837192939489433,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #134)"
   },
   {
     "id": 135,
     "node_id": 3727363045,
     "lat": 10.8249548,
     "lon": 106.7218049,
-    "dist_depot_km": 2.754451205682158
+    "dist_depot_km": 2.754451205682158,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #135)"
   },
   {
     "id": 136,
     "node_id": 1275848305,
     "lat": 10.7988717,
     "lon": 106.74246,
-    "dist_depot_km": 3.059510237767873
+    "dist_depot_km": 3.059510237767873,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #136)"
   },
   {
     "id": 137,
     "node_id": 11499209669,
     "lat": 10.8011355,
     "lon": 106.7381769,
-    "dist_depot_km": 2.5815840007834625
+    "dist_depot_km": 2.5815840007834625,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #137)"
   },
   {
     "id": 138,
     "node_id": 5773531521,
     "lat": 10.8017076,
     "lon": 106.7067098,
-    "dist_depot_km": 0.8512590730344265
+    "dist_depot_km": 0.8512590730344265,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #138)"
   },
   {
     "id": 139,
     "node_id": 4027213055,
     "lat": 10.7957845,
     "lon": 106.7361631,
-    "dist_depot_km": 2.437293935355264
+    "dist_depot_km": 2.437293935355264,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #139)"
   },
   {
     "id": 140,
     "node_id": 5735879121,
     "lat": 10.8124394,
     "lon": 106.7285661,
-    "dist_depot_km": 1.9770178602502166
+    "dist_depot_km": 1.9770178602502166,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #140)"
   },
   {
     "id": 141,
     "node_id": 3727359022,
     "lat": 10.8295869,
     "lon": 106.7298979,
-    "dist_depot_km": 3.5703107371913783
+    "dist_depot_km": 3.5703107371913783,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #141)"
   },
   {
     "id": 142,
     "node_id": 2899917254,
     "lat": 10.8311756,
     "lon": 106.6976797,
-    "dist_depot_km": 3.799254517067415
+    "dist_depot_km": 3.799254517067415,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #142)"
   },
   {
     "id": 143,
     "node_id": 5738082296,
     "lat": 10.8189069,
     "lon": 106.7004913,
-    "dist_depot_km": 2.4891883271915916
+    "dist_depot_km": 2.4891883271915916,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #143)"
   },
   {
     "id": 144,
     "node_id": 5750775975,
     "lat": 10.8371575,
     "lon": 106.7136785,
-    "dist_depot_km": 3.992287433915204
+    "dist_depot_km": 3.992287433915204,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #144)"
   },
   {
     "id": 145,
     "node_id": 13892280423,
     "lat": 10.7943174,
     "lon": 106.701281,
-    "dist_depot_km": 1.6312668882861034
+    "dist_depot_km": 1.6312668882861034,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #145)"
   },
   {
     "id": 146,
     "node_id": 11363674909,
     "lat": 10.7743078,
     "lon": 106.6895518,
-    "dist_depot_km": 4.038545969322269
+    "dist_depot_km": 4.038545969322269,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #146)"
   },
   {
     "id": 147,
     "node_id": 4974857516,
     "lat": 10.8254932,
     "lon": 106.7054126,
-    "dist_depot_km": 2.8728211267746246
+    "dist_depot_km": 2.8728211267746246,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #147)"
   },
   {
     "id": 148,
     "node_id": 5737979213,
     "lat": 10.8165929,
     "lon": 106.706553,
-    "dist_depot_km": 1.915765513104315
+    "dist_depot_km": 1.915765513104315,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #148)"
   },
   {
     "id": 149,
     "node_id": 5772102512,
     "lat": 10.8191696,
     "lon": 106.7027629,
-    "dist_depot_km": 2.3698642966480925
+    "dist_depot_km": 2.3698642966480925,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #149)"
   },
   {
     "id": 150,
     "node_id": 4672005350,
     "lat": 10.81469,
     "lon": 106.67903,
-    "dist_depot_km": 4.147178167508269
+    "dist_depot_km": 4.147178167508269,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #150)"
   },
   {
     "id": 151,
     "node_id": 366377501,
     "lat": 10.8028659,
     "lon": 106.7197241,
-    "dist_depot_km": 0.5988652191380158
+    "dist_depot_km": 0.5988652191380158,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #151)"
   },
   {
     "id": 152,
     "node_id": 5737980742,
     "lat": 10.8155747,
     "lon": 106.7029592,
-    "dist_depot_km": 2.032071699468324
+    "dist_depot_km": 2.032071699468324,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #152)"
   },
   {
     "id": 153,
     "node_id": 411918913,
     "lat": 10.7889195,
     "lon": 106.6980433,
-    "dist_depot_km": 2.2533888433315274
+    "dist_depot_km": 2.2533888433315274,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #153)"
   },
   {
     "id": 154,
     "node_id": 6331271857,
     "lat": 10.7965042,
     "lon": 106.688337,
-    "dist_depot_km": 2.899870997519778
+    "dist_depot_km": 2.899870997519778,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #154)"
   },
   {
     "id": 155,
     "node_id": 2654781852,
     "lat": 10.8132502,
     "lon": 106.7297802,
-    "dist_depot_km": 2.136546673961369
+    "dist_depot_km": 2.136546673961369,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #155)"
   },
   {
     "id": 156,
     "node_id": 6857705451,
     "lat": 10.7924492,
     "lon": 106.7334443,
-    "dist_depot_km": 2.2825527320655064
+    "dist_depot_km": 2.2825527320655064,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #156)"
   },
   {
     "id": 157,
     "node_id": 7782285644,
     "lat": 10.807614,
     "lon": 106.7502593,
-    "dist_depot_km": 3.963428588010685
+    "dist_depot_km": 3.963428588010685,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #157)"
   },
   {
     "id": 158,
     "node_id": 7795088072,
     "lat": 10.7937713,
     "lon": 106.7357302,
-    "dist_depot_km": 2.4572849988012653
+    "dist_depot_km": 2.4572849988012653,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #158)"
   },
   {
     "id": 159,
     "node_id": 13671339230,
     "lat": 10.8286313,
     "lon": 106.7029452,
-    "dist_depot_km": 3.2952247211867234
+    "dist_depot_km": 3.2952247211867234,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #159)"
   },
   {
     "id": 160,
     "node_id": 5755149899,
     "lat": 10.8051035,
     "lon": 106.6979322,
-    "dist_depot_km": 1.85768140977943
+    "dist_depot_km": 1.85768140977943,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #160)"
   },
   {
     "id": 161,
     "node_id": 2146838341,
     "lat": 10.8134242,
     "lon": 106.7047401,
-    "dist_depot_km": 1.7244034380508877
+    "dist_depot_km": 1.7244034380508877,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #161)"
   },
   {
     "id": 162,
     "node_id": 1401875346,
     "lat": 10.8189768,
     "lon": 106.6840753,
-    "dist_depot_km": 3.859813677438268
+    "dist_depot_km": 3.859813677438268,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #162)"
   },
   {
     "id": 163,
     "node_id": 1497276503,
     "lat": 10.7998405,
     "lon": 106.7011074,
-    "dist_depot_km": 1.4680180623537076
+    "dist_depot_km": 1.4680180623537076,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #163)"
   },
   {
     "id": 164,
     "node_id": 4933402688,
     "lat": 10.7901039,
     "lon": 106.7189866,
-    "dist_depot_km": 1.3252585354695485
+    "dist_depot_km": 1.3252585354695485,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #164)"
   },
   {
     "id": 165,
     "node_id": 411925988,
     "lat": 10.7885752,
     "lon": 106.6977273,
-    "dist_depot_km": 2.3039629912204513
+    "dist_depot_km": 2.3039629912204513,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #165)"
   },
   {
     "id": 166,
     "node_id": 4605582026,
     "lat": 10.7759902,
     "lon": 106.6828327,
-    "dist_depot_km": 4.444345570143791
+    "dist_depot_km": 4.444345570143791,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #166)"
   },
   {
     "id": 167,
     "node_id": 9532347066,
     "lat": 10.8232031,
     "lon": 106.7032688,
-    "dist_depot_km": 2.732147917797106
+    "dist_depot_km": 2.732147917797106,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #167)"
   },
   {
     "id": 168,
     "node_id": 3120390899,
     "lat": 10.7997642,
     "lon": 106.747643,
-    "dist_depot_km": 3.6172083080532675
+    "dist_depot_km": 3.6172083080532675,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #168)"
   },
   {
     "id": 169,
     "node_id": 5738430638,
     "lat": 10.7964115,
     "lon": 106.735855,
-    "dist_depot_km": 2.3883063316450412
+    "dist_depot_km": 2.3883063316450412,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #169)"
   },
   {
     "id": 170,
     "node_id": 4604865410,
     "lat": 10.773162,
     "lon": 106.687158,
-    "dist_depot_km": 4.309687924322201
+    "dist_depot_km": 4.309687924322201,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #170)"
   },
   {
     "id": 171,
     "node_id": 5731653479,
     "lat": 10.8135787,
     "lon": 106.7030278,
-    "dist_depot_km": 1.8581196605179178
+    "dist_depot_km": 1.8581196605179178,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #171)"
   },
   {
     "id": 172,
     "node_id": 4947173925,
     "lat": 10.7973233,
     "lon": 106.7241275,
-    "dist_depot_km": 1.1344959128912684
+    "dist_depot_km": 1.1344959128912684,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #172)"
   },
   {
     "id": 173,
     "node_id": 5738018014,
     "lat": 10.8119296,
     "lon": 106.7203358,
-    "dist_depot_km": 1.3503040710049783
+    "dist_depot_km": 1.3503040710049783,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #173)"
   },
   {
     "id": 174,
     "node_id": 2335020437,
     "lat": 10.832995,
     "lon": 106.7067614,
-    "dist_depot_km": 3.6287066228144806
+    "dist_depot_km": 3.6287066228144806,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #174)"
   },
   {
     "id": 175,
     "node_id": 2030638872,
     "lat": 10.8013004,
     "lon": 106.711558,
-    "dist_depot_km": 0.3209699382579857
+    "dist_depot_km": 0.3209699382579857,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #175)"
   },
   {
     "id": 176,
     "node_id": 6112536840,
     "lat": 10.8044609,
     "lon": 106.7510828,
-    "dist_depot_km": 4.005138259357782
+    "dist_depot_km": 4.005138259357782,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #176)"
   },
   {
     "id": 177,
     "node_id": 9338675727,
     "lat": 10.81153,
     "lon": 106.67853,
-    "dist_depot_km": 4.086113082784749
+    "dist_depot_km": 4.086113082784749,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #177)"
   },
   {
     "id": 178,
     "node_id": 11332805134,
     "lat": 10.7753875,
     "lon": 106.7156989,
-    "dist_depot_km": 2.868167913743339
+    "dist_depot_km": 2.868167913743339,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #178)"
   },
   {
     "id": 179,
     "node_id": 366428130,
     "lat": 10.8261608,
     "lon": 106.7190823,
-    "dist_depot_km": 2.815336372184657
+    "dist_depot_km": 2.815336372184657,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #179)"
   },
   {
     "id": 180,
     "node_id": 13985878678,
     "lat": 10.7822337,
     "lon": 106.7480712,
-    "dist_depot_km": 4.222620722522497
+    "dist_depot_km": 4.222620722522497,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #180)"
   },
   {
     "id": 181,
     "node_id": 411926696,
     "lat": 10.7767991,
     "lon": 106.6979831,
-    "dist_depot_km": 3.252567137711103
+    "dist_depot_km": 3.252567137711103,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #181)"
   },
   {
     "id": 182,
     "node_id": 9352081764,
     "lat": 10.7998028,
     "lon": 106.7177345,
-    "dist_depot_km": 0.38526337205514405
+    "dist_depot_km": 0.38526337205514405,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #182)"
   },
   {
     "id": 183,
     "node_id": 2692325261,
     "lat": 10.7861697,
     "lon": 106.7267128,
-    "dist_depot_km": 2.13462046663061
+    "dist_depot_km": 2.13462046663061,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #183)"
   },
   {
     "id": 184,
     "node_id": 4974857500,
     "lat": 10.8239217,
     "lon": 106.7008898,
-    "dist_depot_km": 2.926292962173997
+    "dist_depot_km": 2.926292962173997,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #184)"
   },
   {
     "id": 185,
     "node_id": 6595074276,
     "lat": 10.7926773,
     "lon": 106.7298915,
-    "dist_depot_km": 1.92646550821466
+    "dist_depot_km": 1.92646550821466,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #185)"
   },
   {
     "id": 186,
     "node_id": 5778360122,
     "lat": 10.7803588,
     "lon": 106.6929611,
-    "dist_depot_km": 3.296507630539825
+    "dist_depot_km": 3.296507630539825,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #186)"
   },
   {
     "id": 187,
     "node_id": 3727364043,
     "lat": 10.8283944,
     "lon": 106.7312613,
-    "dist_depot_km": 3.5287004130098505
+    "dist_depot_km": 3.5287004130098505,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #187)"
   },
   {
     "id": 188,
     "node_id": 14301901308,
     "lat": 10.7870995,
     "lon": 106.7316359,
-    "dist_depot_km": 2.43733030950956
+    "dist_depot_km": 2.43733030950956,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #188)"
   },
   {
     "id": 189,
     "node_id": 11414550272,
     "lat": 10.8163914,
     "lon": 106.7063288,
-    "dist_depot_km": 1.9071410947268506
+    "dist_depot_km": 1.9071410947268506,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #189)"
   },
   {
     "id": 190,
     "node_id": 5792540613,
     "lat": 10.8268638,
     "lon": 106.6956486,
-    "dist_depot_km": 3.512804220182518
+    "dist_depot_km": 3.512804220182518,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #190)"
   },
   {
     "id": 191,
     "node_id": 2038003816,
     "lat": 10.7982574,
     "lon": 106.7386233,
-    "dist_depot_km": 2.6504496683099643
+    "dist_depot_km": 2.6504496683099643,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #191)"
   },
   {
     "id": 192,
     "node_id": 5742817878,
     "lat": 10.8263985,
     "lon": 106.6956219,
-    "dist_depot_km": 3.472776683362512
+    "dist_depot_km": 3.472776683362512,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #192)"
   },
   {
     "id": 193,
     "node_id": 5773531737,
     "lat": 10.8012789,
     "lon": 106.7067269,
-    "dist_depot_km": 0.8475731523931639
+    "dist_depot_km": 0.8475731523931639,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #193)"
   },
   {
     "id": 194,
     "node_id": 1769173984,
     "lat": 10.7625661,
     "lon": 106.708407,
-    "dist_depot_km": 4.339516686046349
+    "dist_depot_km": 4.339516686046349,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #194)"
   },
   {
     "id": 195,
     "node_id": 1497312726,
     "lat": 10.7915893,
     "lon": 106.730523,
-    "dist_depot_km": 2.046996601879554
+    "dist_depot_km": 2.046996601879554,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #195)"
   },
   {
     "id": 196,
     "node_id": 702328760,
     "lat": 10.8094456,
     "lon": 106.6784846,
-    "dist_depot_km": 4.032135431392342
+    "dist_depot_km": 4.032135431392342,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #196)"
   },
   {
     "id": 197,
     "node_id": 5733023083,
     "lat": 10.8101059,
     "lon": 106.705636,
-    "dist_depot_km": 1.3825013096507368
+    "dist_depot_km": 1.3825013096507368,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #197)"
   },
   {
     "id": 198,
     "node_id": 5738447177,
     "lat": 10.8193152,
     "lon": 106.694565,
-    "dist_depot_km": 2.9610341177455823
+    "dist_depot_km": 2.9610341177455823,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #198)"
   },
   {
     "id": 199,
     "node_id": 8366537872,
     "lat": 10.8399196,
     "lon": 106.7225593,
-    "dist_depot_km": 4.38678775931079
+    "dist_depot_km": 4.38678775931079,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #199)"
   },
   {
     "id": 200,
     "node_id": 4907667710,
     "lat": 10.7732949,
     "lon": 106.7265686,
-    "dist_depot_km": 3.365388427823986
+    "dist_depot_km": 3.365388427823986,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #200)"
   },
   {
     "id": 201,
     "node_id": 5742464624,
     "lat": 10.8251339,
     "lon": 106.7037919,
-    "dist_depot_km": 2.9018976431425845
+    "dist_depot_km": 2.9018976431425845,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #201)"
   },
   {
     "id": 202,
     "node_id": 366371143,
     "lat": 10.7949188,
     "lon": 106.7349083,
-    "dist_depot_km": 2.331858689754579
+    "dist_depot_km": 2.331858689754579,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #202)"
   },
   {
     "id": 203,
     "node_id": 9713062518,
     "lat": 10.7742764,
     "lon": 106.7010257,
-    "dist_depot_km": 3.3301125164131116
+    "dist_depot_km": 3.3301125164131116,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #203)"
   },
   {
     "id": 204,
     "node_id": 5752790982,
     "lat": 10.8373489,
     "lon": 106.6986149,
-    "dist_depot_km": 4.370380903358122
+    "dist_depot_km": 4.370380903358122,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #204)"
   },
   {
     "id": 205,
     "node_id": 5792540038,
     "lat": 10.8271339,
     "lon": 106.6926415,
-    "dist_depot_km": 3.737225634326915
+    "dist_depot_km": 3.737225634326915,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #205)"
   },
   {
     "id": 206,
     "node_id": 3118891531,
     "lat": 10.8339888,
     "lon": 106.7303952,
-    "dist_depot_km": 4.031133675423013
+    "dist_depot_km": 4.031133675423013,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #206)"
   },
   {
     "id": 207,
     "node_id": 366451009,
     "lat": 10.8051533,
     "lon": 106.7468574,
-    "dist_depot_km": 3.5552241037252257
+    "dist_depot_km": 3.5552241037252257,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #207)"
   },
   {
     "id": 208,
     "node_id": 2654781889,
     "lat": 10.8156926,
     "lon": 106.7285902,
-    "dist_depot_km": 2.2244266836161493
+    "dist_depot_km": 2.2244266836161493,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #208)"
   },
   {
     "id": 209,
     "node_id": 5750654848,
     "lat": 10.8365173,
     "lon": 106.7200997,
-    "dist_depot_km": 3.9674808287782817
+    "dist_depot_km": 3.9674808287782817,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #209)"
   },
   {
     "id": 210,
     "node_id": 366392974,
     "lat": 10.8126007,
     "lon": 106.7322188,
-    "dist_depot_km": 2.30950930606065
+    "dist_depot_km": 2.30950930606065,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #210)"
   },
   {
     "id": 211,
     "node_id": 14302539974,
     "lat": 10.8100676,
     "lon": 106.7068268,
-    "dist_depot_km": 1.2918252489220297
+    "dist_depot_km": 1.2918252489220297,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #211)"
   },
   {
     "id": 212,
     "node_id": 6848008272,
     "lat": 10.7796159,
     "lon": 106.7398066,
-    "dist_depot_km": 3.6542542401398515
+    "dist_depot_km": 3.6542542401398515,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #212)"
   },
   {
     "id": 213,
     "node_id": 2008273924,
     "lat": 10.7946532,
     "lon": 106.6770439,
-    "dist_depot_km": 4.14811741980456
+    "dist_depot_km": 4.14811741980456,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #213)"
   },
   {
     "id": 214,
     "node_id": 14300871160,
     "lat": 10.7887486,
     "lon": 106.6988667,
-    "dist_depot_km": 2.194473735331746
+    "dist_depot_km": 2.194473735331746,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #214)"
   },
   {
     "id": 215,
     "node_id": 10798727410,
     "lat": 10.7935205,
     "lon": 106.7226086,
-    "dist_depot_km": 1.2281187201992843
+    "dist_depot_km": 1.2281187201992843,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #215)"
   },
   {
     "id": 216,
     "node_id": 366469145,
     "lat": 10.8030766,
     "lon": 106.6933269,
-    "dist_depot_km": 2.317954634749411
+    "dist_depot_km": 2.317954634749411,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #216)"
   },
   {
     "id": 217,
     "node_id": 3727363046,
     "lat": 10.8250065,
     "lon": 106.7220037,
-    "dist_depot_km": 2.766278424990363
+    "dist_depot_km": 2.766278424990363,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #217)"
   },
   {
     "id": 218,
     "node_id": 5789200121,
     "lat": 10.8225174,
     "lon": 106.6855595,
-    "dist_depot_km": 3.944124880702042
+    "dist_depot_km": 3.944124880702042,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #218)"
   },
   {
     "id": 219,
     "node_id": 4974857511,
     "lat": 10.8267026,
     "lon": 106.7011207,
-    "dist_depot_km": 3.184562127044348
+    "dist_depot_km": 3.184562127044348,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #219)"
   },
   {
     "id": 220,
     "node_id": 11125003323,
     "lat": 10.8199785,
     "lon": 106.6949654,
-    "dist_depot_km": 2.980160962576937
+    "dist_depot_km": 2.980160962576937,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #220)"
   },
   {
     "id": 221,
     "node_id": 5742464640,
     "lat": 10.8214167,
     "lon": 106.7068818,
-    "dist_depot_km": 2.3928513388488986
+    "dist_depot_km": 2.3928513388488986,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #221)"
   },
   {
     "id": 222,
     "node_id": 5742713529,
     "lat": 10.8269204,
     "lon": 106.6863424,
-    "dist_depot_km": 4.192428898325512
+    "dist_depot_km": 4.192428898325512,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #222)"
   },
   {
     "id": 223,
     "node_id": 6665129429,
     "lat": 10.796846,
     "lon": 106.735971,
-    "dist_depot_km": 2.3904229428172354
+    "dist_depot_km": 2.3904229428172354,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #223)"
   },
   {
     "id": 224,
     "node_id": 11068136516,
     "lat": 10.8327215,
     "lon": 106.7030833,
-    "dist_depot_km": 3.713723092201677
+    "dist_depot_km": 3.713723092201677,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #224)"
   },
   {
     "id": 225,
     "node_id": 5764899745,
     "lat": 10.7974247,
     "lon": 106.6891246,
-    "dist_depot_km": 2.7983230031191226
+    "dist_depot_km": 2.7983230031191226,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #225)"
   },
   {
     "id": 226,
     "node_id": 10848392779,
     "lat": 10.824494,
     "lon": 106.7186404,
-    "dist_depot_km": 2.624748206076168
+    "dist_depot_km": 2.624748206076168,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #226)"
   },
   {
     "id": 227,
     "node_id": 3138809934,
     "lat": 10.8290807,
     "lon": 106.6994169,
-    "dist_depot_km": 3.504584250169456
+    "dist_depot_km": 3.504584250169456,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #227)"
   },
   {
     "id": 228,
     "node_id": 1497276486,
     "lat": 10.7982278,
     "lon": 106.6998695,
-    "dist_depot_km": 1.62897228244489
+    "dist_depot_km": 1.62897228244489,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #228)"
   },
   {
     "id": 229,
     "node_id": 6857705458,
     "lat": 10.7913266,
     "lon": 106.7471107,
-    "dist_depot_km": 3.720725483866456
+    "dist_depot_km": 3.720725483866456,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #229)"
   },
   {
     "id": 230,
     "node_id": 5773399898,
     "lat": 10.8048667,
     "lon": 106.6970731,
-    "dist_depot_km": 1.9432161702852484
+    "dist_depot_km": 1.9432161702852484,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #230)"
   },
   {
     "id": 231,
     "node_id": 5742782673,
     "lat": 10.8280806,
     "lon": 106.7283566,
-    "dist_depot_km": 3.3444520927305392
+    "dist_depot_km": 3.3444520927305392,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #231)"
   },
   {
     "id": 232,
     "node_id": 5772099218,
     "lat": 10.8219559,
     "lon": 106.695598,
-    "dist_depot_km": 3.0911961678512268
+    "dist_depot_km": 3.0911961678512268,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #232)"
   },
   {
     "id": 233,
     "node_id": 411925939,
     "lat": 10.7783352,
     "lon": 106.7045538,
-    "dist_depot_km": 2.759978145502092
+    "dist_depot_km": 2.759978145502092,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #233)"
   },
   {
     "id": 234,
     "node_id": 5772102527,
     "lat": 10.8193735,
     "lon": 106.7039648,
-    "dist_depot_km": 2.321382932638743
+    "dist_depot_km": 2.321382932638743,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #234)"
   },
   {
     "id": 235,
     "node_id": 5789200105,
     "lat": 10.8220158,
     "lon": 106.6855373,
-    "dist_depot_km": 3.9129286624698554
+    "dist_depot_km": 3.9129286624698554,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #235)"
   },
   {
     "id": 236,
     "node_id": 3137351450,
     "lat": 10.8316892,
     "lon": 106.7038878,
-    "dist_depot_km": 3.5766380549392918
+    "dist_depot_km": 3.5766380549392918,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #236)"
   },
   {
     "id": 237,
     "node_id": 8344496945,
     "lat": 10.8394665,
     "lon": 106.7145087,
-    "dist_depot_km": 4.2475816059220985
+    "dist_depot_km": 4.2475816059220985,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #237)"
   },
   {
     "id": 238,
     "node_id": 4089515445,
     "lat": 10.8056371,
     "lon": 106.7171283,
-    "dist_depot_km": 0.5698227287566899
+    "dist_depot_km": 0.5698227287566899,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #238)"
   },
   {
     "id": 239,
     "node_id": 2692325117,
     "lat": 10.7955932,
     "lon": 106.7294154,
-    "dist_depot_km": 1.7412937805306452
+    "dist_depot_km": 1.7412937805306452,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #239)"
   },
   {
     "id": 240,
     "node_id": 366373684,
     "lat": 10.7954565,
     "lon": 106.730999,
-    "dist_depot_km": 1.908569639049746
+    "dist_depot_km": 1.908569639049746,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #240)"
   },
   {
     "id": 241,
     "node_id": 729523390,
     "lat": 10.8021969,
     "lon": 106.711427,
-    "dist_depot_km": 0.35285944885328585
+    "dist_depot_km": 0.35285944885328585,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #241)"
   },
   {
     "id": 242,
     "node_id": 5738202408,
     "lat": 10.7903427,
     "lon": 106.7156357,
-    "dist_depot_km": 1.2115052791146095
+    "dist_depot_km": 1.2115052791146095,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #242)"
   },
   {
     "id": 243,
     "node_id": 3681782933,
     "lat": 10.8352101,
     "lon": 106.7325487,
-    "dist_depot_km": 4.25725463366301
+    "dist_depot_km": 4.25725463366301,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #243)"
   },
   {
     "id": 244,
     "node_id": 4952434720,
     "lat": 10.8019613,
     "lon": 106.7295279,
-    "dist_depot_km": 1.6407213859508578
+    "dist_depot_km": 1.6407213859508578,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #244)"
   },
   {
     "id": 245,
     "node_id": 411926545,
     "lat": 10.7746638,
     "lon": 106.6995694,
-    "dist_depot_km": 3.365449335984048
+    "dist_depot_km": 3.365449335984048,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #245)"
   },
   {
     "id": 246,
     "node_id": 11553101394,
     "lat": 10.7680881,
     "lon": 106.7058878,
-    "dist_depot_km": 3.7934777387482623
+    "dist_depot_km": 3.7934777387482623,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #246)"
   },
   {
     "id": 247,
     "node_id": 411926429,
     "lat": 10.7728506,
     "lon": 106.6971681,
-    "dist_depot_km": 3.6706166611541553
+    "dist_depot_km": 3.6706166611541553,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #247)"
   },
   {
     "id": 248,
     "node_id": 4901194423,
     "lat": 10.8301971,
     "lon": 106.6866609,
-    "dist_depot_km": 4.4241948368220685
+    "dist_depot_km": 4.4241948368220685,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #248)"
   },
   {
     "id": 249,
     "node_id": 5738455786,
     "lat": 10.7935901,
     "lon": 106.7377231,
-    "dist_depot_km": 2.6692732662828074
+    "dist_depot_km": 2.6692732662828074,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #249)"
   },
   {
     "id": 250,
     "node_id": 5735273709,
     "lat": 10.8039536,
     "lon": 106.737853,
-    "dist_depot_km": 2.5645374217781383
+    "dist_depot_km": 2.5645374217781383,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #250)"
   },
   {
     "id": 251,
     "node_id": 366428195,
     "lat": 10.7876275,
     "lon": 106.715324,
-    "dist_depot_km": 1.5092240507666492
+    "dist_depot_km": 1.5092240507666492,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #251)"
   },
   {
     "id": 252,
     "node_id": 5740633059,
     "lat": 10.824283,
     "lon": 106.7361581,
-    "dist_depot_km": 3.484453508595687
+    "dist_depot_km": 3.484453508595687,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #252)"
   },
   {
     "id": 253,
     "node_id": 2038584719,
     "lat": 10.7983581,
     "lon": 106.7373893,
-    "dist_depot_km": 2.515556480872031
+    "dist_depot_km": 2.515556480872031,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #253)"
   },
   {
     "id": 254,
     "node_id": 12965813709,
     "lat": 10.8279,
     "lon": 106.7016321,
-    "dist_depot_km": 3.279026553466361
+    "dist_depot_km": 3.279026553466361,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #254)"
   },
   {
     "id": 255,
     "node_id": 2964936529,
     "lat": 10.824042,
     "lon": 106.7243752,
-    "dist_depot_km": 2.7546159149345533
+    "dist_depot_km": 2.7546159149345533,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #255)"
   },
   {
     "id": 256,
     "node_id": 9687230163,
     "lat": 10.8225204,
     "lon": 106.7023005,
-    "dist_depot_km": 2.7147625239519027
+    "dist_depot_km": 2.7147625239519027,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #256)"
   },
   {
     "id": 257,
     "node_id": 5768658305,
     "lat": 10.8113723,
     "lon": 106.6974505,
-    "dist_depot_km": 2.1750121283798514
+    "dist_depot_km": 2.1750121283798514,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #257)"
   },
   {
     "id": 258,
     "node_id": 5786407231,
     "lat": 10.8180842,
     "lon": 106.6831055,
-    "dist_depot_km": 3.9025247634668565
+    "dist_depot_km": 3.9025247634668565,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #258)"
   },
   {
     "id": 259,
     "node_id": 6349849950,
     "lat": 10.7975948,
     "lon": 106.6755689,
-    "dist_depot_km": 4.263613711327848
+    "dist_depot_km": 4.263613711327848,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #259)"
   },
   {
     "id": 260,
     "node_id": 2418558821,
     "lat": 10.8328606,
     "lon": 106.7321888,
-    "dist_depot_km": 4.008773228721221
+    "dist_depot_km": 4.008773228721221,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #260)"
   },
   {
     "id": 261,
     "node_id": 5738082285,
     "lat": 10.8191638,
     "lon": 106.7015789,
-    "dist_depot_km": 2.441469087565094
+    "dist_depot_km": 2.441469087565094,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #261)"
   },
   {
     "id": 262,
     "node_id": 8345421122,
     "lat": 10.8209741,
     "lon": 106.7284428,
-    "dist_depot_km": 2.6699813177658527
+    "dist_depot_km": 2.6699813177658527,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #262)"
   },
   {
     "id": 263,
     "node_id": 3099866248,
     "lat": 10.8275554,
     "lon": 106.7025436,
-    "dist_depot_km": 3.2027724051642137
+    "dist_depot_km": 3.2027724051642137,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #263)"
   },
   {
     "id": 264,
     "node_id": 411920001,
     "lat": 10.7952656,
     "lon": 106.6863289,
-    "dist_depot_km": 3.1414309758431767
+    "dist_depot_km": 3.1414309758431767,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #264)"
   },
   {
     "id": 265,
     "node_id": 3137351466,
     "lat": 10.8336733,
     "lon": 106.7058101,
-    "dist_depot_km": 3.7269852162897936
+    "dist_depot_km": 3.7269852162897936,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #265)"
   },
   {
     "id": 266,
     "node_id": 4952269910,
     "lat": 10.809987,
     "lon": 106.7334408,
-    "dist_depot_km": 2.2839204945933242
+    "dist_depot_km": 2.2839204945933242,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #266)"
   },
   {
     "id": 267,
     "node_id": 5780792886,
     "lat": 10.8186872,
     "lon": 106.7429505,
-    "dist_depot_km": 3.6593087863944853
+    "dist_depot_km": 3.6593087863944853,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #267)"
   },
   {
     "id": 268,
     "node_id": 1271148438,
     "lat": 10.8004179,
     "lon": 106.7421697,
-    "dist_depot_km": 3.018171610474857
+    "dist_depot_km": 3.018171610474857,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #268)"
   },
   {
     "id": 269,
     "node_id": 1769496227,
     "lat": 10.7908711,
     "lon": 106.714991,
-    "dist_depot_km": 1.1477571199243137
+    "dist_depot_km": 1.1477571199243137,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #269)"
   },
   {
     "id": 270,
     "node_id": 3137388739,
     "lat": 10.8355276,
     "lon": 106.7280176,
-    "dist_depot_km": 4.085482244534587
+    "dist_depot_km": 4.085482244534587,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #270)"
   },
   {
     "id": 271,
     "node_id": 5737917392,
     "lat": 10.8121892,
     "lon": 106.7207421,
-    "dist_depot_km": 1.396827901879335
+    "dist_depot_km": 1.396827901879335,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #271)"
   },
   {
     "id": 272,
     "node_id": 366382945,
     "lat": 10.8065608,
     "lon": 106.7028068,
-    "dist_depot_km": 1.4069756193232694
+    "dist_depot_km": 1.4069756193232694,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #272)"
   },
   {
     "id": 273,
     "node_id": 14302132275,
     "lat": 10.8260218,
     "lon": 106.7362795,
-    "dist_depot_km": 3.6373627494560363
+    "dist_depot_km": 3.6373627494560363,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #273)"
   },
   {
     "id": 274,
     "node_id": 6639705119,
     "lat": 10.7825132,
     "lon": 106.7061973,
-    "dist_depot_km": 2.26317640344853
+    "dist_depot_km": 2.26317640344853,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #274)"
   },
   {
     "id": 275,
     "node_id": 8366502852,
     "lat": 10.8226516,
     "lon": 106.7004298,
-    "dist_depot_km": 2.8325430797117233
+    "dist_depot_km": 2.8325430797117233,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #275)"
   },
   {
     "id": 276,
     "node_id": 14301578632,
     "lat": 10.8390476,
     "lon": 106.7059182,
-    "dist_depot_km": 4.304026486230186
+    "dist_depot_km": 4.304026486230186,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #276)"
   },
   {
     "id": 277,
     "node_id": 11553101397,
     "lat": 10.7671502,
     "lon": 106.7064269,
-    "dist_depot_km": 3.8806763868659173
+    "dist_depot_km": 3.8806763868659173,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #277)"
   },
   {
     "id": 278,
     "node_id": 11397901484,
     "lat": 10.8317128,
     "lon": 106.6876846,
-    "dist_depot_km": 4.474337491931689
+    "dist_depot_km": 4.474337491931689,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #278)"
   },
   {
     "id": 279,
     "node_id": 2034589247,
     "lat": 10.7648088,
     "lon": 106.7062167,
-    "dist_depot_km": 4.139158361220564
+    "dist_depot_km": 4.139158361220564,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #279)"
   },
   {
     "id": 280,
     "node_id": 5750709351,
     "lat": 10.8344045,
     "lon": 106.7255956,
-    "dist_depot_km": 3.879172124519524
+    "dist_depot_km": 3.879172124519524,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #280)"
   },
   {
     "id": 281,
     "node_id": 2392565956,
     "lat": 10.8287038,
     "lon": 106.7141514,
-    "dist_depot_km": 3.0531583983780752
+    "dist_depot_km": 3.0531583983780752,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #281)"
   },
   {
     "id": 282,
     "node_id": 6665150614,
     "lat": 10.7685893,
     "lon": 106.7135034,
-    "dist_depot_km": 3.6214183109865266
+    "dist_depot_km": 3.6214183109865266,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #282)"
   },
   {
     "id": 283,
     "node_id": 10978360614,
     "lat": 10.7811132,
     "lon": 106.6993049,
-    "dist_depot_km": 2.777799843582513
+    "dist_depot_km": 2.777799843582513,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #283)"
   },
   {
     "id": 284,
     "node_id": 12500326163,
     "lat": 10.8282954,
     "lon": 106.6934935,
-    "dist_depot_km": 3.780420246032909
+    "dist_depot_km": 3.780420246032909,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #284)"
   },
   {
     "id": 285,
     "node_id": 4952434715,
     "lat": 10.8023879,
     "lon": 106.7289362,
-    "dist_depot_km": 1.579541871832676
+    "dist_depot_km": 1.579541871832676,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #285)"
   },
   {
     "id": 286,
     "node_id": 5778363368,
     "lat": 10.804657,
     "lon": 106.7192205,
-    "dist_depot_km": 0.641992736674405
+    "dist_depot_km": 0.641992736674405,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #286)"
   },
   {
     "id": 287,
     "node_id": 5742768253,
     "lat": 10.8245071,
     "lon": 106.6901901,
-    "dist_depot_km": 3.7038715007113163
+    "dist_depot_km": 3.7038715007113163,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #287)"
   },
   {
     "id": 288,
     "node_id": 5777089059,
     "lat": 10.7915624,
     "lon": 106.7137112,
-    "dist_depot_km": 1.0732252866288434
+    "dist_depot_km": 1.0732252866288434,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #288)"
   },
   {
     "id": 289,
     "node_id": 1671468663,
     "lat": 10.8069275,
     "lon": 106.6897479,
-    "dist_depot_km": 2.772677332117303
+    "dist_depot_km": 2.772677332117303,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #289)"
   },
   {
     "id": 290,
     "node_id": 5764914929,
     "lat": 10.7941455,
     "lon": 106.6809202,
-    "dist_depot_km": 3.744120863177259
+    "dist_depot_km": 3.744120863177259,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #290)"
   },
   {
     "id": 291,
     "node_id": 12395070754,
     "lat": 10.8366594,
     "lon": 106.711399,
-    "dist_depot_km": 3.9504891165878444
+    "dist_depot_km": 3.9504891165878444,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #291)"
   },
   {
     "id": 292,
     "node_id": 6627597053,
     "lat": 10.7671785,
     "lon": 106.7162107,
-    "dist_depot_km": 3.7809900848142792
+    "dist_depot_km": 3.7809900848142792,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #292)"
   },
   {
     "id": 293,
     "node_id": 383594386,
     "lat": 10.7896955,
     "lon": 106.7119536,
-    "dist_depot_km": 1.3068332845145176
+    "dist_depot_km": 1.3068332845145176,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #293)"
   },
   {
     "id": 294,
     "node_id": 1671468748,
     "lat": 10.8132902,
     "lon": 106.7056637,
-    "dist_depot_km": 1.6520402585388811
+    "dist_depot_km": 1.6520402585388811,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #294)"
   },
   {
     "id": 295,
     "node_id": 5750775945,
     "lat": 10.8339857,
     "lon": 106.7156607,
-    "dist_depot_km": 3.6414125384761142
+    "dist_depot_km": 3.6414125384761142,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #295)"
   },
   {
     "id": 296,
     "node_id": 5778363389,
     "lat": 10.8033994,
     "lon": 106.7208361,
-    "dist_depot_km": 0.7327144530657932
+    "dist_depot_km": 0.7327144530657932,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #296)"
   },
   {
     "id": 297,
     "node_id": 4907667695,
     "lat": 10.7741197,
     "lon": 106.7302305,
-    "dist_depot_km": 3.46081733067076
+    "dist_depot_km": 3.46081733067076,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #297)"
   },
   {
     "id": 298,
     "node_id": 1667250201,
     "lat": 10.8052776,
     "lon": 106.6850259,
-    "dist_depot_km": 3.245379417655541
+    "dist_depot_km": 3.245379417655541,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #298)"
   },
   {
     "id": 299,
     "node_id": 5750623197,
     "lat": 10.8331321,
     "lon": 106.7307596,
-    "dist_depot_km": 3.963102483107296
+    "dist_depot_km": 3.963102483107296,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #299)"
   },
   {
     "id": 300,
     "node_id": 411925999,
     "lat": 10.7785259,
     "lon": 106.6901398,
-    "dist_depot_km": 3.6591189708029455
+    "dist_depot_km": 3.6591189708029455,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #300)"
   },
   {
     "id": 301,
     "node_id": 4903050801,
     "lat": 10.8270702,
     "lon": 106.6828849,
-    "dist_depot_km": 4.486486778000926
+    "dist_depot_km": 4.486486778000926,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #301)"
   },
   {
     "id": 302,
     "node_id": 3100059740,
     "lat": 10.8382961,
     "lon": 106.7237327,
-    "dist_depot_km": 4.238935376914086
+    "dist_depot_km": 4.238935376914086,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #302)"
   },
   {
     "id": 303,
     "node_id": 2984626138,
     "lat": 10.8321447,
     "lon": 106.728997,
-    "dist_depot_km": 3.781104909365082
+    "dist_depot_km": 3.781104909365082,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #303)"
   },
   {
     "id": 304,
     "node_id": 2634496809,
     "lat": 10.823405,
     "lon": 106.7181796,
-    "dist_depot_km": 2.4971940718491425
+    "dist_depot_km": 2.4971940718491425,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #304)"
   },
   {
     "id": 305,
     "node_id": 9735900552,
     "lat": 10.8069487,
     "lon": 106.7542194,
-    "dist_depot_km": 4.377501043933808
+    "dist_depot_km": 4.377501043933808,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #305)"
   },
   {
     "id": 306,
     "node_id": 5019781245,
     "lat": 10.8094042,
     "lon": 106.7534183,
-    "dist_depot_km": 4.34001459224548
+    "dist_depot_km": 4.34001459224548,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #306)"
   },
   {
     "id": 307,
     "node_id": 2214251893,
     "lat": 10.7971997,
     "lon": 106.6801257,
-    "dist_depot_km": 3.774159969195853
+    "dist_depot_km": 3.774159969195853,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #307)"
   },
   {
     "id": 308,
     "node_id": 5740364667,
     "lat": 10.7830702,
     "lon": 106.7222093,
-    "dist_depot_km": 2.18090479331066
+    "dist_depot_km": 2.18090479331066,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #308)"
   },
   {
     "id": 309,
     "node_id": 7593976753,
     "lat": 10.8031937,
     "lon": 106.7481577,
-    "dist_depot_km": 3.6764816108064893
+    "dist_depot_km": 3.6764816108064893,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #309)"
   },
   {
     "id": 310,
     "node_id": 366428968,
     "lat": 10.8179681,
     "lon": 106.6840258,
-    "dist_depot_km": 3.808499462650671
+    "dist_depot_km": 3.808499462650671,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #310)"
   },
   {
     "id": 311,
     "node_id": 1497276440,
     "lat": 10.7956084,
     "lon": 106.702232,
-    "dist_depot_km": 1.474605653482929
+    "dist_depot_km": 1.474605653482929,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #311)"
   },
   {
     "id": 312,
     "node_id": 8359415928,
     "lat": 10.8155851,
     "lon": 106.7379753,
-    "dist_depot_km": 3.0168052760532746
+    "dist_depot_km": 3.0168052760532746,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #312)"
   },
   {
     "id": 313,
     "node_id": 5742782682,
     "lat": 10.8286286,
     "lon": 106.7291642,
-    "dist_depot_km": 3.4388774779923006
+    "dist_depot_km": 3.4388774779923006,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #313)"
   },
   {
     "id": 314,
     "node_id": 5777090989,
     "lat": 10.7922773,
     "lon": 106.7174888,
-    "dist_depot_km": 1.0426545053358671
+    "dist_depot_km": 1.0426545053358671,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #314)"
   },
   {
     "id": 315,
     "node_id": 6789341863,
     "lat": 10.7677318,
     "lon": 106.69499,
-    "dist_depot_km": 4.2809069879019725
+    "dist_depot_km": 4.2809069879019725,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #315)"
   },
   {
     "id": 316,
     "node_id": 5779523207,
     "lat": 10.8168389,
     "lon": 106.7238914,
-    "dist_depot_km": 2.0154253418905843
+    "dist_depot_km": 2.0154253418905843,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #316)"
   },
   {
     "id": 317,
     "node_id": 5733080719,
     "lat": 10.8044723,
     "lon": 106.7368747,
-    "dist_depot_km": 2.466482409793935
+    "dist_depot_km": 2.466482409793935,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #317)"
   },
   {
     "id": 318,
     "node_id": 366415437,
     "lat": 10.8129614,
     "lon": 106.7342537,
-    "dist_depot_km": 2.5185879776078486
+    "dist_depot_km": 2.5185879776078486,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #318)"
   },
   {
     "id": 319,
     "node_id": 2899917256,
     "lat": 10.8324251,
     "lon": 106.7005849,
-    "dist_depot_km": 3.7835155506835627
+    "dist_depot_km": 3.7835155506835627,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #319)"
   },
   {
     "id": 320,
     "node_id": 411918058,
     "lat": 10.7823428,
     "lon": 106.695672,
-    "dist_depot_km": 2.931824889282587
+    "dist_depot_km": 2.931824889282587,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #320)"
   },
   {
     "id": 321,
     "node_id": 2692325337,
     "lat": 10.795417,
     "lon": 106.7284649,
-    "dist_depot_km": 1.6524190049190084
+    "dist_depot_km": 1.6524190049190084,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #321)"
   },
   {
     "id": 322,
     "node_id": 411923565,
     "lat": 10.7917082,
     "lon": 106.7032629,
-    "dist_depot_km": 1.6159254178385747
+    "dist_depot_km": 1.6159254178385747,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #322)"
   },
   {
     "id": 323,
     "node_id": 366435278,
     "lat": 10.8023219,
     "lon": 106.7382123,
-    "dist_depot_km": 2.588431218861437
+    "dist_depot_km": 2.588431218861437,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #323)"
   },
   {
     "id": 324,
     "node_id": 4053262290,
     "lat": 10.824982,
     "lon": 106.7111165,
-    "dist_depot_km": 2.665455427665893
+    "dist_depot_km": 2.665455427665893,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #324)"
   },
   {
     "id": 325,
     "node_id": 366421376,
     "lat": 10.7978339,
     "lon": 106.6861185,
-    "dist_depot_km": 3.117007887150904
+    "dist_depot_km": 3.117007887150904,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #325)"
   },
   {
     "id": 326,
     "node_id": 9485869117,
     "lat": 10.7985785,
     "lon": 106.6783927,
-    "dist_depot_km": 3.947642587060463
+    "dist_depot_km": 3.947642587060463,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #326)"
   },
   {
     "id": 327,
     "node_id": 1277146515,
     "lat": 10.7969339,
     "lon": 106.7403924,
-    "dist_depot_km": 2.8625764171063257
+    "dist_depot_km": 2.8625764171063257,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #327)"
   },
   {
     "id": 328,
     "node_id": 12336589556,
     "lat": 10.7916295,
     "lon": 106.7037025,
-    "dist_depot_km": 1.585731400583931
+    "dist_depot_km": 1.585731400583931,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #328)"
   },
   {
     "id": 329,
     "node_id": 5721506146,
     "lat": 10.8140144,
     "lon": 106.6852146,
-    "dist_depot_km": 3.4955728125328314
+    "dist_depot_km": 3.4955728125328314,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #329)"
   },
   {
     "id": 330,
     "node_id": 3137351504,
     "lat": 10.8353617,
     "lon": 106.7043257,
-    "dist_depot_km": 3.9508869901963606
+    "dist_depot_km": 3.9508869901963606,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #330)"
   },
   {
     "id": 331,
     "node_id": 2489022374,
     "lat": 10.8378061,
     "lon": 106.7236279,
-    "dist_depot_km": 4.183388128008791
+    "dist_depot_km": 4.183388128008791,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #331)"
   },
   {
     "id": 332,
     "node_id": 5740707051,
     "lat": 10.8257949,
     "lon": 106.7199912,
-    "dist_depot_km": 2.794916115649963
+    "dist_depot_km": 2.794916115649963,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #332)"
   },
   {
     "id": 333,
     "node_id": 13958480477,
     "lat": 10.7634773,
     "lon": 106.7055165,
-    "dist_depot_km": 4.300259639369614
+    "dist_depot_km": 4.300259639369614,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #333)"
   },
   {
     "id": 334,
     "node_id": 2293477514,
     "lat": 10.7993443,
     "lon": 106.6784593,
-    "dist_depot_km": 3.935036696318524
+    "dist_depot_km": 3.935036696318524,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #334)"
   },
   {
     "id": 335,
     "node_id": 12378373580,
     "lat": 10.8276049,
     "lon": 106.6906685,
-    "dist_depot_km": 3.9169214899170095
+    "dist_depot_km": 3.9169214899170095,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #335)"
   },
   {
     "id": 336,
     "node_id": 8359569984,
     "lat": 10.8225898,
     "lon": 106.7383908,
-    "dist_depot_km": 3.524575501373862
+    "dist_depot_km": 3.524575501373862,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #336)"
   },
   {
     "id": 337,
     "node_id": 1834117042,
     "lat": 10.806195,
     "lon": 106.7533747,
-    "dist_depot_km": 4.274751522409426
+    "dist_depot_km": 4.274751522409426,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #337)"
   },
   {
     "id": 338,
     "node_id": 3120390808,
     "lat": 10.7956225,
     "lon": 106.7422018,
-    "dist_depot_km": 3.083219390911498
+    "dist_depot_km": 3.083219390911498,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #338)"
   },
   {
     "id": 339,
     "node_id": 4905096814,
     "lat": 10.8235648,
     "lon": 106.692293,
-    "dist_depot_km": 3.467779160885511
+    "dist_depot_km": 3.467779160885511,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #339)"
   },
   {
     "id": 340,
     "node_id": 11416303024,
     "lat": 10.788748,
     "lon": 106.7350359,
-    "dist_depot_km": 2.631343437978401
+    "dist_depot_km": 2.631343437978401,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #340)"
   },
   {
     "id": 341,
     "node_id": 3137388519,
     "lat": 10.8334245,
     "lon": 106.7124906,
-    "dist_depot_km": 3.583623073359521
+    "dist_depot_km": 3.583623073359521,
+    "name": "Bệnh Viện Chợ Rẫy - Nguyễn Chí Thanh (Chi Nhánh #341)"
   },
   {
     "id": 342,
     "node_id": 5789199847,
     "lat": 10.8229443,
     "lon": 106.6843815,
-    "dist_depot_km": 4.075500571733825
+    "dist_depot_km": 4.075500571733825,
+    "name": "Bệnh Viện Nhân Dân Gia Định (Chi Nhánh #342)"
   },
   {
     "id": 343,
     "node_id": 5750709390,
     "lat": 10.836492,
     "lon": 106.7186245,
-    "dist_depot_km": 3.94314017983048
+    "dist_depot_km": 3.94314017983048,
+    "name": "Bệnh Viện Ung Bướu TP.HCM - Nơ Trang Long (Chi Nhánh #343)"
   },
   {
     "id": 344,
     "node_id": 1401875351,
     "lat": 10.8192055,
     "lon": 106.6787832,
-    "dist_depot_km": 4.377238642102498
+    "dist_depot_km": 4.377238642102498,
+    "name": "Bệnh Viện Bình Dân - Điện Biên Phủ (Chi Nhánh #344)"
   },
   {
     "id": 345,
     "node_id": 5740554247,
     "lat": 10.821962,
     "lon": 106.7380659,
-    "dist_depot_km": 3.451562148589581
+    "dist_depot_km": 3.451562148589581,
+    "name": "Bệnh Viện Nhi Đồng 2 - Lý Tự Trọng (Chi Nhánh #345)"
   },
   {
     "id": 346,
     "node_id": 14301901667,
     "lat": 10.8331275,
     "lon": 106.6895011,
-    "dist_depot_km": 4.470920333837322
+    "dist_depot_km": 4.470920333837322,
+    "name": "Bệnh Viện Mắt TP.HCM - Điện Biên Phủ (Chi Nhánh #346)"
   },
   {
     "id": 347,
     "node_id": 5742463947,
     "lat": 10.8254113,
     "lon": 106.7046448,
-    "dist_depot_km": 2.8943152358402036
+    "dist_depot_km": 2.8943152358402036,
+    "name": "Bệnh Viện Tai Mũi Họng - Trần Quốc Thảo (Chi Nhánh #347)"
   },
   {
     "id": 348,
     "node_id": 5719317997,
     "lat": 10.8207368,
     "lon": 106.6939767,
-    "dist_depot_km": 3.116115935889286
+    "dist_depot_km": 3.116115935889286,
+    "name": "Bệnh Viện Quận Bình Thạnh (Chi Nhánh #348)"
   },
   {
     "id": 349,
     "node_id": 8349461258,
     "lat": 10.7963976,
     "lon": 106.7521202,
-    "dist_depot_km": 4.136353055633256
+    "dist_depot_km": 4.136353055633256,
+    "name": "Đại Học Bách Khoa TP.HCM - Lý Thường Kiệt (Chi Nhánh #349)"
   },
   {
     "id": 350,
     "node_id": 3216187622,
     "lat": 10.8278257,
     "lon": 106.7251919,
-    "dist_depot_km": 3.1770633288532437
+    "dist_depot_km": 3.1770633288532437,
+    "name": "Đại Học Khoa Học Tự Nhiên - Nguyễn Văn Cừ (Chi Nhánh #350)"
   },
   {
     "id": 351,
     "node_id": 11539795106,
     "lat": 10.8193436,
     "lon": 106.7415435,
-    "dist_depot_km": 3.570779527743281
+    "dist_depot_km": 3.570779527743281,
+    "name": "Đại Học KHXH & Nhân Văn - Đinh Tiên Hoàng (Chi Nhánh #351)"
   },
   {
     "id": 352,
     "node_id": 710021188,
     "lat": 10.7947481,
     "lon": 106.6770814,
-    "dist_depot_km": 4.142257749918659
+    "dist_depot_km": 4.142257749918659,
+    "name": "Đại Học HUTECH - 475A Điện Biên Phủ (Chi Nhánh #352)"
   },
   {
     "id": 353,
     "node_id": 6639800650,
     "lat": 10.7819806,
     "lon": 106.7399065,
-    "dist_depot_km": 3.496423012830407
+    "dist_depot_km": 3.496423012830407,
+    "name": "Đại Học Giao Thông Vận Tải TP.HCM (Chi Nhánh #353)"
   },
   {
     "id": 354,
     "node_id": 6720471828,
     "lat": 10.7926847,
     "lon": 106.6769988,
-    "dist_depot_km": 4.196710840593115
+    "dist_depot_km": 4.196710840593115,
+    "name": "Đại Học Ngoại Thương CS2 - D5 Bình Thạnh (Chi Nhánh #354)"
   },
   {
     "id": 355,
     "node_id": 7457610640,
     "lat": 10.7753875,
     "lon": 106.7261777,
-    "dist_depot_km": 3.1353612562943405
+    "dist_depot_km": 3.1353612562943405,
+    "name": "Đại Học Kinh Tế TP.HCM (UEH) - Nguyễn Đình Chiểu (Chi Nhánh #355)"
   },
   {
     "id": 356,
     "node_id": 411922332,
     "lat": 10.7889085,
     "lon": 106.6781952,
-    "dist_depot_km": 4.186967473402718
+    "dist_depot_km": 4.186967473402718,
+    "name": "Đại Học Sư Phạm Kỹ Thuật - Võ Văn Ngân (Chi Nhánh #356)"
   },
   {
     "id": 357,
     "node_id": 5742463959,
     "lat": 10.8258748,
     "lon": 106.7065356,
-    "dist_depot_km": 2.873270401048487
+    "dist_depot_km": 2.873270401048487,
+    "name": "Đại Học Tôn Đức Thắng - Nguyễn Hữu Thọ (Chi Nhánh #357)"
   },
   {
     "id": 358,
     "node_id": 5742464651,
     "lat": 10.8256503,
     "lon": 106.7038104,
-    "dist_depot_km": 2.95366745764497
+    "dist_depot_km": 2.95366745764497,
+    "name": "Đại Học Quốc Tế Hồng Bàng - Điện Biên Phủ (Chi Nhánh #358)"
   },
   {
     "id": 359,
     "node_id": 1394527843,
     "lat": 10.8069004,
     "lon": 106.6778466,
-    "dist_depot_km": 4.046226774863135
+    "dist_depot_km": 4.046226774863135,
+    "name": "Học Viện Hàng Không Việt Nam (Chi Nhánh #359)"
   },
   {
     "id": 360,
     "node_id": 3137351494,
     "lat": 10.834879,
     "lon": 106.704749,
-    "dist_depot_km": 3.886613625127887
+    "dist_depot_km": 3.886613625127887,
+    "name": "Trường THPT Lê Quý Đôn (Chi Nhánh #360)"
   },
   {
     "id": 361,
     "node_id": 11358722511,
     "lat": 10.7714503,
     "lon": 106.7257135,
-    "dist_depot_km": 3.521292347896255
+    "dist_depot_km": 3.521292347896255,
+    "name": "Kho Tổng Bưu Điện Sài Gòn (Depot) (Chi Nhánh #361)"
   },
   {
     "id": 362,
     "node_id": 411925962,
     "lat": 10.7761461,
     "lon": 106.7055219,
-    "dist_depot_km": 2.948243029855252
+    "dist_depot_km": 2.948243029855252,
+    "name": "Bưu Cục VNPost Đa Kao - Quận 1 (Chi Nhánh #362)"
   },
   {
     "id": 363,
     "node_id": 5742594228,
     "lat": 10.8320204,
     "lon": 106.7127559,
-    "dist_depot_km": 3.4263456403239565
+    "dist_depot_km": 3.4263456403239565,
+    "name": "Bưu Cục VNPost Hàng Xanh - Bình Thạnh (Chi Nhánh #363)"
   },
   {
     "id": 364,
     "node_id": 13198384325,
     "lat": 10.8074308,
     "lon": 106.7549445,
-    "dist_depot_km": 4.463709446584405
+    "dist_depot_km": 4.463709446584405,
+    "name": "Viettel Post Chi Nhánh Điện Biên Phủ (Chi Nhánh #364)"
   },
   {
     "id": 365,
     "node_id": 5737980752,
     "lat": 10.8154671,
     "lon": 106.7029316,
-    "dist_depot_km": 2.024580534849143
+    "dist_depot_km": 2.024580534849143,
+    "name": "Viettel Post Hub Bạch Đằng (Chi Nhánh #365)"
   },
   {
     "id": 366,
     "node_id": 1767909424,
     "lat": 10.764934,
     "lon": 106.7015079,
-    "dist_depot_km": 4.267498094582368
+    "dist_depot_km": 4.267498094582368,
+    "name": "Hub Giao Hàng Tiết Kiệm (GHTK) Nơ Trang Long (Chi Nhánh #366)"
   },
   {
     "id": 367,
     "node_id": 5735568012,
     "lat": 10.7992411,
     "lon": 106.7526045,
-    "dist_depot_km": 4.1603510715910765
+    "dist_depot_km": 4.1603510715910765,
+    "name": "Hub ShopeeXpress Tân Bình - Trường Sơn (Chi Nhánh #367)"
   },
   {
     "id": 368,
     "node_id": 366466646,
     "lat": 10.8248358,
     "lon": 106.7047484,
-    "dist_depot_km": 2.8308375591846953
+    "dist_depot_km": 2.8308375591846953,
+    "name": "Bưu Cục J&T Express Phan Đăng Lưu (Chi Nhánh #368)"
   },
   {
     "id": 369,
     "node_id": 3138809750,
     "lat": 10.8258423,
     "lon": 106.6957088,
-    "dist_depot_km": 3.4175584842177638
+    "dist_depot_km": 3.4175584842177638,
+    "name": "Bưu Cục Ninja Van Hoàng Hoa Thám (Chi Nhánh #369)"
   },
   {
     "id": 370,
     "node_id": 1390350831,
     "lat": 10.7981888,
     "lon": 106.6776276,
-    "dist_depot_km": 4.034195240046355
+    "dist_depot_km": 4.034195240046355,
+    "name": "Kho Phân Loại BEST Express Ung Văn Khiêm (Chi Nhánh #370)"
   },
   {
     "id": 371,
     "node_id": 3137388475,
     "lat": 10.8255168,
     "lon": 106.7183982,
-    "dist_depot_km": 2.7324246891004416
+    "dist_depot_km": 2.7324246891004416,
+    "name": "Bưu Cục EMS Bến Nghé - Nguyễn Du (Chi Nhánh #371)"
   },
   {
     "id": 372,
     "node_id": 14071185144,
     "lat": 10.7665922,
     "lon": 106.7010999,
-    "dist_depot_km": 4.109933485089732
+    "dist_depot_km": 4.109933485089732,
+    "name": "Kho Giao Vận Lazada Logistics Bình Lợi (Chi Nhánh #372)"
   },
   {
     "id": 373,
     "node_id": 11383674413,
     "lat": 10.7944117,
     "lon": 106.6888026,
-    "dist_depot_km": 2.9014262370472155
+    "dist_depot_km": 2.9014262370472155,
+    "name": "Điểm Gửi Hàng Viettel Post Xô Viết Nghệ Tĩnh (Chi Nhánh #373)"
   },
   {
     "id": 374,
     "node_id": 12073102549,
     "lat": 10.8399356,
     "lon": 106.7209402,
-    "dist_depot_km": 4.356613916379504
+    "dist_depot_km": 4.356613916379504,
+    "name": "Bưu Cục VNPost Tân Định - Hai Bà Trưng (Chi Nhánh #374)"
   },
   {
     "id": 375,
     "node_id": 11867928402,
     "lat": 10.7851725,
     "lon": 106.7451845,
-    "dist_depot_km": 3.789236581977594
+    "dist_depot_km": 3.789236581977594,
+    "name": "Kho Chuyển Phát Nhanh Kerry Express Đinh Bộ Lĩnh (Chi Nhánh #375)"
   },
   {
     "id": 376,
     "node_id": 5735274021,
     "lat": 10.8068185,
     "lon": 106.7394304,
-    "dist_depot_km": 2.788873100029614
+    "dist_depot_km": 2.788873100029614,
+    "name": "Bưu Cục Giao Hàng Nhanh (GHN) Chu Văn An (Chi Nhánh #376)"
   },
   {
     "id": 377,
     "node_id": 3700550789,
     "lat": 10.7993665,
     "lon": 106.6804397,
-    "dist_depot_km": 3.7192844096172415
+    "dist_depot_km": 3.7192844096172415,
+    "name": "Trạm Giao Vận SPX Express D2 Văn Thánh (Chi Nhánh #377)"
   },
   {
     "id": 378,
     "node_id": 366429536,
     "lat": 10.7974272,
     "lon": 106.6870617,
-    "dist_depot_km": 3.0208610206597224
+    "dist_depot_km": 3.0208610206597224,
+    "name": "Bưu Cục Viettel Post Thị Nghè (Chi Nhánh #378)"
   },
   {
     "id": 379,
     "node_id": 1409433754,
     "lat": 10.8024696,
     "lon": 106.6759456,
-    "dist_depot_km": 4.206080746878877
+    "dist_depot_km": 4.206080746878877,
+    "name": "Điểm Thu Gom VNPost Bùi Đình Túy (Chi Nhánh #379)"
   },
   {
     "id": 380,
     "node_id": 5267647785,
     "lat": 10.7893506,
     "lon": 106.7157274,
-    "dist_depot_km": 1.3220742277575177
+    "dist_depot_km": 1.3220742277575177,
+    "name": "Trung Tâm Khai Thác Bưu Chính Sài Gòn (Chi Nhánh #380)"
   },
   {
     "id": 381,
     "node_id": 366421962,
     "lat": 10.797113,
     "lon": 106.6937195,
-    "dist_depot_km": 2.310739386510877
+    "dist_depot_km": 2.310739386510877,
+    "name": "TTTM Landmark 81 - Vinhomes Central Park (Chi Nhánh #381)"
   },
   {
     "id": 382,
     "node_id": 9485824314,
     "lat": 10.7982518,
     "lon": 106.6787864,
-    "dist_depot_km": 3.90770386530374
+    "dist_depot_km": 3.90770386530374,
+    "name": "TTTM Vincom Center Đồng Khởi (Chi Nhánh #382)"
   },
   {
     "id": 383,
     "node_id": 1497313102,
     "lat": 10.8010508,
     "lon": 106.7204458,
-    "dist_depot_km": 0.6485025833199287
+    "dist_depot_km": 0.6485025833199287,
+    "name": "TTTM Pearl Plaza Điện Biên Phủ (Chi Nhánh #383)"
   },
   {
     "id": 384,
     "node_id": 366443425,
     "lat": 10.795361,
     "lon": 106.7325471,
-    "dist_depot_km": 2.071729303965316
+    "dist_depot_km": 2.071729303965316,
+    "name": "TTTM Saigon Centre - Takashimaya (Chi Nhánh #384)"
   },
   {
     "id": 385,
     "node_id": 5742410669,
     "lat": 10.8258742,
     "lon": 106.7117768,
-    "dist_depot_km": 2.7548838724728424
+    "dist_depot_km": 2.7548838724728424,
+    "name": "Siêu Thị Co.opmart Rạch Miễu (Chi Nhánh #385)"
   },
   {
     "id": 386,
     "node_id": 366412701,
     "lat": 10.7983367,
     "lon": 106.7292266,
-    "dist_depot_km": 1.6368446269275585
+    "dist_depot_km": 1.6368446269275585,
+    "name": "Đại Siêu Thị Emart Phan Văn Trị (Chi Nhánh #386)"
   },
   {
     "id": 387,
     "node_id": 5750654854,
     "lat": 10.8362064,
     "lon": 106.7204967,
-    "dist_depot_km": 3.9403366880540154
+    "dist_depot_km": 3.9403366880540154,
+    "name": "Siêu Thị Mega Market An Phú (Chi Nhánh #387)"
   },
   {
     "id": 388,
     "node_id": 712140240,
     "lat": 10.7987982,
     "lon": 106.6884957,
-    "dist_depot_km": 2.8478447976696546
+    "dist_depot_km": 2.8478447976696546,
+    "name": "Siêu Thị Lotte Mart Gò Vấp (Chi Nhánh #388)"
   },
   {
     "id": 389,
     "node_id": 2403042653,
     "lat": 10.7934287,
     "lon": 106.707995,
-    "dist_depot_km": 1.1167617686093563
+    "dist_depot_km": 1.1167617686093563,
+    "name": "Chợ Bến Thành - Lê Lợi (Chi Nhánh #389)"
   },
   {
     "id": 390,
     "node_id": 2332686530,
     "lat": 10.7849714,
     "lon": 106.6822887,
-    "dist_depot_km": 3.9471332728196287
+    "dist_depot_km": 3.9471332728196287,
+    "name": "Chợ Bà Chiểu - Phan Đăng Lưu (Chi Nhánh #390)"
   },
   {
     "id": 391,
     "node_id": 11041757640,
     "lat": 10.827593,
     "lon": 106.6975071,
-    "dist_depot_km": 3.4663436610498897
+    "dist_depot_km": 3.4663436610498897,
+    "name": "Chợ Tân Định - Hai Bà Trưng (Chi Nhánh #391)"
   },
   {
     "id": 392,
     "node_id": 10786891191,
     "lat": 10.7899492,
     "lon": 106.7222339,
-    "dist_depot_km": 1.5068760092432258
+    "dist_depot_km": 1.5068760092432258,
+    "name": "Tháp Tài Chính Bitexco Financial Tower (Chi Nhánh #392)"
   },
   {
     "id": 393,
     "node_id": 366445900,
     "lat": 10.8150415,
     "lon": 106.6952053,
-    "dist_depot_km": 2.6050687966460084
+    "dist_depot_km": 2.6050687966460084,
+    "name": "Dinh Độc Lập - Nam Kỳ Khởi Nghĩa (Chi Nhánh #393)"
   },
   {
     "id": 394,
     "node_id": 4907667774,
     "lat": 10.7745953,
     "lon": 106.7280761,
-    "dist_depot_km": 3.3033414757111847
+    "dist_depot_km": 3.3033414757111847,
+    "name": "Bưu Điện Trung Tâm Thành Phố (Chi Nhánh #394)"
   },
   {
     "id": 395,
     "node_id": 5776272393,
     "lat": 10.7966427,
     "lon": 106.7104951,
-    "dist_depot_km": 0.6682616540746434
+    "dist_depot_km": 0.6682616540746434,
+    "name": "Nhà Hát Thành Phố - Công Trường Lam Sơn (Chi Nhánh #395)"
   },
   {
     "id": 396,
     "node_id": 5750623198,
     "lat": 10.8380927,
     "lon": 106.7307133,
-    "dist_depot_km": 4.4603641424262745
+    "dist_depot_km": 4.4603641424262745,
+    "name": "Khu Đô Thị Sala - Mai Chí Thọ (Chi Nhánh #396)"
   },
   {
     "id": 397,
     "node_id": 3100059722,
     "lat": 10.8361075,
     "lon": 106.7093953,
-    "dist_depot_km": 3.9145033702821403
+    "dist_depot_km": 3.9145033702821403,
+    "name": "Chợ Thị Nghè - Phan Văn Hân (Chi Nhánh #397)"
   },
   {
     "id": 398,
     "node_id": 3137351485,
     "lat": 10.8343003,
     "lon": 106.7040285,
-    "dist_depot_km": 3.847445168795079
+    "dist_depot_km": 3.847445168795079,
+    "name": "Phố Đi Bộ Nguyễn Huệ (Chi Nhánh #398)"
   },
   {
     "id": 399,
     "node_id": 5776272435,
     "lat": 10.8008652,
     "lon": 106.7117887,
-    "dist_depot_km": 0.2979491091355713
+    "dist_depot_km": 0.2979491091355713,
+    "name": "Thảo Cầm Viên Sài Gòn (Chi Nhánh #399)"
   },
   {
     "id": 400,
     "node_id": 4952435137,
     "lat": 10.8007979,
     "lon": 106.7346622,
-    "dist_depot_km": 2.198807254560353
+    "dist_depot_km": 2.198807254560353,
+    "name": "Hồ Con Rùa - Công Trường Quốc Tế (Chi Nhánh #400)"
   }
 ]

@@ -1,7 +1,7 @@
 # Kế Hoạch Triển Khai Nghiên Cứu & Bàn Giao Kỹ Thuật (PLAN.MD) — HotWAY
 
 > **Tài liệu:** Kế hoạch thực hiện 7 Cổng Nghiên cứu (Gate G0 - G6) cho hướng học tăng cường điều phối thời gian thực  
-> **Phiên bản:** v7.1.0 (Empirical Multi-Model Research & Attention Transition Edition)  
+> **Phiên bản:** v7.2.0 (Empirical Multi-Model Research & 7-Day Sprint Edition)  
 > **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
 
@@ -15,8 +15,9 @@ flowchart LR
     G1 --> G2["G2: Môi Trường & Kiểm Thử\n(Đã hoàn tất)"]
     G2 --> G3["G3: Baseline & Dò Siêu Tham Số\n(Đã hoàn tất)"]
     G3 --> G4["G4: Huấn Luyện & Đánh Giá RL\n(Đã hoàn tất)"]
-    G4 --> G5["G5: Báo Cáo & Phân Tích Chuyên Sâu\n(Hoàn tất & Đóng băng)"]
-    G5 -->|DỪNG CHỜ PHÊ DUYỆT| G6["G6: Giao Diện Demo & Stream API\n(Chờ lệnh triển khai)"]
+    G4 --> G5["G5: Báo Cáo & Phân Tích Chuyên Sâu\n(Hoàn tất)"]
+    G5 --> G6["G6: Giao Diện WebGIS & API :8000\n(Hoàn tất Cổng 3001)"]
+    G6 --> G7["G7: Khung Nghiên Cứu Đa Mô Hình & POI Thật\n(Nghiệm thu 100 POI, DQN Ablation)"]
 ```
 
 ---
@@ -98,3 +99,30 @@ flowchart LR
   - `results/benchmark_summary_table.csv` & `results/benchmark_multi_model_results.json`: Bảng đối so sánh toàn diện.
   - Minh chứng thực nghiệm 4 điểm nghẽn của DQN: Tỷ lệ thất bại Zero-Shot đạt **50.0%** trên N > 20, Gap tối ưu vọt lên **154.2%** so với OR-Tools.
   - [x] Đã hoàn tất, 56/56 tests PASS, build Next.js 14 sạch 100%.
+
+---
+
+## 3. Lộ Trình 4 Giai Đoạn Nước Rút Trong 7 Ngày (7-Day Sprint to Final Defense)
+
+```mermaid
+flowchart LR
+    P1["Giai đoạn 1 (Ngày 1-2)\nChuẩn hóa 100 POI Production\n& Đồng bộ Core Docs (AGENTS, PRD, PLAN)"] --> P2["Giai đoạn 2 (Ngày 3-4)\nTái kiểm định Benchmark 4 Mô hình\n& Niêm phong kết quả CSV/JSON"]
+    P2 --> P3["Giai đoạn 3 (Ngày 5-6)\nHoàn thiện LandingPage Report\n& WebGIS Interactive Demo (Port 3001)"]
+    P3 --> P4["Giai đoạn 4 (Ngày 7)\nXuất bản Báo cáo PDF IEEE/ACM\n& Slide Thuyết minh Bảo vệ Hội đồng"]
+```
+
+### Kế hoạch hành động cụ thể từng giai đoạn:
+1. **Giai đoạn 1 (Ngày 1 - 2): Chuẩn hóa Dữ liệu POI Thật & Đồng bộ Tài liệu Cốt lõi**
+   - Nâng cấp 100 hành trình phân tầng trong `data/benchmark_100_vietnam_pois.json` với địa danh logistics và đô thị thật 100% (VNPost, Viettel Post, ShopeeXpress, Bệnh viện, ĐH).
+   - Đồng bộ hóa toàn bộ chuỗi tài liệu `AGENTS.md`, `PRD.md`, `PLAN.md`, `ARCHITECTURE.md`, `docs/DECISIONS.md`.
+2. **Giai đoạn 2 (Ngày 3 - 4): Tái kiểm định & Niêm phong Bộ Benchmark 4 Mô hình**
+   - Chạy `evaluate_benchmark.py` trên 100 hành trình Production.
+   - Cập nhật số liệu chuẩn vào `results/benchmark_summary_table.csv` và `results/benchmark_multi_model_results.json`.
+   - Bóc tách 4 điểm nghẽn của DQN (cứng nhắc tensor, bùng nổ tổ hợp, thiếu bất biến hoán vị, thất bại zero-shot 50%).
+3. **Giai đoạn 3 (Ngày 5 - 6): Hoàn thiện LandingPage Report & WebGIS Interactive Demo (:3001)**
+   - Đảm bảo giao diện Next.js 14 trên cổng 3001 hiển thị mượt mà 2 tab: 100 POI Multi-Model Benchmark và 10 Instances VRPTW.
+   - Kiểm tra tích hợp bản đồ MapLibre GL JS và bảng điều khiển tham số.
+   - Đảm bảo build TypeScript sạch 100% (`npm --prefix frontend run build`).
+4. **Giai đoạn 4 (Ngày 7): Xuất bản Báo cáo Học thuật PDF Chuẩn IEEE/ACM & Slide Bảo vệ**
+   - Xuất bản tệp PDF chính thức `docs/HotWAY_Final_Research_Report.pdf` bằng script ReportLab.
+   - Hoàn thiện đề cương Slide thuyết trình bảo vệ trước Hội đồng nghiệm thu trong `docs/SLIDES_DEFENSE_OUTLINE.md`.

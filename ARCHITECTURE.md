@@ -1,8 +1,8 @@
 # Bản Thiết Kế Kiến Trúc Hệ Thống (ARCHITECTURE.MD) — HotWAY
 
 > **Tài liệu:** Thiết kế kiến trúc tổng thể, phân rã module, luồng dữ liệu & kiểm định chất lượng  
-> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
-> **Ngày cập nhật:** 28/10/2026  
+> **Phiên bản:** v7.2.0 (Empirical Multi-Model Research & 7-Day Sprint Edition)  
+> **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
 ---
@@ -62,17 +62,21 @@ flowchart TD
         OldResults["rel_result/*.csv\n(30 instances, Random beat DQN p=0.0072)"]
     end
 
-    subgraph S6["Tầng Lập Tuyến Nơ-ron & Giao Thông Trực Tuyến (T2+)"]
-        AttnModel["src/agents/attention_model/model.py\n(Transformer Attention Model Kool et al. 2019)"]
-        TimeEnv["src/agents/attention_model/time_dependent_env.py\n(Môi trường C(t) cao điểm TP.HCM)"]
-        TrafficAdapt["src/services/live_traffic_adapter.py\n(Fallback 3 lớp: TomTom -> HERE -> Offline)"]
-        NeuralServ["src/services/neural_tsp_service.py\n(CPU Serving < 15ms)"]
-        KaggleTrain["notebooks/kaggle_train_attention_tsp.ipynb\n(Huấn luyện GPU 2x T4 trên Kaggle)"]
+    subgraph S6["Tầng Đối Soát Đa Mô Hình & Phục Vụ Suy Luận (Cổng G7)"]
+        BenchEnv["env/traffic_tsp_env.py\n(Gymnasium Env C(t) & Action Masking)"]
+        M1_DQN["models/dqn_agent.py\n(Dueling DQN + PER + Masking)"]
+        M2_Ptr["models/pointer_net.py\n(Bi-LSTM + Attention Pointer A2C)"]
+        M3_AM["models/attention_model.py\n(Graph Transformer Kool et al. 2019)"]
+        M4_OR["models/ortools_solver.py\n(Google OR-Tools Guided Local Search)"]
         
-        AttnModel --> KaggleTrain --> Weights["results/attention_tsp50_hcmc.pt"]
-        Weights --> NeuralServ
-        TimeEnv --> KaggleTrain
-        TrafficAdapt --> NeuralServ
+        EvalScript["evaluate_benchmark.py\n(Đánh giá 100 POI, Latency CPU, DQN 4 Fatal Flaws)"]
+        ResultsCSV["results/benchmark_summary_table.csv\nresults/benchmark_multi_model_results.json"]
+        APIServ["api/main.py & backend/app/\n(FastAPI Serving Port 8000)"]
+        WebGISApp["frontend/ (Port 3001)\n(WebGIS MapLibre & ScreenT2VRPTW)"]
+        
+        BenchEnv --> M1_DQN & M2_Ptr & M3_AM & M4_OR
+        M1_DQN & M2_Ptr & M3_AM & M4_OR --> EvalScript --> ResultsCSV
+        M3_AM & ResultsCSV --> APIServ --> WebGISApp
     end
 ```
 
@@ -125,3 +129,4 @@ Hệ thống tuân thủ nghiêm ngặt quy trình kiểm thử tự động v�
 - **T6: Multi-Seed & Non-Parametric Statistics:** Tối thiểu 5 seed huấn luyện, khoảng tin cậy Bootstrap 95%, kiểm định Wilcoxon có hiệu chỉnh Holm-Bonferroni.
 - **T7: Interface & Build Cleanliness (Cổng G6):** Đảm bảo build TypeScript sạch trên Next.js 14 cổng 3001 mà không phát sinh cảnh báo.
 - **T8: Neural TSP Attention & Fallback Integrity:** Kiểm thử tính hợp lệ của hoán vị thăm đủ $N$ điểm không trùng lặp, cơ chế mask ngăn chu trình rỗng, và tính trơn tru của 3 lớp fallback khi API ngoại tuyến.
+- **T9: Multi-Model Benchmark & DQN Ablation Integrity:** 56 ca kiểm thử tự động xác nhận tính hợp lệ của 4 bộ giải, chuyển tầng dự phòng 3 lớp, và chẩn đoán 4 điểm nghẽn của DQN (50% zero-shot fail).

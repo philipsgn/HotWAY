@@ -11,11 +11,25 @@ import ScreenT2VRPTW from "../../components/ScreenT2VRPTW";
 import ScreenT3AdaptiveReroute from "../../components/ScreenT3AdaptiveReroute";
 import { OptimoTab } from "../../components/OptimoSidebar";
 
-const DEFAULT_DEPOT = {
-  lat: 10.8016,
-  lon: 106.7115,
-  name: "Bưu Cục Tập Kết Hàng Bình Thạnh (Node #1497276525)",
+const REGIONAL_DEPOTS = {
+  hanoi: {
+    lat: 21.0285,
+    lon: 105.8542,
+    name: "Hub Bưu Chính Hà Nội (Hoàn Kiếm)",
+  },
+  danang: {
+    lat: 16.0544,
+    lon: 108.2022,
+    name: "Hub Bưu Chính Đà Nẵng (Hải Châu)",
+  },
+  hcmc: {
+    lat: 10.8016,
+    lon: 106.7115,
+    name: "Hub Bưu Chính TP.HCM (Bình Thạnh / Q1)",
+  },
 };
+
+const DEFAULT_DEPOT = REGIONAL_DEPOTS.hcmc;
 
 interface ToastNotification {
   id: string;
@@ -26,6 +40,7 @@ interface ToastNotification {
 
 export default function OptimoSchedulingPage() {
   const [activeTab, setActiveTab] = useState<OptimoTab>("t1_multicriteria");
+  const [currentDepot, setCurrentDepot] = useState(DEFAULT_DEPOT);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerPinned, setIsDrawerPinned] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(true);
@@ -126,6 +141,68 @@ export default function OptimoSchedulingPage() {
     }
   };
 
+  // Handler for Region Switching & Instance Inspection in T2
+  const handleSelectRegion = (regionId: "hanoi" | "danang" | "hcmc") => {
+    const targetDepot = REGIONAL_DEPOTS[regionId];
+    if (targetDepot) {
+      setCurrentDepot(targetDepot);
+      addToast(
+        "info",
+        `Chuyển trọng tâm bản đồ: ${targetDepot.name}`,
+        `Tọa độ: ${targetDepot.lat.toFixed(4)}, ${targetDepot.lon.toFixed(4)}`
+      );
+    }
+  };
+
+  const handleSelectT2Instance = (instance: any) => {
+    if (!instance) return;
+    if (instance.depot) {
+      setCurrentDepot({
+        lat: instance.depot.lat,
+        lon: instance.depot.lon,
+        name: instance.depot.name || `Hub Bưu Chính (${instance.region})`,
+      });
+    }
+    if (instance.stops && Array.isArray(instance.stops)) {
+      const pts: Point[] = instance.stops.map((s: any, idx: number) => ({
+        id: s.node_id || `STOP_${idx + 1}`,
+        lat: s.lat,
+        lon: s.lon,
+        name: s.name || `Điểm giao #${idx + 1}`,
+        order_id: `ORD-${idx + 1}`,
+        demand: 1,
+      }));
+      setOrders(pts);
+
+      const depotCoord: [number, number] = [instance.depot.lat, instance.depot.lon];
+      const stopCoords: [number, number][] = instance.stops.map((s: any) => [s.lat, s.lon]);
+      const routeCoords: [number, number][] = [depotCoord, ...stopCoords, depotCoord];
+
+      setRoutes([
+        {
+          vehicle_id: 1,
+          leg_geometries: [routeCoords],
+          customer_indices: instance.stops.map((_: any, idx: number) => idx + 1),
+          distance_km: Number((instance.stops.length * 1.8).toFixed(1)),
+          duration_min: Math.round(instance.stops.length * 4.2),
+          stops: instance.stops.map((s: any, idx: number) => ({
+            node_idx: idx + 1,
+            order_id: `ORD-${idx + 1}`,
+            arrival_time_sec: (idx + 1) * 300,
+            elapsed_time_min: (idx + 1) * 5,
+            demand: 1,
+          })),
+        },
+      ]);
+
+      addToast(
+        "success",
+        `Nạp hành trình: ${instance.instance_id}`,
+        `${instance.region} • ${instance.num_stops} điểm dừng • Giờ xuất phát: ${instance.departure_hour || 8}h00`
+      );
+    }
+  };
+
   // User Geolocation Handler
   const handleLocateUser = () => {
     if (!navigator.geolocation) {
@@ -187,7 +264,7 @@ export default function OptimoSchedulingPage() {
     <div className="relative w-screen h-screen overflow-hidden bg-white font-sans text-neutral-900 select-none">
       {/* 1. Full-screen Real MapLibre Background Canvas */}
       <OptimoMap
-        depot={DEFAULT_DEPOT}
+        depot={currentDepot}
         orders={orders}
         routes={routes}
         selectedVehicleId={selectedVehicleId}
@@ -267,7 +344,12 @@ export default function OptimoSchedulingPage() {
           />
         )}
 
-        {activeTab === "t2_vrptw" && <ScreenT2VRPTW />}
+        {activeTab === "t2_vrptw" && (
+          <ScreenT2VRPTW
+            onSelectRouteInstance={handleSelectT2Instance}
+            onSelectRegion={handleSelectRegion}
+          />
+        )}
 
         {activeTab === "t3_live" && (
           <ScreenT3AdaptiveReroute

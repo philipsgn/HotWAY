@@ -189,8 +189,20 @@ export default function OptimoMap({
         .addTo(mapRef.current);
 
       depotMarkerRef.current = marker;
+    } else {
+      depotMarkerRef.current.setLngLat([depot.lon, depot.lat]);
     }
-  }, [mapLoaded, depot]);
+
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [depot.lon, depot.lat],
+        zoom: 12.5,
+        pitch: 15,
+        bearing: 0,
+        essential: true,
+      });
+    }
+  }, [mapLoaded, depot.lat, depot.lon, depot.name]);
 
   // 3. Render Order Stop Markers with Vehicle Color & Numbering
   useEffect(() => {

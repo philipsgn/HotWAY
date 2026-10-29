@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "title": "HotWAY Nationwide Logistics Benchmark Data Analysis",
+    "version": "7.3.1",
+    "total_instances": 100,
+    "target_clusters": [
+      "Hà Nội",
+      "Đà Nẵng",
+      "TP. Hồ Chí Minh"
+    ],
+    "tiers": [
+      "N10",
+      "N20",
+      "N30",
+      "N50"
+    ]
+  },
+  "regions": {
+    "Hà Nội": {
+      "instance_count": 40,
+      "depot_name": "Bưu Điện Trung Tâm Bờ Hồ / Hub Long Biên",
+      "depot_coord": [
+        21.0285,
+        105.8542
+      ],
+      "coverage_radius_km": 7.57,
+      "mean_depot_distance_km": 6.02,
+      "p90_depot_distance_km": 11.12,
+      "max_depot_distance_km": 13.61,
+      "mean_inter_stop_distance_km": 6.79,
+      "departure_hours_range": [
+        8.0,
+        20.0
+      ]
+    },
+    "Đà Nẵng": {
+      "instance_count": 20,
+      "depot_name": "Bưu Điện Trung Tâm Đà Nẵng",
+      "depot_coord": [
+        16.0678,
+        108.2208
+      ],
+      "coverage_radius_km": 7.04,
+      "mean_depot_distance_km": 4.2,
+      "p90_depot_distance_km": 7.6,
+      "max_depot_distance_km": 11.01,
+      "mean_inter_stop_distance_km": 6.01,
+      "departure_hours_range": [
+        8.0,
+        20.0
+      ]
+    },
+    "TP. Hồ Chí Minh": {
+      "instance_count": 40,
+      "depot_name": "Kho Tổng Bưu Điện Sài Gòn / Hàng Xanh Hub",
+      "depot_coord": [
+        10.8012,
+        106.7145
+      ],
+      "coverage_radius_km": 10.89,
+      "mean_depot_distance_km": 7.56,
+      "p90_depot_distance_km": 12.44,
+      "max_depot_distance_km": 16.71,
+      "mean_inter_stop_distance_km": 9.37,
+      "departure_hours_range": [
+        8.0,
+        20.0
+      ]
+    }
+  },
+  "tiers": {
+    "N10": {
+      "instance_count": 25,
+      "stops_per_tour": 10,
+      "mean_initial_spread_km": 63.52,
+      "mean_initial_duration_min": 234.3
+    },
+    "N20": {
+      "instance_count": 25,
+      "stops_per_tour": 20,
+      "mean_initial_spread_km": 122.11,
+      "mean_initial_duration_min": 421.11
+    },
+    "N30": {
+      "instance_count": 25,
+      "stops_per_tour": 30,
+      "mean_initial_spread_km": 192.57,
+      "mean_initial_duration_min": 718.83
+    },
+    "N50": {
+      "instance_count": 25,
+      "stops_per_tour": 50,
+      "mean_initial_spread_km": 311.74,
+      "mean_initial_duration_min": 1308.6
+    }
+  }
+}

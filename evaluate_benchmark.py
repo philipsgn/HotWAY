@@ -3,12 +3,13 @@ Comprehensive Multi-Model Evaluation & Benchmark Harness.
 Evaluates all 4 candidate models across the 100 realistic Vietnam POI delivery itineraries:
 1. Model 1: Dueling DQN with Action Masking (Retrospective Baseline / Ablation Focus)
 2. Model 2: Pointer Network with Bi-LSTM & A2C (Sequential Transition Baseline)
-3. Model 3: Attention Model Graph Transformer (Proposed Champion Core)
+3. Model 3: Attention Model Graph Transformer (Proposed Champion Core, Dynamic Min-Max Scaling)
 4. Model 4: Google OR-Tools Guided Local Search (Industrial Benchmark, 0.0% Gap)
 
 Generates:
 - Quantitative Metric Matrix (Duration, Distance, Optimality Gap, CPU Latency, Memory Footprint)
 - Zero-Shot Transferability Analysis (Trained on N=20, tested on N=10, 20, 30, 50)
+- Regional Fairness Breakdown (Hà Nội 40, Đà Nẵng 20, TP. Hồ Chí Minh 40)
 - Diagnostic Proof of DQN's 4 Fatal Flaws justifying architectural transition
 - CSV and JSON summary artifacts
 """
@@ -20,6 +21,7 @@ import csv
 import json
 import os
 from pathlib import Path
+import sys
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -30,6 +32,9 @@ from models.dqn_agent import DQNSolver
 from models.pointer_net import PointerNetSolver
 from models.attention_model import AttentionModelSolver
 from models.ortools_solver import ORToolsSolver
+
+# Ensure UTF-8 output on Windows
+sys.stdout.reconfigure(encoding="utf-8")
 
 
 def get_checkpoint_size_mb(filepath: str) -> float:
@@ -75,40 +80,54 @@ def run_benchmark(
     # Tracking storage
     records = {name: [] for name in solvers}
     tier_records = {name: {"N10": [], "N20": [], "N30": [], "N50": []} for name in solvers}
+    region_records = {name: {"Hà Nội": [], "Đà Nẵng": [], "TP. Hồ Chí Minh": []} for name in solvers}
 
     # Evaluate across all instances
     for idx, inst in enumerate(instances, 1):
         inst_id = inst["instance_id"]
+        region = inst.get("region", "TP. Hồ Chí Minh")
         tier = inst.get("tier", f"N{inst['num_stops']}")
         if tier not in ["N10", "N20", "N30", "N50"]:
             tier = "N20"
 
         if idx % 10 == 0 or idx == 1 or idx == total_inst:
-            print(f"[{idx:03d}/{total_inst:03d}] Processing {inst_id} (Stops: {inst['num_stops']})...")
+            print(f"[{idx:03d}/{total_inst:03d}] Processing {inst_id} ({region}, Stops: {inst['num_stops']})...")
 
         # 1. OR-Tools (Reference)
         ortools_res = ortools_solver.solve(inst)
+        ortools_res["region"] = region
         records["Google OR-Tools"].append(ortools_res)
         tier_records["Google OR-Tools"][tier].append(ortools_res)
+        if region in region_records["Google OR-Tools"]:
+            region_records["Google OR-Tools"][region].append(ortools_res)
         ref_dur = ortools_res["total_duration_min"]
 
         # 2. Attention Model
         am_res = am_solver.solve(inst)
+        am_res["region"] = region
         am_res["opt_gap_pct"] = round(max(0.0, ((am_res["total_duration_min"] - ref_dur) / ref_dur) * 100.0), 2)
         records["Attention Model (AM)"].append(am_res)
         tier_records["Attention Model (AM)"][tier].append(am_res)
+        if region in region_records["Attention Model (AM)"]:
+            region_records["Attention Model (AM)"][region].append(am_res)
 
         # 3. Pointer Net
         ptr_res = ptr_solver.solve(inst)
+        ptr_res["region"] = region
         ptr_res["opt_gap_pct"] = round(max(0.0, ((ptr_res["total_duration_min"] - ref_dur) / ref_dur) * 100.0), 2)
         records["Pointer Network (A2C)"].append(ptr_res)
         tier_records["Pointer Network (A2C)"][tier].append(ptr_res)
+        if region in region_records["Pointer Network (A2C)"]:
+            region_records["Pointer Network (A2C)"][region].append(ptr_res)
 
         # 4. Dueling DQN
         dqn_res = dqn_solver.solve(inst)
+        dqn_res["region"] = region
         dqn_res["opt_gap_pct"] = round(max(0.0, ((dqn_res["total_duration_min"] - ref_dur) / ref_dur) * 100.0), 2)
         records["Dueling DQN (Masked)"].append(dqn_res)
         tier_records["Dueling DQN (Masked)"][tier].append(dqn_res)
+        if region in region_records["Dueling DQN (Masked)"]:
+            region_records["Dueling DQN (Masked)"][region].append(dqn_res)
 
     print("\nComputing quantitative metric aggregates...")
 
@@ -143,6 +162,13 @@ def run_benchmark(
             t_gaps = [r.get("opt_gap_pct", 0.0) for r in t_list]
             tier_gaps[t] = round(float(np.mean(t_gaps)), 2) if t_gaps else 0.0
 
+        # Regional fairness breakdown
+        reg_gaps = {}
+        for reg_k, reg_col in [("Hà Nội", "gap_Hanoi"), ("Đà Nẵng", "gap_DaNang"), ("TP. Hồ Chí Minh", "gap_HCMC")]:
+            r_list = region_records[name].get(reg_k, [])
+            r_gaps = [r.get("opt_gap_pct", 0.0) for r in r_list]
+            reg_gaps[reg_col] = round(float(np.mean(r_gaps)), 2) if r_gaps else 0.0
+
         # DQN failure rate on N > 20
         overflow_count = sum(1 for r in res_list if r.get("is_overflow", False))
         failure_rate_pct = round((overflow_count / len(res_list)) * 100.0, 1)
@@ -158,6 +184,9 @@ def run_benchmark(
             "gap_N20": tier_gaps["N20"],
             "gap_N30": tier_gaps["N30"],
             "gap_N50": tier_gaps["N50"],
+            "gap_Hanoi": reg_gaps["gap_Hanoi"],
+            "gap_DaNang": reg_gaps["gap_DaNang"],
+            "gap_HCMC": reg_gaps["gap_HCMC"],
             "zero_shot_failure_rate_pct": failure_rate_pct if name == "Dueling DQN (Masked)" else 0.0,
             "params": param_counts[name],
             "checkpoint_size_mb": checkpoint_sizes[name]
@@ -211,14 +240,14 @@ def run_benchmark(
     print(f"Exported detailed results to: {output_json}")
 
     # Print Executive Summary in Terminal
-    print("\n" + "=" * 90)
+    print("\n" + "=" * 105)
     print("EXECUTIVE BENCHMARK SUMMARY TABLE (100 REALISTIC VIETNAM POI ITINERARIES)")
-    print("=" * 90)
-    print(f"{'Model':<25} | {'Duration':<10} | {'Distance':<10} | {'Gap (%)':<8} | {'Lat. Mean':<10} | {'Zero-Shot Fail':<14}")
-    print("-" * 90)
+    print("=" * 105)
+    print(f"{'Model':<24} | {'Duration':<9} | {'Dist.':<9} | {'Gap (%)':<8} | {'HN Gap':<8} | {'ĐN Gap':<8} | {'HCM Gap':<8} | {'Lat. Mean':<10} | {'Zero-Shot Fail':<14}")
+    print("-" * 105)
     for row in summary_table:
-        print(f"{row['model']:<25} | {row['mean_duration_min']:>7.1f} m | {row['mean_distance_km']:>7.1f} km | {row['mean_optimality_gap_pct']:>6.1f}% | {row['latency_mean_ms']:>7.2f} ms | {row['zero_shot_failure_rate_pct']:>11.1f}%")
-    print("=" * 90)
+        print(f"{row['model']:<24} | {row['mean_duration_min']:>6.1f} m | {row['mean_distance_km']:>6.1f}km | {row['mean_optimality_gap_pct']:>6.1f}% | {row['gap_Hanoi']:>6.1f}% | {row['gap_DaNang']:>6.1f}% | {row['gap_HCMC']:>6.1f}% | {row['latency_mean_ms']:>7.2f} ms | {row['zero_shot_failure_rate_pct']:>11.1f}%")
+    print("=" * 105)
 
 
 def main():
@@ -239,4 +268,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

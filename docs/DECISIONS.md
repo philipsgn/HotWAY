@@ -189,3 +189,28 @@
   - **Dueling DQN (Masked):** Thời gian 931.99 phút, Cự ly 138.20 km, Optimality Gap 170.63%, Độ trễ 6.01 ms, **Tỷ lệ thất bại Zero-Shot 50.0%** (hoàn toàn tràn mảng và bất khả thi tại N=30 và N=50).
 - **Kỷ luật Sprint 7 ngày nước rút:**
   Tất cả 56 ca kiểm thử tự động (`pytest tests/`) và biên dịch Next.js 14 (`npm --prefix frontend run build`) bảo đảm đạt 100% xanh sạch trước mọi chuyển giao. Cổng mạng: Frontend 3001, Backend 8000, tuyệt đối cấm cổng 3000.
+
+
+## 20. Quyết Định Triệt Tiêu Lỗi Lệch Phân Phối Tọa Độ (Distribution Shift) Bằng Chuẩn Hóa Dynamic Min-Max Scaling & Nâng Cấp Kiến Trúc Gold Config 128-d/3L (v7.3.1)
+- **Bối cảnh & Điểm nghẽn cũ:**
+  Trước đây, hàm chuẩn hóa tọa độ trong `AttentionModelSolver.solve()` bị **hardcode cứng nhắc** theo phạm vi địa lý TP.HCM:
+  `features[:, 0] = (coords[:, 0] - 10.70) / 0.20`
+  `features[:, 1] = (coords[:, 1] - 106.60) / 0.20`
+  *Hậu quả khoa học:* Khi kiểm thử trên cụm Hà Nội (vĩ độ ~21.0) và Đà Nẵng (vĩ độ ~16.0), giá trị đặc trưng đầu vào bị đội lên **51.5** và **26.5** — hoàn toàn vỡ ra khỏi miền huấn luyện $[0, 1]$. Đây là hiện tượng **Distribution Shift** nghiêm trọng, bóp méo ma trận Multi-Head Attention và khiến sai số Optimality Gap bị đẩy lên mức 108.8% một cách giả tạo.
+- **Giải pháp khoa học & Triệt tiêu hoàn toàn Hardcode:**
+  1. *Chuẩn hóa Tọa độ Động Thích Ứng (Dynamic Min-Max Scaling per-instance):*
+     Mỗi hành trình được chuẩn hóa độc lập về hình học nội vi không gian đơn vị $[0, 1]^2$:
+     $$x'_i = \frac{x_i - \min(X)}{\max(X) - \min(X)}, \quad y'_i = \frac{y_i - \min(Y)}{\max(Y) - \min(Y)}$$
+     Đặc trưng thứ 3 chuẩn hóa mức độ kẹt xe: $f_3 = C(t) / 2.25 \in [0, 1]$.
+     Bảo đảm mô hình học **tư duy định tuyến không gian và tương quan tô-pô** (Spatial Topology Reasoning) chứ không học vẹt tọa độ địa lý. Bất kể lộ trình nằm tại ngõ nhỏ Hà Nội, đường đèo Đà Nẵng hay đại lộ TP.HCM, mô hình đều tiếp nhận dưới một phân phối chuẩn hóa đồng nhất.
+  2. *Nâng cấp Kiến trúc Gold Config (128-d, 3 layers, 8 heads — 741,504 tham số):*
+     Nâng cấp từ mô hình 64-d/2L (202K params) lên kiến trúc chuẩn mực theo Kool et al. (ICLR 2019). Tích hợp cơ chế tự động nhận diện số chiều embedding và số lớp transformer từ `state_dict` (Adaptive Checkpoint Loading), bảo đảm tương thích ngược 100%.
+  3. *Huấn Luyện Đa Tỷ Lệ (Multi-Scale Curriculum Training):*
+     Bộ sinh dữ liệu không còn cố định $N=20$, mà phối trộn ngẫu nhiên: 60% số batch có $N \in [10, 25]$ và 40% số batch có $N \in [26, 50]$.
+  4. *Nhiễu Kẹt Xe Thời Gian Thực (Cost Perturbation):*
+     Nhúng hệ số ùn tắc thực nghiệm $C(t) \sim \text{Uniform}(1.0, 2.3)$ vào hàm chi phí trong pha rollout huấn luyện, rèn luyện phản xạ né tránh các cung đường nghẽn.
+  5. *Kết quả thực nghiệm đo đạc lại trên 100 POI Toàn quốc (`evaluate_benchmark.py`):*
+     - **Google OR-Tools:** 323.6 phút, 72.8 km, Gap 0.0%, Độ trễ 1001.74 ms, Lỗi Zero-Shot 0.0%.
+     - **Attention Model (AM):** 678.1 phút, 142.2 km, **Gap giảm từ 108.8% xuống 97.9%** (tiết kiệm 14.4 km cự ly và 27.7 phút di chuyển), Độ trễ **21.30 ms** trên CPU luồng đơn, Lỗi Zero-Shot **0.0%**.
+     - **Pointer Network (A2C):** 763.7 phút, 169.1 km, Gap 122.9%, Độ trễ 12.84 ms.
+     - **Dueling DQN (Masked):** 950.0 phút, 139.0 km, Gap 174.3%, Độ trễ 9.46 ms, **Lỗi Zero-Shot đúng 50.0%** (chứng minh tử huyệt cứng nhắc kích thước tensor $N_{\max}=20$).

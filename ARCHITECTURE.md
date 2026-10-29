@@ -1,7 +1,7 @@
 # Bản Thiết Kế Kiến Trúc Hệ Thống (ARCHITECTURE.MD) — HotWAY
 
 > **Tài liệu:** Thiết kế kiến trúc tổng thể, phân rã module, luồng dữ liệu & kiểm định chất lượng  
-> **Phiên bản:** v7.3.0 (Nationwide Multi-Region Logistics Hub Benchmark Edition)  
+> **Phiên bản:** v7.3.1 (Eliminate Hardcoded Regional Biases & Dynamic Min-Max Scaling Edition)  
 > **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
 
@@ -29,7 +29,7 @@ flowchart TD
 
     subgraph S3["Tầng Thuật Toán & 4 Mô Hình Đối Đầu (models/)"]
         ORTools["models/ortools_solver.py\n(Google OR-Tools Guided Local Search - 0.0% Gap Chuẩn công nghiệp)"]
-        AM["models/attention_model.py\n(Graph Attention Transformer Kool et al. - Phục vụ CPU < 20ms)"]
+        AM["models/attention_model.py\n(Graph Attention Transformer Kool et al. - Phục vụ CPU < 25ms, Dynamic Min-Max)"]
         PtrNet["models/pointer_net.py\n(Pointer Network Bi-LSTM + A2C)"]
         DQN["models/dqn_agent.py\n(Dueling DQN Masked - Bóc tách 4 điểm nghẽn tử huyệt)"]
         
@@ -55,23 +55,27 @@ flowchart TD
 
 ---
 
-## 2. Phân Tầng Dữ Liệu & Hợp Đồng Giao Tiếp
+## 2. Phân Tầng Dữ Liệu, Chuẩn Hóa Động & Đặc Tả Mô Hình
 
-### 2.1. Bộ Dữ Liệu 100 POI Logistics Toàn Quốc
-- File: `data/benchmark_100_vietnam_pois.json`
-- Phân bố:
-  - Hà Nội: 40 hành trình (10 N10, 10 N20, 10 N30, 10 N50) với Depot Bưu điện Bờ Hồ / Hub Long Biên.
-  - Đà Nẵng: 20 hành trình (5 N10, 5 N20, 5 N30, 5 N50) với Depot Bưu điện Trung tâm Đà Nẵng.
-  - TP. Hồ Chí Minh: 40 hành trình (10 N10, 10 N20, 10 N30, 10 N50) với Depot Bưu điện Sài Gòn / Hàng Xanh Hub.
-- Mỗi hành trình chứa tọa độ địa lý thực, ma trận cự ly thực tế có tính độ uốn lượn đường phố đô thị (tortuosity 1.32x) và ma trận thời gian di chuyển phụ thuộc giờ khởi hành thông qua hàm kẹt xe thực nghiệm $C(t)$.
+### 2.1. Cơ Chế Chuẩn Hóa Tọa Độ Động (Dynamic Min-Max Scaling)
+Nhằm loại bỏ triệt để hiện tượng **Distribution Shift** do hardcode tọa độ khu vực, toàn bộ đầu vào tọa độ địa lý $(lat, lon)$ được co giãn động theo từng hành trình:
+$$x'_i = \frac{x_i - \min(X)}{\max(X) - \min(X)}, \quad y'_i = \frac{y_i - \min(Y)}{\max(Y) - \min(Y)}$$
+- Không gian đặc trưng đầu vào (3 chiều): $[x'_i, y'_i, C(t) / 2.25]$.
+- Đặc trưng thứ 3 chuẩn hóa hệ số kẹt xe $C(t) \in [1.0, 2.25]$ vào miền $[0.44, 1.0]$.
+- Tính bất biến vị trí: Dù cụm giao hàng ở Cầu Giấy (Hà Nội), Hải Châu (Đà Nẵng), hay Quận 1 (TP.HCM), cấu trúc hình học tương quan đều được bảo toàn nguyên vẹn trong không gian đơn vị $[0, 1]^2$.
 
-### 2.2. Kết Quả Đo Đạc Thực Nghiệm Trên CPU (`results/benchmark_summary_table.csv`)
+### 2.2. Đặc Tả Kiến Trúc Mạng Attention Model (Gold Config)
+- **Encoder:** Graph Transformer 3 lớp, kích thước nhúng $d=128$, 8 Attention Heads, FFN ẩn 512, LayerNorm và residual connections.
+- **Decoder:** Autoregressive Pointer Decoder với ngữ cảnh động kết hợp: $[h_{\text{graph}}, h_{\text{depot}}, h_{\text{last}}, t_{\text{elapsed}}]$ qua phép chiếu tuyến tính $128 \times 3 + 1 \to 128$.
+- **Cơ chế nạp Checkpoint thích ứng (Adaptive Loading):** Solver tự động đọc cấu trúc trọng số `state_dict`, tự thích nghi giữa checkpoint 64-d/2L (202K params) và 128-d/3L (741,504 params), bảo đảm tính tương thích tuyệt đối.
+
+### 2.3. Kết Quả Đo Đạc Thực Nghiệm Đo Đạc Lại Trên CPU (`results/benchmark_summary_table.csv`)
 | Mô hình | Thời gian (phút) | Cự ly (km) | Optimality Gap (%) | Độ trễ CPU (ms) | Lỗi Zero-Shot (%) | Số tham số | Checkpoint |
 |---|---|---|---|---|---|---|---|
-| **Google OR-Tools** | 323.17 | 72.66 | 0.0% | 1001.48 | 0.0% | N/A (C++) | 0.0 MB |
-| **Attention Model (AM)** | 705.77 | 156.60 | 108.77% | **14.13** | **0.0%** | 202,752 | **0.786 MB** |
-| **Pointer Network (A2C)** | 834.59 | 184.93 | 137.08% | 8.63 | 0.0% | 281,601 | 0.0 MB |
-| **Dueling DQN (Masked)** | 931.99 | 138.20 | 170.63% | 6.01 | **50.0%** | 310,934 | 0.0 MB |
+| **Google OR-Tools** | 323.6 | 72.8 | **0.0%** | 1001.74 | 0.0% | N/A (C++) | 0.0 MB |
+| **Attention Model (AM)** | 678.1 | 142.2 | **97.9%** | **21.30** | **0.0%** | 741,504 | **0.786 MB** |
+| **Pointer Network (A2C)** | 763.7 | 169.1 | 122.9% | 12.84 | 0.0% | 281,601 | 0.0 MB |
+| **Dueling DQN (Masked)** | 950.0 | 139.0 | 174.3% | 9.46 | **50.0%** | 310,934 | 0.0 MB |
 
 ---
 

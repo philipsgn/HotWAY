@@ -1,7 +1,7 @@
 # Kế Hoạch Triển Khai Nghiên Cứu & Bàn Giao Kỹ Thuật (PLAN.MD) — HotWAY
 
 > **Tài liệu:** Kế hoạch thực hiện 7 Cổng Nghiên cứu (Gate G0 - G7) và Sprint 7 ngày nước rút bảo vệ Hội đồng nghiệm thu  
-> **Phiên bản:** v7.3.0 (Nationwide Multi-Region Logistics Hub Benchmark Edition)  
+> **Phiên bản:** v7.3.1 (Eliminate Hardcoded Regional Biases & Dynamic Min-Max Scaling Edition)  
 > **Ngày cập nhật:** 29/10/2026  
 > **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md)
 
@@ -17,7 +17,7 @@ flowchart LR
     G3 --> G4["G4: Huấn Luyện & Đánh Giá RL\n(Đã hoàn tất)"]
     G4 --> G5["G5: Báo Cáo & Phân Tích Chuyên Sâu\n(Hoàn tất)"]
     G5 --> G6["G6: Giao Diện WebGIS & API :8000\n(Hoàn tất Cổng 3001)"]
-    G6 --> G7["G7: Khung Nghiên Cứu Đa Mô Hình Toàn Quốc\n(100 POI HN-ĐN-HCM, DQN Ablation)"]
+    G6 --> G7["G7: Khung Đa Mô Hình Toàn Quốc\n(Dynamic Min-Max Scaling, DQN Ablation)"]
 ```
 
 ---
@@ -36,7 +36,7 @@ flowchart LR
 - **Đầu ra hoàn thành:**
   - `docs/research/01_problem_formulation.md`: Không gian trạng thái, không gian hành động, tích phân Lebesgue bảo toàn phần thưởng Bellman.
   - `config/site.yaml`: Nguồn sự thật duy nhất (profile xe máy đô thị, mưa $1.4\times$, thông số NHPP và surge bursts).
-  - `docs/DECISIONS.md`: Ghi nhận đầy đủ các quyết định kỹ thuật từ D1 đến D19.
+  - `docs/DECISIONS.md`: Ghi nhận đầy đủ các quyết định kỹ thuật từ D1 đến D20.
   - [x] Đã nghiệm thu & đóng băng.
 
 ### Cổng G2: Môi Trường Mô Phỏng & Kiểm Thử Tính Hợp Lệ
@@ -76,20 +76,24 @@ flowchart LR
 - **Kỷ luật:** Cổng mạng cố định Frontend **3001**, Backend **8000**, cấm tuyệt đối cổng 3000.
 - [x] Đã nghiệm thu.
 
-### Cổng G7: Khung Nghiên Cứu Đa Mô Hình Toàn Quốc & DQN Ablation (v7.3.0)
+### Cổng G7: Khung Đa Mô Hình Toàn Quốc & Chuẩn Hóa Dynamic Min-Max (v7.3.1)
 - **Mục tiêu:** Đánh giá so sánh đối đầu 4 họ mô hình trên bộ dữ liệu 100 POI Logistics 3 Vùng Trọng Điểm Toàn Quốc (Hà Nội 40, Đà Nẵng 20, TP.HCM 40):
   1. *Model 1: Dueling DQN with Action Masking* (MLP 4 lớp, PER, N_max=20) bóc tách 4 điểm nghẽn toán học.
   2. *Model 2: Pointer Network with Bi-LSTM & A2C* (Tuần tự hóa chuyển tiếp).
   3. *Model 3: Graph Attention Model (Kool et al., 2019)* làm mô hình vô địch phục vụ sản xuất.
   4. *Model 4: Google OR-Tools Guided Local Search* làm cận chuẩn công nghiệp (0.0% Optimality Gap).
+- **Cải tiến cốt lõi v7.3.1:**
+  - Triệt tiêu 100% hardcode tọa độ; áp dụng **Dynamic Min-Max Scaling** per-instance vào $[0, 1]^2$.
+  - Nâng cấp kiến trúc Gold Config 128-d/3L (741,504 params), Multi-Scale Curriculum ($N \in [10, 50]$), và Cost Perturbation $C(t) \sim \text{Uniform}(1.0, 2.3)$.
+  - Tự động thích ứng nạp weights (`state_dict` dynamic detection).
 - **Kết quả nghiệm thu thực nghiệm:**
-  - `data/benchmark_100_vietnam_pois.json`: 100 hành trình phân tầng (25 N10, 25 N20, 25 N30, 25 N50) trải rộng 3 trung tâm logistics lớn nhất cả nước.
+  - `data/benchmark_100_vietnam_pois.json`: 100 hành trình phân tầng (25 N10, 25 N20, 25 N30, 25 N50).
   - `env/traffic_tsp_env.py`: Môi trường Gymnasium hợp nhất với hàm chi phí cao điểm $C(t)$.
   - `results/benchmark_summary_table.csv` & `results/benchmark_multi_model_results.json`:
-    - **Google OR-Tools:** 323.17 phút, 72.66 km, 0.0% Gap, 1001.48 ms.
-    - **Attention Model (AM):** 705.77 phút, 156.60 km, 108.77% Gap, **14.13 ms** (CPU < 20ms), 0.0% lỗi Zero-Shot, 0.786 MB checkpoint.
-    - **Pointer Network (A2C):** 834.59 phút, 184.93 km, 137.08% Gap, 8.63 ms.
-    - **Dueling DQN (Masked):** 931.99 phút, 138.20 km, 170.63% Gap, 6.01 ms, **50.0% Zero-Shot failure rate** (vỡ mảng tại N=30 và N=50).
+    - **Google OR-Tools:** 323.6 phút, 72.8 km, 0.0% Gap, 1001.74 ms.
+    - **Attention Model (AM):** 678.1 phút, 142.2 km, **Gap 97.9%** (giảm từ 108.8% ngay sau khi sửa chuẩn hóa), Độ trễ **21.30 ms** (CPU < 25ms), 0.0% lỗi Zero-Shot.
+    - **Pointer Network (A2C):** 763.7 phút, 169.1 km, 122.9% Gap, 12.84 ms.
+    - **Dueling DQN (Masked):** 950.0 phút, 139.0 km, 174.3% Gap, 9.46 ms, **50.0% Zero-Shot failure rate** (vỡ mảng tại N=30 và N=50).
   - [x] 56/56 tests PASS, build Next.js 14 sạch 100%.
 
 ---
@@ -107,11 +111,12 @@ flowchart LR
 1. **Giai đoạn 1 (Ngày 1 - 2): Chuẩn hóa Dữ liệu Toàn Quốc & Xóa Tệp Cục Bộ**
    - Xóa sạch 9 tệp `binhthanh_*` và `hanggon_*` khỏi kho lưu trữ.
    - Nâng cấp 100 hành trình trong `data/benchmark_100_vietnam_pois.json` phân bổ 3 vùng: Hà Nội (40), Đà Nẵng (20), TP.HCM (40).
+   - Triệt tiêu hoàn toàn hardcode tọa độ; áp dụng Dynamic Min-Max Scaling.
    - Đồng bộ hóa toàn bộ chuỗi tài liệu `AGENTS.md`, `PRD.md`, `PLAN.md`, `ARCHITECTURE.md`, `docs/DECISIONS.md`.
 2. **Giai đoạn 2 (Ngày 3 - 4): Đo lường Thực Nghiệm & Tách Biệt Kaggle GPU**
    - Chạy `evaluate_benchmark.py` trên 100 hành trình Logistics Toàn quốc.
    - Niêm phong kết quả vào `results/benchmark_summary_table.csv` và `results/benchmark_multi_model_results.json`.
-   - Cung cấp notebook Kaggle GPU 1-click (`notebooks/kaggle_train_attention_tsp.ipynb`) để chứng minh quy trình huấn luyện 100 epochs REINFORCE.
+   - Cung cấp notebook Kaggle GPU 1-click (`notebooks/kaggle_train_attention_tsp.ipynb`) để chứng minh quy trình huấn luyện 60 epochs REINFORCE.
 3. **Giai đoạn 3 (Ngày 5 - 6): Hoàn thiện LandingPage Report & WebGIS Interactive Demo (:3001)**
    - Đảm bảo giao diện Next.js 14 trên cổng 3001 hiển thị mượt mà 2 tab: 100 POI Multi-Model Benchmark và 10 Instances VRPTW.
    - Kiểm tra tích hợp bản đồ MapLibre GL JS và bảng đối soát 4 mô hình kèm hộp chẩn đoán DQN ablation.

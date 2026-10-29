@@ -10,21 +10,17 @@ import pickle
 import pytest
 import networkx as nx
 from pathlib import Path
-from src.data.build_graph import haversine, load_site_config
-
-
-@pytest.fixture(scope="module")
-def graph():
-    pickle_path = Path("data/binhthanh_graph.pickle")
-    assert pickle_path.exists(), "Graph pickle cache data/binhthanh_graph.pickle does not exist!"
-    with open(pickle_path, "rb") as f:
-        G = pickle.load(f)
-    return G
+from src.data.build_graph import haversine, load_site_config, build_legacy_binhthanh_graph
 
 
 @pytest.fixture(scope="module")
 def site_config():
     return load_site_config("config/site.yaml")
+
+
+@pytest.fixture(scope="module")
+def graph(site_config):
+    return build_legacy_binhthanh_graph(site_config)
 
 
 def test_graph_is_directed_and_strongly_connected(graph):

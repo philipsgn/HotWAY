@@ -65,14 +65,14 @@ def get_road_graph(
     regions_cfg = config.get("regions", {})
     if region not in regions_cfg:
         # Fallback to binhthanh if specified region not found
-        region = "binhthanh"
+        region = "hcmc_compact"
     
     reg_cfg = regions_cfg.get(region, {})
     pickle_path = Path(reg_cfg.get("graph_file", f"data/{region}_graph.pickle"))
     
     if not pickle_path.exists():
         # Try legacy fallback
-        legacy_path = Path("data/binhthanh_graph.pickle")
+        legacy_path = Path("data/hcmc_compact_graph.pickle")
         if legacy_path.exists():
             logger.warning(f"Region graph {pickle_path} not found. Falling back to {legacy_path}")
             pickle_path = legacy_path

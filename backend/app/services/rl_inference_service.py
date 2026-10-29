@@ -22,7 +22,7 @@ except ImportError:
 class HotWAYPolicyRunner:
     """Wrapper exposing <20ms predict_next_order API backed by authentic trained policy."""
 
-    def __init__(self, model_path: str = "models/rl_best_model.zip", graph_path: str = "data/hanggon_graph.graphml"):
+    def __init__(self, model_path: str = "models/rl_best_model.zip", graph_path: str = "data/hcmc_compact_graph.graphml"):
         self.model_path = model_path
         self.graph_path = graph_path
         self._runner = None

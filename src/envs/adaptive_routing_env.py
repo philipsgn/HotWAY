@@ -46,7 +46,7 @@ class AdaptiveRoutingEnv(gym.Env):
 
         # 1. Load Graph
         if graph is None:
-            graph_path = Path("data/binhthanh_routing_subgraph.pickle")
+            graph_path = Path("data/urban_routing_subgraph.pickle")
             with open(graph_path, "rb") as f:
                 loaded = pickle.load(f)
         elif isinstance(graph, (str, Path)):

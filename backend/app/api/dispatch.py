@@ -32,7 +32,7 @@ async def plan_route(payload: Dict[str, Any], request: Request):
     if not orders:
         # Default sample single order at Landmark 81 / Vinhomes Central Park, Bình Thạnh
         orders = [{
-            "id": "ord_binhthanh_sample_01",
+            "id": "ord_sample_01",
             "lat": 10.7950,
             "lon": 106.7215,
             "dish_name": "Bánh canh gà tô đặc biệt",
@@ -143,7 +143,7 @@ async def get_ghost_trajectory():
 
     # Authoritative fallback trajectory rooted at 490 Điện Biên Phủ, Bình Thạnh
     return {
-        "order_id": "ord_binhthanh_sample_01",
+        "order_id": "ord_sample_01",
         "depot": {"lat": DEPOT_LAT, "lon": DEPOT_LON, "name": "Quán Bánh Canh Gà 490 Điện Biên Phủ"},
         "destination": {"lat": 10.7950, "lon": 106.7215, "name": "Landmark 81 / Vinhomes Central Park"},
         "total_time_seconds": 380.0,

@@ -24,7 +24,7 @@ class RoutingEnv(gym.Env):
 
     def __init__(
         self,
-        subgraph_path: str | Path = "data/binhthanh_routing_subgraph.pickle",
+        subgraph_path: str | Path = "data/urban_routing_subgraph.pickle",
         source_node: Optional[int] = None,
         dest_node: Optional[int] = None,
         free_speed_mps: float = 8.33,  # 30 km/h in m/s

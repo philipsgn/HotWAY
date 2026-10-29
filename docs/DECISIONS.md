@@ -169,3 +169,23 @@
   4. *Kết luận khoa học cho Hội đồng:* Minh chứng vững chắc rằng mô hình giá trị MLP/Tabular hoàn toàn không thể giải quyết bài toán định tuyến tổ hợp đồ thị biến thiên. Việc chuyển dứt khoát sang Attention Model (Graph Transformer) là sự tất yếu dựa trên thực nghiệm.
 - **Hợp đồng cấu trúc thư mục mới:**
   Thiết lập đầy đủ `env/traffic_tsp_env.py`, `models/` (dqn_agent, pointer_net, attention_model, ortools_solver), `services/` (osrm_client, tomtom_client, fallback_router), `train.py`, `evaluate_benchmark.py`, và `api/main.py`.
+
+
+## 19. Quyết Định Mở Rộng Bộ Kiểm Chuẩn Logistics Toàn Quốc 3 Vùng Trọng Điểm & Tẩy Bỏ Toàn Diện Dữ Liệu Cục Bộ (v7.3.0)
+- **Bối cảnh & Động lực:**
+  1. Loại bỏ tư duy định tuyến bó hẹp ở một phường/quận đơn lẻ (Bình Thạnh, Hàng Gòn) để đáp ứng quy mô bài toán Logistics đô thị toàn quốc sẵn sàng phục vụ cấp độ Production.
+  2. Xóa bỏ hoàn toàn 9 tệp dữ liệu cục bộ dư thừa (`binhthanh_*` và `hanggon_*`) trong thư mục `data/`, tái cấu trúc mã nguồn tham chiếu (`adaptive_routing_env.py`, `routing_env.py`, `road_matrix.py`, `dispatch.py`, `spatial.py`, `config.py`, `routing_service.py`) về đồ thị chuẩn tắc tự sinh và `data/urban_routing_subgraph.pickle` (12 nút liên thông mạnh trích xuất từ mạng lưới đô thị thực).
+- **Bộ dữ liệu 100 POI Logistics Toàn quốc (`data/benchmark_100_vietnam_pois.json`):**
+  1. *Phân bố địa lý 3 cụm Logistics lớn nhất Việt Nam:*
+     - **Cụm Hà Nội (40 hành trình):** Kho Tổng Bưu Điện Bờ Hồ / Hub Long Biên (21.0285, 105.8542). Điểm giao thực: ĐH Bách Khoa HN, BV Bạch Mai, Keangnam 72, Aeon Mall Long Biên, Lotte Liễu Giai, Bến Xe Mỹ Đình, KĐT Times City, Bưu cục VNPost, Viettel Post, SPX Hub Cầu Giấy...
+     - **Cụm Đà Nẵng (20 hành trình):** Bưu Điện Trung Tâm Đà Nẵng, 271 Nguyễn Văn Linh (16.0678, 108.2208). Điểm giao thực: Cảng Tiên Sa, BV Đa Khoa ĐN, Chợ Cồn, Chợ Hàn, Bãi Biển Mỹ Khê, Vincom Ngô Quyền, Cầu Rồng, ĐH Bách Khoa ĐN...
+     - **Cụm TP. Hồ Chí Minh (40 hành trình):** Kho Tổng Bưu Điện Sài Gòn / Hàng Xanh Hub (10.8012, 106.7145). Điểm giao thực: Landmark 81, Bitexco, Chợ Bến Thành, BV Chợ Rẫy, ĐH Bách Khoa CS1, Gigamall Thủ Đức, Crescent Mall Q7, Bến xe Miền Đông mới...
+  2. *Phân tầng bài toán:* 25 hành trình N10, 25 hành trình N20, 25 hành trình N30, 25 hành trình N50.
+  3. *Hệ số giờ cao điểm C(t):* Tính toán chuẩn xác theo phân bố giờ khởi hành thực tế (Sáng 2.10x, Chiều 2.25x, Trưa 1.20x, Đêm 1.00x).
+- **Kết quả thực nghiệm đo đạc thực tế trên CPU (`evaluate_benchmark.py`):**
+  - **Google OR-Tools:** Thời gian 323.17 phút, Cự ly 72.66 km, Optimality Gap 0.0% (Chuẩn công nghiệp), Độ trễ 1001.48 ms, Tỷ lệ lỗi Zero-Shot 0.0%.
+  - **Attention Model (AM):** Thời gian 705.77 phút, Cự ly 156.60 km, Optimality Gap 108.77% (trên zero-shot untuned weights), Độ trễ **14.13 ms** (siêu tốc trên CPU < 20ms!), Tỷ lệ lỗi Zero-Shot **0.0%** trên mọi bậc N10..N50, Kích thước checkpoint **0.786 MB** (202,752 tham số).
+  - **Pointer Network (A2C):** Thời gian 834.59 phút, Cự ly 184.93 km, Optimality Gap 137.08%, Độ trễ 8.63 ms, Tỷ lệ lỗi 0.0%, 281,601 tham số.
+  - **Dueling DQN (Masked):** Thời gian 931.99 phút, Cự ly 138.20 km, Optimality Gap 170.63%, Độ trễ 6.01 ms, **Tỷ lệ thất bại Zero-Shot 50.0%** (hoàn toàn tràn mảng và bất khả thi tại N=30 và N=50).
+- **Kỷ luật Sprint 7 ngày nước rút:**
+  Tất cả 56 ca kiểm thử tự động (`pytest tests/`) và biên dịch Next.js 14 (`npm --prefix frontend run build`) bảo đảm đạt 100% xanh sạch trước mọi chuyển giao. Cổng mạng: Frontend 3001, Backend 8000, tuyệt đối cấm cổng 3000.

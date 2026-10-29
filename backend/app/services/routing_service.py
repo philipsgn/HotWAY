@@ -95,10 +95,10 @@ DQN_WAYPOINTS: List[Dict[str, Any]] = [
 class RoutingService:
     """Computes delivery routes using Bình Thạnh road network or Dijkstra shortest path."""
 
-    def __init__(self, graph_path: str = "data/binhthanh_graph.graphml"):
+    def __init__(self, graph_path: str = "data/hcmc_compact_graph.graphml"):
         self.graph_path = Path(graph_path)
         if not self.graph_path.is_file():
-            fallback = Path("data/hanggon_graph.graphml")
+            fallback = Path("data/hcmc_compact_graph.graphml")
             if fallback.is_file():
                 self.graph_path = fallback
         self.graph = None
@@ -216,7 +216,7 @@ class RoutingService:
 
         return {
             "type": "FeatureCollection",
-            "name": "binhthanh_benchmark_routes",
+            "name": "vietnam_benchmark_routes",
             "depot": depot_meta,
             "destination": dest_meta,
             "routes": {

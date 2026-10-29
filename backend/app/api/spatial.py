@@ -53,9 +53,9 @@ async def get_benchmark_routes(
 
 @router.get("/roads", summary="Get Bình Thạnh Road Network GeoJSON")
 async def get_roads():
-    road_path = Path("data/binhthanh_roads.geojson")
+    road_path = Path("data/hcmc_compact_roads.geojson")
     if not road_path.is_file():
-        road_path = Path("data/hanggon_roads.geojson")
+        road_path = Path("data/hcmc_compact_roads.geojson")
 
     if road_path.is_file():
         try:
@@ -86,9 +86,9 @@ async def get_roads():
 
 @router.get("/buildings", summary="Get Bình Thạnh 3D Building Polygons GeoJSON")
 async def get_buildings():
-    bldg_path = Path("data/binhthanh_buildings.geojson")
+    bldg_path = Path("data/buildings.geojson")
     if not bldg_path.is_file():
-        bldg_path = Path("data/hanggon_buildings.geojson")
+        bldg_path = Path("data/buildings.geojson")
 
     if bldg_path.is_file():
         try:

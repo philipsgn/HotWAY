@@ -156,7 +156,7 @@ class Settings(BaseSettings):
 
     # 8. Reinforcement Learning & Inference Configuration
     RL_MODEL_PATH: str = "models/rl_best_model.zip"
-    OSM_GRAPH_PATH: str = "data/binhthanh_graph.graphml"
+    OSM_GRAPH_PATH: str = "data/hcmc_compact_graph.graphml"
     GHOST_TRAJECTORY_PATH: str = "experiments/trajectories/best_route_ghost.json"
     USE_DIJKSTRA_FALLBACK: bool = True
     MAX_BATCH_ORDERS: int = 5

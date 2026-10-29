@@ -1,6 +1,6 @@
 """
-Build Nationwide Multi-Region Benchmark Dataset (v7.3.0).
-Generates 100 Production-Grade Multi-Stop Delivery Itineraries across 3 Major Vietnamese Logistics Clusters:
+Build a synthetic nationwide multi-region benchmark (v7.3.0).
+Generates 100 sampled multi-stop instances across three Vietnamese regional POI pools:
 - Hanoi Cluster: 40 instances (10 N10, 10 N20, 10 N30, 10 N50)
 - Da Nang Cluster: 20 instances (5 N10, 5 N20, 5 N30, 5 N50)
 - Ho Chi Minh City Cluster: 40 instances (10 N10, 10 N20, 10 N30, 10 N50)
@@ -17,9 +17,6 @@ from pathlib import Path
 
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from env.traffic_tsp_env import compute_traffic_multiplier
-
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     R = 6371.0
@@ -239,7 +236,6 @@ HCMC_POIS = [
 
 def generate_matrices(
     coords: List[Tuple[float, float]],
-    departure_hour: float,
     tortuosity: float = 1.32,
     base_speed_kmh: float = 26.0
 ) -> Tuple[List[List[float]], List[List[float]]]:
@@ -247,8 +243,6 @@ def generate_matrices(
     dist_matrix = [[0.0] * n for _ in range(n)]
     duration_matrix = [[0.0] * n for _ in range(n)]
     
-    traffic_factor = compute_traffic_multiplier(departure_hour)
-
     for i in range(n):
         lat1, lon1 = coords[i]
         for j in range(n):
@@ -260,7 +254,8 @@ def generate_matrices(
             dist_matrix[i][j] = round(d_km, 3)
 
             # Travel time in minutes
-            dur_min = (d_km / base_speed_kmh) * 60.0 * traffic_factor
+            # Store free-flow duration only. C(t) is applied once by the route simulator.
+            dur_min = (d_km / base_speed_kmh) * 60.0
             duration_matrix[i][j] = round(dur_min, 2)
 
     return dist_matrix, duration_matrix
@@ -309,7 +304,7 @@ def generate_region_instances(
 
             # Full coordinate sequence: 0 is depot, 1..n are stops
             all_coords = [(depot_dict["lat"], depot_dict["lon"])] + [(s["lat"], s["lon"]) for s in stops]
-            dist_matrix, dur_matrix = generate_matrices(all_coords, dep_hour)
+            dist_matrix, dur_matrix = generate_matrices(all_coords)
 
             depot_entry = {
                 "id": 0,
@@ -381,7 +376,8 @@ def main():
 
     dataset = {
         "metadata": {
-            "description": "100 Production-Grade Multi-Stop Delivery Itineraries across 3 Major Vietnamese Logistics Hubs (Hanoi 40, Da Nang 20, HCMC 40)",
+            "description": "Synthetic nationwide benchmark based on calibrated urban tortuosity and empirical C(t); locations are sampled from regional POI pools.",
+            "dataset_type": "Synthetic nationwide benchmark based on calibrated urban tortuosity & empirical C(t)",
             "total_instances": 100,
             "regional_distribution": {
                 "Hanoi": 40,
@@ -394,6 +390,7 @@ def main():
                 "N30": 25,
                 "N50": 25
             },
+            "duration_matrix_semantics": "Base free-flow travel duration; apply compute_traffic_multiplier(hour) once per leg during elapsed-time simulation",
             "traffic_context": "Empirical urban congestion multiplier C(t) calibrated for Vietnamese peak hours",
             "logistics_profile": "Motorbike urban courier (VNPost, Viettel Post, SPX Express, J&T)",
             "seed": seed,

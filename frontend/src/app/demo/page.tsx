@@ -154,7 +154,7 @@ export default function OptimoSchedulingPage() {
     }
   };
 
-  const handleSelectT2Instance = (instance: any) => {
+  const handleSelectT2Instance = (instance: any, modelRoutes: any[] = []) => {
     if (!instance) return;
     if (instance.depot) {
       setCurrentDepot({
@@ -174,24 +174,24 @@ export default function OptimoSchedulingPage() {
       }));
       setOrders(pts);
 
-      const depotCoord: [number, number] = [instance.depot.lat, instance.depot.lon];
-      const stopCoords: [number, number][] = instance.stops.map((s: any) => [s.lat, s.lon]);
-      const routeCoords: [number, number][] = [depotCoord, ...stopCoords, depotCoord];
+      const chosenRoute = modelRoutes.find((result) => result.model.includes("Attention Model") && result.valid)
+        || modelRoutes.find((result) => result.valid);
+      if (!chosenRoute) {
+        setRoutes([]);
+        addToast("error", "Không có tour solver hợp lệ", "Benchmark không cung cấp route hợp lệ cho instance này.");
+        return;
+      }
+      const allNodes = [instance.depot, ...instance.stops];
+      const routeNodeIndices: number[] = chosenRoute.route;
+      const routeCoords: [number, number][] = routeNodeIndices.map((nodeIdx) => [allNodes[nodeIdx].lat, allNodes[nodeIdx].lon]);
 
       setRoutes([
         {
           vehicle_id: 1,
           leg_geometries: [routeCoords],
-          customer_indices: instance.stops.map((_: any, idx: number) => idx + 1),
-          distance_km: Number((instance.stops.length * 1.8).toFixed(1)),
-          duration_min: Math.round(instance.stops.length * 4.2),
-          stops: instance.stops.map((s: any, idx: number) => ({
-            node_idx: idx + 1,
-            order_id: `ORD-${idx + 1}`,
-            arrival_time_sec: (idx + 1) * 300,
-            elapsed_time_min: (idx + 1) * 5,
-            demand: 1,
-          })),
+          customer_indices: routeNodeIndices.slice(1, -1),
+          distance_km: chosenRoute.total_dist_km,
+          duration_min: chosenRoute.total_duration_min,
         },
       ]);
 

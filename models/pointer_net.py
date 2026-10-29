@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
@@ -16,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from env.traffic_tsp_env import TrafficTSPEnv
+from env.traffic_tsp_env import TrafficTSPEnv, compute_traffic_multiplier, simulate_route
 
 
 class AttentionPointer(nn.Module):
@@ -146,13 +147,18 @@ class PointerNetSolver:
 
     def __init__(self, model: Optional[PointerNetwork] = None, weights_path: Optional[str] = None):
         self.device = torch.device("cpu")
+        default_weights = Path("results/checkpoints/pointer_net_a2c.pt")
+        target_weights = Path(weights_path) if weights_path else default_weights
+        self.weights_loaded = model is not None
+        self.weights_path = str(target_weights) if model is None else None
         if model is not None:
             self.model = model.to(self.device)
         else:
             self.model = PointerNetwork().to(self.device)
-            if weights_path:
+            if target_weights.exists():
                 try:
-                    self.model.load_state_dict(torch.load(weights_path, map_location="cpu"))
+                    self.model.load_state_dict(torch.load(target_weights, map_location="cpu", weights_only=True))
+                    self.weights_loaded = True
                 except Exception as e:
                     print(f"Notice: Could not load PointerNet weights ({e}), using initialized weights.")
         self.model.eval()
@@ -175,10 +181,8 @@ class PointerNetSolver:
 
         # Feature tensor: [norm_lat, norm_lon, dist_depot, congestion]
         dist_mat = np.array(instance["dist_matrix_km"], dtype=np.float32)
-        dur_mat = np.array(instance["duration_matrix_min"], dtype=np.float32)
-
         dep_hour = instance.get("departure_hour", 8.0)
-        c_t = 2.10 if (7.0 <= dep_hour < 8.5) else (2.25 if (17.0 <= dep_hour < 18.5) else 1.20)
+        c_t = compute_traffic_multiplier(dep_hour)
 
         feats = np.zeros((total_nodes, 4), dtype=np.float32)
         feats[:, :2] = norm_coords
@@ -189,29 +193,23 @@ class PointerNetSolver:
 
         with torch.no_grad():
             action_seq, _, _ = self.model(node_tensor, deterministic=True)
-            route = [0] + action_seq.squeeze(0).tolist()
+            route = action_seq.squeeze(0).cpu().tolist()
+            if not route or route[0] != 0:
+                route.insert(0, 0)
+            if route[-1] != 0:
+                route.append(0)
 
         solve_time_ms = (time.perf_counter() - start_time) * 1000.0
 
         # Calculate total distance and duration with dynamic traffic C(t)
-        total_dist = 0.0
-        total_dur = 0.0
-        curr_time = 0.0
-        for i in range(len(route) - 1):
-            u, v = route[i], route[i + 1]
-            h = (dep_hour + curr_time / 60.0) % 24.0
-            mult = 2.10 if (7.0 <= h < 8.5) else (2.25 if (17.0 <= h < 18.5) else (1.20 if (9.0 <= h < 16.5) else 1.0))
-            d = dist_mat[u, v]
-            t = dur_mat[u, v] * mult
-            total_dist += d
-            total_dur += t
-            curr_time += t
+        total_dist, total_dur = simulate_route(instance, route)
 
         return {
             "model": "Pointer Network (A2C)",
             "route": route,
             "total_dist_km": round(float(total_dist), 2),
             "total_duration_min": round(float(total_dur), 2),
-            "solve_time_ms": round(solve_time_ms, 2)
+            "solve_time_ms": round(solve_time_ms, 2),
+            "valid": len(route) == total_nodes + 1 and len(set(route[:-1])) == total_nodes
         }
 

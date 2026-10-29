@@ -16,6 +16,9 @@ import sys
 import zipfile
 
 import torch
+from src.agents.attention_model.model import AttentionModel
+from models.pointer_net import PointerNetwork
+from models.dqn_agent import DuelingDQNNetwork
 
 # Ensure UTF-8 output on Windows
 sys.stdout.reconfigure(encoding="utf-8")
@@ -86,14 +89,60 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
         print(f"Failed to load checkpoint via torch.load: {e}")
         sys.exit(1)
 
+    if not isinstance(sd, dict):
+        print("Error: checkpoint must contain a model state_dict.")
+        sys.exit(1)
+    if any(key.startswith("module.") for key in sd):
+        sd = {key.removeprefix("module."): value for key, value in sd.items()}
+    if "encoder.init_embed.weight" in sd:
+        model_type = "attention"
+        layer_ids = {
+            int(key.split(".")[2]) for key in sd
+            if key.startswith("encoder.layers.") and key.endswith(".norm1.weight")
+        }
+        if not layer_ids or layer_ids != set(range(max(layer_ids) + 1)):
+            print("Error: checkpoint encoder layer indices are missing or non-contiguous.")
+            sys.exit(1)
+        candidate_model = AttentionModel(
+            input_dim=int(sd["encoder.init_embed.weight"].shape[1]),
+            embed_dim=int(sd["encoder.init_embed.weight"].shape[0]),
+            n_heads=8,
+            n_layers=len(layer_ids),
+        )
+        dest_candidates = [Path("models/attention_model_weights.pt"), Path("results/attention_tsp50_hcmc.pt")]
+    elif "embedding.weight" in sd and "decoder_cell.weight_ih" in sd:
+        model_type = "pointer_net"
+        candidate_model = PointerNetwork(
+            input_dim=int(sd["embedding.weight"].shape[1]),
+            hidden_dim=int(sd["embedding.weight"].shape[0]),
+        )
+        dest_candidates = [Path("results/checkpoints/pointer_net_a2c.pt")]
+    elif all(key in sd for key in ("fc1.weight", "fc2.weight", "fc3.weight", "fc4.weight", "advantage_head.weight")):
+        model_type = "dqn"
+        hidden_dims = tuple(int(sd[f"fc{i}.weight"].shape[0]) for i in range(1, 5))
+        candidate_model = DuelingDQNNetwork(
+            max_nodes=int(sd["advantage_head.weight"].shape[0]) - 1,
+            hidden_dims=hidden_dims,
+        )
+        dest_candidates = [Path("results/checkpoints/dqn_dueling_masked.pt")]
+    else:
+        print("Error: checkpoint architecture is not a supported Attention, PointerNet, or DQN state_dict.")
+        sys.exit(1)
+
+    expected = candidate_model.state_dict()
+    if set(sd) != set(expected) or any(sd[key].shape != expected[key].shape for key in expected if key in sd):
+        print(f"Error: {model_type} parameter names/shapes do not match its inferred architecture.")
+        sys.exit(1)
+    try:
+        candidate_model.load_state_dict(sd, strict=True)
+    except RuntimeError as e:
+        print(f"Error: incompatible {model_type} checkpoint: {e}")
+        sys.exit(1)
+
     total_params = sum(p.numel() for p in sd.values())
     print(f"Total Parameters: {total_params:,}")
 
-    # Copy weights to standard HotWAY destinations
-    dest_candidates = [
-        Path("models/attention_model_weights.pt"),
-        Path("results/attention_tsp50_hcmc.pt"),
-    ]
+    # Copy only to destinations for the detected architecture.
     for dest in dest_candidates:
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(extracted_weights, dest)
@@ -112,7 +161,8 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
     py_exec = sys.executable
     ret = subprocess.run([py_exec, "evaluate_benchmark.py"], check=False)
     if ret.returncode != 0:
-        print("Warning: evaluate_benchmark.py exited with non-zero code!")
+        print("Error: evaluate_benchmark.py failed; frontend benchmark artifacts were not synchronized.")
+        sys.exit(ret.returncode)
 
     # 3. Synchronize new benchmark results to Frontend
     fe_data_dir = Path("frontend/public/data")
@@ -125,7 +175,7 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
 
     print("\n" + "=" * 80)
     print("SUCCESS: FINAL OUTPUT INGESTION AND SYNCHRONIZATION COMPLETE!")
-    print("All benchmark tables, WebGIS maps, and Landing Page reports now reflect real trained data.")
+    print("Benchmark artifacts include per-model weights_loaded status; untrained models are identified explicitly.")
     print("=" * 80)
 
 

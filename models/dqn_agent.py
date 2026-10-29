@@ -9,6 +9,7 @@ from __future__ import annotations
 import math
 import random
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
@@ -17,7 +18,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-from env.traffic_tsp_env import TrafficTSPEnv
+from env.traffic_tsp_env import TrafficTSPEnv, simulate_route
 
 
 class DuelingDQNNetwork(nn.Module):
@@ -203,14 +204,19 @@ class DQNSolver:
 
     def __init__(self, agent: Optional[DQNAgent] = None, max_nodes: int = 20, weights_path: Optional[str] = None):
         self.max_nodes = max_nodes
+        target_weights = weights_path or "results/checkpoints/dqn_dueling_masked.pt"
+        self.weights_path = target_weights
+        self.weights_loaded = agent is not None
         if agent is not None:
             self.agent = agent
         else:
             self.agent = DQNAgent(max_nodes=max_nodes)
-            if weights_path:
+            if Path(target_weights).exists():
                 try:
-                    self.agent.q_net.load_state_dict(torch.load(weights_path, map_location="cpu"))
+                    self.agent.q_net.load_state_dict(torch.load(target_weights, map_location="cpu", weights_only=True))
+                    self.agent.target_net.load_state_dict(self.agent.q_net.state_dict())
                     self.agent.q_net.eval()
+                    self.weights_loaded = True
                 except Exception as e:
                     print(f"Notice: Could not load DQN weights ({e}), using initialized agent.")
 
@@ -220,11 +226,22 @@ class DQNSolver:
         If instance has N > max_nodes, documents the fatal flaw of truncation/padding failure.
         """
         start_time = time.perf_counter()
-        env = TrafficTSPEnv(instance_dict=instance, fixed_max_nodes=self.max_nodes)
-        obs, info = env.reset()
-
         num_stops = instance.get("num_stops", len(instance.get("stops", [])))
         is_overflow = bool(num_stops > self.max_nodes)
+        if is_overflow:
+            return {
+                "model": "Dueling DQN (Masked)",
+                "route": [],
+                "total_dist_km": float("nan"),
+                "total_duration_min": float("nan"),
+                "solve_time_ms": (time.perf_counter() - start_time) * 1000.0,
+                "is_overflow": True,
+                "valid": False,
+                "failure_note": f"DQN action space supports at most {self.max_nodes} stops (got {num_stops})"
+            }
+
+        env = TrafficTSPEnv(instance_dict=instance, fixed_max_nodes=self.max_nodes)
+        obs, info = env.reset()
 
         done = False
         step_count = 0
@@ -250,20 +267,13 @@ class DQNSolver:
         if route[-1] != 0:
             route.append(0)
 
-        # Recalculate full duration and distance
-        total_dist = 0.0
-        total_dur = 0.0
-        dep_hour = instance.get("departure_hour", 8.0)
-        curr_time = 0.0
-        for i in range(len(route) - 1):
-            u, v = route[i], route[i + 1]
-            c_t = env.current_traffic_factor
-            d = instance["dist_matrix_km"][u][v]
-            t_base = instance["duration_matrix_min"][u][v]
-            adj_t = t_base * c_t
-            total_dist += d
-            total_dur += adj_t
-            curr_time += adj_t
+        total_dist, total_dur = simulate_route(instance, route)
+        valid = (
+            len(route) == num_stops + 2
+            and route[0] == 0 and route[-1] == 0
+            and len(set(route[:-1])) == num_stops + 1
+            and set(route[:-1]) == set(range(num_stops + 1))
+        )
 
         return {
             "model": "Dueling DQN (Masked)",
@@ -272,6 +282,7 @@ class DQNSolver:
             "total_duration_min": round(total_dur, 2),
             "solve_time_ms": round(solve_time_ms, 2),
             "is_overflow": is_overflow,
+            "valid": valid,
             "failure_note": "Rigid N_max=20 limit exceeded; required truncation/masking" if is_overflow else None
         }
 

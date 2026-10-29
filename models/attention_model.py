@@ -18,7 +18,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from env.traffic_tsp_env import compute_traffic_multiplier
+from env.traffic_tsp_env import compute_traffic_multiplier, simulate_route
 from src.agents.attention_model.model import AttentionModel as CoreAttentionModel
 
 
@@ -29,6 +29,8 @@ class AttentionModelSolver:
         self.device = torch.device("cpu")
         default_weights = Path("results/attention_tsp50_hcmc.pt")
         target_weights = Path(weights_path) if weights_path else default_weights
+        self.weights_loaded = model is not None
+        self.weights_path = str(target_weights) if model is None else None
 
         if model is not None:
             self.model = model.to(self.device)
@@ -44,6 +46,7 @@ class AttentionModelSolver:
                     self.model = CoreAttentionModel(input_dim=3, embed_dim=embed_dim, n_heads=8, n_layers=n_layers).to(self.device)
                     self.model.load_state_dict(state_dict)
                     loaded = True
+                    self.weights_loaded = True
                 except Exception:
                     loaded = False
 
@@ -84,9 +87,16 @@ class AttentionModelSolver:
 
         node_tensor = torch.tensor(features, dtype=torch.float32).unsqueeze(0)
 
+        model_device = next(self.model.parameters()).device
+        if model_device.type == "cuda":
+            torch.cuda.synchronize(model_device)
+        inference_start = time.perf_counter()
         with torch.no_grad():
             tours, _ = self.model(node_tensor, decode_type="greedy")
             perm = tours.squeeze(0).tolist()
+        if model_device.type == "cuda":
+            torch.cuda.synchronize(model_device)
+        inference_latency_ms = (time.perf_counter() - inference_start) * 1000.0
 
         solve_time_ms = (time.perf_counter() - start_time) * 1000.0
 
@@ -99,25 +109,14 @@ class AttentionModelSolver:
 
         # Calculate actual dynamic travel duration and distance
         dist_mat = np.array(instance["dist_matrix_km"], dtype=np.float32)
-        dur_mat = np.array(instance["duration_matrix_min"], dtype=np.float32)
-
-        total_dist = 0.0
-        total_dur = 0.0
-        curr_time = 0.0
-        for i in range(len(tour) - 1):
-            u, v = tour[i], tour[i + 1]
-            h = (dep_hour + curr_time / 60.0) % 24.0
-            mult = compute_traffic_multiplier(h)
-            d = dist_mat[u, v]
-            t = dur_mat[u, v] * mult
-            total_dist += d
-            total_dur += t
-            curr_time += t
+        total_dist, total_dur = simulate_route(instance, tour)
 
         return {
             "model": "Attention Model (Graph Transformer)",
             "route": tour,
             "total_dist_km": round(float(total_dist), 2),
             "total_duration_min": round(float(total_dur), 2),
-            "solve_time_ms": round(solve_time_ms, 2)
+            "inference_latency_ms": round(inference_latency_ms, 2),
+            "solve_time_ms": round(solve_time_ms, 2),
+            "valid": len(tour) == total_nodes + 1 and len(set(tour[:-1])) == total_nodes
         }

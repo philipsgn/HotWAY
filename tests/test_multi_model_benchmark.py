@@ -13,8 +13,15 @@ import json
 from pathlib import Path
 import pytest
 import numpy as np
+import torch
 
-from env.traffic_tsp_env import TrafficTSPEnv, compute_traffic_multiplier
+from env.traffic_tsp_env import (
+    TrafficTSPEnv,
+    compute_traffic_multiplier,
+    compute_traffic_multiplier_tensor,
+    simulate_route,
+)
+from evaluate_benchmark import compute_relative_gap, validate_closed_tour
 from models.dqn_agent import DQNAgent, DQNSolver
 from models.pointer_net import PointerNetwork, PointerNetSolver
 from models.attention_model import AttentionModelSolver
@@ -53,6 +60,38 @@ def test_traffic_multiplier_empirical_curve():
     assert compute_traffic_multiplier(17.5) == 2.25
     # Off-peak night
     assert compute_traffic_multiplier(23.0) == 1.00
+    hours = torch.tensor([6.99, 7.0, 8.5, 9.0, 16.5, 17.0, 18.5, 20.0, 22.0])
+    tensor_values = compute_traffic_multiplier_tensor(hours).tolist()
+    assert tensor_values == pytest.approx([compute_traffic_multiplier(float(hour)) for hour in hours])
+
+
+def test_route_simulation_uses_free_flow_duration_and_accumulated_traffic():
+    instance = {
+        "departure_hour": 8.25,
+        "dist_matrix_km": [[0.0, 1.0], [1.0, 0.0]],
+        "duration_matrix_min": [[0.0, 30.0], [30.0, 0.0]],
+    }
+    distance, duration = simulate_route(instance, [0, 1, 0])
+    # First edge: 30*2.10=63 min; second starts after 9:00 and uses 1.20 once.
+    assert distance == 2.0
+    assert duration == pytest.approx(99.0)
+
+
+def test_closed_tour_validation_and_signed_relative_gap():
+    assert validate_closed_tour([0, 2, 1, 0], num_stops=2)
+    assert not validate_closed_tour([0, 1, 1, 0], num_stops=2)
+    assert compute_relative_gap(90.0, 100.0) == pytest.approx(-10.0)
+
+
+def test_dqn_overflow_is_an_explicit_failed_result(sample_instance):
+    oversized = dict(sample_instance)
+    oversized["num_stops"] = 21
+    result = DQNSolver(max_nodes=20).solve(oversized)
+    assert result["is_overflow"] is True
+    assert result["valid"] is False
+    assert result["route"] == []
+    assert np.isnan(result["total_duration_min"])
+    assert np.isnan(result["total_dist_km"])
 
 
 def test_unified_traffic_tsp_env(sample_instance):

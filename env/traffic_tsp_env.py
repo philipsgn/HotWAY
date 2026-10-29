@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
+import torch
 
 
 def compute_traffic_multiplier(hour_float: float) -> float:
@@ -36,6 +37,39 @@ def compute_traffic_multiplier(hour_float: float) -> float:
         return 1.10
     else:
         return 1.00
+
+
+def compute_traffic_multiplier_tensor(hour: torch.Tensor) -> torch.Tensor:
+    """Tensor equivalent of compute_traffic_multiplier with identical interval edges."""
+    t = torch.remainder(hour, 24.0)
+    value = torch.ones_like(t)
+    value = torch.where((t >= 20.0) & (t < 22.0), 1.10, value)
+    value = torch.where((t >= 18.5) & (t < 20.0), 1.40, value)
+    value = torch.where((t >= 17.0) & (t < 18.5), 2.25, value)
+    value = torch.where((t >= 16.5) & (t < 17.0), 1.60, value)
+    value = torch.where((t >= 9.0) & (t < 16.5), 1.20, value)
+    value = torch.where((t >= 8.5) & (t < 9.0), 1.50, value)
+    value = torch.where((t >= 7.0) & (t < 8.5), 2.10, value)
+    return value
+
+
+def simulate_route(instance: Dict[str, Any], route: List[int]) -> Tuple[float, float]:
+    """Return distance and elapsed duration for a closed route using base durations.
+
+    ``duration_matrix_min`` must contain free-flow durations. Congestion is applied
+    exactly once per edge at the hour that edge is entered.
+    """
+    dist = np.asarray(instance["dist_matrix_km"], dtype=np.float64)
+    base_duration = np.asarray(instance["duration_matrix_min"], dtype=np.float64)
+    departure_hour = float(instance.get("departure_hour", 8.0))
+    total_distance = 0.0
+    elapsed_min = 0.0
+    for u, v in zip(route, route[1:]):
+        hour = (departure_hour + elapsed_min / 60.0) % 24.0
+        leg_min = float(base_duration[u, v]) * compute_traffic_multiplier(hour)
+        total_distance += float(dist[u, v])
+        elapsed_min += leg_min
+    return total_distance, elapsed_min
 
 
 class TrafficTSPEnv(gym.Env):
@@ -80,6 +114,9 @@ class TrafficTSPEnv(gym.Env):
         for s in inst.get("stops", []):
             coords.append([s["lat"], s["lon"]])
         self.coords = np.array(coords, dtype=np.float32)
+        coord_min = self.coords.min(axis=0)
+        coord_range = np.maximum(self.coords.max(axis=0) - coord_min, 1e-6)
+        self.normalized_coords = (self.coords - coord_min) / coord_range
 
         self.departure_hour = float(inst.get("departure_hour", 8.0))
         self.visited = np.zeros(self.total_nodes, dtype=bool)
@@ -173,7 +210,7 @@ class TrafficTSPEnv(gym.Env):
         mask = self.get_valid_action_mask()
 
         # Infeasible action check
-        if not mask[action]:
+        if action < 0 or action >= len(mask) or not mask[action]:
             # Heavy penalty for invalid action
             penalty = -100.0
             return self._get_obs(), penalty, False, False, {
@@ -205,7 +242,7 @@ class TrafficTSPEnv(gym.Env):
         self.current_time_min += adj_dur
         self.total_dist_km += dist
         self.total_duration_min += adj_dur
-        self.total_cost += edge_cost
+        self.total_cost += edge_cost + peak_penalty
 
         # Episode termination: back at depot and all stops visited
         terminated = bool(self.current_node == 0 and np.all(self.visited[1:]))
@@ -250,7 +287,7 @@ class TrafficTSPEnv(gym.Env):
         # [current_x, current_y, departure_hour, current_time_min, traffic_factor] (5)
         # + visited_mask_padded (dim)
         # + dist_to_all_nodes_padded (dim)
-        curr_coord = self.coords[self.current_node] if self.current_node < len(self.coords) else np.array([10.8012, 106.7145], dtype=np.float32)
+        curr_coord = self.normalized_coords[self.current_node]
         curr_hour = (self.departure_hour + self.current_time_min / 60.0) % 24.0
         c_t = compute_traffic_multiplier(curr_hour)
 

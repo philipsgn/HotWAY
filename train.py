@@ -1,4 +1,4 @@
-"""
+﻿"""
 Unified Training Entry Point for Reinforcement Learning Route Optimization Models:
 1. Dueling DQN with Action Masking & PER (--model=dqn)
 2. Pointer Network with Bi-LSTM & A2C (--model=ptr)
@@ -23,7 +23,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
-from env.traffic_tsp_env import TrafficTSPEnv
+from env.traffic_tsp_env import TrafficTSPEnv, compute_traffic_multiplier_tensor
 from models.dqn_agent import DQNAgent
 from models.pointer_net import PointerNetwork
 from src.agents.attention_model.model import AttentionModel as GraphAttentionModel
@@ -83,35 +83,48 @@ def train_pointer_net(epochs: int, batch_size: int, lr: float, device: str, save
 
     model = PointerNetwork(input_dim=4, hidden_dim=128).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.96)
 
     save_dir.mkdir(parents=True, exist_ok=True)
-    n_nodes = 20
-
     for ep in range(1, epochs + 1):
         model.train()
-        # Synthetic batch of random normalized coords + traffic factors
-        batch_coords = torch.rand(batch_size, n_nodes, 2, device=device)
-        batch_depot_dist = torch.norm(batch_coords - 0.5, dim=-1, keepdim=True)
-        batch_traffic = torch.full((batch_size, n_nodes, 1), 1.5, device=device)
-        batch_input = torch.cat([batch_coords, batch_depot_dist, batch_traffic], dim=-1)
+        n_nodes = random.randint(10, 25) if random.random() < 0.6 else random.randint(26, 50)
+        raw_coords = torch.rand(batch_size, n_nodes, 2, device=device)
+        coord_min = raw_coords.amin(dim=1, keepdim=True)
+        coord_range = (raw_coords.amax(dim=1, keepdim=True) - coord_min).clamp_min(1e-6)
+        batch_coords = (raw_coords - coord_min) / coord_range
+        departure_hours = torch.rand(batch_size, device=device) * 24.0
+        departure_traffic = compute_traffic_multiplier_tensor(departure_hours).view(batch_size, 1, 1)
+        depot_dist = torch.linalg.vector_norm(batch_coords - batch_coords[:, :1, :], dim=-1, keepdim=True)
+        batch_input = torch.cat([
+            batch_coords,
+            depot_dist,
+            (departure_traffic / 2.25).expand(-1, n_nodes, -1),
+        ], dim=-1)
 
         action_seq, total_log_prob, baseline_pred = model(batch_input, deterministic=False)
+        ordered = torch.gather(batch_coords, 1, action_seq.unsqueeze(-1).expand(batch_size, n_nodes, 2))
+        next_coords = torch.roll(ordered, shifts=-1, dims=1)
+        seg_dist = torch.linalg.vector_norm(ordered - next_coords, dim=-1)
+        elapsed = torch.zeros(batch_size, device=device)
+        cost = torch.zeros_like(elapsed)
+        for step in range(n_nodes):
+            leg = seg_dist[:, step] * compute_traffic_multiplier_tensor(departure_hours + elapsed / 60.0)
+            cost = cost + leg
+            elapsed = elapsed + leg
 
-        # Approximate tour length as reward signal
-        dists = torch.norm(batch_coords[:, :-1, :] - batch_coords[:, 1:, :], dim=-1).sum(dim=-1)
-        reward = - dists * 10.0
-
-        advantage = (reward - baseline_pred.detach())
-        actor_loss = - (advantage * total_log_prob).mean()
-        critic_loss = F.mse_loss(baseline_pred, reward)
+        advantage = (cost - baseline_pred).detach()
+        actor_loss = (advantage * total_log_prob).mean()
+        critic_loss = F.mse_loss(baseline_pred, cost.detach())
         total_loss = actor_loss + 0.5 * critic_loss
 
         optimizer.zero_grad()
         total_loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         optimizer.step()
+        scheduler.step()
 
-        print(f"Epoch {ep:03d}/{epochs:03d} | Actor Loss: {actor_loss.item():.4f} | Critic Loss: {critic_loss.item():.4f} | Mean Tour: {dists.mean().item():.2f}")
+        print(f"Epoch {ep:03d}/{epochs:03d} (N={n_nodes}) | Actor Loss: {actor_loss.item():.4f} | Critic Loss: {critic_loss.item():.4f} | Mean Tour Cost: {cost.mean().item():.2f}")
 
     out_file = save_dir / "pointer_net_a2c.pt"
     torch.save(model.state_dict(), out_file)
@@ -133,7 +146,31 @@ def train_attention_model(epochs: int, batch_size: int, lr: float, device: str, 
     baseline_model.eval()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.985)
     save_dir.mkdir(parents=True, exist_ok=True)
+
+    # Fixed held-out instances make baseline updates comparable across epochs.
+    val_nodes = 20
+    val_raw_coords = torch.rand(batch_size, val_nodes, 2, device=device)
+    val_min = val_raw_coords.amin(dim=1, keepdim=True)
+    val_range = (val_raw_coords.amax(dim=1, keepdim=True) - val_min).clamp_min(1e-6)
+    val_coords = (val_raw_coords - val_min) / val_range
+    val_departures = torch.full((batch_size,), 8.25, device=device)
+
+    def calc_tour_cost(t_seq, coords_batch, departure_hours):
+        bsz, node_count, _ = coords_batch.shape
+        ordered = torch.gather(coords_batch, 1, t_seq.unsqueeze(-1).expand(bsz, node_count, 2))
+        next_coords = torch.roll(ordered, shifts=-1, dims=1)
+        seg_dist = torch.linalg.vector_norm(ordered - next_coords, dim=-1)
+        # Synthetic unit-square edge length is used as base travel minutes for curriculum training.
+        elapsed = torch.zeros(bsz, device=coords_batch.device)
+        total = torch.zeros_like(elapsed)
+        for step in range(node_count):
+            c_t = compute_traffic_multiplier_tensor(departure_hours + elapsed / 60.0)
+            leg = seg_dist[:, step] * c_t
+            total = total + leg
+            elapsed = elapsed + leg
+        return total
 
     for ep in range(1, epochs + 1):
         model.train()
@@ -145,13 +182,15 @@ def train_attention_model(epochs: int, batch_size: int, lr: float, device: str, 
             n_nodes = random.randint(26, 50)
 
         # Dynamic Min-Max normalized coordinates in [0, 1]^2
-        coords = torch.rand(batch_size, n_nodes, 2, device=device)
+        raw_coords = torch.rand(batch_size, n_nodes, 2, device=device)
+        coord_min = raw_coords.amin(dim=1, keepdim=True)
+        coord_range = (raw_coords.amax(dim=1, keepdim=True) - coord_min).clamp_min(1e-6)
+        coords = (raw_coords - coord_min) / coord_range
 
-        # Cost Perturbation: Uniform(1.0, 2.3) per-node traffic congestion noise
-        traffic = 1.0 + 1.25 * torch.rand(batch_size, n_nodes, 1, device=device)
-
-        # 3-feature input tensor: [norm_x, norm_y, traffic/2.25]
-        nodes = torch.cat([coords, traffic / 2.25], dim=-1)
+        departure_hours = torch.rand(batch_size, device=device) * 24.0
+        departure_traffic = compute_traffic_multiplier_tensor(departure_hours).view(batch_size, 1, 1)
+        # Features: [per-instance normalized coordinates, departure traffic context].
+        nodes = torch.cat([coords, (departure_traffic / 2.25).expand(-1, n_nodes, -1)], dim=-1)
 
         # Rollout model vs baseline
         tours, log_probs = model(nodes, decode_type="sampling")
@@ -159,19 +198,10 @@ def train_attention_model(epochs: int, batch_size: int, lr: float, device: str, 
             baseline_tours, _ = baseline_model(nodes, decode_type="greedy")
 
         # Compute traffic-aware dynamic tour cost: sum(dist_ij * avg_traffic)
-        def calc_tour_cost(t_seq):
-            ordered_coords = torch.gather(coords, 1, t_seq.unsqueeze(-1).expand(batch_size, n_nodes, 2))
-            ordered_traffic = torch.gather(traffic, 1, t_seq.unsqueeze(-1).expand(batch_size, n_nodes, 1))
+        cost = calc_tour_cost(tours, coords, departure_hours)
+        baseline_cost = calc_tour_cost(baseline_tours, coords, departure_hours)
 
-            seg_dists = torch.norm(ordered_coords[:, :-1, :] - ordered_coords[:, 1:, :], dim=-1)
-            seg_traffic = 0.5 * (ordered_traffic[:, :-1, 0] + ordered_traffic[:, 1:, 0])
-            total_tour_cost = (seg_dists * seg_traffic).sum(dim=-1)
-            return total_tour_cost
-
-        cost = calc_tour_cost(tours)
-        baseline_cost = calc_tour_cost(baseline_tours)
-
-        advantage = cost - baseline_cost
+        advantage = (cost - baseline_cost).detach()
         loss = (advantage * log_probs).mean()
 
         optimizer.zero_grad()
@@ -179,11 +209,26 @@ def train_attention_model(epochs: int, batch_size: int, lr: float, device: str, 
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         optimizer.step()
 
-        # Update baseline if model is strictly better
-        if advantage.mean().item() < 0:
-            baseline_model.load_state_dict(model.state_dict())
+        scheduler.step()
 
-        print(f"Epoch {ep:03d}/{epochs:03d} (N={n_nodes:02d}) | Loss: {loss.item():.4f} | Model Cost: {cost.mean().item():.3f} | Baseline Cost: {baseline_cost.mean().item():.3f}")
+        # Update rollout baseline only after improvement on fixed validation instances.
+        model.eval()
+        val_features = torch.cat([
+            val_coords,
+            (compute_traffic_multiplier_tensor(val_departures).view(batch_size, 1, 1) / 2.25).expand(-1, val_nodes, -1),
+        ], dim=-1)
+        with torch.no_grad():
+            model_tours, _ = model(val_features, decode_type="greedy")
+            baseline_val_tours, _ = baseline_model(val_features, decode_type="greedy")
+            val_diff = (
+                calc_tour_cost(model_tours, val_coords, val_departures)
+                - calc_tour_cost(baseline_val_tours, val_coords, val_departures)
+            ).mean().item()
+        if val_diff < -0.01:
+            baseline_model.load_state_dict(model.state_dict())
+        model.train()
+
+        print(f"Epoch {ep:03d}/{epochs:03d} (N={n_nodes:02d}) | Loss: {loss.item():.4f} | Model Cost: {cost.mean().item():.3f} | Baseline Cost: {baseline_cost.mean().item():.3f} | Val Diff: {val_diff:+.4f}")
 
     out_file = save_dir / "attention_model_reproduce.pt"
     torch.save(model.state_dict(), out_file)

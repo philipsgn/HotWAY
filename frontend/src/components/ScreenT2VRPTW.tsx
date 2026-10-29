@@ -6,8 +6,9 @@ interface MultiModelSummaryRow {
   model: string;
   mean_duration_min: number;
   mean_distance_km: number;
-  mean_optimality_gap_pct: number;
+  mean_relative_gap_vs_ortools_pct: number | null;
   latency_mean_ms: number;
+  inference_latency_mean_ms: number | null;
   latency_p99_ms: number;
   gap_N10: number;
   gap_N20: number;
@@ -17,6 +18,8 @@ interface MultiModelSummaryRow {
   gap_DaNang: number;
   gap_HCMC: number;
   zero_shot_failure_rate_pct: number;
+  failure_rate_pct: number;
+  weights_loaded: boolean | null;
   params: string;
   checkpoint_size_mb: number;
 }
@@ -38,12 +41,12 @@ export default function ScreenT2VRPTW({
   onSelectRegion,
 }: ScreenT2VRPTWProps) {
   const [benchmarkData, setBenchmarkData] = useState<MultiModelBenchmarkData | null>(null);
+  const [vrptwData, setVrptwData] = useState<any>(null);
   const [instancesList, setInstancesList] = useState<any[]>([]);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<"all" | "Hà Nội" | "Đà Nẵng" | "TP. Hồ Chí Minh">("all");
   const [selectedInstanceId, setSelectedInstanceId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeTrack, setActiveTrack] = useState<"multi_model" | "regional_fairness" | "vrptw">("multi_model");
-  const [viewMode, setViewMode] = useState<"dry" | "rain">("dry");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,10 +54,8 @@ export default function ScreenT2VRPTW({
       try {
         // Fetch 4-model multi-model benchmark results
         const resMulti = await fetch("/data/benchmark_multi_model_results.json");
-        if (resMulti.ok) {
-          const jsonMulti = await resMulti.json();
-          setBenchmarkData(jsonMulti);
-        }
+        const jsonMulti = resMulti.ok ? await resMulti.json() : { detailed_results: {} };
+        if (resMulti.ok) setBenchmarkData(jsonMulti);
 
         // Fetch 100 POI instances list
         const resPois = await fetch("/data/benchmark_100_vietnam_pois.json");
@@ -64,9 +65,16 @@ export default function ScreenT2VRPTW({
           setInstancesList(insts);
           if (insts.length > 0) {
             setSelectedInstanceId(insts[0].instance_id);
-            onSelectRouteInstance?.(insts[0], []);
+            const modelRoutes = jsonMulti.metadata?.schema_version === 2 ? Object.entries(jsonMulti.detailed_results || {}).flatMap(([model, rows]: [string, any]) => {
+              const row = rows.find((item: any) => item.instance_id === insts[0].instance_id);
+              return row?.valid ? [{ model, ...row }] : [];
+            }) : [];
+            if (jsonMulti.metadata?.schema_version === 2) onSelectRouteInstance?.(insts[0], modelRoutes);
           }
         }
+
+        const resVrptw = await fetch("/data/t2_vrptw_benchmark.json");
+        if (resVrptw.ok) setVrptwData(await resVrptw.json());
       } catch (err) {
         console.error("Failed to load benchmark data:", err);
       } finally {
@@ -85,7 +93,7 @@ export default function ScreenT2VRPTW({
     const matched = instancesList.filter((x) => reg === "all" || x.region === reg);
     if (matched.length > 0) {
       setSelectedInstanceId(matched[0].instance_id);
-      onSelectRouteInstance?.(matched[0], []);
+      notifyInstanceSelected(matched[0]);
     }
   };
 
@@ -93,6 +101,15 @@ export default function ScreenT2VRPTW({
     if (selectedRegionFilter === "all") return true;
     return inst.region === selectedRegionFilter;
   });
+
+  const notifyInstanceSelected = (instance: any) => {
+    if (benchmarkData?.metadata?.schema_version !== 2) return;
+    const modelRoutes = Object.entries(benchmarkData?.detailed_results || {}).flatMap(([model, rows]: [string, any]) => {
+      const row = rows.find((item: any) => item.instance_id === instance.instance_id);
+      return row?.valid ? [{ model, ...row }] : [];
+    });
+    onSelectRouteInstance?.(instance, modelRoutes);
+  };
 
   if (isLoading || !benchmarkData) {
     return (
@@ -103,6 +120,13 @@ export default function ScreenT2VRPTW({
   }
 
   const summary = benchmarkData.summary || [];
+  if (benchmarkData.metadata?.schema_version !== 2) {
+    return (
+      <div className="py-12 text-center font-mono text-xs text-[#777777]">
+        Benchmark artifact is outdated. Regenerate it with evaluate_benchmark.py before presenting these results.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 text-xs text-[#111111] font-sans">
@@ -197,6 +221,9 @@ export default function ScreenT2VRPTW({
                       >
                         <td className="py-2 text-left font-sans font-bold text-[#111111]">
                           {row.model}
+                          {row.weights_loaded === false && (
+                            <span className="ml-1 text-[8px] font-mono text-red-800">UNTRAINED</span>
+                          )}
                           {isORTools && (
                             <span className="ml-1 px-1 py-0.2 bg-[#111111] text-white text-[8px] font-mono uppercase">
                               Baseline
@@ -226,15 +253,15 @@ export default function ScreenT2VRPTW({
                               : "text-[#666666]"
                           }`}
                         >
-                          {row.mean_optimality_gap_pct}%
+                          {row.mean_relative_gap_vs_ortools_pct ?? "N/A"}%
                         </td>
-                        <td className="py-2 text-right font-mono text-[10px]">{row.latency_mean_ms} ms</td>
+                        <td className="py-2 text-right font-mono text-[10px]">{row.inference_latency_mean_ms ?? row.latency_mean_ms} ms</td>
                         <td
                           className={`py-2 text-right font-bold ${
-                            row.zero_shot_failure_rate_pct > 0 ? "text-red-800" : "text-emerald-800"
+                            row.failure_rate_pct > 0 ? "text-red-800" : "text-emerald-800"
                           }`}
                         >
-                          {row.zero_shot_failure_rate_pct}%
+                          {row.failure_rate_pct}%
                         </td>
                       </tr>
                     );
@@ -252,33 +279,12 @@ export default function ScreenT2VRPTW({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-[11px] leading-snug">
-              <div className="border-l-2 border-red-700 pl-2 space-y-0.5">
-                <span className="font-bold text-[#111111]">1. Cứng Nhắc Chiều (Dimensionality Rigidity):</span>
-                <p className="text-[#555555]">
-                  DQN đòi hỏi tensor cố định (N_max=20). Khi gặp N=30 và N=50, mô hình thất bại đúng 50.0% số ca do tràn mảng hành động.
-                </p>
-              </div>
-
-              <div className="border-l-2 border-red-700 pl-2 space-y-0.5">
-                <span className="font-bold text-[#111111]">2. Bùng Nổ Tổ Hợp Không Gian Trạng Thái:</span>
-                <p className="text-[#555555]">
-                  Tại N=20, không gian hoán vị đạt 20! ≈ 2.4×10¹⁸. Mạng MLP giá trị Q-learning mắc kẹt sâu trong các cực tiểu địa phương, Gap trễ lên tới 178.7%.
-                </p>
-              </div>
-
-              <div className="border-l-2 border-red-700 pl-2 space-y-0.5">
-                <span className="font-bold text-[#111111]">3. Thiếu Tính Bất Biến Hoán Vị:</span>
-                <p className="text-[#555555]">
-                  Mạng MLP đối xử các nút theo thứ tự chỉ mục tuần tự. Xáo trộn cùng một tập tọa độ sinh độ lệch Q-value 0.054, làm sai lệch phân phối chính sách.
-                </p>
-              </div>
-
-              <div className="border-l-2 border-[#111111] pl-2 space-y-0.5">
-                <span className="font-bold text-[#111111]">4. Quyết Định Chuyển Trục Kiến Trúc:</span>
-                <p className="text-[#555555]">
-                  DQN chứng minh dứt khoát rằng mô hình giá trị MLP không thể giải quyết đồ thị tổ hợp; chuyển dịch sang Attention Model là sự tất yếu thực nghiệm.
-                </p>
-              </div>
+              {Object.entries(benchmarkData.dqn_fatal_flaws_diagnostic || {}).map(([key, finding]) => (
+                <div key={key} className="border-l-2 border-red-700 pl-2 space-y-0.5">
+                  <span className="font-bold text-[#111111]">{finding.title}</span>
+                  <p className="text-[#555555]">{finding.finding}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -315,7 +321,7 @@ export default function ScreenT2VRPTW({
                     return (
                       <tr key={idx} className={isAM ? "bg-emerald-50 font-bold" : ""}>
                         <td className="py-2 text-left font-sans text-neutral-900">{row.model}</td>
-                        <td className="py-2 text-right">{row.mean_optimality_gap_pct}%</td>
+                        <td className="py-2 text-right">{row.mean_relative_gap_vs_ortools_pct ?? "N/A"}%</td>
                         <td className="py-2 text-right">{row.gap_Hanoi}%</td>
                         <td className="py-2 text-right">{row.gap_DaNang}%</td>
                         <td className="py-2 text-right">{row.gap_HCMC}%</td>
@@ -330,7 +336,7 @@ export default function ScreenT2VRPTW({
             </div>
 
             <div className="border-l-2 border-emerald-700 pl-3 py-1.5 bg-emerald-50/50 text-[11px] text-emerald-950 leading-relaxed">
-              <strong>Bằng chứng thực nghiệm loại bỏ Distribution Shift:</strong> Attention Model duy trì Optimality Gap đồng đều tại Hà Nội (99.3%), Đà Nẵng (101.3%) và TP.HCM (95.2%). Biên độ dao động chỉ ±3.0%, chứng minh không gian đặc trưng $[0, 1]^2$ có tính tổng quát hóa không gian tuyệt đối.
+              Regional relative gaps are calculated from the current benchmark artifact. OR-Tools is a heuristic reference, so negative values are retained.
             </div>
           </div>
         </div>
@@ -339,58 +345,27 @@ export default function ScreenT2VRPTW({
       {activeTrack === "vrptw" && (
         /* TRACK 3: 10 INSTANCES VRPTW FLEET */
         <div className="space-y-4">
-          <div className="flex items-center justify-between pb-1 border-b border-neutral-200">
-            <span className="font-mono text-[10px] text-[#777777] uppercase tracking-wider font-bold">
-              10 INSTANCES VRPTW ĐỘI XE
-            </span>
-            <div className="inline-flex border border-[#d4d4d4] font-mono text-[10px]">
-              <button
-                onClick={() => setViewMode("dry")}
-                className={`px-2 py-0.5 transition ${
-                  viewMode === "dry" ? "bg-[#111111] text-white font-bold" : "text-[#555555] hover:bg-[#f5f4f0]"
-                }`}
-              >
-                ĐƯỜNG KHÔ
-              </button>
-              <button
-                onClick={() => setViewMode("rain")}
-                className={`px-2 py-0.5 transition ${
-                  viewMode === "rain" ? "bg-[#111111] text-white font-bold" : "text-[#555555] hover:bg-[#f5f4f0]"
-                }`}
-              >
-                MƯA (1.40x)
-              </button>
-            </div>
+          <div className="pb-1 border-b border-neutral-200 font-mono text-[10px] text-[#777777] uppercase tracking-wider font-bold">
+            VRPTW measured benchmark summary
           </div>
-
           <table className="w-full text-[11px] font-mono border-t border-b border-[#111111]">
             <thead>
               <tr className="border-b border-[#e5e5e5] text-[#555555] text-[10px]">
-                <th className="py-2 text-left font-semibold">Thuật Toán Solver</th>
-                <th className="py-2 text-right font-semibold">Tổng Cự Ly</th>
-                <th className="py-2 text-right font-semibold">Tỷ Lệ Trễ Hẹn</th>
-                <th className="py-2 text-right font-semibold">Thời Gian Giải</th>
+                <th className="py-2 text-left font-semibold">Solver</th>
+                <th className="py-2 text-right font-semibold">Mean Distance</th>
+                <th className="py-2 text-right font-semibold">Late Rate</th>
+                <th className="py-2 text-right font-semibold">Solve Time</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f0f0f0]">
-              <tr className="bg-[#f5f4f0]">
-                <td className="py-2 text-left font-sans font-bold text-[#111111]">Google OR-Tools</td>
-                <td className="py-2 text-right font-bold">79.8 km</td>
-                <td className="py-2 text-right font-bold text-[#111111]">{viewMode === "dry" ? "7.5%" : "38.6%"}</td>
-                <td className="py-2 text-right">4.0s</td>
-              </tr>
-              <tr className="bg-[#faf9f5]">
-                <td className="py-2 text-left font-sans font-bold text-[#111111]">Attention Model (Core AM)</td>
-                <td className="py-2 text-right font-bold">77.4 km</td>
-                <td className="py-2 text-right font-bold text-emerald-800">{viewMode === "dry" ? "8.2%" : "28.4%"}</td>
-                <td className="py-2 text-right font-bold text-emerald-800">14 ms (CPU)</td>
-              </tr>
-              <tr>
-                <td className="py-2 text-left font-sans text-[#333333]">Clarke-Wright + LS</td>
-                <td className="py-2 text-right">73.6 km</td>
-                <td className="py-2 text-right text-red-700">{viewMode === "dry" ? "30.6%" : "42.9%"}</td>
-                <td className="py-2 text-right">1.5 ms</td>
-              </tr>
+              {Object.entries(vrptwData?.summary || {}).map(([solver, row]: [string, any]) => (
+                <tr key={solver}>
+                  <td className="py-2 text-left font-sans font-bold text-[#111111]">{solver}</td>
+                  <td className="py-2 text-right">{row.mean_dist_km} km</td>
+                  <td className="py-2 text-right">{row.mean_late_rate_pct}%</td>
+                  <td className="py-2 text-right">{(row.mean_solve_time_sec * 1000).toFixed(1)} ms</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -424,9 +399,7 @@ export default function ScreenT2VRPTW({
               const id = e.target.value;
               setSelectedInstanceId(id);
               const inst = instancesList.find((x) => x.instance_id === id);
-              if (inst && onSelectRouteInstance) {
-                onSelectRouteInstance(inst, []);
-              }
+              if (inst) notifyInstanceSelected(inst);
             }}
             className="w-full text-xs font-mono p-1.5 border border-neutral-300 bg-white text-neutral-900 rounded-none focus:outline-none focus:border-neutral-900"
           >

@@ -1,7 +1,7 @@
 """
 Model 4: Google OR-Tools Routing Engine (Industrial Benchmark).
 Constraint Programming (CP) engine with Guided Local Search (GLS) meta-heuristics.
-Provides the industrial upper-bound benchmark (0.0% Optimality Gap reference).
+Provides a bounded-time heuristic reference; it does not certify optimality.
 """
 
 from __future__ import annotations
@@ -10,6 +10,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+from env.traffic_tsp_env import simulate_route
 
 try:
     from ortools.constraint_solver import pywrapcp, routing_enums_pb2
@@ -19,7 +20,7 @@ except ImportError:
 
 
 class ORToolsSolver:
-    """Industrial Benchmark Solver using Google OR-Tools Guided Local Search."""
+    """Bounded-time OR-Tools routing heuristic with dynamic post-solve scoring."""
 
     def __init__(self, time_limit_sec: int = 5):
         self.time_limit_sec = time_limit_sec
@@ -35,8 +36,8 @@ class ORToolsSolver:
         dep_hour = float(instance.get("departure_hour", 8.0))
 
         # Base cost matrix combining distance and base duration with initial hour C(t)
-        c_t = 2.10 if (7.0 <= dep_hour < 8.5) else (2.25 if (17.0 <= dep_hour < 18.5) else 1.20)
-        cost_mat = (0.4 * dist_mat + 0.6 * dur_mat * c_t)
+        # Static surrogate objective; route duration is re-simulated dynamically below.
+        cost_mat = 0.4 * dist_mat + 0.6 * dur_mat
         # Scale to integer for OR-Tools CP solver
         scaled_cost = (cost_mat * 1000).astype(int).tolist()
 
@@ -79,25 +80,15 @@ class ORToolsSolver:
         solve_time_ms = (time.perf_counter() - start_time) * 1000.0
 
         # Calculate exact dynamic duration and distance under C(t)
-        total_dist = 0.0
-        total_dur = 0.0
-        curr_time = 0.0
-        for i in range(len(route) - 1):
-            u, v = route[i], route[i + 1]
-            h = (dep_hour + curr_time / 60.0) % 24.0
-            mult = 2.10 if (7.0 <= h < 8.5) else (2.25 if (17.0 <= h < 18.5) else (1.20 if (9.0 <= h < 16.5) else 1.0))
-            d = dist_mat[u, v]
-            t = dur_mat[u, v] * mult
-            total_dist += d
-            total_dur += t
-            curr_time += t
+        total_dist, total_dur = simulate_route(instance, route)
 
         return {
             "model": "Google OR-Tools (Guided Local Search)",
             "route": route,
             "total_dist_km": round(float(total_dist), 2),
             "total_duration_min": round(float(total_dur), 2),
-            "solve_time_ms": round(solve_time_ms, 2)
+            "solve_time_ms": round(solve_time_ms, 2),
+            "valid": len(route) == total_nodes + 1 and len(set(route[:-1])) == total_nodes
         }
 
     def _fallback_nearest_neighbor(self, cost_mat: np.ndarray) -> List[int]:

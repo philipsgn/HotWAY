@@ -3,6 +3,7 @@ Model 3: Attention Model - AM (Graph Multi-Head Transformer with Dynamic Context
 Proposed Champion Core Architecture: Permutation-invariant, sub-15ms CPU inference,
 seamless zero-shot transferability across graph sizes (N=10, 20, 30, 50).
 Based on Kool et al. (ICLR 2019).
+Upgraded with Dynamic Min-Max Scaling (per-instance) and Adaptive Architecture Detection.
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from env.traffic_tsp_env import compute_traffic_multiplier
 from src.agents.attention_model.model import AttentionModel as CoreAttentionModel
 
 
@@ -31,16 +33,24 @@ class AttentionModelSolver:
         if model is not None:
             self.model = model.to(self.device)
         else:
-            # Checkpoint was exported with embed_dim=64, n_layers=2, n_heads=8
-            self.model = CoreAttentionModel(input_dim=3, embed_dim=64, n_heads=8, n_layers=2).to(self.device)
-
+            loaded = False
             if target_weights.exists():
                 try:
                     state_dict = torch.load(target_weights, map_location="cpu", weights_only=True)
+                    # Dynamically detect embed_dim and number of layers from state_dict
+                    embed_dim = state_dict["encoder.init_embed.weight"].shape[0]
+                    layer_keys = [k for k in state_dict.keys() if k.startswith("encoder.layers.") and k.endswith(".norm1.weight")]
+                    n_layers = max(1, len(layer_keys))
+                    self.model = CoreAttentionModel(input_dim=3, embed_dim=embed_dim, n_heads=8, n_layers=n_layers).to(self.device)
                     self.model.load_state_dict(state_dict)
-                except Exception as e:
-                    # Fallback to fresh model if architecture differs
-                    self.model = CoreAttentionModel(input_dim=3, embed_dim=128, n_heads=8, n_layers=3).to(self.device)
+                    loaded = True
+                except Exception:
+                    loaded = False
+
+            if not loaded:
+                # Default gold standard: 128-d, 3 layers, 8 heads
+                self.model = CoreAttentionModel(input_dim=3, embed_dim=128, n_heads=8, n_layers=3).to(self.device)
+
         self.model.eval()
 
     def solve(self, instance: Dict[str, Any]) -> Dict[str, Any]:
@@ -57,11 +67,20 @@ class AttentionModelSolver:
 
         dep_hour = float(instance.get("departure_hour", 8.0))
 
-        # 3-feature input: [norm_lat, norm_lon, dep_hour/24]
+        # 3-feature input: [norm_lat, norm_lon, normalized_traffic_factor]
+        # DYNAMIC MIN-MAX SCALING PER-INSTANCE (Eliminates Regional Distribution Shift)
+        lat_min, lat_max = float(coords[:, 0].min()), float(coords[:, 0].max())
+        lon_min, lon_max = float(coords[:, 1].min()), float(coords[:, 1].max())
+        lat_range = max(lat_max - lat_min, 1e-6)
+        lon_range = max(lon_max - lon_min, 1e-6)
+
         features = np.zeros((total_nodes, 3), dtype=np.float32)
-        features[:, 0] = (coords[:, 0] - 10.70) / 0.20
-        features[:, 1] = (coords[:, 1] - 106.60) / 0.20
-        features[:, 2] = dep_hour / 24.0
+        features[:, 0] = (coords[:, 0] - lat_min) / lat_range
+        features[:, 1] = (coords[:, 1] - lon_min) / lon_range
+
+        # Feature 3: Normalized traffic congestion factor C(t) in [0, 1]
+        traffic_mult = compute_traffic_multiplier(dep_hour)
+        features[:, 2] = traffic_mult / 2.25
 
         node_tensor = torch.tensor(features, dtype=torch.float32).unsqueeze(0)
 
@@ -88,7 +107,7 @@ class AttentionModelSolver:
         for i in range(len(tour) - 1):
             u, v = tour[i], tour[i + 1]
             h = (dep_hour + curr_time / 60.0) % 24.0
-            mult = 2.10 if (7.0 <= h < 8.5) else (2.25 if (17.0 <= h < 18.5) else (1.20 if (9.0 <= h < 16.5) else 1.0))
+            mult = compute_traffic_multiplier(h)
             d = dist_mat[u, v]
             t = dur_mat[u, v] * mult
             total_dist += d

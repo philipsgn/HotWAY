@@ -57,27 +57,23 @@ flowchart TD
 
 ## 2. Phân Tầng Dữ Liệu, Chuẩn Hóa Động & Đặc Tả Mô Hình
 
-### 2.1. Cơ Chế Chuẩn Hóa Tọa Độ Động (Dynamic Min-Max Scaling)
-Nhằm loại bỏ triệt để hiện tượng **Distribution Shift** do hardcode tọa độ khu vực, toàn bộ đầu vào tọa độ địa lý $(lat, lon)$ được co giãn động theo từng hành trình:
-$$x'_i = \frac{x_i - \min(X)}{\max(X) - \min(X)}, \quad y'_i = \frac{y_i - \min(Y)}{\max(Y) - \min(Y)}$$
-- Không gian đặc trưng đầu vào (3 chiều): $[x'_i, y'_i, C(t) / 2.25]$.
-- Đặc trưng thứ 3 chuẩn hóa hệ số kẹt xe $C(t) \in [1.0, 2.25]$ vào miền $[0.44, 1.0]$.
-- Tính bất biến vị trí: Dù cụm giao hàng ở Cầu Giấy (Hà Nội), Hải Châu (Đà Nẵng), hay Quận 1 (TP.HCM), cấu trúc hình học tương quan đều được bảo toàn nguyên vẹn trong không gian đơn vị $[0, 1]^2$.
+### 2.1. Spatial input normalization
+Geographic coordinates are locally projected to a metric plane (equirectangular projection at mean latitude), then scaled by one shared factor for both axes. This preserves shape within the local projection. It does not eliminate distribution shift in road topology, POI density, or unseen regions.
 
-### 2.2. Đặc Tả Kiến Trúc Mạng Attention Model (Gold Config)
-- **Encoder:** Graph Transformer 3 lớp, kích thước nhúng $d=128$, 8 Attention Heads, FFN ẩn 512, LayerNorm và residual connections.
-- **Decoder:** Autoregressive Pointer Decoder với ngữ cảnh động kết hợp: $[h_{\text{graph}}, h_{\text{depot}}, h_{\text{last}}, t_{\text{elapsed}}]$ qua phép chiếu tuyến tính $128 \times 3 + 1 \to 128$.
-- **Cơ chế nạp Checkpoint thích ứng (Adaptive Loading):** Solver tự động đọc cấu trúc trọng số `state_dict`, tự thích nghi giữa checkpoint 64-d/2L (202K params) và 128-d/3L (741,504 params), bảo đảm tính tương thích tuyệt đối.
+### 2.2. Attention Model and dynamic time state
+The Kaggle target configuration is a 128-dimensional, 8-head, 3-layer encoder (741,760 parameters). The decoder context includes graph/depot/current-node embeddings plus cyclic features for the current hour and C(t). Current time advances using the base duration of the traversed edge and traffic at that edge's entry time.
 
-### 2.3. Kết Quả Đo Đạc Thực Nghiệm Đo Đạc Lại Trên CPU (`results/benchmark_summary_table.csv`)
-| Mô hình | Thời gian (phút) | Cự ly (km) | Optimality Gap (%) | Độ trễ CPU (ms) | Lỗi Zero-Shot (%) | Số tham số | Checkpoint |
-|---|---|---|---|---|---|---|---|
-| **Google OR-Tools** | 323.6 | 72.8 | **0.0%** | 1001.74 | 0.0% | N/A (C++) | 0.0 MB |
-| **Attention Model (AM)** | 678.1 | 142.2 | **97.9%** | **21.30** | **0.0%** | 741,504 | **0.786 MB** |
-| **Pointer Network (A2C)** | 763.7 | 169.1 | 122.9% | 12.84 | 0.0% | 281,601 | 0.0 MB |
-| **Dueling DQN (Masked)** | 950.0 | 139.0 | 174.3% | 9.46 | **50.0%** | 310,934 | 0.0 MB |
+The 64-d/2-layer checkpoint (202,752 parameters) is a historical checkpoint using the old decoder schema. It is not the Gold model and is incompatible with the new time-context projection. New weights count as loaded only after strict schema validation and evaluator confirmation.
 
----
+### 2.3. Historical benchmark artifact
+The values below are retained for traceability. They predate the v2 dynamic-time decoder and PointerNet schema fixes and must not be cited as post-remediation results. The dataset is synthetic, sampled from regional POI pools. OR-Tools is a reference heuristic, not a certified global optimum for dynamic duration.
+
+| Model | Mean duration (min) | Mean distance (km) | Relative gap vs OR-Tools (%) | Mean latency (ms) | Failure (%) | Parameters |
+|---|---:|---:|---:|---:|---:|---:|
+| Google OR-Tools | 217.72 | 72.71 | 0.00 | 1001.46 | 0.0 | C++ |
+| Attention Model | 409.29 | 142.17 | 81.62 | 14.59 | 0.0 | 202,752 (64-d/2L) |
+| Pointer Network | 455.60 | 160.71 | 99.49 | 8.85 | 0.0 | 281,601; weights absent |
+| Dueling DQN | 342.85 | 116.99 | 107.19 | 2.55 | 50.0 | 310,934; weights absent |
 
 ## 3. Kỷ Luật Cổng Mạng & Môi Trường
 - **Cổng 8000:** FastAPI Backend (`api/main.py` và `backend/app/main.py`).

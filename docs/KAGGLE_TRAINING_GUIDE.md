@@ -4,16 +4,18 @@
 > **Tài liệu:** Sổ tay hướng dẫn huấn luyện mô hình Attention Model & Pointer Network trên đám mây Kaggle  
 > **Phiên bản:** v7.3.1 (Eliminate Regional Bias & Dynamic Min-Max Scaling)  
 > **Tài nguyên yêu cầu:** Tài khoản Kaggle miễn phí (Kaggle cấp 30 giờ GPU/tuần, hỗ trợ chạy đồng thời 2 session GPU)  
-> **Mục tiêu:** Thu hẹp chênh lệch tương đối từ ~81.62% xuống vùng tiệm cận **4.5% – 8.0%** so với Google OR-Tools.
+> **Evidence rule:** The 4.5-8.0% value is not a supported target and must not be presented as an expected result. Runtime is also unmeasured.
 
 ---
 
-## 1. Danh Mục Các Notebook Sẵn Sàng Trong Dự Án
+## 1. Kaggle notebooks and execution expectations
 
-| Tệp Notebook | Mô Hình | Mục Tiêu | Thời Gian Chạy Dự Kiến (2x T4 GPU) | Đầu Ra Chính |
-|---|---|---|---|---|
-| [`notebooks/kaggle_train_attention_tsp.ipynb`](file:///c:/Users/Asus/Documents/AI/HotWAY/notebooks/kaggle_train_attention_tsp.ipynb) | **Attention Model** (Kool et al., SOTA NCO) | Huấn luyện mạng Transformer 3 lớp, 8 heads (741,504 params) bằng REINFORCE Rollout Baseline | 3.5 – 4.5 giờ (60 Epochs) | `hotway_kaggle_final_artifacts.zip` chứa trọng số `.pt`, biểu đồ hội tụ, và kết quả 100 POI |
-| [`notebooks/kaggle_train_pointer_net.ipynb`](file:///c:/Users/Asus/Documents/AI/HotWAY/notebooks/kaggle_train_pointer_net.ipynb) | **Pointer Network** (Vinyals et al., A2C) | Huấn luyện mô hình tuần tự Bi-LSTM để đối soát hiện tượng nghẽn độ trễ (Recurrent Latency Bottleneck) | 1.5 – 2.0 giờ (30 Epochs) | `pointer_net_kaggle_artifacts.zip` chứa trọng số `.pt` và biểu đồ hội tụ |
+| Notebook | Model/configuration | Runtime | Artifact |
+|---|---|---|---|
+| `notebooks/kaggle_train_attention_tsp.ipynb` | Attention target 128-d/3L/8-head; REINFORCE rollout baseline | Not measured; smoke test first | `.pt` checkpoint and training curves |
+| `notebooks/kaggle_train_pointer_net.ipynb` | PointerNet with dynamic-time decoder and A2C critic | Not measured; smoke test first | `.pt` checkpoint and training curves |
+
+The notebook code currently selects one CUDA device. Selecting a Kaggle T4 x2 accelerator does not make this code use both GPUs. Record peak VRAM and seconds/step at N=50 before a full run. No target gap or runtime is promised.
 
 ---
 
@@ -31,7 +33,7 @@ Kaggle cho phép bạn mở 2 tab trình duyệt và chạy cùng lúc 2 phiên 
    * **Environment:** `Always use latest environment`.
    * **Internet:** **`Internet on`** *(bắt buộc bật ON để notebook tự động tải bộ dữ liệu kiểm chuẩn 100 POI từ GitHub)*.
 4. Bấm **`Save Version`** (ở góc trên cùng bên phải) $\to$ Chọn **`Save & Run All (Commit)`** $\to$ Bấm **`Save`**.  
-   *(Kaggle sẽ tự động chạy ngầm phiên này trên cloud trong ~3.5 giờ. Bạn có thể tắt tab hoặc tắt máy tính).*
+   *(The notebook currently uses one CUDA device. Run a short profile at N=50 and record peak VRAM and seconds/step before committing the full job.)*
 
 ---
 
@@ -83,12 +85,13 @@ Script này sẽ tự động:
 
 ---
 
-## 5. Bảng So Sánh Kỳ Vọng: Trước vs Sau Huấn Luyện
+## 5. Reporting status
 
-| Chỉ số đo lường | Checkpoint Sơ Khởi Hiện Tại (Chưa Train) | Kỳ Vọng Sau Khi Chạy Kaggle (Final Output) |
-|---|:---:|:---:|
-| **Thời lượng TB (Attention Model)** | **409.29 phút** (Cự ly 142.17 km) | **~225.0 – 235.0 phút** (Cự ly ~75.0 – 78.0 km) |
-| **Relative Gap vs Google OR-Tools** | **81.62%** (OR-Tools: 217.72 phút) | **4.5% – 8.0%** (Tiêu chuẩn quốc tế NCO) |
-| **Độ trễ suy luận trên CPU** | **14.3 ms** (Nhanh gấp ~70 lần OR-Tools) | **14.3 ms** (Không đổi, giữ nguyên tốc độ siêu nhanh) |
-| **Zero-Shot Failure Rate** | **0.0%** trên cả 100 ca | **0.0%** trên cả 100 ca |
-| **Độ công bằng giữa 3 miền** | Chênh lệch $\pm 3.5\%$ (HN 84.0%, ĐN 84.8%, HCM 77.6%) | Duy trì tính bất biến không gian ($\pm 1.5\%$) |
+| Metric | Historical pre-v2 artifact | Post-remediation |
+|---|---|---|
+| Attention architecture | 64-d/2-layer, 202,752 params | Kaggle target 128-d/3-layer/8-head; pending training |
+| Relative gap vs OR-Tools heuristic | 81.62% on synthetic data | Re-measure after training; no target is promised |
+| Inference latency | Historical CPU measurement only | Re-measure with device and timing scope documented |
+| Failure rate / regional breakdown | Historical synthetic benchmark | Re-measure after training; no invariance claim |
+
+Do not interpret relative gap against Guided Local Search as an optimality certificate. The current OR-Tools solver optimizes a static surrogate and scores the resulting route under the dynamic simulator.

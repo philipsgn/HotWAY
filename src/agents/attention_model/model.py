@@ -8,6 +8,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from env.traffic_tsp_env import compute_traffic_multiplier_tensor
+
 
 class MultiHeadAttention(nn.Module):
     """Multi-Head Attention module for Graph Encoder and Decoder."""
@@ -17,6 +19,8 @@ class MultiHeadAttention(nn.Module):
         self.n_heads = n_heads
         self.input_dim = input_dim
         self.embed_dim = embed_dim
+        if embed_dim % n_heads:
+            raise ValueError("embed_dim must be divisible by n_heads")
         self.head_dim = embed_dim // n_heads
 
         self.w_q = nn.Linear(input_dim, embed_dim, bias=False)
@@ -98,15 +102,15 @@ class Decoder(nn.Module):
         super().__init__()
         self.embed_dim = embed_dim
         self.n_heads = n_heads
-        # Context consists of: [graph_mean (128), depot (128), last_visited (128), time_ratio (1)]
-        self.context_proj = nn.Linear(embed_dim * 3 + 1, embed_dim)
+        # Context: graph, depot, current node, cyclic hour and current traffic state.
+        self.context_proj = nn.Linear(embed_dim * 3 + 3, embed_dim)
         self.mha = MultiHeadAttention(n_heads=n_heads, input_dim=embed_dim, embed_dim=embed_dim)
 
         # Single-head pointer mechanism for compatibility score
         self.w_q_ptr = nn.Linear(embed_dim, embed_dim, bias=False)
         self.w_k_ptr = nn.Linear(embed_dim, embed_dim, bias=False)
 
-    def forward(self, embeddings, mask, last_node_idx, depot_idx, time_ratio):
+    def forward(self, embeddings, mask, last_node_idx, depot_idx, time_context):
         """Compute action logits over unvisited nodes.
         
         Args:
@@ -114,7 +118,7 @@ class Decoder(nn.Module):
             mask: (batch_size, n_nodes) - 1 for visited, 0 for available
             last_node_idx: (batch_size,) - index of last visited node
             depot_idx: (batch_size,) - index of depot node (usually 0)
-            time_ratio: (batch_size, 1) - normalized accumulated time elapsed
+            time_context: (batch_size, 3) - [sin(hour), cos(hour), C(hour)/2.25]
             
         Returns:
             logits: (batch_size, n_nodes)
@@ -130,7 +134,7 @@ class Decoder(nn.Module):
         depot_embed = embeddings[batch_indices, depot_idx]     # (batch_size, embed_dim)
 
         # 3. Concatenate into context vector
-        context = torch.cat([graph_embed, depot_embed, last_embed, time_ratio], dim=-1)
+        context = torch.cat([graph_embed, depot_embed, last_embed, time_context], dim=-1)
         query = self.context_proj(context).unsqueeze(1)  # (batch_size, 1, embed_dim)
 
         # 4. Attention over unvisited node embeddings
@@ -162,7 +166,13 @@ class AttentionModel(nn.Module):
         self.encoder = Encoder(input_dim=input_dim, embed_dim=embed_dim, n_heads=n_heads, n_layers=n_layers)
         self.decoder = Decoder(embed_dim=embed_dim, n_heads=n_heads)
 
-    def forward(self, nodes, decode_type: str = "greedy"):
+    def forward(
+        self,
+        nodes,
+        decode_type: str = "greedy",
+        departure_hours=None,
+        base_duration_matrix=None,
+    ):
         """Run full autoregressive tour decoding.
         
         Args:
@@ -176,6 +186,27 @@ class AttentionModel(nn.Module):
         batch_size, n_nodes, _ = nodes.size()
         embeddings = self.encoder(nodes)
 
+        if departure_hours is None:
+            departure_hours = torch.zeros(batch_size, device=nodes.device, dtype=nodes.dtype)
+        else:
+            departure_hours = torch.as_tensor(departure_hours, device=nodes.device, dtype=nodes.dtype).reshape(-1)
+            if departure_hours.numel() == 1 and batch_size > 1:
+                departure_hours = departure_hours.expand(batch_size)
+            if departure_hours.numel() != batch_size:
+                raise ValueError("departure_hours must contain one value per graph")
+
+        if base_duration_matrix is None:
+            # Unit-square training instances represent a 15 km urban span at 25 km/h.
+            base_duration_matrix = torch.cdist(nodes[..., :2], nodes[..., :2]) * 36.0
+        else:
+            base_duration_matrix = torch.as_tensor(
+                base_duration_matrix, device=nodes.device, dtype=nodes.dtype
+            )
+            if base_duration_matrix.ndim == 2:
+                base_duration_matrix = base_duration_matrix.unsqueeze(0).expand(batch_size, -1, -1)
+            if base_duration_matrix.shape != (batch_size, n_nodes, n_nodes):
+                raise ValueError("base_duration_matrix must have shape (B, N, N) or (N, N)")
+
         visited = torch.zeros(batch_size, n_nodes, dtype=torch.uint8, device=nodes.device)
         tours = []
         log_probs = []
@@ -186,10 +217,16 @@ class AttentionModel(nn.Module):
         visited[:, 0] = 1
         tours.append(curr_node)
 
-        total_time_ratio = torch.zeros(batch_size, 1, device=nodes.device)
+        elapsed_minutes = torch.zeros(batch_size, device=nodes.device, dtype=nodes.dtype)
 
         for step in range(1, n_nodes):
-            logits = self.decoder(embeddings, visited, curr_node, depot_idx, total_time_ratio)
+            current_hour = torch.remainder(departure_hours + elapsed_minutes / 60.0, 24.0)
+            current_traffic = compute_traffic_multiplier_tensor(current_hour)
+            angle = 2.0 * math.pi * current_hour / 24.0
+            time_context = torch.stack(
+                [torch.sin(angle), torch.cos(angle), current_traffic / 2.25], dim=-1
+            )
+            logits = self.decoder(embeddings, visited, curr_node, depot_idx, time_context)
             probs = F.softmax(logits, dim=-1)
 
             if decode_type == "greedy":
@@ -203,10 +240,10 @@ class AttentionModel(nn.Module):
 
             batch_idx = torch.arange(batch_size, device=nodes.device)
             visited[batch_idx, next_node] = 1
+            leg_base_minutes = base_duration_matrix[batch_idx, curr_node, next_node]
+            elapsed_minutes = elapsed_minutes + leg_base_minutes * current_traffic
             curr_node = next_node
             tours.append(curr_node)
-
-            total_time_ratio = total_time_ratio + (1.0 / n_nodes)
 
         tours = torch.stack(tours, dim=1)  # (batch_size, n_nodes)
         total_log_prob = torch.stack(log_probs, dim=1).sum(dim=1) if log_probs else torch.zeros(batch_size, device=nodes.device)

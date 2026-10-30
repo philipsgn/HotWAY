@@ -13,7 +13,7 @@
 Hệ thống logistics giao chặng cuối bằng xe máy và xe tải nhẹ tại các đại đô thị Việt Nam (Hà Nội, Đà Nẵng, TP.HCM) đối mặt với hàng chục ngàn bưu kiện mỗi ngày trong điều kiện giao thông đông đúc, ngập úng cục bộ và ùn tắc đỉnh nhọn vào giờ cao điểm sáng (07:00 - 08:30) và chiều (17:00 - 18:30).
 - **Hạn chế của mô hình CVRP cũ (Thí nghiệm E0):** Giả định bài toán tĩnh với ma trận chi phí cố định và mô hình nhiệt độ Newton đóng kín ở một khu vực nhỏ. Kết quả thực nghiệm E0 chứng minh thuật toán ngẫu nhiên tốt hơn DQN trên lựa chọn toán tử Local Search, và các ràng buộc cục bộ không thể mở rộng quy mô.
 - **Mục tiêu sản phẩm mới:** Chuyển trọng tâm hoàn toàn sang **Tối Ưu Tuyến Đường Động Đa Điểm Thích Nghi Giao Thông (Dynamic Traffic-Aware TSP/VRP)** trên quy mô toàn quốc, kết hợp cơ chế học tăng cường nơ-ron (Attention Model Kool et al., 2019) với chuẩn công nghiệp Google OR-Tools.
-- **Nguyên tắc triệt tiêu Hardcode (Zero-Hardcoding Policy):** Tuyệt đối không hardcode tọa độ hoặc biên địa lý của bất kỳ vùng miền cụ thể nào vào mô hình AI. Áp dụng chuẩn hóa động tự thích ứng (Dynamic Min-Max Scaling) trên từng hành trình để bảo đảm tính tổng quát hóa không gian 100% trên toàn bộ 63 tỉnh thành Việt Nam.
+- **Coordinate policy:** No regional coordinate constants are used as model features. Local metric projection and isotropic scaling reduce coordinate-origin and scale sensitivity; they do not guarantee generalization across all 63 provinces.
 
 ### 1.2. Mô hình hóa bài toán (Time-Dependent TSP/VRP)
 - **Không gian trạng thái:** Tập các tọa độ đã giao/chưa giao chuẩn hóa trong không gian đơn vị $[0, 1]^2$, thời điểm khởi hành $t_{\text{dep}}$, ma trận chi phí động $D(t)$ điều biến bởi hệ số kẹt xe thực nghiệm $C(t)$.
@@ -45,8 +45,8 @@ Hệ thống logistics giao chặng cuối bằng xe máy và xe tải nhẹ t�
   Loại bỏ hoàn toàn lỗi lệch phân phối (Distribution Shift), giải quyết triệt để việc sai lệch tọa độ giữa các miền.
 - **Môi trường Gymnasium Hợp Nhất `env/traffic_tsp_env.py`:** Hỗ trợ hàm kẹt xe $C(t)$ và Action Masking ngăn chặn chu trình rác.
 - **Bộ 4 Mô Hình Đối Đầu (HotWAY Multi-Model Suite):**
-  1. *Google OR-Tools (Guided Local Search):* Chuẩn mực công nghiệp tham chiếu (Optimality Gap 0.0%, 323.6m, 72.8km, 1001.74ms).
-  2. *Attention Model (Kool et al., 2019):* Lõi nơ-ron chiến lược Gold Config 128-d/3L (678.1m, 142.2km, Gap 97.9% trên zero-shot weights, phục vụ CPU **21.30 ms** < 25ms SLA, 0.0% lỗi Zero-Shot).
+  1. *Google OR-Tools (Guided Local Search):* Reference heuristic over a static surrogate; not a global optimum for the dynamic-duration objective.
+  2. *Attention Model:* Kaggle target is 128-d/3L/8-head. The existing historical checkpoint is 64-d/2L; old metrics do not validate the target configuration. Re-run the benchmark after training and strict checkpoint ingestion.
   3. *Pointer Network (Bello et al. / Vinyals et al.):* Chuỗi Seq2Seq tham chiếu chuyển tiếp (763.7m, 169.1km, 122.9% Gap, 12.84ms CPU, 0.0% lỗi Zero-Shot).
   4. *Dueling DQN with Action Masking:* Mô hình bóc tách điểm nghẽn toán học (950.0m, 139.0km, Gap 174.3%, **thất bại Zero-Shot đúng 50.0%** trên $N > 20$ do tràn mảng $N_{\max}=20$).
 - **Hạ Tầng Dự Phòng Giao Thông 3 Lớp (Fallback Router):**

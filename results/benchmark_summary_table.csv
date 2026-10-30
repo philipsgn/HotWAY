@@ -1,5 +1,5 @@
-model,mean_duration_min,mean_distance_km,mean_relative_gap_vs_ortools_pct,latency_mean_ms,latency_p99_ms,inference_latency_mean_ms,gap_N10,gap_N20,gap_N30,gap_N50,gap_Hanoi,gap_DaNang,gap_HCMC,zero_shot_failure_rate_pct,failure_rate_pct,weights_loaded,params,checkpoint_size_mb
-Google OR-Tools,217.72,72.71,0.0,1001.46,1003.08,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,N/A (C++ Solver),0.0
-Attention Model (AM),409.29,142.17,81.62,14.59,32.39,14.33,38.58,69.75,89.71,128.44,84.01,84.79,77.65,0.0,0.0,True,"202,752",0.786
-Pointer Network (A2C),455.6,160.71,99.49,8.85,21.21,,44.0,86.72,107.88,159.37,97.76,101.25,100.35,0.0,0.0,False,"281,601",0.0
-Dueling DQN (Masked),342.85,116.99,107.19,2.55,8.59,,76.78,137.61,,,121.06,101.13,96.36,50.0,50.0,False,"310,934",0.0
+model,mean_duration_min,mean_distance_km,mean_relative_gap_vs_ortools_pct,latency_mean_ms,latency_p99_ms,inference_latency_mean_ms,gap_N10,gap_N20,gap_N30,gap_N50,gap_Hanoi,gap_DaNang,gap_HCMC,zero_shot_failure_rate_pct,failure_rate_pct,weights_loaded,params,checkpoint_size_mb,architecture_config
+Google OR-Tools,217.72,72.71,0.0,1001.46,1003.08,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,N/A (C++ Solver),0.0,Guided Local Search; static surrogate; historical reference heuristic
+Attention Model (AM),409.29,142.17,81.62,14.59,32.39,14.33,38.58,69.75,89.71,128.44,84.01,84.79,77.65,0.0,0.0,True,"202,752",0.786,"Historical loaded checkpoint: 64-d/2-layer/8-head; 202,752 params (pre-v2)"
+Pointer Network (A2C),455.6,160.71,99.49,8.85,21.21,,44.0,86.72,107.88,159.37,97.76,101.25,100.35,0.0,0.0,False,"281,601",0.0,Bi-LSTM hidden-128; no checkpoint loaded in historical run
+Dueling DQN (Masked),342.85,116.99,107.19,2.55,8.59,,76.78,137.61,,,121.06,101.13,96.36,50.0,50.0,False,"310,934",0.0,max_nodes=20; no checkpoint loaded in historical run

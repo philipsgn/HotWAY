@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 import time
+import math
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -17,7 +18,13 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from env.traffic_tsp_env import TrafficTSPEnv, compute_traffic_multiplier, simulate_route
+from env.traffic_tsp_env import (
+    TrafficTSPEnv,
+    compute_traffic_multiplier,
+    compute_traffic_multiplier_tensor,
+    dynamic_isotropic_scale_latlon,
+    simulate_route,
+)
 
 
 class AttentionPointer(nn.Module):
@@ -25,6 +32,7 @@ class AttentionPointer(nn.Module):
 
     def __init__(self, hidden_dim: int = 128):
         super().__init__()
+        self.hidden_dim = hidden_dim
         self.w_enc = nn.Linear(hidden_dim, hidden_dim, bias=False)
         self.w_dec = nn.Linear(hidden_dim, hidden_dim, bias=False)
         self.v = nn.Linear(hidden_dim, 1, bias=False)
@@ -42,6 +50,7 @@ class AttentionPointer(nn.Module):
 
         # scores: (B, N)
         scores = self.v(torch.tanh(enc_proj + dec_proj)).squeeze(-1)
+        scores = 10.0 * torch.tanh(scores / math.sqrt(self.hidden_dim))
 
         if mask is not None:
             scores = torch.where(mask, scores, torch.tensor(-1e9, device=scores.device, dtype=scores.dtype))
@@ -70,7 +79,7 @@ class PointerNetwork(nn.Module):
         )
 
         # Decoder LSTM
-        self.decoder_cell = nn.LSTMCell(input_size=hidden_dim, hidden_size=hidden_dim)
+        self.decoder_cell = nn.LSTMCell(input_size=hidden_dim + 3, hidden_size=hidden_dim)
         self.pointer = AttentionPointer(hidden_dim=hidden_dim)
 
         # Parametric Critic for A2C
@@ -84,9 +93,31 @@ class PointerNetwork(nn.Module):
         self,
         node_inputs: torch.Tensor,      # (B, N, input_dim)
         mask: Optional[torch.Tensor] = None,
-        deterministic: bool = True
+        deterministic: bool = True,
+        departure_hours: Optional[torch.Tensor] = None,
+        base_duration_matrix: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         B, N, _ = node_inputs.shape
+        if departure_hours is None:
+            departure_hours = torch.zeros(B, device=node_inputs.device, dtype=node_inputs.dtype)
+        else:
+            departure_hours = torch.as_tensor(
+                departure_hours, device=node_inputs.device, dtype=node_inputs.dtype
+            ).reshape(-1)
+            if departure_hours.numel() == 1 and B > 1:
+                departure_hours = departure_hours.expand(B)
+            if departure_hours.numel() != B:
+                raise ValueError("departure_hours must contain one value per graph")
+        if base_duration_matrix is None:
+            base_duration_matrix = torch.cdist(node_inputs[..., :2], node_inputs[..., :2]) * 36.0
+        else:
+            base_duration_matrix = torch.as_tensor(
+                base_duration_matrix, device=node_inputs.device, dtype=node_inputs.dtype
+            )
+            if base_duration_matrix.ndim == 2:
+                base_duration_matrix = base_duration_matrix.unsqueeze(0).expand(B, -1, -1)
+            if base_duration_matrix.shape != (B, N, N):
+                raise ValueError("base_duration_matrix must have shape (B, N, N) or (N, N)")
 
         # 1. Encode
         embedded = self.embedding(node_inputs)
@@ -107,9 +138,19 @@ class PointerNetwork(nn.Module):
         log_probs = []
 
         curr_input = embedded[:, 0, :]  # Start at depot embedding
+        curr_node = torch.zeros(B, dtype=torch.long, device=node_inputs.device)
+        elapsed_minutes = torch.zeros(B, device=node_inputs.device, dtype=node_inputs.dtype)
+        batch_idx = torch.arange(B, device=node_inputs.device)
 
         for step in range(N - 1):
-            dec_h, dec_c = self.decoder_cell(curr_input, (dec_h, dec_c))
+            current_hour = torch.remainder(departure_hours + elapsed_minutes / 60.0, 24.0)
+            current_traffic = compute_traffic_multiplier_tensor(current_hour)
+            angle = 2.0 * math.pi * current_hour / 24.0
+            time_context = torch.stack(
+                [torch.sin(angle), torch.cos(angle), current_traffic / 2.25], dim=-1
+            )
+            dec_input = torch.cat([curr_input, time_context], dim=-1)
+            dec_h, dec_c = self.decoder_cell(dec_input, (dec_h, dec_c))
 
             # Point to next stop
             scores = self.pointer(enc_outputs, dec_h, visited_mask)
@@ -129,8 +170,11 @@ class PointerNetwork(nn.Module):
             # Mask chosen action
             visited_mask = visited_mask.clone()
             visited_mask.scatter_(1, action.unsqueeze(1), False)
+            leg_base = base_duration_matrix[batch_idx, curr_node, action]
+            elapsed_minutes = elapsed_minutes + leg_base * current_traffic
 
             # Next step input is the embedding of the chosen node
+            curr_node = action
             curr_input = embedded.gather(1, action.view(B, 1, 1).expand(B, 1, self.hidden_dim)).squeeze(1)
 
         # Final step: return to depot 0
@@ -169,30 +213,37 @@ class PointerNetSolver:
         num_stops = instance.get("num_stops", len(instance.get("stops", [])))
         total_nodes = num_stops + 1
 
-        depot = instance.get("depot", {"lat": 10.8012, "lon": 106.7145})
+        depot = instance.get("depot")
+        if depot is None:
+            raise ValueError("benchmark instance must include an explicit depot")
         raw_coords = [[depot["lat"], depot["lon"]]]
         for s in instance.get("stops", []):
             raw_coords.append([s["lat"], s["lon"]])
         coords = np.array(raw_coords, dtype=np.float32)
 
-        # Normalize coordinates
-        min_c, max_c = coords.min(axis=0), coords.max(axis=0)
-        norm_coords = (coords - min_c) / (max_c - min_c + 1e-6)
+        norm_coords = dynamic_isotropic_scale_latlon(coords)
 
         # Feature tensor: [norm_lat, norm_lon, dist_depot, congestion]
-        dist_mat = np.array(instance["dist_matrix_km"], dtype=np.float32)
         dep_hour = instance.get("departure_hour", 8.0)
         c_t = compute_traffic_multiplier(dep_hour)
 
         feats = np.zeros((total_nodes, 4), dtype=np.float32)
         feats[:, :2] = norm_coords
-        feats[:, 2] = dist_mat[0] / 20.0
-        feats[:, 3] = c_t / 3.0
+        feats[:, 2] = np.linalg.norm(norm_coords - norm_coords[0], axis=1)
+        feats[:, 3] = c_t / 2.25
 
         node_tensor = torch.tensor(feats, dtype=torch.float32).unsqueeze(0)
+        base_duration_matrix = torch.as_tensor(
+            instance["duration_matrix_min"], dtype=torch.float32
+        ).unsqueeze(0)
 
         with torch.no_grad():
-            action_seq, _, _ = self.model(node_tensor, deterministic=True)
+            action_seq, _, _ = self.model(
+                node_tensor,
+                deterministic=True,
+                departure_hours=torch.tensor([dep_hour], dtype=torch.float32),
+                base_duration_matrix=base_duration_matrix,
+            )
             route = action_seq.squeeze(0).cpu().tolist()
             if not route or route[0] != 0:
                 route.insert(0, 0)

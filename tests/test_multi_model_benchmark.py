@@ -19,6 +19,8 @@ from env.traffic_tsp_env import (
     TrafficTSPEnv,
     compute_traffic_multiplier,
     compute_traffic_multiplier_tensor,
+    dynamic_isotropic_scale_xy,
+    dynamic_isotropic_scale_latlon,
     simulate_route,
 )
 from evaluate_benchmark import compute_relative_gap, validate_closed_tour
@@ -26,6 +28,7 @@ from models.dqn_agent import DQNAgent, DQNSolver
 from models.pointer_net import PointerNetwork, PointerNetSolver
 from models.attention_model import AttentionModelSolver
 from models.ortools_solver import ORToolsSolver
+from src.agents.attention_model.model import AttentionModel as CoreAttentionModel
 from services.fallback_router import FallbackRouter
 
 
@@ -81,6 +84,57 @@ def test_closed_tour_validation_and_signed_relative_gap():
     assert validate_closed_tour([0, 2, 1, 0], num_stops=2)
     assert not validate_closed_tour([0, 1, 1, 0], num_stops=2)
     assert compute_relative_gap(90.0, 100.0) == pytest.approx(-10.0)
+
+
+def test_isotropic_scaling_preserves_axis_aspect_ratio():
+    points = np.array([[0.0, 0.0], [4.0, 2.0], [2.0, 1.0]])
+    scaled = dynamic_isotropic_scale_xy(points)
+    assert scaled[:, 0].max() == pytest.approx(1.0)
+    assert scaled[:, 1].max() == pytest.approx(0.5)
+
+    # A geographic projection should also return finite, non-degenerate features.
+    latlon = np.array([[21.0, 105.8], [21.1, 106.0], [21.05, 105.9]])
+    geo_scaled = dynamic_isotropic_scale_latlon(latlon)
+    assert np.isfinite(geo_scaled).all()
+    assert geo_scaled[:, 0].max() == pytest.approx(1.0)
+
+
+def test_attention_decoder_receives_accumulated_clock_state():
+    model = CoreAttentionModel(input_dim=3, embed_dim=16, n_heads=8, n_layers=1).eval()
+    observed_contexts = []
+    hook = model.decoder.register_forward_pre_hook(
+        lambda _module, args: observed_contexts.append(args[-1].detach().clone())
+    )
+    nodes = torch.tensor([[[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0]]])
+    base = torch.tensor([[[0.0, 36.0, 36.0], [36.0, 0.0, 36.0], [36.0, 36.0, 0.0]]])
+    with torch.no_grad():
+        tours, log_probs = model(
+            nodes,
+            departure_hours=torch.tensor([8.3]),
+            base_duration_matrix=base,
+        )
+    hook.remove()
+    assert tours.shape == (1, 3)
+    assert log_probs.shape == (1,)
+    assert observed_contexts[0][0, 2].item() == pytest.approx(2.10 / 2.25)
+    assert observed_contexts[1][0, 2].item() == pytest.approx(1.20 / 2.25)
+
+
+def test_pointer_model_accepts_dynamic_time_and_physical_durations():
+    model = PointerNetwork(input_dim=4, hidden_dim=16)
+    assert model.decoder_cell.input_size == 19
+    inputs = torch.rand(2, 5, 4)
+    durations = torch.cdist(inputs[..., :2], inputs[..., :2]) * 36.0
+    tours, log_probs, value = model(
+        inputs,
+        deterministic=False,
+        departure_hours=torch.tensor([8.0, 17.0]),
+        base_duration_matrix=durations,
+    )
+    (log_probs.mean() + value.mean()).backward()
+    assert tours.shape == (2, 5)
+    assert log_probs.shape == value.shape == (2,)
+    assert all(torch.unique(route).numel() == 5 for route in tours)
 
 
 def test_dqn_overflow_is_an_explicit_failed_result(sample_instance):

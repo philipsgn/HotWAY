@@ -13,7 +13,33 @@
     },
     "total_evaluated_instances": 100,
     "timestamp": "2026-10-30 01:18:25",
-    "device": "CPU"
+    "device": "CPU",
+    "artifact_status": "Historical benchmark generated before the v2 dynamic-time decoder and PointerNet schema changes; do not cite as post-remediation performance.",
+    "evaluated_checkpoint_architecture": {
+      "Attention Model (AM)": {
+        "embed_dim": 64,
+        "layers": 2,
+        "heads": 8,
+        "parameters": 202752,
+        "weights_loaded_in_historical_run": true
+      },
+      "Pointer Network (A2C)": {
+        "hidden_dim": 128,
+        "weights_loaded_in_historical_run": false
+      }
+    },
+    "kaggle_target_config": {
+      "attention": {
+        "embed_dim": 128,
+        "layers": 3,
+        "heads": 8,
+        "parameters": 741760
+      },
+      "pointer": {
+        "hidden_dim": 128,
+        "decoder_time_context_dim": 3
+      }
+    }
   },
   "summary": [
     {
@@ -35,7 +61,8 @@
       "failure_rate_pct": 0.0,
       "weights_loaded": null,
       "params": "N/A (C++ Solver)",
-      "checkpoint_size_mb": 0.0
+      "checkpoint_size_mb": 0.0,
+      "architecture_config": "Guided Local Search; static surrogate; historical reference heuristic"
     },
     {
       "model": "Attention Model (AM)",
@@ -56,7 +83,8 @@
       "failure_rate_pct": 0.0,
       "weights_loaded": true,
       "params": "202,752",
-      "checkpoint_size_mb": 0.786
+      "checkpoint_size_mb": 0.786,
+      "architecture_config": "Historical checkpoint 64-d/2L/8H, 202,752 params (pre-v2)"
     },
     {
       "model": "Pointer Network (A2C)",
@@ -77,7 +105,8 @@
       "failure_rate_pct": 0.0,
       "weights_loaded": false,
       "params": "281,601",
-      "checkpoint_size_mb": 0.0
+      "checkpoint_size_mb": 0.0,
+      "architecture_config": "Bi-LSTM hidden-128; no weights loaded in historical run"
     },
     {
       "model": "Dueling DQN (Masked)",
@@ -98,7 +127,8 @@
       "failure_rate_pct": 50.0,
       "weights_loaded": false,
       "params": "310,934",
-      "checkpoint_size_mb": 0.0
+      "checkpoint_size_mb": 0.0,
+      "architecture_config": "max_nodes=20; no weights loaded in historical run"
     }
   ],
   "dqn_fatal_flaws_diagnostic": {

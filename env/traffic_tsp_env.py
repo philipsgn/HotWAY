@@ -14,6 +14,33 @@ from gymnasium import spaces
 import numpy as np
 import torch
 
+SYNTHETIC_KM_PER_UNIT = 15.0
+SYNTHETIC_BASE_SPEED_KMH = 25.0
+SYNTHETIC_MINUTES_PER_UNIT = (SYNTHETIC_KM_PER_UNIT / SYNTHETIC_BASE_SPEED_KMH) * 60.0
+
+
+def dynamic_isotropic_scale_xy(coords: np.ndarray, eps: float = 1e-6) -> np.ndarray:
+    """Scale planar coordinates with one shared axis scale, preserving aspect ratio."""
+    values = np.asarray(coords, dtype=np.float64)
+    if values.ndim != 2 or values.shape[1] != 2 or not np.isfinite(values).all():
+        raise ValueError("coords must be a finite (N, 2) array")
+    origin = values.min(axis=0)
+    scale = max(float(np.max(values.max(axis=0) - origin)), eps)
+    return ((values - origin) / scale).astype(np.float32)
+
+
+def dynamic_isotropic_scale_latlon(coords: np.ndarray, eps: float = 1e-6) -> np.ndarray:
+    """Project lat/lon to a local metric plane, then apply shared isotropic scaling."""
+    values = np.asarray(coords, dtype=np.float64)
+    if values.ndim != 2 or values.shape[1] != 2 or not np.isfinite(values).all():
+        raise ValueError("coords must be a finite (N, 2) latitude/longitude array")
+    lat0 = np.deg2rad(float(values[:, 0].mean()))
+    lat = np.deg2rad(values[:, 0])
+    lon = np.deg2rad(values[:, 1])
+    radius_km = 6371.0
+    local_xy = np.column_stack((radius_km * np.cos(lat0) * lon, radius_km * lat))
+    return dynamic_isotropic_scale_xy(local_xy, eps=eps)
+
 
 def compute_traffic_multiplier(hour_float: float) -> float:
     """

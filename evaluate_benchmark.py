@@ -200,6 +200,15 @@ def run_benchmark(
         "Pointer Network (A2C)": f"{sum(p.numel() for p in ptr_solver.model.parameters()):,}",
         "Dueling DQN (Masked)": f"{sum(p.numel() for p in dqn_solver.agent.q_net.parameters()):,}"
     }
+    am_embed_dim = int(am_solver.model.encoder.init_embed.weight.shape[0])
+    am_layer_count = len(am_solver.model.encoder.layers)
+    ptr_hidden_dim = int(ptr_solver.model.hidden_dim)
+    model_configs = {
+        "Google OR-Tools": "Guided Local Search; static 0.4*km + 0.6*base-minute surrogate; dynamic post-score",
+        "Attention Model (AM)": f"{am_embed_dim}-d/{am_layer_count}-layer/8-head; {param_counts['Attention Model (AM)']} params",
+        "Pointer Network (A2C)": f"Bi-LSTM/hidden-{ptr_hidden_dim}; dynamic-time decoder",
+        "Dueling DQN (Masked)": f"max_nodes={dqn_solver.agent.max_nodes}; action-mask ablation",
+    }
 
     for name in solvers:
         res_list = records[name]
@@ -247,6 +256,7 @@ def run_benchmark(
                 None if name == "Google OR-Tools" else bool(getattr(solvers[name], "weights_loaded", False))
             ),
             "params": param_counts[name],
+            "architecture_config": model_configs[name],
             "checkpoint_size_mb": checkpoint_sizes[name]
         })
 
@@ -289,6 +299,11 @@ def run_benchmark(
             "dataset_type": data.get("metadata", {}).get("dataset_type", "unspecified"),
             "duration_matrix_semantics": data.get("metadata", {}).get("duration_matrix_semantics", "unspecified"),
             "comparison_metric": "relative_gap_vs_ortools_pct; same simulated duration, heuristic reference",
+            "kaggle_target_config": {
+                "attention": {"embed_dim": 128, "layers": 3, "heads": 8, "parameters": 741760},
+                "training_time_scale": {"km_per_unit": 15.0, "base_speed_kmh": 25.0},
+            },
+            "reference_method": "OR-Tools Guided Local Search optimizes a static surrogate; it is not a global optimum for the dynamic-duration objective.",
             "weights_loaded": {
                 name: (None if name == "Google OR-Tools" else bool(getattr(solver, "weights_loaded", False)))
                 for name, solver in solvers.items()

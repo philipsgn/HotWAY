@@ -1,6 +1,11 @@
 import json
 from pathlib import Path
 
+raise SystemExit(
+    "Deprecated notebook generator: it emits the pre-v2 objective and decoder. "
+    "Use the checked-in notebooks/kaggle_train_attention_tsp.ipynb instead."
+)
+
 cells = []
 
 # Cell 0: Markdown

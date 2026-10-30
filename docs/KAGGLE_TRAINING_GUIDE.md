@@ -3,8 +3,8 @@
 
 > **Tài liệu:** Sổ tay hướng dẫn huấn luyện mô hình Attention Model & Pointer Network trên đám mây Kaggle  
 > **Phiên bản:** v7.3.1 (Eliminate Regional Bias & Dynamic Min-Max Scaling)  
-> **Tài nguyên yêu cầu:** Tài khoản Kaggle miễn phí (Kaggle cấp 30 giờ GPU/tuần)  
-> **Mục tiêu:** Thu hẹp Optimality Gap từ ~97.90% xuống vùng tiệm cận **4.5% – 8.0%** so với Google OR-Tools.
+> **Tài nguyên yêu cầu:** Tài khoản Kaggle miễn phí (Kaggle cấp 30 giờ GPU/tuần, hỗ trợ chạy đồng thời 2 session GPU)  
+> **Mục tiêu:** Thu hẹp chênh lệch tương đối từ ~81.62% xuống vùng tiệm cận **4.5% – 8.0%** so với Google OR-Tools.
 
 ---
 
@@ -17,49 +17,45 @@
 
 ---
 
-## 2. Các Bước Thao Tác Chi Tiết Trên Kaggle
+## 2. Hướng Dẫn Khởi Chạy Song Song 2 Phiên Trên Kaggle (Concurrent Sessions)
 
-### Bước 1: Tạo Notebook Mới Trên Kaggle
-1. Truy cập [https://www.kaggle.com](https://www.kaggle.com) và đăng nhập tài khoản.
-2. Nhấn vào nút **`+ Create`** ở thanh menu bên trái $\to$ Chọn **`New Notebook`**.
+Kaggle cho phép bạn mở 2 tab trình duyệt và chạy cùng lúc 2 phiên GPU.
 
-### Bước 2: Tải File Notebook Từ Máy Tính Lên
-1. Trên giao diện thanh công cụ của Notebook Kaggle, chọn **`File`** $\to$ **`Import Notebook`**.
-2. Chọn tab **`Upload`** $\to$ Kéo thả tệp [`notebooks/kaggle_train_attention_tsp.ipynb`](file:///c:/Users/Asus/Documents/AI/HotWAY/notebooks/kaggle_train_attention_tsp.ipynb) từ máy tính của bạn lên.
+### Phiên 1: Attention Model (Mô hình trọng tâm SOTA)
+1. Truy cập [https://www.kaggle.com](https://www.kaggle.com) $\to$ Đăng nhập $\to$ Bấm **`+ Create`** $\to$ Chọn **`New Notebook`**.
+2. Chọn **`File`** $\to$ **`Import Notebook`** $\to$ Chọn tab **`Upload`** $\to$ Tải lên tệp:  
+   [`notebooks/kaggle_train_attention_tsp.ipynb`](file:///c:/Users/Asus/Documents/AI/HotWAY/notebooks/kaggle_train_attention_tsp.ipynb).
+3. Tại bảng điều khiển bên phải (**Notebook options**):
+   * **Accelerator:** Chọn **`GPU T4 x2`** *(hoặc `GPU P100`)*.
+   * **Language:** `Python`.
+   * **Environment:** `Always use latest environment`.
+   * **Internet:** **`Internet on`** *(bắt buộc bật ON để notebook tự động tải bộ dữ liệu kiểm chuẩn 100 POI từ GitHub)*.
+4. Bấm **`Save Version`** (ở góc trên cùng bên phải) $\to$ Chọn **`Save & Run All (Commit)`** $\to$ Bấm **`Save`**.  
+   *(Kaggle sẽ tự động chạy ngầm phiên này trên cloud trong ~3.5 giờ. Bạn có thể tắt tab hoặc tắt máy tính).*
 
-### Bước 3: Cấu Hình Phần Cứng GPU (Cực Kỳ Quan Trọng)
-Tại bảng điều khiển **Notebook options** ở góc phải màn hình:
-* **Accelerator:** Chọn **`GPU T4 x2`** *(hoặc `GPU P100` nếu khả dụng)*.
-* **Language:** `Python`.
-* **Environment:** `Always use latest environment`.
-* **Internet:** **`Internet on`** *(bắt buộc bật ON để notebook tự động tải bộ dữ liệu kiểm chuẩn 100 POI từ GitHub)*.
+---
 
-### Bước 4: Khởi Chạy Huấn Luyện
-
-Bạn có thể chọn 1 trong 2 cách sau:
-
-* **Cách 1 (Chạy trực tiếp trên trình duyệt):**
-  * Nhấn nút **`Run All`** (biểu tượng hai hình tam giác `>>`).
-  * Màn hình sẽ hiển thị tiến độ huấn luyện từng Epoch:
-    ```text
-    Epoch 01/60 (215.4s) | Loss: -0.0412 | Tour Cost: 18.4210 | Val Diff: +0.0120
-    ...
-    Epoch 45/60 (210.1s) | Loss: -0.0018 | Tour Cost: 12.1054 | Val Diff: -0.0450 [BASELINE UPDATED]
-    ```
-* **Cách 2 (Chạy ngầm trên Cloud — Khuyên dùng):**
-  * Nhấn vào nút **`Save Version`** ở góc trên cùng bên phải.
-  * Chọn **`Save & Run All (Commit)`** $\to$ Nhấn **`Save`**.
-  * **Ưu điểm:** Bạn có thể tắt trình duyệt hoặc tắt máy tính, máy chủ Kaggle vẫn sẽ tự động chạy liên tục trong 4 tiếng cho đến khi hoàn thành.
+### Phiên 2: Pointer Network (Mô hình đối đầu Recurrent A2C)
+1. Mở một tab trình duyệt mới trên Kaggle $\to$ Bấm **`+ Create`** $\to$ Chọn **`New Notebook`**.
+2. Chọn **`File`** $\to$ **`Import Notebook`** $\to$ Chọn tab **`Upload`** $\to$ Tải lên tệp:  
+   [`notebooks/kaggle_train_pointer_net.ipynb`](file:///c:/Users/Asus/Documents/AI/HotWAY/notebooks/kaggle_train_pointer_net.ipynb).
+3. Tại bảng điều khiển bên phải (**Notebook options**):
+   * **Accelerator:** Chọn **`GPU T4 x2`**.
+   * **Language:** `Python`.
+   * **Internet:** **`Internet on`**.
+4. Bấm **`Save Version`** $\to$ Chọn **`Save & Run All (Commit)`** $\to$ Bấm **`Save`**.  
+   *(Kaggle sẽ tự động chạy song song phiên thứ 2 này trong ~1.5 giờ).*
 
 ---
 
 ## 3. Tải Về Gói Kết Quả Đầu Ra (Artifacts)
 
-Khi quá trình chạy hoàn tất:
-1. Vào tab **`Output`** ở thanh điều khiển bên phải (thư mục `/kaggle/working/`).
-2. Bạn sẽ thấy tệp:
-   * **`hotway_kaggle_final_artifacts.zip`**
-3. Nhấn vào dấu 3 chấm `...` bên cạnh tệp $\to$ Chọn **`Download`** về máy tính của bạn.
+Khi máy chủ Kaggle hoàn tất quá trình huấn luyện:
+1. Mở lại notebook trên Kaggle $\to$ Vào tab **`Output`** ở thanh điều khiển bên phải (thư mục `/kaggle/working/`).
+2. Tải về 2 tệp:
+   * **`hotway_kaggle_final_artifacts.zip`** (từ Notebook Attention Model)
+   * **`pointer_net_kaggle_artifacts.zip`** (từ Notebook Pointer Network)
+3. Đặt các tệp zip này vào thư mục gốc của dự án `HotWAY/`.
 
 > [!NOTE]
 > Gói `hotway_kaggle_final_artifacts.zip` bao gồm:
@@ -72,16 +68,16 @@ Khi quá trình chạy hoàn tất:
 
 ## 4. Tự Động Nạp Dữ Liệu Thực Tế Vào HotWAY (1-Click Ingestion)
 
-Sau khi tải tệp `hotway_kaggle_final_artifacts.zip` về máy, bạn chỉ cần đặt tệp zip này vào thư mục gốc của dự án `HotWAY/` và chạy lệnh:
+Sau khi tải tệp về thư mục dự án, chạy lệnh:
 
 ```bash
 python scripts/ingest_kaggle_weights.py --zip hotway_kaggle_final_artifacts.zip
 ```
 
 Script này sẽ tự động:
-1. Giải nén trọng số mới vào `models/attention_model_weights.pt`.
+1. Kiểm tra cấu trúc tham số và nạp trọng số mới vào `models/attention_model_weights.pt` (hoặc `results/attention_tsp50_hcmc.pt`).
 2. Sao chép đồ thị hội tụ vào `results/` và `frontend/public/images/`.
-3. Chạy lại bộ đánh giá `evaluate_benchmark.py` trên 100 POI toàn quốc để xác nhận Optimality Gap mới.
+3. Tự động kích hoạt `evaluate_benchmark.py` trên 100 POI toàn quốc để đo lường Relative Gap mới.
 4. Tự động đồng bộ số liệu Final Output sang Frontend Next.js 14 (`frontend/public/data/`).
 5. Cập nhật Bảng 4 trên Landing Page và Màn hình T2 WebGIS với số liệu thật 100%.
 
@@ -91,8 +87,8 @@ Script này sẽ tự động:
 
 | Chỉ số đo lường | Checkpoint Sơ Khởi Hiện Tại (Chưa Train) | Kỳ Vọng Sau Khi Chạy Kaggle (Final Output) |
 |---|:---:|:---:|
-| **Optimality Gap so với OR-Tools** | **97.90%** (142.2 km) | **4.5% – 8.0%** (~75.0 – 77.5 km) |
-| **Độ trễ suy luận trên CPU** | **14.1 ms** (Nhanh gấp 72x OR-Tools) | **14.1 ms** (Không đổi, giữ nguyên tốc độ siêu nhanh) |
+| **Thời lượng TB (Attention Model)** | **409.29 phút** (Cự ly 142.17 km) | **~225.0 – 235.0 phút** (Cự ly ~75.0 – 78.0 km) |
+| **Relative Gap vs Google OR-Tools** | **81.62%** (OR-Tools: 217.72 phút) | **4.5% – 8.0%** (Tiêu chuẩn quốc tế NCO) |
+| **Độ trễ suy luận trên CPU** | **14.3 ms** (Nhanh gấp ~70 lần OR-Tools) | **14.3 ms** (Không đổi, giữ nguyên tốc độ siêu nhanh) |
 | **Zero-Shot Failure Rate** | **0.0%** trên cả 100 ca | **0.0%** trên cả 100 ca |
-| **Độ công bằng giữa 3 miền** | Chênh lệch $\pm 3.0\%$ (HN 99.3%, ĐN 101.3%, HCM 95.2%) | Duy trì tính bất biến không gian ($\pm 1.5\%$) |
-
+| **Độ công bằng giữa 3 miền** | Chênh lệch $\pm 3.5\%$ (HN 84.0%, ĐN 84.8%, HCM 77.6%) | Duy trì tính bất biến không gian ($\pm 1.5\%$) |

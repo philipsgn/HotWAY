@@ -243,7 +243,7 @@ export default function OptimoSchedulingPage() {
       case "t1_multicriteria":
         return "T1: Tuyến Pareto Đa Tiêu Chí (A → B)";
       case "t2_vrptw":
-        return "T2: Lập Tuyến Đội Xe VRPTW";
+        return "T2: Lập Tuyến NCO & VRPTW (100 POI Toàn Quốc)";
       case "t3_live":
         return "T3: Đổi Tuyến Thích Nghi (Live SSE)";
     }
@@ -254,9 +254,9 @@ export default function OptimoSchedulingPage() {
       case "t1_multicriteria":
         return "PARETO";
       case "t2_vrptw":
-        return "VRPTW";
+        return "NCO / VRPTW";
       case "t3_live":
-        return "MÔ PHỎNG";
+        return "ADAPTIVE REROUTE";
     }
   };
 

@@ -134,13 +134,13 @@ export default function ScreenT2VRPTW({
       <div className="pb-3 border-b border-[#e5e5e5]">
         <div className="flex items-center justify-between font-mono text-[10px] text-[#777777] uppercase tracking-wider">
           <span>TẦNG T2 — KIỂM CHUẨN ĐỊNH TUYẾN TOÀN QUỐC</span>
-          <span className="font-bold text-neutral-900">HOTWAY v7.3.1</span>
+          <span className="font-bold text-neutral-900">HOTWAY v7.3.2</span>
         </div>
         <h2 className="text-sm font-bold text-[#111111] mt-1">
           Harness Đa Mô Hình (DQN vs PointerNet vs Attention Model vs OR-Tools)
         </h2>
         <p className="text-[11px] text-[#555555] mt-0.5 leading-snug">
-          Đánh giá trên 100 hành trình thực tế tại Hà Nội (40), Đà Nẵng (20), TP.HCM (40) với Dynamic Min-Max Scaling per-instance.
+          Đánh giá trên 100 hành trình thực tế tại Hà Nội (40), Đà Nẵng (20), TP.HCM (40) với Dynamic Isotropic Scaling per-instance.
         </p>
 
         {/* Track Selector Tabs */}
@@ -295,7 +295,7 @@ export default function ScreenT2VRPTW({
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between font-mono text-[10px] text-[#777777] uppercase tracking-wider font-bold">
-              <span>ĐÁNH GIÁ TÍNH CÔNG BẰNG ĐỊA LÝ QUA DYNAMIC MIN-MAX SCALING</span>
+              <span>ĐÁNH GIÁ TÍNH CÔNG BẰNG ĐỊA LÝ QUA DYNAMIC ISOTROPIC SCALING</span>
               <span className="text-emerald-800 font-bold">ZERO HARDCODING</span>
             </div>
 
@@ -422,7 +422,7 @@ export default function ScreenT2VRPTW({
           <span>&rarr;</span>
           <span className="font-bold text-[#111111]">L3 (OSRM + C(t))</span>
         </div>
-        <span className="text-neutral-500">v7.3.1 NATIONWIDE</span>
+        <span className="text-neutral-500">v7.3.2 NATIONWIDE</span>
       </div>
     </div>
   );

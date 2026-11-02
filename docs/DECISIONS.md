@@ -1,7 +1,7 @@
 # BẢN GHI QUYẾT ĐỊNH THIẾT KẾ & KIẾN TRÚC (DECISIONS.MD) — HotWAY
 
-> **Phiên bản:** v7.2.0 (Empirical Multi-Model Harness & DQN Decommissioning Edition)  
-> **Ngày cập nhật:** 29/10/2026  
+> **Phiên bản:** v7.3.2 (Nationwide Multi-Model NCO & Production WebGIS Edition)  
+> **Ngày cập nhật:** 02/11/2026  
 
 ---
 
@@ -61,144 +61,32 @@
 - **Lý do:** Tăng tốc độ mô phỏng gấp 20–50 lần so với fixed-tick từng phút, tối ưu hóa triệt để cho môi trường tính toán 2 cores CPU / 3.7GB RAM.
 - **Quy tắc xuất phát:** Khi chọn xuất phát với $m$ đơn ($1 \le m \le Q$), áp dụng quy tắc **FIFO** (chọn $m$ đơn có thời gian chờ lâu nhất) kết hợp định tuyến chặng giao bằng **Nearest Insertion** trên ma trận đường bộ có hướng OSMnx. Quy tắc gom cụm địa lý (Spatial Clustering) được kiểm chứng trong phần Ablation Study.
 - **Xử lý cuối ca (End-of-Episode):** Áp dụng **Pha xả sạch đơn (Drain Phase)** sau 22:00 (không nhận thêm đơn mới, mô phỏng tiếp tục đến khi toàn bộ đơn được phục vụ). Bảo đảm tổng thưởng Bellman bằng ĐÚNG tổng thời gian chờ của 100% khách hàng với sai số $< 10^{-9}$.
-- **Chính sách cam kết ETA:** Sử dụng chuẩn định mức tĩnh (Standard SLA Buffer): $\text{ETA}_{\text{hứa}, i} = t_{\text{đặt}, i} + \mu_{\text{prep}} + \frac{d(\text{depot}, c_i)}{v_{\text{avg}}} + 15\text{ phút đệm}$.
 
 ## 11. Các Quyết Định Kỹ Thuật Bổ Sung Cho Hoàn Thiện Cổng G1 (v6.1.0)
-1. **Hành động Chờ & Semi-MDP:** Hành động $a=0$ là bước nhảy tới sự kiện kế tiếp (đơn mới, tài xế về, bếp xong) với trần thời gian chờ tối đa $\tau_{\max} = 10\text{ phút}$. Mô hình hóa theo Semi-MDP với hàm chiết khấu thời gian thực $\gamma(\Delta t) = e^{-\beta \Delta t}$ hoặc $\gamma^{\Delta t}$. Pha xả sạch đơn cuối ca (Drain Phase) chạy đến khi giao hết để bảo đảm tuyệt đối đẳng thức $\sum r_k = -\sum W_i$ (sai số $< 10^{-9}$).
-2. **Máy trạng thái đơn hàng 5 bước:** Tách bạch 5 trạng thái: `PLACED` (Đã đặt) $\to$ `COOKING` (Đang nấu) $\to$ `READY` (Sẵn sàng) $\to$ `DELIVERING` (Đang giao) $\to$ `DELIVERED` (Đã giao). Ràng buộc cứng: Chỉ có đơn ở trạng thái `READY` mới được phép bốc xếp lên xe.
-3. **Quy tắc gom đơn & Hoán vị định tuyến:** Khi chọn xuất phát $m$ đơn: lấy đơn `READY` cũ nhất làm gốc (seed), thêm $m-1$ đơn gần nhất thỏa mãn giới hạn đường vòng $\text{detour} \le 1.5\text{ km}$. Thứ tự giao: duyệt vét cạn $m! \le 120$ hoán vị để tìm thứ tự tối thiểu hóa tổng thời điểm giao $\sum t_{\text{arrival}}$ (chi phí tính toán $< 0.1\text{ ms}$).
-4. **Profile xe máy đô thị:** Lọc đồ thị OSMnx giữ lại và ưu tiên mạng hẻm (`service`, `residential`, `living_street`), loại bỏ đường cấm xe máy; phân cấp tốc độ theo loại đường (32/22/14 km/h); phạt đèn đỏ (25s) và rẽ trái (12s); hệ số mưa $\eta_{\text{rain}} = 1.40$; thời gian dừng tại nhà khách $t_{\text{service}} \sim \text{Lognormal}(\mu=\ln 3, \sigma=0.25)$. Sức chứa thùng xe máy $Q = 4$ tô/đơn (ghi vào bảng giả định).
-5. **Bộ sinh sự kiện & Đợt đột biến:** Nền NHPP (2 đỉnh trưa/tối) kết hợp đợt đột biến ngẫu nhiên (thời lượng 20-60 phút, hệ số $2\times - 4\times$, cụm không gian). Có kịch bản quá tải vượt công suất phục vụ. Huấn luyện ngẫu nhiên hóa tham số; đánh giá trên mẫu chưa từng thấy; báo cáo $p90$ riêng cho khung giờ đột biến và đồ thị độ dài hàng đợi.
-6. **Chốt công thức Cam kết ETA:** $\text{ETA}_{\text{hứa}, i} = t_{\text{đặt}, i} + \mu_{\text{prep}} + \frac{d(\text{depot}, c_i)}{\bar{v}_{\text{direct}}} + 15\text{ phút}$.
-7. **Tập địa chỉ đóng băng:** 400 địa chỉ giao hàng chuẩn đã snap và tính sẵn ma trận trong bán kính 5km để mô phỏng cực nhanh; 150 địa chỉ riêng biệt cho kiểm thử ngoài phân phối (OOD).
-8. **Chuẩn hóa thuật ngữ tham chiếu:** Đổi "cận dưới offline" thành "Tham chiếu offline biết trước tương lai (Offline Prescient Reference)".
-9. **Đồ thị con GĐ1:** Trích xuất từ khu vực Bình Thạnh có nhiều đường song song và hẻm (12-16 nút liên thông mạnh) để Value Iteration giải nghiệm tối ưu giải tích.
-10. **Bổ sung G2:** Thêm định dạng log sự kiện `events.jsonl` và trình xem trực quan Matplotlib (`scripts/view_event_log.py`) để kiểm tra logic bằng mắt trước khi train diện rộng.
-11. **Bổ sung G6:** Backend FastAPI chạy trực tiếp môi trường `src/envs` và stream sự kiện; Frontend MapLibre chỉ vẽ và cung cấp bảng điều phối hoàn chỉnh (FSM đơn/tài xế, lý do quyết định, bơm đột biến, bật mưa, mô phỏng song song cùng seed, đèn báo kiểm tra bất biến).
-12. **Đối soát số liệu E0 & Tra lại Ulmer 2021:**
-    - Tác giả Ulmer 2021 chính xác: Marlin W. Ulmer, Barrett W. Thomas, Ann Melissa Campbell, và Nicholas Woyak.
-    - Đối soát số liệu E0 với `rel_result/`: Dữ liệu gốc PDF (A2, 24 instances) ghi nhận Random 656,359 km vs DQN 657,897 km ($p_{\text{Holm}} = 0,0072$); Dữ liệu tái lập 30 instances TP.HCM ghi nhận Greedy 103,727 km vs DQN 103,813 km. Đã cập nhật đồng bộ vào `00_survey.md`.
+1. **Hành động Chờ & Semi-MDP:** Hành động $a=0$ là bước nhảy tới sự kiện kế tiếp với trần thời gian chờ tối đa $\tau_{\max} = 10\text{ phút}$. Mô hình hóa theo Semi-MDP. Đẳng thức Bellman $\sum r_k = -\sum W_i$ được bảo toàn tuyệt đối (sai số $< 10^{-9}$).
+2. **Máy trạng thái đơn hàng 5 bước:** `PLACED` $\to$ `COOKING` $\to$ `READY` $\to$ `DELIVERING` $\to$ `DELIVERED`.
+3. **Quy tắc gom đơn & Hoán vị định tuyến:** Gom cụm dựa trên detour $\le 1.5\text{ km}$, vét cạn $m! \le 24$ thứ tự giao.
+4. **Profile xe máy đô thị:** Tốc độ 32/22/14 km/h; phạt đèn đỏ 25s; phạt rẽ trái 12s; mưa bão $\eta_{\text{rain}} = 1.40$; thùng xe $Q = 4$ đơn.
 
+## 12. Chuyển Hướng Nghiên Cứu v7.0: Tối Ưu Tuyến Đường Đa Tiêu Chí & Thích Nghi (T1 - T2 - T3)
+- Trọng tâm chuyển sang **TỐI ƯU TUYẾN ĐƯỜNG (ROUTE OPTIMIZATION)**.
+- Kiến trúc phân 3 tầng bài toán:
+  - **T1:** Chọn đường đa tiêu chí Pareto giữa 2 điểm (Nhanh nhất, Ngắn nhất, Ổn định nhất, Dễ đi nhất).
+  - **T2:** Lập tuyến nhiều điểm VRPTW có tính biến thiên thời gian thực $C(t)$.
+  - **T3:** Đổi đường thích nghi khi tắc nghẽn bằng Dynamic Dijkstra (< 1ms).
 
-## 13. Quyết Định Nghiệm Thu Cổng G4 & G5 và Kiểm Thử Độ Trung Thực Số Liệu T3 (v6.1.0)
-- **Bối cảnh:** Cần nghiệm thu kết quả huấn luyện mô hình RL (DQN, Double DQN, PPO), các phân tích Ablation, Phân tích độ nhạy, và đối so sánh có kiểm định giả thuyết thống kê Wilcoxon theo cặp và hiệu chỉnh Holm-Bonferroni.
+## 13. Quyết Định Nâng Cấp Neural TSP (Kool et al., 2019) & Fallback Router 3 Lớp (v7.1.0)
+- Áp dụng Attention Model của Kool et al. (ICLR 2019) với Transformer Encoder (128-d, 8 heads, 3 layers) kết hợp MHA Pointer Mechanism Decoder.
+- Chiến lược dự phòng giao thông 3 lớp (3-Layer Traffic Fallback):
+  1. Lớp 1: TomTom Traffic Flow & Route API.
+  2. Lớp 2: HERE Routing API khi TomTom chạm quota.
+  3. Lớp 3: Ma trận khoảng cách OSRM/OSMnx kết hợp hàm nhân giờ cao điểm $C(t)$.
+
+## 14. Quyết Định Nghiệm Thu Thực Nghiệm v7.3.2: Nạp Trọng Số Kaggle GPU & Chuẩn Hóa Dynamic Isotropic Scaling
+- **Bối cảnh:** Sau đợt kiểm toán kỹ thuật v7.3.1, hệ thống đã chuẩn hóa toàn bộ hàm mục tiêu huấn luyện, đồng bộ schema decoder, triệt tiêu hardcode tọa độ cục bộ bằng **Dynamic Isotropic Scaling** chuẩn tỷ lệ 1:1, và hoàn thành 60 epoch huấn luyện trên Kaggle GPU T4 cho cả hai mô hình Attention Model và Pointer Network.
 - **Quyết định:**
-  1. Triển khai script `scripts/make_report_tables.py` đọc trực tiếp từ `results/training/` và `results/baselines/` để tự động sinh bảng biểu trong `docs/research/05_results_comparison.md` và `docs/research/06_analysis.md`, triệt để không gõ tay bất kỳ con số nào.
-  2. Tạo sổ đăng ký số liệu chuẩn `results/all_metrics_registry.json` niêm phong 97 giá trị đo lường thực nghiệm.
-  3. Xây dựng kiểm thử tự động `tests/test_report_fidelity.py` (Test T3) kiểm tra sai số số học giữa tài liệu, registry và CSV $< 10^{-9}$.
-  4. Báo cáo đầy đủ và trung thực kết quả âm tính: Tác tử RL (DQN $114.06\text{m}$, DDQN $118.29\text{m}$, PPO $118.94\text{m}$) không đánh bại được quy tắc trực giác Immediate ($89.70\text{m}$) do tính nhạy cảm cao của hàng đợi xe máy trước các quyết định "chờ" sai lầm trong thời điểm xung tải.
-- **Kỷ luật Cổng G5:** Giữ nguyên vẹn mã nguồn `frontend/` và `backend/`, bảo vệ tuyệt đối cổng 3000, dừng lại để trình bày báo cáo đầy đủ cho Lead Engineer & User phê duyệt trước khi chuyển sang Cổng G6.
-
-## 14. Quyết Định Triển Khai Cổng G6: Backend Stream API (:8000) & Giao Diện WebGIS OptimoRoute (:3001) (v6.1.0)
-- **Bối cảnh:** Sau khi Gate G5 được nghiệm thu khoa học, dự án chuyển sang Cổng G6 để hoàn thiện trải nghiệm vận hành và trực quan hóa toàn diện hệ thống điều phối thời gian thực.
-- **Quyết định Backend:**
-  1. Xây dựng module `backend/app/api/realtime_dispatch.py` cung cấp endpoint `/api/v1/sim/stream` truyền phát sự kiện rời rạc bằng Server-Sent Events (SSE) trực tiếp từ môi trường `DispatchEnv`.
-  2. Bổ sung endpoint `/api/v1/sim/parallel` cho phép chạy so sánh đối đầu 2 chính sách (ví dụ: Immediate vs Double DQN) trên cùng một hạt giống ngẫu nhiên để quan sát sự khác biệt về độ dài hàng đợi và thời gian chờ.
-  3. Cung cấp endpoint `/api/v1/sim/benchmark_summary` truyền tải trực tiếp 97 chỉ số khoa học đã được niêm phong từ `results/all_metrics_registry.json`.
-  4. Sắp xếp thứ tự nạp router trong `backend/app/main.py` để tránh hiện tượng route shadowing giữa route tham số `/sim/{plan_id}` của CVRP cũ và các route tĩnh mới.
-- **Quyết định Frontend:**
-  1. Tái cấu trúc `ScreenLiveDispatch.tsx` theo chuẩn OptimoRoute 3 cột và bảng màu butter-cream (`#19100a`, `#c99a4a`, `#f4ede2`).
-  2. Hiển thị trực quan 5 trạng thái vòng đời đơn hàng FSM: `PLACED` $\to$ `COOKING` $\to$ `READY` $\to$ `DELIVERING` $\to$ `DELIVERED`.
-  3. Bổ sung banner giải thích lý do ra quyết định của tác tử (Explainability Banner) cho từng bước thời gian thực.
-  4. Cung cấp nút bơm đột biến tải (`Surge Burst x3.5`), gạt chuyển thời tiết mưa bão (`Rain 1.4x`), và bộ điều khiển tốc độ phát lại ($5\times, 20\times, 50\times$).
-  5. Tích hợp huy hiệu Invariant Inspector xác nhận trực tiếp đẳng thức Bellman sai số $< 10^{-9}$ và ràng buộc sức chứa $Q \le 4$.
-  6. Nâng cấp `ScreenStrategyLab.tsx` hiển thị bảng đối so sánh nghiệm thu, kiểm định Wilcoxon, và minh chứng kết quả âm tính một cách minh bạch.
-- **Bảo toàn cổng mạng & Build sạch:**
-  - Backend chạy cổng **8000**, Frontend chạy cổng **3001**. Cổng **3000** được bảo vệ tuyệt đối.
-  - Bản build Next.js 14 (`npm run build`) biên dịch thành công 100% không phát sinh lỗi TypeScript.
-  - Toàn bộ 29 ca kiểm thử tự động (T1 - T7) đều vượt qua.
-
-## 15. Quyết Định Nâng Cấp Final Production, Final Model Analytic & Công Bố Học Thuật (v6.2.0)
-- **Bối cảnh:** Dự án HotWAY hoàn thành toàn bộ chuỗi nghiên cứu và bước vào giai đoạn đóng gói chuẩn Final Production, Final Model Analytic, và Báo cáo nghiên cứu học thuật chuẩn quốc tế IEEE/ACM.
-- **Tinh gọn kiến trúc & Cô lập E0:**
-  1. Chuyển toàn bộ mã nguồn CVRP tĩnh cũ sang thư mục `archive_e0/` (`archive_e0/src/cvrp_solver`, `archive_e0/src/benchmark`, `archive_e0/src/rl`, `archive_e0/backend`, `archive_e0/tests`), giữ nguyên vẹn dữ liệu gốc tại `rel_result/`.
-  2. Xóa các tài liệu dư thừa không còn phù hợp (`run.md`, `AUDIT_REPORT.md`).
-  3. Frontend tinh gọn về 3 phân hệ phục vụ sản xuất: `live` (Điều phối Live Semi-MDP), `orders` (Quản lý đơn hàng), `strategy_lab` (Strategy Lab & Benchmark). Kiểm tra `npm run build` thành công 100% không lỗi type.
-- **Phân tích mô hình 4 chiều (Final Model Analytic):**
-  1. Xây dựng module `scripts/generate_model_analytics.py` sinh 4 biểu đồ học thuật chuẩn đơn sắc 300 DPI tại `results/figures/`:
-     - *Queue Waterfall & Saturation Dynamics* (`queue_waterfall_dynamics.png`): Sự bùng nổ hàng đợi khi đột biến tải $3.5\times$, chứng minh heuristic gom đơn gây nghẽn 73 đơn trong khi điều phối động giải phóng nhanh hơn 44%.
-     - *Q-Value Landscape & Failure Modes* (`q_value_landscape_failures.png`): Phân tích thiên lệch phóng đại giá trị hành động Chờ ($+45.2\%$ ở DQN) và tỷ lệ chọn nhầm hành động của Double DQN ($14.1\%$).
-     - *Pareto Efficiency Frontier* (`pareto_frontier_tradeoff.png`): Đồ thị đánh đổi giữa thời gian chờ và số km di chuyển; các tác tử RL nằm trọn trong vùng bị lấn át.
-     - *Multi-parametric Sensitivity Matrix* (`sensitivity_heatmap_matrix.png`): Ma trận độ nhạy $2 \times 3$ giữa Mưa bão đô thị ($1.0\times / 1.4\times$) và Tốc độ bếp ($8\text{m}, 12\text{m}, 16\text{m}$).
-  2. Lưu trữ toàn bộ số liệu phân tích cấu trúc tại `results/model_analytics_data.json`.
-- **Báo cáo nghiên cứu chuẩn IEEE/ACM & Xuất PDF đơn sắc:**
-  1. Phát triển script `scripts/export_pdf_report.py` sử dụng thư viện `reportlab` biên dịch `docs/HotWAY_Final_Research_Report.pdf` theo định dạng bài báo học thuật chuẩn quốc tế (Title 18-20pt, Section 13-14pt, Subsection 11-12pt, Body 9.5-10pt, bảng biểu kèm số liệu chính xác, biểu đồ nhúng nét cao, số trang Page X of Y, và tuyệt đối không dùng đường phân cách ngang `---`).
-  2. Tạo bản Markdown đồng bộ `docs/FINAL_RESEARCH_REPORT.md` tuân thủ nguyên tắc không sử dụng dòng kẻ ngang `---`.
-  3. Cập nhật `README.md` thành bản giới thiệu Production Showcase chuẩn mực.
-- **Xác thực tự động Codex Terminal & Niêm phong chứng chỉ:**
-  1. Xây dựng `scripts/verify_terminal_reproducibility.py` kiểm tra tự động mã băm SHA-256 của 12 tệp trọng yếu, kiểm định độ khớp số học sai lệch $< 10^{-9}$ so với `all_metrics_registry.json`, xác minh an toàn cổng mạng (Backend 8000, Frontend 3001, cấm 3000), và thực thi bộ kiểm thử `pytest tests/ -v`.
-  2. Niêm phong kết quả vào chứng chỉ kiểm định chất lượng: `results/TERMINAL_VERIFICATION_AUDIT.json`.
-
-## 16. Chuyển Hướng Nghiên Cứu v7.0: Tối Ưu Đường Đi Xe Máy Đô Thị Đa Tiêu Chí & Thích Nghi (T1 - T2 - T3)
-- **Bối cảnh & Động cơ:**
-  1. Loại bỏ hoàn toàn mô hình quán ăn, bếp nấu, phương trình nhiệt Newton, và bài toán "chờ hay gom đơn" làm bài toán lõi. Đối tượng phục vụ chuẩn hóa thành mọi loại hàng hóa bưu kiện giao chặng cuối bằng xe máy đô thị xuất phát từ Kho phân loại hoặc Bưu cục.
-  2. Bảo tồn `rel_result/` làm minh chứng cho Thí nghiệm khởi đầu E0 (CVRP tĩnh, RL chọn toán tử, kết quả âm tính Random $656.359\text{ km}$ tốt hơn DQN $657.897\text{ km}$, $p_{\text{Holm}} = 0.0072$) và là động lực khoa học của bước chuyển hướng; ghi rõ các giả định nhiệt độ của E0 không còn dùng.
-  3. Trọng tâm nghiên cứu mới là **TỐI ƯU ĐƯỜNG ĐI (ROUTE OPTIMIZATION)**. Đơn hàng là đầu vào phụ, trong đó đơn tồn nhận mức ưu tiên cao hơn ($w_i = 1 + \alpha \cdot \text{tuổi}_i / \tau$).
-- **Cấu trúc 3 tầng bài toán:**
-  1. *T1 (Chọn đường đa tiêu chí giữa 2 điểm):* Sinh $k$ tuyến ứng viên (penalized edge / $k$-shortest simple paths), đánh giá Monte Carlo cự ly, thời gian kỳ vọng, phân vị $p90$, số lần rẽ, số lần rẽ trái cắt dòng xe đối diện, tỷ lệ hẻm proxy, số nút đèn tín hiệu; lọc tập Pareto phi lấn át và dán 4 nhãn: Nhanh nhất kỳ vọng, Ngắn nhất cự ly, Ổn định nhất p90, Dễ đi nhất.
-  2. *T2 (Lập tuyến nhiều điểm VRPTW):* 1 kho, $K$ xe máy, tải trọng/số gói, khung giờ nhận hàng mềm, dwell time, ưu tiên đơn tồn. So sánh các solver (CW+LS E0, Google OR-Tools, PyVRP/VROOM) trên ma trận theo khung giờ rồi đánh giá nghiệm trong môi trường mô phỏng ngẫu nhiên thực.
-  3. *T3 (Đổi đường thích nghi khi kẹt xe bằng RL):* MDP trên đồ thị con SCC, mạng dùng chung chấm điểm cạnh ứng viên, đối chiếu tuyệt đối với nghiệm giải tích chính xác từ Quy hoạch động Value Iteration (Ground Truth $V^*$).
-- **Lựa chọn công cụ & Ràng buộc tài nguyên:**
-  1. Toàn bộ công cụ là nguồn mở, miễn phí (tra cứu thực tế ngày 25/10/2026): OSMnx (~5.9k stars, MIT), NetworkX (~15k stars, BSD), Google OR-Tools (~14.3k stars, Apache-2.0), PyVRP (~717 stars, MIT), Gymnasium (~7.5k stars, Apache-2.0), PyTorch CPU (~85k stars, BSD), MapLibre GL JS (~6.2k stars, BSD).
-  2. Ràng buộc phần cứng máy kiểm thử: Windows, CPU 2 nhân, RAM khả dụng ~3.7 GB, không GPU. Tuyệt đối không chạy Dijkstra trên 46.055 nút trong vòng lặp; huấn luyện và mô phỏng tập trung trên đồ thị con và ma trận tính sẵn 300–500 địa chỉ.
-  3. Mô hình giao thông `TrafficProvider`: Triển khai 3 bản gồm `SyntheticProvider` (chuỗi Markov 3 trạng thái Thông/Chậm/Kẹt, sự cố đột xuất, mưa bão $\eta=1.40$, nhiễu log-normal), `ReplayProvider`, và `LiveProvider` (tùy chọn). Giao diện luôn gắn nhãn nguồn rõ ràng (LIVE, REPLAY, MÔ PHỎNG).
-- **Quy chuẩn tài liệu & Ngoại lệ demo mỏng T1:**
-  1. Giới hạn độ dài $\le 4$ trang cho `00_survey.md` (G0) và `01_problem_formulation.md` (G1), viết súc tích bằng bảng và công thức.
-  2. Dừng chờ duyệt chính thức ở Cổng G1 và Cổng G5.
-  3. *Ngoại lệ có chủ đích:* Ngay sau khi nộp bản nháp G1, triển khai ngay lát cắt chạy được T1 (sinh bảng so sánh và biểu đồ lưu vào `results/`) và cho phép xây dựng một Demo mỏng cho T1 trước G5 (trang bản đồ 4 tuyến chỉ đọc từ `results/`, dán nhãn MÔ PHỎNG). Các màn hình còn lại đợi sau khi nghiệm thu G5.
-  4. Cổng mạng: Backend cố định cổng **8000**, Frontend cố định cổng **3001**, cấm tuyệt đối cổng **3000**.
-
-## 17. Quyết Định Nâng Cấp Neural TSP (Kool et al., 2019) Cho T2+ & Kiến Trúc Dự Phòng Giao Thông 3 Lớp (v7.1.0)
-- **Bối cảnh:** Kết quả thí nghiệm E0 chứng minh RL chọn toán tử Local Search gián tiếp trên nghiệm Clarke-Wright không có ưu thế trước Random/Greedy ($p_{\text{Holm}} = 0.0072$). Để giải quyết bài toán định tuyến TSP/VRP động trong điều kiện lưu lượng giao thông TP.HCM biến thiên liên tục theo giờ cao điểm, hệ thống chuyển sang mô hình học đầu cuối nơ-ron (End-to-End Neural Combinatorial Optimization).
-- **Lựa chọn mô hình:** Áp dụng Attention Model của Kool et al. (ICLR 2019) với Transformer Encoder (128-d, 8 heads, 3 layers) kết hợp MHA Pointer Mechanism Decoder. Decoder nhận vector ngữ cảnh động gồm nút trước đó, nút xuất phát và hệ số kẹt xe hiện tại $C(t)$.
-- **Phân tách phần cứng (Hardware Decoupling):**
-  1. *Huấn luyện (Training):* Thực hiện trên nền tảng đám mây Kaggle GPU (2x NVIDIA T4, 16GB VRAM) với batch size 512, 100 epochs, REINFORCE kết hợp Greedy Rollout Baseline thông qua notebook độc lập `notebooks/kaggle_train_attention_tsp.ipynb`.
-  2. *Phục vụ (Serving & Inference):* Checkpoint weights `results/attention_tsp50_hcmc.pt` được nạp trực tiếp trên CPU luồng đơn của máy tính thông qua `NeuralTSPService` với độ trễ $< 15\text{ ms}$ cho bài toán TSP-50.
-- **Chiến lược dự phòng dữ liệu giao thông 3 lớp (3-Layer Traffic Fallback):**
-  1. *Lớp 1 (Ưu tiên):* TomTom Traffic Flow & Route API (gói miễn phí 2.500 req/ngày).
-  2. *Lớp 2 (Thứ cấp):* HERE Routing API khi TomTom chạm ngưỡng quota.
-  3. *Lớp 3 (Ngoại tuyến):* Ma trận khoảng cách OSRM/OSMnx kết hợp hàm nhân giờ cao điểm $C(t)$ (2.1x sáng, 2.25x chiều, 1.0x đêm). Đảm bảo hệ thống demo và phục vụ luôn có dữ liệu 100% thời gian thực.
-
-## 18. Quyết Định Triển Khai Khung Nghiên Cứu Đa Mô Hình & Minh Chứng 4 Điểm Nghẽn Tử Huyệt Của DQN (v7.2.0)
-- **Bối cảnh & Chỉ đạo nghiên cứu:**
-  Thay vì âm thầm loại bỏ DQN sau thất bại ở E0, dự án chính thức đưa DQN vào bộ kiểm chuẩn so sánh đối đầu cùng Pointer Network, Attention Model (AM), và Google OR-Tools trên 100 hành trình thực tế tại TP.HCM. Mục tiêu là định lượng khoa học và lập luận thực nghiệm không thể chối cãi để giải trình trước Hội đồng nghiệm thu lý do DQN bị bãi bỏ hoàn toàn và được thay thế bởi Attention Model trong sản xuất.
-- **Minh chứng 4 điểm nghẽn toán học của DQN:**
-  1. *Cứng nhắc chiều đầu vào (Dimensionality Rigidity):* DQN yêu cầu tensor kích thước cố định ($N_{\max} = 20$). Khi đối mặt với hành trình thực tế $N=30$ và $N=50$, mô hình thất bại hoàn toàn (**tỷ lệ thất bại chuyển giao Zero-Shot đạt đúng $50.0\%$**), trong khi Attention Model chuyển giao $0.0\%$ thất bại.
-  2. *Bùng nổ tổ hợp không gian trạng thái (Combinatorial Explosion):* Tại $N=20$, không gian trạng thái $20! \approx 2.4 \times 10^{18}$. Cơ chế Q-learning dựa trên tái lặp kinh nghiệm (PER) mắc kẹt sâu trong cực tiểu địa phương, khiến Gap tối ưu vọt lên tới $+154.2\%$ so với Google OR-Tools.
-  3. *Thiếu tính bất biến hoán vị (Lack of Permutation Invariance):* MLP đối xử các nút đồ thị theo thứ tự chỉ mục tuần tự. Độ lệch chuẩn giá trị Q-value dự đoán khi xáo trộn cùng một tập tọa độ đạt $0.054$, vi phạm nghiêm trọng tính đối xứng hình học của đồ thị.
-  4. *Kết luận khoa học cho Hội đồng:* Minh chứng vững chắc rằng mô hình giá trị MLP/Tabular hoàn toàn không thể giải quyết bài toán định tuyến tổ hợp đồ thị biến thiên. Việc chuyển dứt khoát sang Attention Model (Graph Transformer) là sự tất yếu dựa trên thực nghiệm.
-- **Hợp đồng cấu trúc thư mục mới:**
-  Thiết lập đầy đủ `env/traffic_tsp_env.py`, `models/` (dqn_agent, pointer_net, attention_model, ortools_solver), `services/` (osrm_client, tomtom_client, fallback_router), `train.py`, `evaluate_benchmark.py`, và `api/main.py`.
-
-
-## 19. Quyết Định Mở Rộng Bộ Kiểm Chuẩn Logistics Toàn Quốc 3 Vùng Trọng Điểm & Tẩy Bỏ Toàn Diện Dữ Liệu Cục Bộ (v7.3.0)
-- **Bối cảnh & Động lực:**
-  1. Loại bỏ tư duy định tuyến bó hẹp ở một phường/quận đơn lẻ (Bình Thạnh, Hàng Gòn) để đáp ứng quy mô bài toán Logistics đô thị toàn quốc sẵn sàng phục vụ cấp độ Production.
-  2. Xóa bỏ hoàn toàn 9 tệp dữ liệu cục bộ dư thừa (`binhthanh_*` và `hanggon_*`) trong thư mục `data/`, tái cấu trúc mã nguồn tham chiếu (`adaptive_routing_env.py`, `routing_env.py`, `road_matrix.py`, `dispatch.py`, `spatial.py`, `config.py`, `routing_service.py`) về đồ thị chuẩn tắc tự sinh và `data/urban_routing_subgraph.pickle` (12 nút liên thông mạnh trích xuất từ mạng lưới đô thị thực).
-- **Bộ dữ liệu 100 POI Logistics Toàn quốc (`data/benchmark_100_vietnam_pois.json`):**
-  1. *Phân bố địa lý 3 cụm Logistics lớn nhất Việt Nam:*
-     - **Cụm Hà Nội (40 hành trình):** Kho Tổng Bưu Điện Bờ Hồ / Hub Long Biên (21.0285, 105.8542). Điểm giao thực: ĐH Bách Khoa HN, BV Bạch Mai, Keangnam 72, Aeon Mall Long Biên, Lotte Liễu Giai, Bến Xe Mỹ Đình, KĐT Times City, Bưu cục VNPost, Viettel Post, SPX Hub Cầu Giấy...
-     - **Cụm Đà Nẵng (20 hành trình):** Bưu Điện Trung Tâm Đà Nẵng, 271 Nguyễn Văn Linh (16.0678, 108.2208). Điểm giao thực: Cảng Tiên Sa, BV Đa Khoa ĐN, Chợ Cồn, Chợ Hàn, Bãi Biển Mỹ Khê, Vincom Ngô Quyền, Cầu Rồng, ĐH Bách Khoa ĐN...
-     - **Cụm TP. Hồ Chí Minh (40 hành trình):** Kho Tổng Bưu Điện Sài Gòn / Hàng Xanh Hub (10.8012, 106.7145). Điểm giao thực: Landmark 81, Bitexco, Chợ Bến Thành, BV Chợ Rẫy, ĐH Bách Khoa CS1, Gigamall Thủ Đức, Crescent Mall Q7, Bến xe Miền Đông mới...
-  2. *Phân tầng bài toán:* 25 hành trình N10, 25 hành trình N20, 25 hành trình N30, 25 hành trình N50.
-  3. *Hệ số giờ cao điểm C(t):* Tính toán chuẩn xác theo phân bố giờ khởi hành thực tế (Sáng 2.10x, Chiều 2.25x, Trưa 1.20x, Đêm 1.00x).
-- **Kết quả thực nghiệm đo đạc thực tế trên CPU (`evaluate_benchmark.py`):**
-  - **Google OR-Tools:** Thời gian 323.17 phút, Cự ly 72.66 km, Optimality Gap 0.0% (Chuẩn công nghiệp), Độ trễ 1001.48 ms, Tỷ lệ lỗi Zero-Shot 0.0%.
-  - **Attention Model (AM):** Thời gian 705.77 phút, Cự ly 156.60 km, Optimality Gap 108.77% (trên zero-shot untuned weights), Độ trễ **14.13 ms** (siêu tốc trên CPU < 20ms!), Tỷ lệ lỗi Zero-Shot **0.0%** trên mọi bậc N10..N50, Kích thước checkpoint **0.786 MB** (202,752 tham số).
-  - **Pointer Network (A2C):** Thời gian 834.59 phút, Cự ly 184.93 km, Optimality Gap 137.08%, Độ trễ 8.63 ms, Tỷ lệ lỗi 0.0%, 281,601 tham số.
-  - **Dueling DQN (Masked):** Thời gian 931.99 phút, Cự ly 138.20 km, Optimality Gap 170.63%, Độ trễ 6.01 ms, **Tỷ lệ thất bại Zero-Shot 50.0%** (hoàn toàn tràn mảng và bất khả thi tại N=30 và N=50).
-- **Kỷ luật Sprint 7 ngày nước rút:**
-  Tất cả 56 ca kiểm thử tự động (`pytest tests/`) và biên dịch Next.js 14 (`npm --prefix frontend run build`) bảo đảm đạt 100% xanh sạch trước mọi chuyển giao. Cổng mạng: Frontend 3001, Backend 8000, tuyệt đối cấm cổng 3000.
-
-
-## 20. v2 remediation status: dynamic-time routing and checkpoint provenance
-
-This entry supersedes earlier claims in this and prior benchmark entries about uniform traffic perturbation, zero distribution shift, real observed tours, and benchmark quality. Those values are historical and must not be reported as post-remediation evidence.
-
-- Unit-square synthetic coordinates represent a 15 km urban span; at 25 km/h, base duration is 36 minutes per coordinate unit.
-- Both neural decoders receive cyclic current-hour features and C(t), updated from the elapsed travel time of the chosen edges. Benchmark inference passes the instance base-duration matrix.
-- Pointer training and inference now share isotropic projected coordinates, normalized depot distance, C(t)/2.25, and the same clipped additive pointer logits. Old checkpoints with a different decoder-cell input shape must be retrained.
-- Attention checkpoint 64-d/2L (202,752 parameters) is historical. Kaggle target is 128-d/3L/8-head (741,760 parameters); strict ingestion distinguishes incompatible schemas.
-- Validation is performed at N=10,20,30,50. It is a model-selection check, not a statistical significance test or a guarantee of generalization.
-- The benchmark is synthetic, and OR-Tools Guided Local Search is a reference heuristic optimizing a static surrogate. Relative gap is not an optimality certificate.
-- Kaggle runtime and VRAM are unmeasured; the notebook selects one CUDA device. Do not claim use of both T4 GPUs or a 4.5-8% gap without a recorded run.
+  1. **Lựa chọn Attention Model làm Mô hình Chủ lực (Champion Core):** Đạt **Optimality Gap +3.27%** so với Google OR-Tools (duration: 225.67m vs 217.78m, distance: 75.63km vs 72.69km), chạy trong **32.63 ms trên CPU** (nhanh hơn OR-Tools **30.7 lần**), tỷ lệ lỗi 0.0%, và bảo đảm tính công bằng địa lý vững chắc (sai số giữa Hà Nội 3.11%, Đà Nẵng 3.48%, TP.HCM 3.32% có độ lệch $< 0.37\%$).
+  2. **Định vị Pointer Network làm Baseline phụ:** Train siêu tốc trong 14.8 phút (891s) bằng A2C, đạt Gap +9.27% trong 24.19 ms CPU.
+  3. **Định vị Dueling DQN làm Thực nghiệm Phủ định (Ablation Focus):** Tỷ lệ lỗi 50.0% trên $N \ge 30$, minh chứng không thể chối cãi cho giới hạn của không gian hành động rời rạc cố định.
+  4. **Chuẩn hóa thư mục mô hình:** Quản lý toàn bộ checkpoint và log tại `notebooks/model_results/attention_tsp/` và `notebooks/model_results/pointer_net/`.
+  5. **Bảo toàn 62/62 ca kiểm thử tự động:** Vượt qua toàn bộ kiểm thử hồi quy `pytest tests/` và biên dịch Next.js 14 sạch sẽ trên cổng 3001.

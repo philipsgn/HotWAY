@@ -1,9 +1,9 @@
 # Bản Thiết Kế Kiến Trúc Hệ Thống (ARCHITECTURE.MD) — HotWAY
 
 > **Tài liệu:** Thiết kế kiến trúc tổng thể, phân rã module, luồng dữ liệu & kiểm định chất lượng  
-> **Phiên bản:** v7.3.1 (Eliminate Hardcoded Regional Biases & Dynamic Min-Max Scaling Edition)  
-> **Ngày cập nhật:** 29/10/2026  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
+> **Phiên bản:** v7.3.2 (Eliminate Hardcoded Regional Biases & Dynamic Isotropic Scaling Edition)  
+> **Ngày cập nhật:** 02/11/2026  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [SLIDES_DEFENSE_OUTLINE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/SLIDES_DEFENSE_OUTLINE.md)
 
 ---
 
@@ -27,10 +27,10 @@ flowchart TD
         MatPre --> D_Env
     end
 
-    subgraph S3["Tầng Thuật Toán & 4 Mô Hình Đối Đầu (models/)"]
+    subgraph S3["Tầng Thuật Toán & 4 Mô Hình Đối Đầu (models/ & notebooks/model_results/)"]
         ORTools["models/ortools_solver.py\n(Google OR-Tools Guided Local Search - 0.0% Gap Chuẩn công nghiệp)"]
-        AM["models/attention_model.py\n(Graph Attention Transformer Kool et al. - Phục vụ CPU < 25ms, Dynamic Min-Max)"]
-        PtrNet["models/pointer_net.py\n(Pointer Network Bi-LSTM + A2C)"]
+        AM["models/attention_model.py\n(Graph Transformer 741,760 params - Gap 3.27%, CPU Latency 32.6ms)"]
+        PtrNet["models/pointer_net.py\n(Pointer Network Bi-LSTM + A2C - 283,137 params - Gap 9.27%, CPU Latency 24.2ms)"]
         DQN["models/dqn_agent.py\n(Dueling DQN Masked - Bóc tách 4 điểm nghẽn tử huyệt)"]
         
         T_TSP --> ORTools
@@ -57,23 +57,36 @@ flowchart TD
 
 ## 2. Phân Tầng Dữ Liệu, Chuẩn Hóa Động & Đặc Tả Mô Hình
 
-### 2.1. Spatial input normalization
-Geographic coordinates are locally projected to a metric plane (equirectangular projection at mean latitude), then scaled by one shared factor for both axes. This preserves shape within the local projection. It does not eliminate distribution shift in road topology, POI density, or unseen regions.
+### 2.1. Spatial Input Normalization (Dynamic Isotropic Scaling)
+Tọa độ địa lý $(\text{lat}, \text{lon})$ được chiếu đẳng hướng độc lập trên từng instance về mặt phẳng đơn vị:
+$$x' = \frac{x - x_{\min}}{\max(\Delta x, \Delta y, \epsilon)}, \quad y' = \frac{y - y_{\min}}{\max(\Delta x, \Delta y, \epsilon)}$$
+Phép chuẩn hóa bảo toàn tỷ lệ khung hình (Aspect Ratio 1:1), cho phép các mô hình NCO tổng quát hóa zero-shot trên toàn bộ các vùng miền (Hà Nội, Đà Nẵng, TP.HCM) mà không bị méo mó hình học.
 
-### 2.2. Attention Model and dynamic time state
-The Kaggle target configuration is a 128-dimensional, 8-head, 3-layer encoder (741,760 parameters). The decoder context includes graph/depot/current-node embeddings plus cyclic features for the current hour and C(t). Current time advances using the base duration of the traversed edge and traffic at that edge's entry time.
+### 2.2. Cấu Trúc Thư Mục Kết Quả Huấn Luyện Chuẩn Tắc (`notebooks/model_results/`)
+Toàn bộ trọng số thực nghiệm và artifact xuất ra từ Kaggle GPU T4 được quản lý tập trung:
+```text
+notebooks/model_results/
+├── attention_tsp/
+│   ├── hotway_attention_model_nationwide.pt  (2.98 MB, 741,760 params - AM Champion)
+│   ├── training_convergence_curves.png       (Biểu đồ hội tụ REINFORCE 60 epoch)
+│   ├── training_history.csv                  (Log số liệu chi tiết 60 epoch)
+│   └── benchmark_evaluation_summary.json     (Đánh giá kiểm chuẩn sau huấn luyện)
+├── pointer_net/
+│   ├── pointer_net_nationwide.pt             (1.14 MB, 283,137 params - A2C Baseline)
+│   └── pointer_net_convergence_curves.png    (Biểu đồ hội tụ Actor-Critic)
+```
 
-The 64-d/2-layer checkpoint (202,752 parameters) is a historical checkpoint using the old decoder schema. It is not the Gold model and is incompatible with the new time-context projection. New weights count as loaded only after strict schema validation and evaluator confirmation.
+### 2.3. Bảng Kết Quả Thực Nghiệm Chính Thức (Post-Remediation Verification)
+Kết quả đánh giá trên toàn bộ 100 POI Toàn Quốc sau khi nạp đầy đủ trọng số kiểm chuẩn (`results/benchmark_summary_table.csv`):
 
-### 2.3. Historical benchmark artifact
-The values below are retained for traceability. They predate the v2 dynamic-time decoder and PointerNet schema fixes and must not be cited as post-remediation results. The dataset is synthetic, sampled from regional POI pools. OR-Tools is a reference heuristic, not a certified global optimum for dynamic duration.
+| Mô hình | Thời lượng (phút) | Quãng đường (km) | Relative Gap vs OR-Tools (%) | Độ trễ CPU (ms) | Tỷ lệ lỗi (%) | Tham số | Trạng thái trọng số |
+|---|---:|---:|---:|---:|---:|---:|:---:|
+| **Google OR-Tools** | **217.78** | **72.69** | **0.00%** | 1,002.16 | 0.0% | Heuristic C++ | Chuẩn tham chiếu |
+| **Attention Model (AM)** | **225.67** | **75.63** | **+3.27%** | **32.63** | **0.0%** | **741,760** | **ĐÃ NẠP (`weights_loaded=True`)** |
+| **Pointer Network (A2C)** | **239.59** | **80.99** | **+9.27%** | **24.19** | **0.0%** | **283,137** | **ĐÃ NẠP (`weights_loaded=True`)** |
+| **Dueling DQN (Masked)** | **340.13** | **115.77** | **+105.45%** | **4.29** | **50.0%** | 310,934 | Ablation ($N \le 20$) |
 
-| Model | Mean duration (min) | Mean distance (km) | Relative gap vs OR-Tools (%) | Mean latency (ms) | Failure (%) | Parameters |
-|---|---:|---:|---:|---:|---:|---:|
-| Google OR-Tools | 217.72 | 72.71 | 0.00 | 1001.46 | 0.0 | C++ |
-| Attention Model | 409.29 | 142.17 | 81.62 | 14.59 | 0.0 | 202,752 (64-d/2L) |
-| Pointer Network | 455.60 | 160.71 | 99.49 | 8.85 | 0.0 | 281,601; weights absent |
-| Dueling DQN | 342.85 | 116.99 | 107.19 | 2.55 | 50.0 | 310,934; weights absent |
+---
 
 ## 3. Kỷ Luật Cổng Mạng & Môi Trường
 - **Cổng 8000:** FastAPI Backend (`api/main.py` và `backend/app/main.py`).

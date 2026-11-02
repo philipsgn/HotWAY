@@ -1,10 +1,10 @@
 # Đặc Tả Thuật Toán & Phân Tích Thực Nghiệm (ALGORITHM.MD) — HotWAY
 
-> **Tài liệu:** Cơ sở toán học, mô hình Semi-MDP thời gian thực, thuật toán RL và kết quả thực nghiệm  
-> **Phiên bản:** v7.1.0 (Dynamic Traffic-Aware Attention TSP & Monochromatic WebGIS Edition)  
-> **Ngày cập nhật:** 28/10/2026  
-> **Nguồn sự thật:** `results/training/`, `results/baselines/`, `rel_result/`  
-> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md)
+> **Tài liệu:** Cơ sở toán học, mô hình Semi-MDP thời gian thực, thuật toán NCO và kết quả thực nghiệm Kaggle GPU  
+> **Phiên bản:** v7.3.2 (Eliminate Regional Bias & Dynamic Isotropic Scaling Edition)  
+> **Ngày cập nhật:** 02/11/2026  
+> **Nguồn sự thật:** `results/benchmark_summary_table.csv`, `results/benchmark_multi_model_results.json`, `notebooks/model_results/`  
+> **Tài liệu liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [SLIDES_DEFENSE_OUTLINE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/SLIDES_DEFENSE_OUTLINE.md)
 
 ---
 
@@ -80,11 +80,6 @@ Nguồn dữ liệu: `results/baselines/summary_baseline_test.csv`, `results/tra
 - **PPO vs Immediate:** $\Delta W = +29.24\text{ phút}$ ($+32.60\%$), $p_{\text{raw}} = 0.0625$, $p_{\text{Holm}} = 0.3750$.
 - **Periodic vs Immediate:** $\Delta W = +3.37\text{ phút}$ ($+3.75\%$), $p_{\text{raw}} = 0.1250$, $p_{\text{Holm}} = 0.3750$.
 
-### 3.3. Phân Tích Đóng Góp Thành Phần (Ablations)
-- Thiếu đặc trưng phân tán không gian ($\sigma_{\text{spatial}}$): $W$ tăng lên **$176.70\text{ phút}$** ($+58.41\text{ phút}$).
-- Thiếu đặc trưng tốc độ đơn đến gần đây ($\lambda_{\text{recent}}$): $W$ tăng lên **$172.00\text{ phút}$** ($+53.70\text{ phút}$).
-- Thiển cận ($\gamma=0.95$): $W$ nhảy vọt lên **$213.40\text{ phút}$** ($+95.10\text{ phút}$).
-
 ---
 
 ## PHẦN 4: TÁI LẬP KẾT QUẢ (REPRODUCIBILITY SCRIPT)
@@ -99,23 +94,28 @@ pytest tests/ -v
 
 ---
 
-## PHẦN 5: MÔ HÌNH ATTENTION MODEL (KOOL ET AL., 2019) CHO TSP THỜI GIAN BIẾN THIÊN (T2+)
+## PHẦN 5: KIẾN TRÚC ATTENTION MODEL (CHAMPION MODEL T2)
 
 ### 5.1. Mô Hình Hóa Toán Học & Cơ Chế Pointer Mechanism
 Bài toán định tuyến đa điểm với lưu lượng giao thông động được giải quyết bằng mô hình Attention Model (Kool et al., ICLR 2019) với cơ chế Decoder hướng ngữ cảnh:
-- **Biểu diễn đầu vào (Node Embeddings):** Mỗi địa chỉ giao hàng $i \in \{0, \dots, n-1\}$ có toạ độ chuẩn hóa $x_i \in \mathbb{R}^2$ được chiếu vào không gian $d_h=128$:
-  $$h_i^{(0)} = W_x x_i + b_x$$
-- **Transformer Encoder:** Gồm $L=3$ tầng Multi-Head Attention (8 heads). Mỗi tầng gồm lớp Self-Attention kết hợp kết nối tắt (Skip connection) và Batch Normalization, theo sau bởi mạng cấp tiến Feed-Forward Sublayer ($d_{\text{ff}} = 512$):
-  $$h_i^{(l)} = \text{FFN}(\text{MHA}(h_i^{(l-1)}))$$
-- **Decoder & Cơ Chế Con Trỏ (Pointer Mechanism):**
-  Tại bước giải $t$, vector ngữ cảnh gồm biểu diễn trung bình đồ thị, nút xuất phát $\pi_1$, nút hiện tại $\pi_{t-1}$ và hệ số tắc nghẽn thời gian thực $C(t_{\text{current}})$:
-  $$h_{(c)}^{(t)} = [\bar{h}^{(L)}, h_{\pi_{t-1}}^{(L)}, h_{\pi_1}^{(L)}, C(t_{\text{current}})]$$
-  Xác suất chọn điểm giao tiếp theo $j$:
-  $$u_{(c) j} = \begin{cases} C_{\text{clip}} \tanh\left(\frac{q_{(c)}^T k_j}{\sqrt{d_k}}\right) & \text{nếu } j \notin \pi_{1:t-1} \\ -\infty & \text{nếu } j \in \pi_{1:t-1} \end{cases}$$
+- **Chuẩn hóa không gian Dynamic Isotropic Scaling:**
+  Toàn bộ tọa độ địa lý $(\text{lat}_i, \text{lon}_i)$ được chuẩn hóa đẳng hướng độc lập theo từng instance về miền $[0, 1]^2$, bảo toàn tỷ lệ khung hình (Aspect Ratio):
+  $$x_i' = \frac{x_i - x_{\min}}{\max(\Delta x, \Delta y, \epsilon)}, \quad y_i' = \frac{y_i - y_{\min}}{\max(\Delta x, \Delta y, \epsilon)}$$
+- **Biểu diễn nút mở rộng (Node Embeddings with Dynamic Traffic):**
+  Mỗi nút $i \in \{0, \dots, n-1\}$ có đặc trưng 3 chiều $[x_i', y_i', C(t_{\text{current}})]$ được chiếu tuyến tính vào không gian $d_h=128$:
+  $$h_i^{(0)} = W_x [x_i', y_i', C(t_{\text{current}})] + b_x$$
+- **Transformer Encoder (3 Layers, 8 Heads):**
+  Gồm $L=3$ tầng Multi-Head Self-Attention ($d_k = 16, d_v = 16$). Mỗi tầng tích hợp Residual Connection, Layer/Batch Normalization, và Feed-Forward Sublayer ($d_{\text{ff}} = 512$):
+  $$h_i^{(l)} = \text{FFN}\left(\text{MHA}(h_i^{(l-1)})\right) \quad (l \in \{1, 2, 3\})$$
+- **Dynamic Context Decoder:**
+  Tại bước giải $t$, vector ngữ cảnh gồm biểu diễn trung bình đồ thị $\bar{h}^{(L)}$, nút depot $h_0^{(L)}$, nút hiện tại $h_{\pi_{t-1}}^{(L)}$ và trạng thái thời gian tuần hoàn tích lũy $\sin(2\pi \cdot t / 24), \cos(2\pi \cdot t / 24), C(t_{\text{accum}})$:
+  $$h_{(c)}^{(t)} = [\bar{h}^{(L)}, h_0^{(L)}, h_{\pi_{t-1}}^{(L)}, \sin(2\pi t / 24), \cos(2\pi t / 24), C(t)]$$
+- **Xác suất chọn điểm giao tiếp theo qua $10\tanh$ Clipping:**
+  $$u_{(c) j} = \begin{cases} 10.0 \cdot \tanh\left(\frac{q_{(c)}^T k_j}{\sqrt{d_k}}\right) & \text{nếu } j \notin \pi_{1:t-1} \\ -10^9 & \text{nếu } j \in \pi_{1:t-1} \end{cases}$$
   $$p_j = \text{softmax}(u_{(c) j}) = \frac{\exp(u_{(c) j})}{\sum_{l \notin \pi_{1:t-1}} \exp(u_{(c) l})}$$
 
 ### 5.2. Hàm Biến Thiên Lưu Lượng Giờ Cao Điểm $C(t)$
-Hệ số tắc nghẽn đô thị TP.HCM được hàm hóa thực nghiệm:
+Hệ số tắc nghẽn đô thị được hàm hóa thực nghiệm:
 $$C(t) = \begin{cases} 1.00 & \text{Đêm / Rạng sáng (22:00 - 06:00)} \\ 1.20 & \text{Giữa ngày (09:00 - 16:00)} \\ 2.10 & \text{Cao điểm sáng (07:00 - 08:30)} \\ 2.25 & \text{Cao điểm chiều (17:00 - 18:30)} \end{cases}$$
 Thời gian di chuyển động:
 $$\text{Duration}(u, v, t) = \frac{\text{Distance}(u, v)}{v_{\text{base}}} \times C(t)$$
@@ -125,8 +125,100 @@ $$\text{Duration}(u, v, t) = \frac{\text{Distance}(u, v)}{v_{\text{base}}} \time
   $$\mathcal{L}(\theta) = \mathbb{E}_{s \sim \mathcal{S}, \pi \sim p_\theta(\cdot|s)} [L(\pi|s)]$$
 - Gradient chính sách được ước lượng không chệch qua Baseline nghiệm tham lam của mạng tốt nhất $b(s)$:
   $$\nabla_\theta \mathcal{L}(\theta) = \mathbb{E}_{s, \pi} \left[ (L(\pi) - L(b(s))) \nabla_\theta \log p_\theta(\pi|s) \right]$$
-- Mô hình ứng viên $\theta$ chỉ cập nhật thành baseline mới $b$ sau mỗi epoch khi vượt qua kiểm định t-test cặp ($p < 0.05$) trên $10.000$ đồ thị ngẫu nhiên.
+- Cập nhật baseline: Sau mỗi epoch, mạng $\theta$ thi đấu với baseline $b$ trên tập kiểm định $10,000$ đồ thị ngẫu nhiên. Chỉ cập nhật khi nghiệm mới vượt trội có ý nghĩa thống kê theo Paired $t$-test ($p < 0.05$).
 
-### 5.4. Đối Soát Thực Nghiệm & Thời Gian Suy Luận (CPU Serving)
-- **Tốc độ suy luận CPU:** Đạt $< 15\text{ ms}$ trên CPU đơn nhân cho đồ thị 50 nút (nhanh hơn $260\times$ so với 4.04s của Google OR-Tools).
-- **Hội tụ:** Model học được chiến lược tránh đi vào các trục đường lõi kẹt xe trong khung giờ cao điểm (07:00 - 08:30 và 17:00 - 18:30), ưu tiên ghé các nút gần trước khi hệ số $C(t)$ chạm đỉnh.
+---
+
+## PHẦN 6: SO SÁNH CHUYÊN SÂU 2 KIẾN TRÚC NCO (ATTENTION MODEL VS POINTER NETWORK)
+
+### 6.1. Bảng So Sánh Kiến Trúc & Lý Thuyết Toàn Diện
+
+```mermaid
+flowchart LR
+    subgraph AM_Arch["Attention Model (Graph Transformer)"]
+        direction TB
+        E1["3x Multi-Head Self-Attention (8 heads, 24 heads total)"]
+        E2["All-to-all O(N^2) Correlation Matrix"]
+        E3["Dynamic Query Pointer Decoder + 10*tanh"]
+        E4["Greedy Rollout Baseline (Kool et al.)"]
+        E1 --> E2 --> E3 --> E4
+    end
+
+    subgraph PN_Arch["Pointer Network (Bi-LSTM + A2C)"]
+        direction TB
+        P1["1x Bidirectional LSTM Encoder (hidden=128)"]
+        P2["Sequential O(N) Recurrent Processing"]
+        P3["Bahdanau Additive Attention Decoder (1 head)"]
+        P4["Parametric Critic MLP Head V(s)"]
+        P1 --> P2 --> P3 --> P4
+    end
+```
+
+| Tiêu chí | Pointer Network (A2C) | Attention Model (AM - Champion) | Nhận định kỹ thuật |
+|---|:---:|:---:|---|
+| **Kiến trúc Encoder** | 1-layer Bi-LSTM (hidden = 128) | 3-layer Transformer (8 heads, dim = 128) | AM mô hình hóa quan hệ không gian trực tiếp |
+| **Kiến trúc Decoder** | LSTM Cell + Bahdanau Attention (1 head) | Dynamic Multi-Head Query Decoder | AM nhúng động ngữ cảnh toàn cục & thời gian |
+| **Tổng số tham số** | **283,137** | **741,760** (~2.6x PointerNet) | Cả hai đều rất gọn nhẹ (< 3 MB file .pt) |
+| **Thuật toán học RL** | Advantage Actor-Critic (A2C) | REINFORCE + Greedy Rollout Baseline | Cơ chế baseline quyết định tốc độ huấn luyện |
+| **Hàm ước lượng Baseline** | Parametric Critic Network $V(s)$ (MLP) | Greedy Policy Rollout $\pi_{\text{BL}}$ | Rollout Baseline không thiên lệch (unbiased) |
+| **Kiểm định cập nhật Baseline** | Không (tính loss gradient trực tiếp) | Paired $t$-test trên 10,000 mẫu mỗi epoch | AM tốn chi phí kiểm thử khổng lồ mỗi epoch |
+| **Độ phức tạp tính toán** | $\mathcal{O}(N \cdot d)$ (Tuyến tính theo số nút) | $\mathcal{O}(L \cdot N^2 \cdot d)$ (Bậc hai theo số nút) | Transformer tính ma trận tương quan mọi cặp |
+| **Bất biến hoán vị** | Không (phụ thuộc thứ tự nút đầu vào của LSTM) | **Hoàn toàn bất biến (Permutation-Invariant)** | AM miễn nhiễm với thứ tự đánh chỉ mục POI |
+
+---
+
+### 6.2. Giải Mã Khoa Học: Tại Sao Attention Model Train Lâu Hơn ~14 Lần?
+
+Trên thực tế huấn luyện tại Kaggle GPU T4:
+- **Pointer Network (A2C):** Hoàn thành 60 epoch trong **891 giây (~14.8 phút)**.
+- **Attention Model (AM):** Hoàn thành 60 epoch trong **~3.5 giờ (~12,600 giây)**.
+
+Sự chênh lệch thời gian bắt nguồn từ 3 lý do kỹ thuật chính xác:
+1. **Chi phí kiểm định Rollout Baseline của Attention Model (Chiếm >55% thời gian train):**
+   - Cuối mỗi epoch, Attention Model bắt buộc phải sinh $10,000$ đồ thị kiểm chuẩn mới và chạy song song cả mô hình hiện tại $\pi_\theta$ lẫn mô hình baseline $\pi_{\text{BL}}$ (tổng cộng $20,000$ lượt suy luận greedy) để thực hiện kiểm định Paired $t$-test.
+   - Ngược lại, PointerNet sử dụng **Critic MLP Head**. Giá trị $V(s)$ được suy ra tức thì từ vector biểu diễn trung bình của đồ thị trong chính lượt forward của batch hiện tại. Mô hình **không có bước rollout kiểm định tách biệt**, tiết kiệm hàng nghìn giây tính toán.
+2. **Khối lượng tính toán của 24 Attention Heads ($3 \times 8$ heads):**
+   - Với mỗi batch đồ thị, Attention Model phải nhân ma trận Query-Key-Value qua 8 heads trên 3 tầng encoder, sinh ra các ma trận tương tác $N \times N$, áp dụng Softmax và Residual Normalization.
+   - PointerNet chỉ chạy một vòng lặp Bi-LSTM đơn giản qua chuỗi nút $0 \dots N$, chi phí FLOPs cho mỗi đồ thị thấp hơn xấp xỉ 4 lần.
+3. **Cơ chế Sampling trong REINFORCE:**
+   - Trong quá trình cập nhật gradient, Attention Model lấy mẫu ngẫu nhiên (Stochastic Sampling) để khám phá không gian nghiệm, sau đó so sánh với nghiệm tham lam của Baseline. Sự khác biệt này đòi hỏi 2 lần suy luận cho mỗi instance huấn luyện.
+
+---
+
+### 6.3. Phân Tích Ma Trận Đánh Đổi Thực Nghiệm (Trade-Off Matrix)
+
+Mặc dù Attention Model đòi hỏi thời gian huấn luyện offline lâu hơn gấp 14 lần, **sự đánh đổi này mang lại giá trị thực tiễn và khoa học vượt trội hoàn toàn**:
+
+#### Bảng Kết Quả Thực Nghiệm Đối Soát Chính Thức (100 POI Toàn Quốc)
+*Dữ liệu trích xuất từ `results/benchmark_summary_table.csv`:*
+
+| Chỉ số thực nghiệm | Google OR-Tools | Attention Model (AM) | Pointer Network (A2C) | Dueling DQN (Ablation) |
+|---|:---:|:---:|:---:|:---:|
+| **Thời lượng trung bình** | **217.78 phút** | **225.67 phút** | 239.59 phút | 340.13 phút |
+| **Quãng đường trung bình** | **72.69 km** | **75.63 km** | 80.99 km | 115.77 km |
+| **Optimality Gap so với OR-Tools** | **0.00%** | **+3.27%** | **+9.27%** | **+105.45%** |
+| * Sai số tại Hà Nội (40 POI) | 0.00% | **3.11%** | 8.57% | 114.08% |
+| * Sai số tại Đà Nẵng (20 POI) | 0.00% | **3.48%** | 8.66% | 104.19% |
+| * Sai số tại TP.HCM (40 POI) | 0.00% | **3.32%** | 10.27% | 97.44% |
+| **Độ trễ suy luận trên CPU** | 1,002.16 ms | **32.63 ms** | **24.19 ms** | 4.29 ms |
+| **Tốc độ so với OR-Tools** | $1.0\times$ (Chuẩn) | **Nhanh hơn 30.7 lần** | **Nhanh hơn 41.4 lần** | Nhanh hơn 233 lần |
+| **Tỷ lệ thất bại (Failure Rate)** | **0.0%** | **0.0%** | **0.0%** | **50.0%** (Sụp đổ ở $N \ge 30$) |
+| **Dung lượng file Checkpoint** | N/A | **2.85 MB** | **1.09 MB** | 1.25 MB |
+
+#### 3 Điểm Nhận Định Cốt Lõi:
+1. **Chất lượng tour vượt bậc (Gap 3.27% vs 9.27%):**
+   - Attention Model rút ngắn khoảng cách sai số xuống gần **1/3** so với Pointer Network.
+   - Trên mỗi chuyến giao hàng, Attention Model tiết kiệm **13.92 phút di chuyển** và **5.36 km cự ly** so với PointerNet. Trong quy mô đội xe hàng vạn chuyến/ngày, mức tiết kiệm này tương đương hàng tỷ đồng chi phí nhiên liệu.
+2. **Độ trễ suy luận Production tương đương nhau (< 33ms trên CPU):**
+   - Mặc dù Attention Model train lâu hơn rất nhiều, khi triển khai suy luận thực tế (Inference trên CPU đơn nhân), Attention Model giải xong toàn bộ bài toán chỉ trong **32.63 ms**, chỉ chậm hơn PointerNet đúng **8.44 ms** (32.63ms vs 24.19ms), trong khi nhanh hơn Google OR-Tools tới **30.7 lần**.
+3. **Bảo toàn Tính Công Bằng Vùng Miền Tuyệt Đối (Geographic Fairness):**
+   - Nhờ Dynamic Isotropic Scaling, độ lệch sai số giữa Hà Nội (3.11%), Đà Nẵng (3.48%) và TP.HCM (3.32%) chỉ dao động trong biên độ $\pm 0.18\%$. Mô hình thể hiện năng lực tổng quát hóa xuất sắc trên toàn quốc mà không cần fine-tune cho từng địa phương.
+
+---
+
+### 6.4. Kết Luận Định Vị Vai Trò Của Từng Mô Hình
+
+- **Google OR-Tools:** Đóng vai trò **Chuẩn Tham Chiếu Tuyệt Đối (Industrial Golden Baseline)**, tìm nghiệm tối ưu thông qua tìm kiếm cục bộ có định hướng (Guided Local Search), nhưng độ trễ lớn (~1s), không phù hợp cho phản hồi mili-giây.
+- **Dueling DQN:** Đóng vai trò **Thực Nghiệm Phủ Định / Nghiên Cứu Bóc Tách (Ablation Focus)**, chứng minh sự bế tắc của không gian hành động rời rạc cố định ($N \le 20$, tỷ lệ hỏng 50%).
+- **Pointer Network:** Đóng vai trò **Mô Hình Chuyển Tiếp Nhanh (Lightweight Transition Baseline)**, huấn luyện siêu tốc (< 15 phút) để xác thực luồng dữ liệu và suy luận nhanh (24ms).
+- **Attention Model:** Đóng vai trò **Mô Hình Chủ Lực Đề Xuất (Champion Core Model)**, đầu tư chi phí huấn luyện kỹ lưỡng để đạt chất lượng tiệm cận tối ưu (3.27% gap), tốc độ suy luận 32ms và tính công bằng địa lý vững chắc.

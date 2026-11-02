@@ -72,7 +72,8 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
     if not extracted_weights:
         # Fallback check
         default_candidates = [
-            Path("notebooks/New folder/attetion_tsp/hotway_attention_model_nationwide.pt"),
+            Path("notebooks/model_results/attention_tsp/hotway_attention_model_nationwide.pt"),
+            Path("notebooks/model_results/pointer_net/pointer_net_nationwide.pt"),
             Path("hotway_kaggle_final_artifacts.zip"),
             Path("results/attention_tsp50_hcmc.pt"),
             Path("models/attention_model_weights.pt"),

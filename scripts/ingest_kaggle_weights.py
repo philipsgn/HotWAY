@@ -15,6 +15,11 @@ import subprocess
 import sys
 import zipfile
 
+# Ensure project root is in sys.path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import torch
 from src.agents.attention_model.model import AttentionModel
 from models.pointer_net import PointerNetwork
@@ -60,10 +65,14 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
             print(f"Error: Weights file does not exist at '{w_file}'.")
             sys.exit(1)
         extracted_weights = w_file
+        for img in w_file.parent.glob("*.png"):
+            convergence_img = img
+            break
 
     if not extracted_weights:
         # Fallback check
         default_candidates = [
+            Path("notebooks/New folder/attetion_tsp/hotway_attention_model_nationwide.pt"),
             Path("hotway_kaggle_final_artifacts.zip"),
             Path("results/attention_tsp50_hcmc.pt"),
             Path("models/attention_model_weights.pt"),
@@ -109,7 +118,11 @@ def ingest_artifacts(zip_path: str | None = None, weights_path: str | None = Non
             n_heads=8,
             n_layers=len(layer_ids),
         )
-        dest_candidates = [Path("models/attention_model_weights.pt"), Path("results/attention_tsp50_hcmc.pt")]
+        dest_candidates = [
+            Path("models/attention_model_weights.pt"),
+            Path("results/attention_tsp50_hcmc.pt"),
+            Path("results/checkpoints/hotway_attention_model_nationwide.pt"),
+        ]
     elif "embedding.weight" in sd and "decoder_cell.weight_ih" in sd:
         model_type = "pointer_net"
         candidate_model = PointerNetwork(

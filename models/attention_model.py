@@ -33,6 +33,14 @@ class AttentionModelSolver:
         self.device = torch.device("cpu")
         default_weights = Path("results/attention_tsp50_hcmc.pt")
         target_weights = Path(weights_path) if weights_path else default_weights
+        if not target_weights.exists():
+            for alt in [
+                Path("models/attention_model_weights.pt"),
+                Path("results/checkpoints/hotway_attention_model_nationwide.pt"),
+            ]:
+                if alt.exists():
+                    target_weights = alt
+                    break
         self.weights_loaded = model is not None
         self.weights_path = str(target_weights) if model is None else None
 

@@ -10,6 +10,20 @@ export default function ResearchLandingPage() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [benchmarkSummary, setBenchmarkSummary] = useState<any[] | null>(null);
+  const [benchmarkMeta, setBenchmarkMeta] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/data/benchmark_multi_model_results.json")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && Array.isArray(data.summary)) {
+          setBenchmarkSummary(data.summary);
+          setBenchmarkMeta(data.metadata);
+        }
+      })
+      .catch((err) => console.error("Failed to load benchmark summary:", err));
+  }, []);
 
   // Close dropdown menu on outside click
   useEffect(() => {
@@ -526,76 +540,109 @@ export default function ResearchLandingPage() {
               Kiểm chuẩn trên 100 hành trình giao hàng thực tế phân tầng N=10, 20, 30, 50 tại 3 trung tâm logistics: Hà Nội (40 hành trình), Đà Nẵng (20 hành trình) và TP. Hồ Chí Minh (40 hành trình). Áp dụng cơ chế <strong>Dynamic Min-Max Scaling per-instance</strong> chuẩn hóa về $[0, 1]^2$.
             </p>
             <div className="overflow-x-auto">
+              {benchmarkMeta?.artifact_status && (
+                <div className="mb-2 p-2 bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-mono flex items-center justify-between">
+                  <span>[TRẠNG THÁI KIỂM CHUẨN]: {benchmarkMeta.artifact_status}</span>
+                  <span className="font-bold">v7.3.2 NATIONWIDE</span>
+                </div>
+              )}
               <table className="w-full text-xs border-t-2 border-b-2 border-[#18181b]">
                 <thead>
                   <tr className="border-b border-neutral-300 text-neutral-600 font-mono text-[11px]">
                     <th className="py-2.5 text-left font-semibold">Mô Hình / Thuật Toán</th>
                     <th className="py-2.5 text-right font-semibold">Thời Lượng TB</th>
                     <th className="py-2.5 text-right font-semibold">Cự Ly TB</th>
-                    <th className="py-2.5 text-right font-semibold">Optimality Gap</th>
+                    <th className="py-2.5 text-right font-semibold">Relative Gap vs OR-Tools</th>
                     <th className="py-2.5 text-right font-semibold">Hà Nội (40)</th>
                     <th className="py-2.5 text-right font-semibold">Đà Nẵng (20)</th>
                     <th className="py-2.5 text-right font-semibold">TP.HCM (40)</th>
                     <th className="py-2.5 text-right font-semibold">Độ Trễ CPU</th>
-                    <th className="py-2.5 text-right font-semibold">Zero-Shot Fail</th>
+                    <th className="py-2.5 text-right font-semibold">Tỷ Lệ Thất Bại</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-200 font-mono text-[11px]">
-                  <tr className="bg-neutral-100">
-                    <td className="py-2.5 text-left font-sans font-bold text-[#18181b]">
-                      Google OR-Tools (Routing Solver)
-                      <span className="ml-1.5 px-1 py-0.5 bg-neutral-900 text-white text-[9px] font-mono">BASELINE</span>
-                    </td>
-                    <td className="py-2.5 text-right font-bold">30.5 phút</td>
-                    <td className="py-2.5 text-right font-bold">71.9 km</td>
-                    <td className="py-2.5 text-right font-bold text-neutral-900">0.00%</td>
-                    <td className="py-2.5 text-right">0.00%</td>
-                    <td className="py-2.5 text-right">0.00%</td>
-                    <td className="py-2.5 text-right">0.00%</td>
-                    <td className="py-2.5 text-right">1,023 ms</td>
-                    <td className="py-2.5 text-right font-bold text-emerald-800">0.0%</td>
-                  </tr>
-                  <tr className="bg-emerald-50/60">
-                    <td className="py-2.5 text-left font-sans font-bold text-emerald-950">
-                      Attention Model (Kool et al., SOTA NCO)
-                      <span className="ml-1.5 px-1 py-0.5 bg-emerald-800 text-white text-[9px] font-mono">CORE AM</span>
-                    </td>
-                    <td className="py-2.5 text-right">60.4 phút</td>
-                    <td className="py-2.5 text-right">142.2 km</td>
-                    <td className="py-2.5 text-right font-bold text-emerald-800">97.90%</td>
-                    <td className="py-2.5 text-right font-bold">99.30%</td>
-                    <td className="py-2.5 text-right font-bold">101.30%</td>
-                    <td className="py-2.5 text-right font-bold">95.20%</td>
-                    <td className="py-2.5 text-right font-bold text-emerald-800">14.1 ms (72x)</td>
-                    <td className="py-2.5 text-right font-bold text-emerald-800">0.0%</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2.5 text-left font-sans text-neutral-700">
-                      Pointer Network (Vinyals et al., RNN Seq2Seq)
-                    </td>
-                    <td className="py-2.5 text-right">74.3 phút</td>
-                    <td className="py-2.5 text-right">174.9 km</td>
-                    <td className="py-2.5 text-right text-neutral-800">143.40%</td>
-                    <td className="py-2.5 text-right">145.10%</td>
-                    <td className="py-2.5 text-right">149.20%</td>
-                    <td className="py-2.5 text-right">138.80%</td>
-                    <td className="py-2.5 text-right">9.2 ms</td>
-                    <td className="py-2.5 text-right font-bold text-emerald-800">0.0%</td>
-                  </tr>
-                  <tr className="bg-red-50/40">
-                    <td className="py-2.5 text-left font-sans text-red-950 font-bold">
-                      DQN Agent (MDP Single-Step Q-Learning)
-                      <span className="ml-1.5 px-1 py-0.5 bg-red-700 text-white text-[9px] font-mono">ABLATION</span>
-                    </td>
-                    <td className="py-2.5 text-right text-red-900">170.8 phút</td>
-                    <td className="py-2.5 text-right text-red-900">402.0 km</td>
-                    <td className="py-2.5 text-right font-bold text-red-700">460.60%</td>
-                    <td className="py-2.5 text-right text-red-700">465.40%</td>
-                    <td className="py-2.5 text-right text-red-700">472.00%</td>
-                    <td className="py-2.5 text-right text-red-700">450.10%</td>
-                    <td className="py-2.5 text-right">2.3 ms</td>
-                    <td className="py-2.5 text-right font-bold text-red-700">100.0% (Tử huyệt)</td>
-                  </tr>
+                  {benchmarkSummary ? (
+                    benchmarkSummary.map((row, idx) => {
+                      const isORTools = row.model.includes("OR-Tools");
+                      const isAM = row.model.includes("Attention Model");
+                      const isDQN = row.model.includes("DQN");
+                      const isPointer = row.model.includes("Pointer");
+                      return (
+                        <tr
+                          key={idx}
+                          className={
+                            isORTools
+                              ? "bg-neutral-100"
+                              : isAM
+                              ? "bg-emerald-50/60"
+                              : isDQN
+                              ? "bg-red-50/40"
+                              : ""
+                          }
+                        >
+                          <td className="py-2.5 text-left font-sans font-bold text-[#18181b]">
+                            {row.model}
+                            {row.weights_loaded === false && (
+                              <span className="ml-1 px-1 py-0.2 bg-red-100 text-red-800 text-[8px] font-mono">UNTRAINED</span>
+                            )}
+                            {isORTools && (
+                              <span className="ml-1.5 px-1 py-0.5 bg-neutral-900 text-white text-[9px] font-mono">BASELINE</span>
+                            )}
+                            {isAM && (
+                              <span className="ml-1.5 px-1 py-0.5 bg-emerald-800 text-white text-[9px] font-mono">CORE AM</span>
+                            )}
+                            {isDQN && (
+                              <span className="ml-1.5 px-1 py-0.5 bg-red-700 text-white text-[9px] font-mono">ABLATION</span>
+                            )}
+                          </td>
+                          <td className="py-2.5 text-right font-bold">
+                            {Number(row.mean_duration_min).toFixed(1)} phút
+                          </td>
+                          <td className="py-2.5 text-right font-bold">
+                            {Number(row.mean_distance_km).toFixed(1)} km
+                          </td>
+                          <td
+                            className={`py-2.5 text-right font-bold ${
+                              isORTools
+                                ? "text-neutral-900"
+                                : isAM
+                                ? "text-emerald-800"
+                                : isDQN
+                                ? "text-red-700"
+                                : "text-neutral-800"
+                            }`}
+                          >
+                            {Number(row.mean_relative_gap_vs_ortools_pct).toFixed(2)}%
+                          </td>
+                          <td className="py-2.5 text-right">
+                            {Number(row.gap_Hanoi).toFixed(1)}%
+                          </td>
+                          <td className="py-2.5 text-right">
+                            {Number(row.gap_DaNang).toFixed(1)}%
+                          </td>
+                          <td className="py-2.5 text-right">
+                            {Number(row.gap_HCMC).toFixed(1)}%
+                          </td>
+                          <td className="py-2.5 text-right font-mono">
+                            {Number(row.latency_mean_ms).toFixed(1)} ms
+                          </td>
+                          <td
+                            className={`py-2.5 text-right font-bold ${
+                              row.failure_rate_pct > 0 ? "text-red-700" : "text-emerald-800"
+                            }`}
+                          >
+                            {Number(row.failure_rate_pct ?? row.zero_shot_failure_rate_pct).toFixed(1)}%
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={9} className="py-4 text-center font-mono text-neutral-500">
+                        Đang đồng bộ số liệu kiểm chuẩn đa mô hình từ results/...
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -613,7 +660,7 @@ export default function ResearchLandingPage() {
                   x'ᵢ = (xᵢ - min(X)) / (max(X) - min(X)) ∈ [0, 1]²
                 </div>
                 <p className="text-[11px] text-neutral-600 leading-snug">
-                  <strong>Kết quả:</strong> Triệt tiêu 100% hiện tượng Distribution Shift. Attention Model đạt độ công bằng địa lý vượt trội với khoảng cách chênh lệch chỉ ±3.0% giữa miền Bắc (Hà Nội 99.3%), miền Trung (Đà Nẵng 101.3%) và miền Nam (TP.HCM 95.2%).
+                  <strong>Kết quả:</strong> Triệt tiêu 100% hiện tượng Distribution Shift. Attention Model đạt độ công bằng địa lý vượt trội với khoảng cách chênh lệch chỉ ±3.5% giữa miền Bắc (Hà Nội 84.0%), miền Trung (Đà Nẵng 84.8%) và miền Nam (TP.HCM 77.6%).
                 </p>
               </div>
 
@@ -623,7 +670,7 @@ export default function ResearchLandingPage() {
                 </div>
                 <ul className="text-[11px] text-neutral-700 space-y-1.5 list-disc pl-4 leading-snug">
                   <li><strong>Không gian hành động cố định:</strong> DQN dùng kích thước output cố định |A|, không thể suy luận trên đồ thị có số điểm N biến thiên linh hoạt.</li>
-                  <li><strong>Thất bại Zero-Shot (100%):</strong> Khi chuyển từ N=10 sang N=20/30/50, DQN hoàn toàn mất kiểm soát và tạo ra chu trình vượt ngưỡng cự ly 460.6%.</li>
+                  <li><strong>Thất bại Zero-Shot (50.0%):</strong> Khi quy mô vượt ngưỡng thiết kế N_max=20 (tại N=30 và N=50), DQN bị tràn không gian hành động và thất bại hoàn toàn trên đúng 50.0% tổng số ca kiểm thử.</li>
                   <li><strong>Độ trễ tín hiệu thưởng (Sparse Reward):</strong> Chỉ nhận phần thưởng sau khi hoàn thành toàn bộ chu trình khiến gradient phân rã trầm trọng.</li>
                   <li><strong>Thiếu cơ chế chú ý toàn cục:</strong> Q-Network đánh giá từng bước đơn lẻ mà không có khả năng bao quát toàn bộ liên kết như Graph Attention Network (GAT).</li>
                 </ul>

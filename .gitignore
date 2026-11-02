@@ -20,6 +20,9 @@ out/
 # Generated agent workspace
 /.agents/
 /cache/
+/results/kaggle_extracted/
+/notebooks/New folder/
+/notebooks/model_results/
 
 # Temporary test artifact
 /models/test_zip.tmp

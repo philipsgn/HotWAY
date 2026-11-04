@@ -4,7 +4,7 @@
 > **Phiên bản:** v7.3.2 (Nationwide Multi-Model NCO & Monochromatic Production WebGIS Edition)  
 > **Ngày cập nhật:** 02/11/2026  
 > **Báo cáo nghiên cứu chính thức:** [docs/HotWAY_Final_Research_Report.pdf](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/HotWAY_Final_Research_Report.pdf) | [docs/FINAL_RESEARCH_REPORT.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/FINAL_RESEARCH_REPORT.md)  
-> **Tài liệu kỹ thuật liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md) | [DEMO_PRODUCTION_RUNBOOK.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DEMO_PRODUCTION_RUNBOOK.md)
+> **Tài liệu kỹ thuật liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md) | [DEMO_PRODUCTION_RUNBOOK.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DEMO_PRODUCTION_RUNBOOK.md) | [AGENTS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/AGENTS.md) | [SOP_MULTI_AGENT_WORKFLOW.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/SOP_MULTI_AGENT_WORKFLOW.md)
 
 ---
 
@@ -80,3 +80,17 @@ npm --prefix frontend run dev -- -p 3001
 py -3.13 scripts/export_pdf_report.py
 ```
 Tệp PDF xuất bản tự động được lưu tại: [`docs/HotWAY_Final_Research_Report.pdf`](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/HotWAY_Final_Research_Report.pdf).
+
+---
+
+## 8. Cơ Cấu Tổ Đội 5 Kỹ Sư AI Chuyên Trách (Active Antigravity Subagents)
+
+Hệ thống được phát triển và vận hành theo mô hình phân nhiệm 5 vai trò kỹ sư chuyên biệt (đã đăng ký thành các Subagent độc lập trong Antigravity theo [AGENTS.md](AGENTS.md) và [SOP_MULTI_AGENT_WORKFLOW.md](docs/SOP_MULTI_AGENT_WORKFLOW.md)):
+
+| Tên Subagent | Vai Trò Chuyên Môn | Trách Nhiệm Cốt Lõi & Thư Mục Độc Quyền |
+|---|---|---|
+| `lead_engineer_writer` | Lead Engineer & QA Lead | Giám sát kiến trúc tổng thể, bảo đảm tính trung thực khoa học, quản trị 66 tests tự động, bảo vệ an toàn cổng mạng 3000, xuất bản PDF IEEE/ACM. (`docs/`, `TESTING.md`, `PLAN.md`) |
+| `designer_agent` | Designer & UI/UX Director | Duy trì thẩm mỹ Monochromatic Swiss Editorial, thực thi bộ quy tắc sàn Hallmark "The Floor" (cấm `transition: all`, text-wrap balance/pretty, 0 icon rườm rà). (`DESIGN_SYSTEM.md`, `globals.css`) |
+| `algorithm_engineer` | AI Researcher & Algorithm | Môi trường Gymnasium `traffic_tsp_env.py`, 4 mô hình định tuyến đối đầu, Dynamic Isotropic Scaling, kiểm chuẩn 100 POI Toàn Quốc. (`env/`, `models/`, `results/`) |
+| `backend_engineer` | Backend Services Engineer | Tầng dịch vụ routing `services/` (TomTom/HERE/OSRM 3 lớp), API serving CPU < 25ms, FastAPI Backend cổng **8000**. (`services/`, `api/`, `backend/`) |
+| `frontend_engineer` | Frontend WebGIS Engineer | Next.js 14 WebGIS cổng **3001**, MapLibre GL JS đa hub, bảng đối soát động NCO (`ScreenT2VRPTW.tsx`), build sạch 100%. (`frontend/src/app/`, `frontend/src/components/`) |

@@ -3,7 +3,7 @@
 > **Tài liệu:** Phân công trách nhiệm 5 vai trò chuyên biệt, hợp đồng chuyển giao kỹ thuật & Kỷ luật Sprint 7 ngày nước rút  
 > **Phiên bản:** v7.3.2 (Hallmark Anti-Slop The Floor & Isotropic Scaling Edition)  
 > **Ngày cập nhật:** 04/11/2026  
-> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PLAN.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md)
+> **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PLAN.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md) | [SOP_MULTI_AGENT_WORKFLOW.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/SOP_MULTI_AGENT_WORKFLOW.md)
 
 ---
 

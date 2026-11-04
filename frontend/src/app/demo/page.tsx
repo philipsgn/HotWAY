@@ -364,7 +364,7 @@ export default function OptimoSchedulingPage() {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto p-3 border max-w-sm transition-all duration-200 ${
+            className={`pointer-events-auto p-3 border max-w-sm transition-[opacity,transform] duration-200 ${
               t.type === "error"
                 ? "bg-red-50 border-red-300 text-red-900"
                 : t.type === "success"

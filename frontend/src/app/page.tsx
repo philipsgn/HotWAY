@@ -82,7 +82,7 @@ export default function ResearchLandingPage() {
 
             {/* Flat Floating Dropdown Panel */}
             {isMenuOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 sm:w-80 bg-[#09090b] border border-neutral-700 shadow-2xl p-1.5 z-50 text-xs font-sans">
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 sm:w-80 bg-[#09090b] border border-neutral-700 shadow-lg border border-neutral-700 backdrop-blur-md p-1.5 z-50 text-xs font-sans">
                 <div className="px-2 py-1.5 font-mono text-[10px] uppercase tracking-wider text-neutral-500 border-b border-neutral-800">
                   Danh Mục Báo Cáo Nghiên Cứu
                 </div>
@@ -875,7 +875,7 @@ export default function ResearchLandingPage() {
           </h2>
 
           <div className="p-3 bg-neutral-900 border border-neutral-800 text-white font-mono text-xs mb-8">
-            <span className="text-neutral-500 block mb-1"># LỆNH CHẠY TOÀN BỘ KIỂM THỬ TỰ ĐỘNG (62/62 PASSED)</span>
+            <span className="text-neutral-500 block mb-1"># LỆNH CHẠY TOÀN BỘ KIỂM THỬ TỰ ĐỘNG (66/66 PASSED)</span>
             <code className="text-emerald-400">python -m pytest tests/ -v</code>
           </div>
 

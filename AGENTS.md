@@ -1,8 +1,8 @@
 # Cơ Chế Đa Tác Tử (AGENTS.MD) — HotWAY
 
 > **Tài liệu:** Phân công trách nhiệm 5 vai trò chuyên biệt, hợp đồng chuyển giao kỹ thuật & Kỷ luật Sprint 7 ngày nước rút  
-> **Phiên bản:** v7.3.1 (Eliminate Hardcoded Regional Biases & Dynamic Min-Max Scaling Edition)  
-> **Ngày cập nhật:** 29/10/2026  
+> **Phiên bản:** v7.3.2 (Hallmark Anti-Slop The Floor & Isotropic Scaling Edition)  
+> **Ngày cập nhật:** 04/11/2026  
 > **Tài liệu liên quan:** [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [PLAN.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PLAN.md) | [DESIGN_SYSTEM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/DESIGN_SYSTEM.md)
 
 ---
@@ -56,6 +56,7 @@ flowchart TD
 2. **Nhịp điệu tương phản giữa các Section:** Từng section của Landing Page phải có nền độc lập, luân phiên tương phản giữa Dark (Obsidian / Deep Charcoal với gradient tinh tế) và Light (Pure White / Off-white / Silver).
 3. **Thanh Menu Thu Gọn:** Toàn bộ danh sách 6 mục báo cáo (`01 Bối Cảnh` đến `06 Tái Lập`) được gom vào menu xổ xuống (`[Mục Lục ▾]`), giữ cho thanh đỉnh gọn gàng tối đa.
 4. **Cổng mạng bắt buộc:** Frontend chạy cổng **3001**, Backend chạy cổng **8000**, Cổng **3000** tuyệt đối cấm dùng.
+5. **Kỷ Luật The Floor (Hallmark Anti-AI-Slop):** Cấm tuyệt đối `transition: all` và animate kích thước layout (`width`/`height`); bắt buộc dùng `text-wrap: balance` cho tiêu đề và `text-wrap: pretty` cho đoạn văn; nghiêm cấm làm đứt gãy props/handler khi refactor; khóa cứng bằng kiểm thử tự động `tests/test_ui_anti_slop.py`.
 
 ---
 
@@ -63,7 +64,7 @@ flowchart TD
 
 Để bảo đảm tiến độ báo cáo Hội đồng nghiệm thu trong 7 ngày còn lại, toàn bộ 5 tác tử tuân thủ nghiêm ngặt 5 nguyên tắc:
 1. **Bảo toàn 100% Dữ Liệu Thực Nghiệm (Scientific Integrity):** Mọi số liệu trong báo cáo và slide thuyết trình phải đồng bộ tuyệt đối với `results/benchmark_summary_table.csv` và `results/benchmark_multi_model_results.json`. Nghiêm cấm bịa đặt hoặc làm tròn sai lệch số liệu. Bộ dữ liệu thử nghiệm 100 POI phân bố đa vùng trọng điểm: Hà Nội (40), Đà Nẵng (20), TP.HCM (40).
-2. **Kỷ Luật Triệt Tiêu Hardcode (Zero-Hardcode Rule):** Tuyệt đối cấm hardcode tọa độ địa lý, bounding box khu vực cụ thể hay giả định mạng lưới địa phương vào mô hình học tăng cường. Mọi không gian đặc trưng phải đi qua Dynamic Min-Max Scaling per-instance về $[0, 1]^2$.
-3. **Chế Độ Kiểm Tra Liên Tục (Continuous Verification):** Mọi thay đổi mã nguồn phải vượt qua toàn bộ 56 tests (`python -m pytest tests/`) và biên dịch Next.js 14 sạch (`npm --prefix frontend run build`) trước khi chuyển giao.
+2. **Kỷ Luật Triệt Tiêu Hardcode (Zero-Hardcode Rule):** Tuyệt đối cấm hardcode tọa độ địa lý, bounding box khu vực cụ thể hay giả định mạng lưới địa phương vào mô hình học tăng cường. Mọi không gian đặc trưng phải đi qua Dynamic Isotropic Scaling per-instance về $[0, 1]^2$ bảo toàn tỷ lệ 1:1.
+3. **Chế Độ Kiểm Tra Liên Tục (Continuous Verification):** Mọi thay đổi mã nguồn phải vượt qua toàn bộ 63 tests (`python -m pytest tests/`) và biên dịch Next.js 14 sạch (`npm --prefix frontend run build`) trước khi chuyển giao.
 4. **Cơ Chế Phục Vụ CPU Tức Thì:** Mô hình Attention Model và OR-Tools phục vụ cục bộ trên CPU máy tính với độ trễ < 25ms; không bắt buộc người chấm phải có GPU chuyên dụng.
 5. **Đóng Băng Giao Diện Trước 24 Giờ:** Toàn bộ giao diện WebGIS Demo và Landing Page Report phải được nghiệm thu và đóng băng ít nhất 24 giờ trước thời điểm báo cáo chính thức để tập trung hoàn thiện Slide và Báo cáo PDF.

@@ -1,8 +1,8 @@
 # Hệ Thống Thiết Kế (DESIGN_SYSTEM.MD) — HotWAY
 
 > **Tài liệu:** Quy chuẩn thiết kế giao diện đơn sắc (Monochromatic), tương phản Gradient giữa các Section, Typography Manrope cấp quản lý & Thanh điều hướng tối giản  
-> **Phiên bản:** v7.1.0 (Executive High-End Light with Dark Hero & Callout Edition)  
-> **Ngày cập nhật:** 27/10/2026  
+> **Phiên bản:** v7.3.2 (Executive Swiss Monochromatic & Hallmark The Floor Edition)  
+> **Ngày cập nhật:** 04/11/2026  
 > **Tác tử phụ trách:** `designer_agent` (Designer & UI/UX Director)  
 > **Tài liệu liên quan:** [AGENTS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/AGENTS.md) | [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md)
 
@@ -71,3 +71,36 @@ flowchart TD
   - Trái: Logo `HOTWAY` / `v7.1.0`
   - Giữa: Nút dropdown `[Mục Lục ▾]` (khi bấm xổ danh mục phẳng gồm 6 mục có số `01` đến `06`)
   - Phải: Nút `Tải PDF [↓]` và `Mở Demo →`
+
+---
+
+## 5. Quy Chuẩn Sàn Chống AI-Slop (Hallmark "The Floor" Adaptation)
+
+Lấy cảm hứng từ bộ công cụ chống AI-slop `Nutlope/hallmark`, HotWAY thiết lập bộ quy tắc sàn bất khả xâm phạm (**The Floor**) nhằm loại trừ triệt để các khuyết tật thiết kế thường gặp do AI sinh ra:
+
+### 5.1. Cơ Chế Chuyển Động Vi Mô (Mechanical Floor)
+1. **Cấm tuyệt đối `transition: all`:**
+   - AI thường lạm dụng `transition-all` dẫn đến việc trình duyệt phải tính toán lại mọi thuộc tính (bao gồm cả layout reflow), gây giật lag (jank) nghiêm trọng khi người dùng tương tác trên bản đồ WebGIS.
+   - **Bắt buộc:** Khai báo tường minh chính xác thuộc tính cần chuyển đổi (ví dụ: `transition-colors`, `transition-opacity`, `transition-transform` hoặc `transition-[transform,opacity]`).
+2. **Cấm Animate kích thước Layout:**
+   - Tuyệt đối không áp dụng transition/animation lên `width`, `height`, `padding`, `margin` của các panel thông tin hoặc sheet điều khiển trên bản đồ. Thay vào đó, sử dụng `transform: translateX/Y` và `scale` được tăng tốc phần cứng (GPU-accelerated).
+3. **Thời lượng chuyển động chuẩn mực:**
+   - Micro-interaction: `150ms` - `200ms` với hàm gia tốc `cubic-bezier(0.16, 1, 0.3, 1)` dứt khoát.
+
+### 5.2. Luồng Chữ & Typography Chuẩn Xác (Typographic Flow Floor)
+1. **Ngắt dòng cân bằng (Text Wrapping Rules):**
+   - Mọi tiêu đề (`h1` - `h6`): Bắt buộc kích hoạt `text-wrap: balance` nhằm triệt tiêu hiện tượng từ đơn độc (orphan word) ở cuối dòng.
+   - Toàn bộ văn bản nội dung (`p`, `li`): Kích hoạt `text-wrap: pretty` để các thuật toán trình duyệt tự động cân chỉnh khoảng cách ngắt dòng tiếng Việt thẩm mỹ nhất.
+2. **Không dùng hoa mỹ rườm rà:**
+   - Không dùng `italic` trên các nhãn kỹ thuật, chỉ số toán học hoặc tiêu đề bảng.
+   - Nhãn thông số kỹ thuật dùng định dạng chữ hoa monospace (`font-mono text-[10px] uppercase tracking-wider`).
+
+### 5.3. Loại Bỏ Thẻ Card Đổ Bóng (AI Card Slop Elimination)
+1. **Zero Soft-Shadow Cards:**
+   - Nghiêm cấm các thẻ card bo tròn lớn lồng nhau kèm đổ bóng mờ ảo nhạt nhòa (`rounded-2xl shadow-xl` hay `shadow-2xl`).
+   - Mọi khối nội dung được định hình bằng đường hairline tối giản (`border border-neutral-200/800`, `divide-y divide-neutral-200/800`) trên nền đơn sắc phẳng.
+2. **Zero Icon Trang Trí Lặp Lại:**
+   - Không chèn các icon hình tròn bọc icon SVG phổ thông (như Brain, Sparkles, Rocket...) trước các đầu mục; sử dụng trực tiếp cấu trúc phân cấp typography (H1/H2/H3/H4) và nhãn số `01`, `02`, `03` dứt khoát.
+
+### 5.4. Bảo Toàn Hợp Đồng Mã Nguồn (Preservation Floor)
+- Khi tái cấu trúc hoặc tinh chỉnh bất kỳ component giao diện nào, nghiêm cấm việc xóa bỏ hoặc làm đứt gãy các state, callback event handlers (như `onSelectRouteInstance`, `addToast`), Leaflet/MapLibre GL map instances, hoặc SSE stream listeners.

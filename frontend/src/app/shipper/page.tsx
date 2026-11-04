@@ -64,7 +64,7 @@ export default function ShipperPWAPage() {
 
           <div className="w-full bg-sunken h-2.5 rounded-full overflow-hidden">
             <div
-              className="h-full bg-brand-gold rounded-full transition-all duration-300"
+              className="h-full bg-brand-gold rounded-full transition-[width] duration-300"
               style={{ width: `${(completedCount / stops.length) * 100}%` }}
             />
           </div>

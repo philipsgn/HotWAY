@@ -50,7 +50,7 @@ export default function FloatingSheet({
       <section
         aria-label={title}
         style={{ width: isCollapsed ? "44px" : `${width}px` }}
-        className="hidden md:flex flex-col absolute top-20 bottom-6 left-6 z-20 bg-white/98 backdrop-blur-xs border border-[#e5e5e5] transition-all duration-200 ease-out overflow-hidden shadow-sm"
+        className="hidden md:flex flex-col absolute top-20 bottom-6 left-6 z-20 bg-white/98 backdrop-blur-xs border border-[#e5e5e5] transition-[transform,opacity] duration-200 ease-out overflow-hidden shadow-sm"
       >
         {/* Header Bar */}
         <div className="p-3 border-b border-[#e5e5e5] flex items-center justify-between bg-[#fcfbf9] shrink-0 font-mono">

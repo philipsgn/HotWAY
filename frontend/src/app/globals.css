@@ -31,6 +31,22 @@ body {
   padding: 0;
 }
 
+/* Hallmark The Floor - Typographic Flow & Anti-Slop */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, li {
+  text-wrap: pretty;
+}
+
+/* Hallmark The Floor - Hardware Accelerated Micro-Interactions */
+.transition-subtle {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 200ms;
+}
+
 /* Minimalist Hairline Tables */
 table {
   border-collapse: collapse;

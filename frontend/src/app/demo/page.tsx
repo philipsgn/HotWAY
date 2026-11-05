@@ -108,13 +108,17 @@ export default function OptimoSchedulingPage() {
 
     // Convert 4 Pareto routes into MapLibre RouteData layers
     // Vehicle IDs: 1 (Blue), 2 (Amber), 3 (Emerald), 4 (Purple)
-    const mapRoutes: RouteData[] = allRoutes.map((r, idx) => ({
-      vehicle_id: idx + 1,
-      leg_geometries: [r.coordinates],
-      customer_indices: [],
-      distance_km: r.distance_m / 1000,
-      duration_min: r.expected_time_min,
-    }));
+    const mapRoutes: RouteData[] = allRoutes.map((r, idx) => {
+      const coords = (r as any).coordinates || (r as any).coords || [];
+      const validCoords: [number, number][] = Array.isArray(coords) ? coords : [];
+      return {
+        vehicle_id: idx + 1,
+        leg_geometries: validCoords.length > 0 ? [validCoords] : [],
+        customer_indices: [],
+        distance_km: (r.distance_m || 0) / 1000,
+        duration_min: r.expected_time_min || 0,
+      };
+    });
 
     setRoutes(mapRoutes);
 

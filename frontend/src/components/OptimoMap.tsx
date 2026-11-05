@@ -341,12 +341,19 @@ export default function OptimoMap({
       const casingLayerId = `route-casing-${route.vehicle_id}`;
       const lineLayerId = `route-line-${route.vehicle_id}`;
 
-      // Flatten leg_geometries into GeoJSON LineString coordinates: [lon, lat]
+      // Flatten leg_geometries safely into GeoJSON LineString coordinates: [lon, lat]
       const coordinates: [number, number][] = [];
-      if (route.leg_geometries && route.leg_geometries.length > 0) {
+      if (Array.isArray(route.leg_geometries)) {
         route.leg_geometries.forEach((leg) => {
+          if (!leg || !Array.isArray(leg)) return;
+          // Case A: leg is directly a point [lat, lon]
+          if (leg.length >= 2 && typeof leg[0] === "number" && typeof leg[1] === "number") {
+            coordinates.push([leg[1], leg[0]]);
+            return;
+          }
+          // Case B: leg is an array of points [[lat, lon], ...]
           leg.forEach((pt) => {
-            if (pt.length >= 2) {
+            if (pt && Array.isArray(pt) && pt.length >= 2 && typeof pt[0] === "number" && typeof pt[1] === "number") {
               coordinates.push([pt[1], pt[0]]); // pt is [lat, lon] -> GeoJSON is [lon, lat]
             }
           });

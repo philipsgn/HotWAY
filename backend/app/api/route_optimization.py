@@ -121,6 +121,10 @@ async def get_t1_routes(
             detail="No path found between the specified origin and destination nodes."
         )
 
+    for r_obj in labeled.values():
+        if "coords" in r_obj and "coordinates" not in r_obj:
+            r_obj["coordinates"] = r_obj["coords"]
+
     response = {
         "metadata": {
             "origin": {"node_id": orig_node, "lat": r.graph.nodes[orig_node]["y"], "lon": r.graph.nodes[orig_node]["x"]},
@@ -148,6 +152,10 @@ async def calculate_t1_custom(req: ODRequest):
         )
 
     labeled = r.select_four_labeled_routes(orig_node, dest_node, k_candidates=15)
+    for r_obj in labeled.values():
+        if "coords" in r_obj and "coordinates" not in r_obj:
+            r_obj["coordinates"] = r_obj["coords"]
+
     return {
         "metadata": {
             "origin": {"node_id": orig_node, "lat": r.graph.nodes[orig_node]["y"], "lon": r.graph.nodes[orig_node]["x"]},

@@ -152,10 +152,19 @@ export default function ScreenT1MultiCriteria({
           });
           if (calcRes.ok) {
             const data = await calcRes.json();
-            setRoutesData(data.routes);
+            const normalized: Record<string, T1RouteInfo> = {};
+            if (data.routes) {
+              for (const [k, v] of Object.entries(data.routes as Record<string, any>)) {
+                normalized[k] = {
+                  ...v,
+                  coordinates: v.coordinates || v.coords || [],
+                };
+              }
+            }
+            setRoutesData(normalized);
             if (onSelectRoute && data.routes) {
-              const list = Object.values(data.routes) as T1RouteInfo[];
-              onSelectRoute(data.routes[selectedKey] || list[0], list);
+              const list = Object.values(normalized);
+              onSelectRoute(normalized[selectedKey] || list[0], list);
             }
             return;
           }
@@ -181,7 +190,16 @@ export default function ScreenT1MultiCriteria({
       const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
-        setRoutesData(data.routes);
+        const normalized: Record<string, T1RouteInfo> = {};
+        if (data.routes) {
+          for (const [k, v] of Object.entries(data.routes as Record<string, any>)) {
+            normalized[k] = {
+              ...v,
+              coordinates: v.coordinates || v.coords || [],
+            };
+          }
+        }
+        setRoutesData(normalized);
         if (data.metadata?.origin && data.metadata?.destination && onUpdateMapPoints) {
           onUpdateMapPoints(
             [data.metadata.origin.lat, data.metadata.origin.lon],

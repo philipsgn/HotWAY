@@ -34,11 +34,19 @@ interface MultiModelBenchmarkData {
 interface ScreenT2VRPTWProps {
   onSelectRouteInstance?: (instance: any, modelRoutes: any[]) => void;
   onSelectRegion?: (regionId: "hanoi" | "danang" | "hcmc") => void;
+  onStartPinningStop?: () => void;
+  customStopsCount?: number;
+  onClearCustomStops?: () => void;
+  onResetBenchmark?: () => void;
 }
 
 export default function ScreenT2VRPTW({
   onSelectRouteInstance,
   onSelectRegion,
+  onStartPinningStop,
+  customStopsCount = 0,
+  onClearCustomStops,
+  onResetBenchmark,
 }: ScreenT2VRPTWProps) {
   const [benchmarkData, setBenchmarkData] = useState<MultiModelBenchmarkData | null>(null);
   const [vrptwData, setVrptwData] = useState<any>(null);
@@ -527,6 +535,39 @@ export default function ScreenT2VRPTW({
               </option>
             ))}
           </select>
+        </div>
+
+        {/* Dynamic Stop Insertion Controls (Zero Hardcoding) */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+          {onStartPinningStop && (
+            <button
+              type="button"
+              onClick={onStartPinningStop}
+              className="px-2 py-1 bg-neutral-900 hover:bg-black text-white text-[10px] font-mono font-bold transition flex items-center space-x-1"
+            >
+              <span>+ CẮM THÊM ĐIỂM DỪNG GIAO HÀNG</span>
+            </button>
+          )}
+
+          {customStopsCount > 0 && onClearCustomStops && (
+            <button
+              type="button"
+              onClick={onClearCustomStops}
+              className="px-2 py-1 bg-white border border-rose-300 text-rose-700 hover:bg-rose-50 text-[10px] font-mono transition"
+            >
+              ✕ XÓA {customStopsCount} ĐIỂM TỰ CHỌN
+            </button>
+          )}
+
+          {onResetBenchmark && (
+            <button
+              type="button"
+              onClick={onResetBenchmark}
+              className="px-2 py-1 bg-white border border-neutral-300 text-neutral-600 hover:bg-neutral-100 text-[10px] font-mono transition"
+            >
+              ↺ ĐẶT LẠI VỀ BENCHMARK
+            </button>
+          )}
         </div>
       </div>
 

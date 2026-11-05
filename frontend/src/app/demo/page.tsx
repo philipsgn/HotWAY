@@ -53,6 +53,22 @@ export default function OptimoSchedulingPage() {
   const [simVehicle, setSimVehicle] = useState<{ vehicle_id: number; lat: number; lon: number } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Dynamic Interactive Picking States (Zero-Hardcode Rule)
+  const [pinningMode, setPinningMode] = useState<"origin" | "destination" | "stop" | null>(null);
+  const [originPoint, setOriginPoint] = useState<{ lat: number; lon: number; name?: string }>({
+    lat: 10.8016,
+    lon: 106.7115,
+    name: "Hub Bình Thạnh (#1497276525)",
+  });
+  const [destinationPoint, setDestinationPoint] = useState<{ lat: number; lon: number; name?: string }>({
+    lat: 10.7951,
+    lon: 106.7218,
+    name: "Landmark 81 (#5337055581)",
+  });
+  const [customStops, setCustomStops] = useState<Point[]>([]);
+  const [originalBenchmarkInstance, setOriginalBenchmarkInstance] = useState<any>(null);
+  const [originalBenchmarkRoutes, setOriginalBenchmarkRoutes] = useState<any[]>([]);
+
   // User Geolocation State
   const [userLocation, setUserLocation] = useState<{ lat: number; lon: number; accuracy: number } | null>(null);
   const [isLocating, setIsLocating] = useState(false);
@@ -156,6 +172,8 @@ export default function OptimoSchedulingPage() {
 
   const handleSelectT2Instance = (instance: any, modelRoutes: any[] = []) => {
     if (!instance) return;
+    setOriginalBenchmarkInstance(instance);
+    setOriginalBenchmarkRoutes(modelRoutes);
     if (instance.depot) {
       setCurrentDepot({
         lat: instance.depot.lat,
@@ -232,9 +250,122 @@ export default function OptimoSchedulingPage() {
     );
   };
 
+  // Interactive Map Click Handler for Dynamic Address Selection
+  const handleMapClick = (coords: { lat: number; lon: number }) => {
+    if (!pinningMode) return;
+
+    if (pinningMode === "origin") {
+      const pt = {
+        lat: coords.lat,
+        lon: coords.lon,
+        name: `Mốc A [${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}]`,
+      };
+      setOriginPoint(pt);
+      setPinningMode(null);
+      setOrders((prev) => {
+        const rest = prev.filter((p) => p.id !== "ORIGIN");
+        return [{ id: "ORIGIN", lat: pt.lat, lon: pt.lon, name: pt.name }, ...rest];
+      });
+      addToast("success", "Đã chọn Điểm Xuất Phát (A)", `${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}`);
+    } else if (pinningMode === "destination") {
+      const pt = {
+        lat: coords.lat,
+        lon: coords.lon,
+        name: `Mốc B [${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}]`,
+      };
+      setDestinationPoint(pt);
+      setPinningMode(null);
+      setOrders((prev) => {
+        const rest = prev.filter((p) => p.id !== "DEST");
+        return [...rest, { id: "DEST", lat: pt.lat, lon: pt.lon, name: pt.name }];
+      });
+      addToast("success", "Đã chọn Điểm Đến (B)", `${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}`);
+    } else if (pinningMode === "stop") {
+      const newStop: Point = {
+        id: `STOP_CUSTOM_${Date.now()}`,
+        lat: coords.lat,
+        lon: coords.lon,
+        name: `Điểm giao tự chọn (${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)})`,
+        order_id: `ORD-CUST-${customStops.length + 1}`,
+        demand: 1,
+      };
+      setCustomStops((prev) => [...prev, newStop]);
+      setOrders((prev) => [...prev, newStop]);
+      setPinningMode(null);
+      addToast("success", "Đã cắm điểm giao mới vào tour", `Tọa độ: ${coords.lat.toFixed(4)}, ${coords.lon.toFixed(4)}`);
+    }
+  };
+
+  const handleSwapPoints = () => {
+    const oldA = originPoint;
+    const oldB = destinationPoint;
+    setOriginPoint(oldB);
+    setDestinationPoint(oldA);
+    setOrders([
+      { id: "ORIGIN", lat: oldB.lat, lon: oldB.lon, name: oldB.name },
+      { id: "DEST", lat: oldA.lat, lon: oldA.lon, name: oldA.name },
+    ]);
+    addToast("info", "Đã đảo chiều hành trình", "Điểm đi và điểm đến đã hoán đổi (A ⇄ B).");
+  };
+
+  const handleUseGPSAsOrigin = () => {
+    if (userLocation) {
+      const pt = {
+        lat: userLocation.lat,
+        lon: userLocation.lon,
+        name: `GPS thiết bị (~${Math.round(userLocation.accuracy)}m)`,
+      };
+      setOriginPoint(pt);
+      setOrders((prev) => {
+        const rest = prev.filter((p) => p.id !== "ORIGIN");
+        return [{ id: "ORIGIN", lat: pt.lat, lon: pt.lon, name: pt.name }, ...rest];
+      });
+      addToast("success", "Đã đặt GPS làm Điểm Đi (A)", `${pt.lat.toFixed(4)}, ${pt.lon.toFixed(4)}`);
+    } else {
+      handleLocateUser();
+    }
+  };
+
   // Address Suggestion Pick Handler
   const handleSelectAddressPoint = (pt: { lat: number; lon: number; name: string }) => {
-    addToast("info", "Đã chọn địa chỉ", pt.name);
+    if (activeTab === "t1_multicriteria") {
+      setDestinationPoint(pt);
+      setOrders((prev) => {
+        const rest = prev.filter((p) => p.id !== "DEST");
+        return [...rest, { id: "DEST", lat: pt.lat, lon: pt.lon, name: pt.name }];
+      });
+      addToast("success", "Đã cập nhật Điểm Đến (B)", pt.name);
+    } else {
+      const newStop: Point = {
+        id: `STOP_SEARCH_${Date.now()}`,
+        lat: pt.lat,
+        lon: pt.lon,
+        name: pt.name,
+        order_id: `ORD-SRCH-${customStops.length + 1}`,
+        demand: 1,
+      };
+      setCustomStops((prev) => [...prev, newStop]);
+      setOrders((prev) => [...prev, newStop]);
+      addToast("success", "Đã thêm điểm giao vào hành trình", pt.name);
+    }
+  };
+
+  const handleStartPinningStop = () => {
+    setPinningMode("stop");
+    addToast("info", "Chế độ cắm điểm dừng", "Nhấp chuột vào bất kỳ vị trí nào trên bản đồ để thêm điểm giao.");
+  };
+
+  const handleClearCustomStops = () => {
+    setOrders((prev) => prev.filter((p) => !p.id.startsWith("STOP_CUSTOM_") && !p.id.startsWith("STOP_SEARCH_")));
+    setCustomStops([]);
+    addToast("info", "Đã xóa các điểm tự chọn", "Khôi phục danh sách điểm gốc.");
+  };
+
+  const handleResetBenchmark = () => {
+    if (originalBenchmarkInstance) {
+      handleSelectT2Instance(originalBenchmarkInstance, originalBenchmarkRoutes);
+      setCustomStops([]);
+    }
   };
 
   // Tab Title Mappings
@@ -277,6 +408,18 @@ export default function OptimoSchedulingPage() {
         userLocation={userLocation}
         onLocateUser={handleLocateUser}
         isLocating={isLocating}
+        onMapClick={handleMapClick}
+        isPinningMode={pinningMode}
+        pinningPrompt={
+          pinningMode === "origin"
+            ? "ĐANG CHỌN ĐIỂM ĐI (A) — Nhấp vào vị trí bất kỳ trên bản đồ"
+            : pinningMode === "destination"
+            ? "ĐANG CHỌN ĐIỂM ĐẾN (B) — Nhấp vào vị trí bất kỳ trên bản đồ"
+            : pinningMode === "stop"
+            ? "ĐANG THÊM ĐIỂM DỪNG GIAO HÀNG — Nhấp vào vị trí bất kỳ trên bản đồ"
+            : undefined
+        }
+        onCancelPinning={() => setPinningMode(null)}
       />
 
       {/* 2. Floating Top Header Bar */}
@@ -286,6 +429,8 @@ export default function OptimoSchedulingPage() {
         isLocating={isLocating}
         onQuickPlan={() => addToast("info", "Tính toán Pareto", "Đang phân tích 4 tuyến Pareto đặc trưng.")}
         onSelectAddressPoint={handleSelectAddressPoint}
+        onStartPinning={(mode) => setPinningMode(mode)}
+        pinningMode={pinningMode}
         isPlanning={isLoading}
       />
 
@@ -341,6 +486,11 @@ export default function OptimoSchedulingPage() {
           <ScreenT1MultiCriteria
             onSelectRoute={handleSelectT1Route}
             onUpdateMapPoints={handleUpdateT1Points}
+            originPoint={originPoint}
+            destinationPoint={destinationPoint}
+            onStartPinning={(mode) => setPinningMode(mode)}
+            onSwapPoints={handleSwapPoints}
+            onUseCurrentLocationAsOrigin={handleUseGPSAsOrigin}
           />
         )}
 
@@ -348,6 +498,10 @@ export default function OptimoSchedulingPage() {
           <ScreenT2VRPTW
             onSelectRouteInstance={handleSelectT2Instance}
             onSelectRegion={handleSelectRegion}
+            onStartPinningStop={handleStartPinningStop}
+            customStopsCount={customStops.length}
+            onClearCustomStops={handleClearCustomStops}
+            onResetBenchmark={handleResetBenchmark}
           />
         )}
 

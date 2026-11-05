@@ -9,19 +9,26 @@ interface TopFloatingBarProps {
   isLocating?: boolean;
   onQuickPlan: () => void;
   onSelectAddressPoint?: (point: { lat: number; lon: number; name: string }) => void;
+  onStartPinning?: (mode: "origin" | "destination") => void;
+  pinningMode?: "origin" | "destination" | "stop" | null;
   isPlanning?: boolean;
 }
 
 // Popular locations around Bình Thạnh / HCMC for instant fallback & speedy suggestions
 const PRESET_LOCATIONS = [
-  { name: "490 Điện Biên Phủ, Phường 21, Bình Thạnh", lat: 10.8012, lon: 106.7145 },
-  { name: "Đại học HUTECH - 475A Điện Biên Phủ", lat: 10.8021, lon: 106.7148 },
-  { name: "Pearl Plaza - 561A Điện Biên Phủ", lat: 10.7995, lon: 106.7185 },
-  { name: "Landmark 81 - Vinhomes Central Park", lat: 10.7951, lon: 106.7218 },
-  { name: "Chợ Bà Chiểu - Bạch Đằng, Bình Thạnh", lat: 10.8016, lon: 106.6961 },
-  { name: "Ngã tư Hàng Xanh - Xô Viết Nghệ Tĩnh", lat: 10.8014, lon: 106.7112 },
-  { name: "Đại học Ngoại Thương CS2 - D5 Bình Thạnh", lat: 10.8055, lon: 106.7128 },
-  { name: "Cầu Thị Nghè - Nguyễn Thị Minh Khai", lat: 10.7905, lon: 106.7052 },
+  // TP.HCM
+  { name: "Landmark 81 - Vinhomes Central Park, TP.HCM", lat: 10.7951, lon: 106.7218 },
+  { name: "Chợ Bến Thành - Quận 1, TP.HCM", lat: 10.7725, lon: 106.6980 },
+  { name: "Ngã tư Hàng Xanh - Bình Thạnh, TP.HCM", lat: 10.8014, lon: 106.7112 },
+  { name: "Đại học Bách Khoa TP.HCM - Lý Thường Kiệt", lat: 10.7723, lon: 106.6577 },
+  { name: "Pearl Plaza - 561A Điện Biên Phủ, TP.HCM", lat: 10.7995, lon: 106.7185 },
+  // Hà Nội
+  { name: "Bưu điện Bờ Hồ - Hoàn Kiếm, Hà Nội", lat: 21.0285, lon: 105.8542 },
+  { name: "Keangnam Landmark 72 - Cầu Giấy, Hà Nội", lat: 21.0167, lon: 105.7839 },
+  { name: "Đại học Bách Khoa Hà Nội - Đại Cồ Việt", lat: 21.0051, lon: 105.8432 },
+  // Đà Nẵng
+  { name: "Cầu Rồng - Hải Châu, Đà Nẵng", lat: 16.0612, lon: 108.2272 },
+  { name: "Đại học Bách Khoa Đà Nẵng - Liên Chiểu", lat: 16.0748, lon: 108.1534 },
 ];
 
 export default function TopFloatingBar({
@@ -30,6 +37,8 @@ export default function TopFloatingBar({
   isLocating = false,
   onQuickPlan,
   onSelectAddressPoint,
+  onStartPinning,
+  pinningMode = null,
   isPlanning = false,
 }: TopFloatingBarProps) {
   const [query, setQuery] = useState("");
@@ -64,10 +73,27 @@ export default function TopFloatingBar({
         p.name.toLowerCase().includes(q)
       );
 
+      // Check if user entered direct lat, lon coordinates
+      const coordMatch = query.match(/^\s*([+-]?\d+\.?\d*)[\s,]+([+-]?\d+\.?\d*)\s*$/);
+      if (coordMatch) {
+        const lat = parseFloat(coordMatch[1]);
+        const lon = parseFloat(coordMatch[2]);
+        if (lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180) {
+          setResults([
+            { name: `Tọa độ trực tiếp [${lat.toFixed(5)}, ${lon.toFixed(5)}]`, lat, lon },
+            ...localMatches.slice(0, 4),
+          ]);
+          setIsSearching(false);
+          setIsOpen(true);
+          return;
+        }
+      }
+
       try {
+        // Nationwide open geocoding in Vietnam (No hardcoded district/city)
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          query + ", Bình Thạnh, TP.HCM"
-        )}&limit=4&countrycodes=vn`;
+          query
+        )}&limit=5&countrycodes=vn`;
         const res = await fetch(url, { headers: { "Accept-Language": "vi" } });
         if (res.ok) {
           const data = await res.json();
@@ -139,7 +165,7 @@ export default function TopFloatingBar({
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Nhập địa chỉ tìm kiếm tại Bình Thạnh..."
+              placeholder="Nhập địa chỉ bất kỳ hoặc tọa độ (VD: 10.795, 106.721)..."
               className="w-full bg-transparent text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none font-mono"
             />
             {query && (
@@ -154,6 +180,34 @@ export default function TopFloatingBar({
               </button>
             )}
             {isSearching && <span className="text-xs font-mono text-neutral-500 animate-pulse ml-1">[...]</span>}
+            {onStartPinning && (
+              <div className="hidden sm:flex items-center space-x-1 pl-2 border-l border-neutral-200 ml-1">
+                <button
+                  type="button"
+                  onClick={() => onStartPinning("origin")}
+                  title="Cắm mốc Điểm Đi (A) trên bản đồ"
+                  className={`px-1.5 py-0.5 text-[10px] font-mono border transition ${
+                    pinningMode === "origin"
+                      ? "bg-emerald-600 text-white border-emerald-600 font-bold"
+                      : "bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-300"
+                  }`}
+                >
+                  📍 CẮM A
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onStartPinning("destination")}
+                  title="Cắm mốc Điểm Đến (B) trên bản đồ"
+                  className={`px-1.5 py-0.5 text-[10px] font-mono border transition ${
+                    pinningMode === "destination"
+                      ? "bg-rose-600 text-white border-rose-600 font-bold"
+                      : "bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border-neutral-300"
+                  }`}
+                >
+                  🎯 CẮM B
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Autocomplete Dropdown */}

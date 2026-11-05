@@ -22,6 +22,7 @@ from models.dqn_agent import DQNSolver
 from models.ortools_solver import ORToolsSolver
 from models.pointer_net import PointerNetSolver
 from services.fallback_router import FallbackRouter
+from backend.app.api.endpoints import visualizer
 
 app = FastAPI(
     title="HotWAY Dynamic Traffic-Aware Neural Routing API",
@@ -36,6 +37,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(visualizer.router)
 
 # Initialize solvers
 print("Initializing Serving Solvers on CPU...")

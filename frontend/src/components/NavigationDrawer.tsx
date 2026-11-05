@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { OptimoTab } from "./OptimoSidebar";
+import Link from "next/link";
 
 interface NavigationDrawerProps {
   isOpen: boolean;
@@ -148,6 +149,16 @@ export default function NavigationDrawer({
               );
             })}
           </nav>
+        </div>
+
+        {/* Interactive Pathfinding Visualizer Link */}
+        <div className="p-3 border-t border-neutral-200 bg-neutral-50/80">
+          <Link
+            href="/visualizer"
+            className="w-full block p-2 text-center bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-[11px] font-bold transition shadow-sm"
+          >
+            MÔ PHỎNG THUẬT TOÁN (CYBERPUNK) [↗]
+          </Link>
         </div>
 
         {/* Footer */}

@@ -105,11 +105,18 @@ export default function ResearchLandingPage() {
           </div>
 
           {/* Action Links */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <Link
+              href="/visualizer"
+              className="text-xs text-cyan-400 hover:text-cyan-300 transition font-mono border border-cyan-800/60 bg-cyan-950/30 px-2 py-1 hidden sm:inline"
+            >
+              Mô Phỏng Thuật Toán [↗]
+            </Link>
+
             <a
               href="/docs/HotWAY_Final_Research_Report.pdf"
               download
-              className="text-xs text-neutral-400 hover:text-white transition underline underline-offset-4 font-mono"
+              className="text-xs text-neutral-400 hover:text-white transition underline underline-offset-4 font-mono hidden md:inline"
             >
               Tải PDF [↓]
             </a>

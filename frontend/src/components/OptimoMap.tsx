@@ -62,6 +62,10 @@ interface OptimoMapProps {
   userLocation?: { lat: number; lon: number; accuracy: number } | null;
   onLocateUser?: () => void;
   isLocating?: boolean;
+  onMapClick?: (coords: { lat: number; lon: number }) => void;
+  isPinningMode?: "origin" | "destination" | "stop" | null;
+  pinningPrompt?: string;
+  onCancelPinning?: () => void;
 }
 
 // OpenFreeMap Liberty style (free for commercial use, OSM vector tiles)
@@ -101,6 +105,10 @@ export default function OptimoMap({
   userLocation = null,
   onLocateUser,
   isLocating = false,
+  onMapClick,
+  isPinningMode = null,
+  pinningPrompt,
+  onCancelPinning,
 }: OptimoMapProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -110,6 +118,32 @@ export default function OptimoMap({
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+
+  // Cursor style during pinning mode
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const canvas = mapRef.current.getCanvas();
+    if (isPinningMode) {
+      canvas.style.cursor = "crosshair";
+    } else {
+      canvas.style.cursor = "";
+    }
+  }, [isPinningMode]);
+
+  // Handle map click events
+  useEffect(() => {
+    if (!mapRef.current || !mapLoaded) return;
+    const map = mapRef.current;
+    const handleClick = (e: maplibregl.MapMouseEvent) => {
+      if (onMapClick) {
+        onMapClick({ lat: e.lngLat.lat, lon: e.lngLat.lng });
+      }
+    };
+    map.on("click", handleClick);
+    return () => {
+      map.off("click", handleClick);
+    };
+  }, [mapLoaded, onMapClick]);
 
   // 1. Initialize MapLibre
   useEffect(() => {
@@ -228,18 +262,20 @@ export default function OptimoMap({
     });
 
     orders.forEach((ord, index) => {
+      const isOrigin = ord.id === "ORIGIN";
+      const isDest = ord.id === "DEST";
       const routeInfo = orderRouteMap.get(ord.id);
       const isSelected = selectedOrderId === ord.id;
-      const markerColor = routeInfo ? routeInfo.color : "#171717";
-      const seqNumber = routeInfo ? routeInfo.seq : index + 1;
+      const markerColor = isOrigin ? "#059669" : isDest ? "#dc2626" : (routeInfo ? routeInfo.color : "#171717");
+      const badgeLabel = isOrigin ? "A" : isDest ? "B" : (routeInfo ? routeInfo.seq : index + 1);
 
       const el = document.createElement("div");
       el.className = "cursor-pointer transition-transform duration-150 hover:scale-110";
       el.innerHTML = `
         <div class="relative flex items-center justify-center">
-          ${isSelected ? '<div class="absolute w-7 h-7 bg-neutral-900/20 animate-ping"></div>' : ''}
-          <div style="background-color: ${markerColor};" class="w-5 h-5 border border-white flex items-center justify-center text-white text-[10px] font-mono font-bold">
-            ${seqNumber}
+          ${(isSelected || isOrigin || isDest) ? '<div class="absolute w-7 h-7 bg-neutral-900/20 animate-ping"></div>' : ''}
+          <div style="background-color: ${markerColor};" class="${isOrigin || isDest ? 'w-6 h-6 rounded-full shadow-md' : 'w-5 h-5'} border-2 border-white flex items-center justify-center text-white text-[10px] font-mono font-bold">
+            ${badgeLabel}
           </div>
         </div>
       `;

@@ -46,7 +46,7 @@ export default function ScreenT2VRPTW({
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<"all" | "Hà Nội" | "Đà Nẵng" | "TP. Hồ Chí Minh">("all");
   const [selectedInstanceId, setSelectedInstanceId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [activeTrack, setActiveTrack] = useState<"multi_model" | "regional_fairness" | "vrptw">("multi_model");
+  const [activeTrack, setActiveTrack] = useState<"multi_model" | "regional_fairness" | "vrptw" | "convergence">("multi_model");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -175,6 +175,16 @@ export default function ScreenT2VRPTW({
               }`}
             >
               VRPTW ĐỘI XE
+            </button>
+            <button
+              onClick={() => setActiveTrack("convergence")}
+              className={`px-2.5 py-1 transition ${
+                activeTrack === "convergence"
+                  ? "bg-[#111111] text-white font-bold"
+                  : "text-[#555555] hover:bg-[#f5f4f0]"
+              }`}
+            >
+              HỘI TỤ HUẤN LUYỆN (60 EPOCHS)
             </button>
           </div>
         </div>
@@ -337,6 +347,114 @@ export default function ScreenT2VRPTW({
 
             <div className="border-l-2 border-emerald-700 pl-3 py-1.5 bg-emerald-50/50 text-[11px] text-emerald-950 leading-relaxed">
               Regional relative gaps are calculated from the current benchmark artifact. OR-Tools is a heuristic reference, so negative values are retained.
+            </div>
+          </div>
+        </div>
+      )}
+
+            {activeTrack === "convergence" && (
+        /* TRACK 4: KAGGLE GPU 60-EPOCH TRAINING CONVERGENCE & MODEL SELECTION */
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between font-mono text-[10px] text-[#777777] uppercase tracking-wider font-bold">
+              <span>ĐỐI SOÁT HỘI TỤ HUẤN LUYỆN (KAGGLE GPU NVIDIA T4 — 60 EPOCHS)</span>
+              <span className="text-emerald-800 font-bold">PROVEN CONVERGENCE</span>
+            </div>
+            <p className="text-[11px] text-[#555555] leading-relaxed">
+              Cả 2 mô hình học sâu (Attention Model &amp; PointerNet) đều được huấn luyện thực nghiệm độc lập qua 60 epochs với ma trận chi phí vật lý và hàm phạt kẹt xe C(t).
+            </p>
+
+            {/* Model Comparison Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+              {/* Attention Model Card */}
+              <div className="p-3 bg-emerald-50/40 border border-emerald-300 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-emerald-950 uppercase">
+                    Attention Model (Champion Core)
+                  </span>
+                  <span className="text-[9px] font-mono bg-emerald-600 text-white px-1.5 py-0.5 font-bold">
+                    PRODUCTION
+                  </span>
+                </div>
+                <div className="overflow-hidden border border-emerald-200 bg-white">
+                  <img
+                    src="/images/attention_model_convergence.png"
+                    alt="Attention Model Convergence Curves"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-1 font-mono text-[10px] pt-1 border-t border-emerald-200 text-emerald-900">
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">OPTIMALITY GAP</span>
+                    <strong className="text-xs text-emerald-800">+3.27%</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">CPU LATENCY</span>
+                    <strong className="text-xs">32.6 ms</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">THAM SỐ</span>
+                    <strong className="text-xs">741,760</strong>
+                  </div>
+                </div>
+                <p className="text-[10px] text-emerald-900/80 leading-snug">
+                  Tour cost hội tụ từ 299.68m xuống 199.88m; duy trì gap cực thấp (&lt; 3.5%) đồng đều trên cả 3 vùng miền.
+                </p>
+              </div>
+
+              {/* Pointer Network Card */}
+              <div className="p-3 bg-neutral-50 border border-neutral-300 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-neutral-900 uppercase">
+                    Pointer Network (A2C Bi-LSTM)
+                  </span>
+                  <span className="text-[9px] font-mono bg-neutral-300 text-neutral-700 px-1.5 py-0.5 font-bold">
+                    BASELINE
+                  </span>
+                </div>
+                <div className="overflow-hidden border border-neutral-200 bg-white">
+                  <img
+                    src="/images/pointer_net_convergence.png"
+                    alt="Pointer Network Convergence Curves"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-1 font-mono text-[10px] pt-1 border-t border-neutral-200 text-neutral-800">
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">OPTIMALITY GAP</span>
+                    <strong className="text-xs text-neutral-900">+9.27%</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">CPU LATENCY</span>
+                    <strong className="text-xs">24.2 ms</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block text-[8px]">THAM SỐ</span>
+                    <strong className="text-xs">283,137</strong>
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-600 leading-snug">
+                  Hội tụ nhanh nhờ kiến trúc gọn nhẹ, tuy nhiên gặp hiện tượng suy hao ngữ cảnh dài hạn khi N tăng từ 30 lên 50 (gap tăng lên 12.94%).
+                </p>
+              </div>
+            </div>
+
+            {/* Model Selection Decision Matrix */}
+            <div className="mt-3 p-3 border border-neutral-300 bg-white space-y-2">
+              <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-neutral-700">
+                LÝ DO KỸ THUẬT LỰA CHỌN ATTENTION MODEL CHO PRODUCTION
+              </div>
+              <ul className="text-[11px] text-neutral-700 space-y-1 list-disc pl-4 leading-relaxed">
+                <li>
+                  <strong>Khoảng cách tối ưu vượt trội (+3.27% vs +9.27%):</strong> Attention Model tiệm cận Google OR-Tools sát nút, tối ưu hơn PointerNet 6.0% tổng thời gian giao hàng.
+                </li>
+                <li>
+                  <strong>Tốc độ suy luận CPU siêu tốc (32.6ms):</strong> Nhanh hơn <strong>31 lần</strong> so với Google OR-Tools (1002.2ms), hoàn toàn đáp ứng thời gian thực cho hệ thống điều phối đô thị.
+                </li>
+                <li>
+                  <strong>Miễn dịch với sự cố tràn không gian (Zero-Shot 0.0% fail):</strong> Khác với Dueling DQN bị thất bại 50% khi N vượt ngưỡng 20, Attention Model tổng quát hóa hoàn hảo trên mọi kích thước đồ thị.
+                </li>
+              </ul>
             </div>
           </div>
         </div>

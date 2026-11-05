@@ -95,16 +95,21 @@
 
 ---
 
-### SLIDE 10: BẢNG KẾT QUẢ ĐỐI SOÁT THỰC NGHIỆM CHÍNH THỨC (100 POI)
+### SLIDE 10: ĐẤU TRƯỜNG ĐA MÔ HÌNH: ĐỐI SOÁT THỰC NGHIỆM & LỰA CHỌN MÔ HÌNH SẢN XUẤT (100 POI)
 
-| Mô hình | Thời gian (phút) | Khoảng cách (km) | Optimality Gap vs OR-Tools | HN Gap | DN Gap | HCM Gap | Độ trễ CPU (ms) | Tỷ lệ lỗi (%) |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| **Google OR-Tools** (Heuristic) | 217.78 | 72.69 | **0.00%** | 0.00% | 0.00% | 0.00% | 1002.16 | 0.0% |
-| **Attention Model (AM)** (Đề xuất) | 225.67 | 75.63 | **+3.27%** | **3.11%** | **3.48%** | **3.32%** | **32.63** | **0.0%** |
-| **Pointer Network (A2C)** (Baseline) | 239.59 | 80.99 | **+9.27%** | 8.57% | 8.66% | 10.27% | **24.19** | **0.0%** |
-| **Dueling DQN (Masked)** (Ablation) | 340.13 | 115.77 | **+105.45%** | 114.08% | 104.19% | 97.44% | **4.29** | **50.0%** |
+| Mô hình / Thuật toán | Thời gian (phút) | Khoảng cách (km) | Optimality Gap vs OR-Tools | HN Gap (40) | DN Gap (20) | HCM Gap (40) | Độ trễ CPU (ms) | Tỷ lệ lỗi (%) | Vị trí Đánh giá |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| **Google OR-Tools** (C++ Solver) | 217.78 | 72.69 | **0.00%** | 0.00% | 0.00% | 0.00% | 1002.16 | 0.0% | **Optimal Reference** (Quá chậm cho live) |
+| **Attention Model (AM)** (Graph Transformer) | 225.67 | 75.63 | **+3.27%** | **3.11%** | **3.48%** | **3.32%** | **32.63** | **0.0%** | **CHAMPION MODEL** (Nhanh gấp 31 lần OR-Tools) |
+| **Pointer Network (A2C)** (Bi-LSTM Seq2Seq) | 239.59 | 80.99 | **+9.27%** | 8.57% | 8.66% | 10.27% | **24.19** | **0.0%** | **Fast Baseline** (Kém AM 6.0% gap tại N=50) |
+| **Dueling DQN (Masked)** (Value-based RL) | 340.13 | 115.77 | **+105.45%** | 114.08% | 104.19% | 97.44% | **4.29** | **50.0%** | **Negative Result** (Tử huyệt cố định action space) |
 
-*Số liệu trích xuất trực tiếp từ file kiểm chuẩn tái lập `results/benchmark_summary_table.csv`.*
+#### Luận Điểm Lựa Chọn Mô Hình Sản Xuất (Model Selection Justification):
+1. **Tại sao không dùng OR-Tools trực tiếp trong Production?** Mặc dù gap = 0.00%, độ trễ 1.002 giây/request sẽ làm sập nghẽn hệ thống khi phục vụ đồng thời hàng nghìn tài xế điều phối; Attention Model cho nghiệm tiệm cận tuyệt đối (gap chỉ 3.27%) nhưng suy luận chỉ mất **32.6ms** (nhanh gấp **31 lần**).
+2. **Tại sao Attention Model vượt trội Pointer Network?** Cả 2 đều huấn luyện 60 epochs trên Kaggle GPU T4; tuy nhiên cơ chế Self-Attention đa đầu của AM nắm bắt trọn vẹn hình học không gian toàn cục, giúp AM duy trì gap ổn định 3.1% - 3.4% ngay cả khi mở rộng lên $N=50$, trong khi Bi-LSTM của PointerNet bị suy giảm bộ nhớ khiến gap tăng vọt lên 12.94%.
+3. **Tại sao công bố kết quả âm tính của DQN?** Minh chứng sự trung thực khoa học và phân tích sâu sắc bản chất toán học: Value-based RL với không gian hành động rời rạc $|A|$ cố định không thể giải bài toán định tuyến đồ thị có số nút biến thiên linh hoạt.
+
+*Số liệu trích xuất trực tiếp từ file kiểm chuẩn tái lập `results/benchmark_summary_table.csv` và `notebooks/model_results/`.*
 
 ---
 

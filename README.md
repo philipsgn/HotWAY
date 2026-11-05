@@ -3,7 +3,7 @@
 > **Tài liệu:** Báo Cáo Tổng Quan Hệ Thống & Hướng Dẫn Vận Hành Production  
 > **Phiên bản:** v7.3.2 (Nationwide Multi-Model NCO & Monochromatic Production WebGIS Edition)  
 > **Ngày cập nhật:** 02/11/2026  
-> **Báo cáo nghiên cứu chính thức:** [docs/HotWAY_Final_Research_Report.pdf](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/HotWAY_Final_Research_Report.pdf) | [docs/FINAL_RESEARCH_REPORT.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/FINAL_RESEARCH_REPORT.md)  
+> **Báo cáo nghiên cứu chính thức:** [docs/HotWAY_Final_Research_Report.pdf](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/HotWAY_Final_Research_Report.pdf) | [docs/FINAL_RESEARCH_REPORT.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/FINAL_RESEARCH_REPORT.md) | [docs/MULTI_MODEL_EVALUATION_REPORT.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/MULTI_MODEL_EVALUATION_REPORT.md) | [docs/PATHFINDING_VISUALIZER.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/PATHFINDING_VISUALIZER.md)  
 > **Tài liệu kỹ thuật liên quan:** [PRD.md](file:///c:/Users/Asus/Documents/AI/HotWAY/PRD.md) | [ARCHITECTURE.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ARCHITECTURE.md) | [ALGORITHM.md](file:///c:/Users/Asus/Documents/AI/HotWAY/ALGORITHM.md) | [DECISIONS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DECISIONS.md) | [TESTING.md](file:///c:/Users/Asus/Documents/AI/HotWAY/TESTING.md) | [DEMO_PRODUCTION_RUNBOOK.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/DEMO_PRODUCTION_RUNBOOK.md) | [AGENTS.md](file:///c:/Users/Asus/Documents/AI/HotWAY/AGENTS.md) | [SOP_MULTI_AGENT_WORKFLOW.md](file:///c:/Users/Asus/Documents/AI/HotWAY/docs/SOP_MULTI_AGENT_WORKFLOW.md)
 
 ---
@@ -57,7 +57,7 @@ Hai mô hình học sâu được huấn luyện đầy đủ 60 epoch trên GPU
 
 ## 4. Hướng Dẫn Khởi Chạy Production & Kiểm Thử
 
-### 4.1. Chạy Bộ Kiểm Thử Tự Động (62/62 Tests Passed)
+### 4.1. Chạy Bộ Kiểm Thử Tự Động (70/70 Tests Passed)
 ```bash
 # Kiểm thử toàn diện môi trường, thuật toán, hình học và độ trung thực số liệu
 py -3.13 -m pytest tests/
@@ -75,7 +75,11 @@ npm --prefix frontend run dev -- -p 3001
 > [!CAUTION]
 > **Kỷ Luật Cổng Mạng:** Cổng **3000** tuyệt đối bị cô lập để bảo vệ hệ thống. Backend chạy cổng **8000**, Frontend chạy cổng **3001**.
 
-### 4.3. Xuất Bản Báo Cáo Học Thuật Chuẩn IEEE/ACM
+### 4.3. Các Phân Hệ WebGIS & Diễn Họa Sẵn Sàng Trình Diễn
+- **Trình Diễn Họa Thuật Toán Tìm Đường Thực Tế (http://localhost:3001/visualizer):** Canvas 60 FPS biểu diễn sóng loang A*, Dijkstra, Bidirectional và Dynamic C(t) trên mạng lưới giao thông trung tâm TP.HCM.
+- **Bàn Điều Phối Tương Tác Zero-Hardcode (http://localhost:3001/demo):** Tự do tìm kiếm địa chỉ toàn quốc, cắm mốc A/B, hoán đổi chiều, dùng GPS và thêm điểm giao động.
+
+### 4.4. Xuất Bản Báo Cáo Học Thuật Chuẩn IEEE/ACM
 ```bash
 py -3.13 scripts/export_pdf_report.py
 ```
@@ -83,7 +87,7 @@ Tệp PDF xuất bản tự động được lưu tại: [`docs/HotWAY_Final_Res
 
 ---
 
-## 8. Cơ Cấu Tổ Đội 5 Kỹ Sư AI Chuyên Trách (Active Antigravity Subagents)
+## 5. Cơ Cấu Tổ Đội 5 Kỹ Sư AI Chuyên Trách (Active Antigravity Subagents)
 
 Hệ thống được phát triển và vận hành theo mô hình phân nhiệm 5 vai trò kỹ sư chuyên biệt (đã đăng ký thành các Subagent độc lập trong Antigravity theo [AGENTS.md](AGENTS.md) và [SOP_MULTI_AGENT_WORKFLOW.md](docs/SOP_MULTI_AGENT_WORKFLOW.md)):
 

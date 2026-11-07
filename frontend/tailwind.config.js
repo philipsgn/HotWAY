@@ -8,6 +8,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        net: {
+          primary: '#005691',
+          dark: '#333333',
+          charcoal: '#1a1a1e',
+          surface: '#242428',
+          card: '#2a2a30',
+          light: '#FFFFFF',
+          neutral: '#CCCCCC',
+          muted: '#888888',
+          green: '#00FF00',
+          orange: '#FFA500',
+          cyan: '#00FFFF',
+        },
         'app': '#09090b',
         'surface': '#ffffff',
         'sunken': '#f4f4f5',
@@ -34,6 +47,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          '"Open Sans"',
           'Manrope',
           'Inter',
           'system-ui',
@@ -44,6 +58,7 @@ module.exports = {
           'sans-serif',
         ],
         heading: [
+          '"Open Sans"',
           'Manrope',
           'Inter',
           'system-ui',

@@ -314,8 +314,10 @@ export default function AlgorithmVisualizerPage() {
     setStartPoint(p.start as [number, number]);
     setEndPoint(p.end as [number, number]);
     if (mapRef.current) {
+      const safeLat = Math.max(-85, Math.min(85, (p.start[0] + p.end[0]) / 2));
+      const safeLon = Math.max(-180, Math.min(180, (p.start[1] + p.end[1]) / 2));
       mapRef.current.flyTo({
-        center: [(p.start[1] + p.end[1]) / 2, (p.start[0] + p.end[0]) / 2],
+        center: [safeLon, safeLat],
         zoom: 14.5,
       });
     }
@@ -323,7 +325,7 @@ export default function AlgorithmVisualizerPage() {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black text-white select-none">
+    <div className="relative w-screen h-[100dvh] overflow-hidden bg-black text-white select-none">
       {/* 1. Fullscreen Map Canvas */}
       <div ref={mapContainerRef} className="w-full h-full" />
 

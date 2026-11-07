@@ -98,6 +98,11 @@ class GraphStepEngine:
         max_steps: int = 1200,
     ) -> Dict[str, Any]:
         """Executes selected algorithm and records chronological exploration steps."""
+        if not (-90.0 <= start_lat <= 90.0 and -180.0 <= start_lon <= 180.0):
+            raise ValueError(f"Invalid start coordinates: ({start_lat}, {start_lon})")
+        if not (-90.0 <= end_lat <= 90.0 and -180.0 <= end_lon <= 180.0):
+            raise ValueError(f"Invalid end coordinates: ({end_lat}, {end_lon})")
+
         start_node, s_lat, s_lon = self.find_nearest_node(start_lat, start_lon)
         end_node, e_lat, e_lon = self.find_nearest_node(end_lat, end_lon)
 
@@ -132,8 +137,12 @@ class GraphStepEngine:
         total_dist_m = 0.0
         for i in range(len(path) - 1):
             u, v = path[i], path[i + 1]
-            # Take minimum length edge
-            min_l = min(d.get("length", 10.0) for d in self.graph[u][v].values())
+            if self.graph.has_edge(u, v):
+                min_l = min(d.get("length", 10.0) for d in self.graph[u][v].values())
+            else:
+                nd_u = self.graph.nodes[u]
+                nd_v = self.graph.nodes[v]
+                min_l = haversine(float(nd_u["y"]), float(nd_u["x"]), float(nd_v["y"]), float(nd_v["x"]))
             total_dist_m += min_l
 
         return {

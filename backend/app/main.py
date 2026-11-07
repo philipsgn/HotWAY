@@ -16,7 +16,7 @@ from fastapi.responses import JSONResponse
 from backend.app.core.config import settings
 from backend.app.api.router import api_router
 from backend.app.api import route_optimization
-from backend.app.api.endpoints import visualizer
+from backend.app.api.endpoints import visualizer, nco_benchmark
 
 # Configure structured logging
 logging.basicConfig(
@@ -195,6 +195,7 @@ def create_app() -> FastAPI:
     # Include HotWAY v7.0.0 Route Optimization & Real-Time Simulation API
     application.include_router(route_optimization.router, prefix="/api/v1")
     application.include_router(visualizer.router)
+    application.include_router(nco_benchmark.router)
 
     return application
 

@@ -57,7 +57,7 @@ Hai mô hình học sâu được huấn luyện đầy đủ 60 epoch trên GPU
 
 ## 4. Hướng Dẫn Khởi Chạy Production & Kiểm Thử
 
-### 4.1. Chạy Bộ Kiểm Thử Tự Động (70/70 Tests Passed)
+### 4.1. Chạy Bộ Kiểm Thử Tự Động (85/85 Tests Passed)
 ```bash
 # Kiểm thử toàn diện môi trường, thuật toán, hình học và độ trung thực số liệu
 py -3.13 -m pytest tests/

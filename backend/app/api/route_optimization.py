@@ -15,7 +15,7 @@ from typing import Any, AsyncGenerator, Dict, List, Optional
 
 from fastapi import APIRouter, Query, HTTPException, status
 from fastapi.responses import StreamingResponse, JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.routing.multicriteria_router import MultiCriteriaRouter
 from src.envs.adaptive_routing_env import AdaptiveRoutingEnv
@@ -77,10 +77,10 @@ def snap_nearest_node(router_obj: MultiCriteriaRouter, lat: float, lon: float) -
 
 
 class ODRequest(BaseModel):
-    origin_lat: float
-    origin_lon: float
-    dest_lat: float
-    dest_lon: float
+    origin_lat: float = Field(..., ge=-90.0, le=90.0, description="WGS84 origin latitude")
+    origin_lon: float = Field(..., ge=-180.0, le=180.0, description="WGS84 origin longitude")
+    dest_lat: float = Field(..., ge=-90.0, le=90.0, description="WGS84 destination latitude")
+    dest_lon: float = Field(..., ge=-180.0, le=180.0, description="WGS84 destination longitude")
     rain: bool = False
 
 

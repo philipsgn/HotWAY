@@ -66,7 +66,7 @@ export default function AlgorithmVisualizerPage() {
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
       style: "https://tiles.openfreemap.org/styles/liberty",
-      center: [106.712, 107.798], // Center HCMC Binh Thanh
+      center: [106.712, 10.798], // Center HCMC Binh Thanh
       zoom: 14.2,
       pitch: 20,
       bearing: 0,
@@ -271,8 +271,10 @@ export default function AlgorithmVisualizerPage() {
     if (mapLoaded) {
       runPathfinding(startPoint, endPoint, algorithm);
       if (mapRef.current) {
+        const safeLat = Math.max(-85, Math.min(85, (startPoint[0] + endPoint[0]) / 2));
+        const safeLon = Math.max(-180, Math.min(180, (startPoint[1] + endPoint[1]) / 2));
         mapRef.current.flyTo({
-          center: [(startPoint[1] + endPoint[1]) / 2, (startPoint[0] + endPoint[0]) / 2],
+          center: [safeLon, safeLat],
           zoom: 14.5,
           essential: true,
         });

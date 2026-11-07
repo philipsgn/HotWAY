@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from backend.app.services.graph_stepper import GraphStepEngine
 
@@ -23,6 +23,16 @@ class SolvePathRequest(BaseModel):
     end_coords: List[float] = Field(..., description="[lat, lon] of destination point", min_length=2, max_length=2)
     algorithm: str = Field(default="a_star", description="a_star | dijkstra | bidirectional | dynamic_c_t")
     max_steps: Optional[int] = Field(default=1200, description="Maximum number of animation steps to return")
+
+    @field_validator("start_coords", "end_coords")
+    @classmethod
+    def validate_wgs84(cls, coords: List[float]) -> List[float]:
+        lat, lon = coords[0], coords[1]
+        if not (-90.0 <= lat <= 90.0):
+            raise ValueError(f"Latitude must be between -90 and 90, got {lat}")
+        if not (-180.0 <= lon <= 180.0):
+            raise ValueError(f"Longitude must be between -180 and 180, got {lon}")
+        return coords
 
 
 @router.get("/map/bounds", summary="Lấy thông số bounding box và trung tâm bản đồ đồ thị")
@@ -67,6 +77,9 @@ def solve_path(req: SolvePathRequest) -> Dict[str, Any]:
             "status": "success",
             "data": result,
         }
+    except ValueError as ve:
+        logger.warning(f"Validation error in solve_path: {ve}")
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         logger.error(f"Error solving path: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to solve path: {e}")
